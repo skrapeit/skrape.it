@@ -3,7 +3,7 @@ package core
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 
-class Fetcher(private val params: Params) {
+class Fetcher(private val params: Params = Params()) {
 
     fun fetch(): Connection.Response {
 
@@ -25,7 +25,7 @@ class Fetcher(private val params: Params) {
 }
 
 data class Params(
-        val url: String,
+        val url: String = "http://localhost:8080",
         val method: HttpMethod = HttpMethod.GET,
         val userAgent: String = "Mozilla/5.0 skrape.it/0-SNAPSHOT",
         val timeout: Int = 5000,
@@ -43,7 +43,5 @@ enum class HttpMethod(val verb: Connection.Method) {
     PATCH(Connection.Method.PATCH),
     HEAD(Connection.Method.HEAD),
     OPTIONS(Connection.Method.OPTIONS),
-    TRACE(Connection.Method.TRACE),
+    TRACE(Connection.Method.TRACE)
 }
-
-
