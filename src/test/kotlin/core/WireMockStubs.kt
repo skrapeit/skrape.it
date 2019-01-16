@@ -8,10 +8,12 @@ fun WireMockServer.setupStub(
         path: String = "/",
         statusCode: Int = 200,
         contentType: String = "text/html; charset=UTF-8",
-        fileName: String = "example.html"
+        fileName: String = "example.html",
+        delay: Int = 0
 ): StubMapping = this.stubFor(WireMock.get(WireMock.urlEqualTo(path))
         .willReturn(WireMock.aResponse().withHeader("Content-Type", contentType)
                 .withStatus(statusCode)
+                .withFixedDelay(delay)
                 .withBodyFile(fileName)))
 
 fun WireMockServer.setupPostStub(): StubMapping =

@@ -3,8 +3,10 @@ package core
 import com.github.tomakehurst.wiremock.WireMockServer
 import org.assertj.core.api.KotlinAssertions.assertThat
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.net.SocketTimeoutException
 
 internal class FetcherTest {
 
@@ -95,5 +97,15 @@ internal class FetcherTest {
         assertThat(response.statusCode()).isEqualTo(200)
         assertThat(response.contentType()).isEqualTo("application/json; charset=UTF-8")
         assertThat(response.body()).isEqualTo("""{"data":"some value"}""")
+    }
+
+    @Test
+    fun `will throw exception on timeout`() {
+        wireMockServer.setupStub(delay = 6000)
+
+        assertThrows(SocketTimeoutException::class.java
+        ) {
+            Fetcher().fetch()
+        }
     }
 }
