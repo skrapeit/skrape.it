@@ -88,7 +88,6 @@ internal class FetcherTest {
 
         // when
         val response = Fetcher(Params(
-                url = "http://localhost:8080",
                 method = HttpMethod.POST
         )).fetch()
 
