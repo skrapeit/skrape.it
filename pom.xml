@@ -6,8 +6,9 @@
 
     <groupId>io.github.skrapeit</groupId>
     <artifactId>skrape.it</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0-SNAPSHOT</version>
 
+    <name>skrape.it</name>
     <description>
         skrape.it is a Kotlin-based HTML testing and web scraping library
         that can be used seamlessly in both Spring boot and other JVM projects.
@@ -15,6 +16,33 @@
         and attention to performance through the use of non-blocking operations,
         caching, and parallelization.
     </description>
+    <url>https://docs.skrape.it</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Christian Dräger</name>
+            <email>christian.draeger1@gmail.com</email>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/skrapeit/skrape.it/issues</url>
+    </issueManagement>
+
+    <scm>
+        <connection>scm:git:git://github.com/skrapeit/skrape.it.git</connection>
+        <developerConnection>scm:git:ssh://github.com:skrapeit/skrape.it.git</developerConnection>
+        <url>https://github.com/skrapeit/skrape.it/tree/master</url>
+    </scm>
 
     <packaging>jar</packaging>
 
@@ -65,7 +93,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.7.0</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
