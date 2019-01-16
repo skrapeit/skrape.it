@@ -1,7 +1,6 @@
 package core
 
 import com.github.tomakehurst.wiremock.WireMockServer
-import com.github.tomakehurst.wiremock.client.WireMock.*
 import org.assertj.core.api.KotlinAssertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -24,7 +23,7 @@ internal class FetcherTest {
     @Test
     fun `will fetch localhost 8080 with defaults if no params`() {
         // given
-        setupStub()
+        wireMockServer.setupStub()
 
         // when
         val response = Fetcher().fetch()
@@ -38,7 +37,7 @@ internal class FetcherTest {
     @Test
     fun `can fetch url and use HTTP verb GET by default`() {
         // given
-        setupStub(path = "/example")
+        wireMockServer.setupStub(path = "/example")
 
         // when
         val response = Fetcher(Params("https://localhost:8089/example")).fetch()
@@ -50,9 +49,42 @@ internal class FetcherTest {
     }
 
     @Test
+    fun `will not throw exception on non existing url`() {
+        // when
+        val response = Fetcher(Params("http://localhost:8080/not-existing")).fetch()
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(404)
+    }
+
+    @Test
+    fun `will not follow redirects if configured`() {
+        // given
+        wireMockServer.setupRedirect()
+
+        // when
+        val response = Fetcher(Params(followRedirects = false)).fetch()
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(302)
+    }
+
+    @Test
+    fun `will follow redirect by default`() {
+        // given
+        wireMockServer.setupRedirect()
+
+        // when
+        val response = Fetcher().fetch()
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(404)
+    }
+
+    @Test
     fun `can fetch url and use HTTP verb POST`() {
         // given
-        setupPostStub()
+        wireMockServer.setupPostStub()
 
         // when
         val response = Fetcher(Params(
@@ -64,24 +96,5 @@ internal class FetcherTest {
         assertThat(response.statusCode()).isEqualTo(200)
         assertThat(response.contentType()).isEqualTo("application/json; charset=UTF-8")
         assertThat(response.body()).isEqualTo("""{"data":"some value"}""")
-    }
-
-    private fun setupStub(
-            path: String = "/",
-            statusCode: Int = 200,
-            contentType: String = "text/html; charset=UTF-8",
-            fileName: String = "example.html"
-    ) {
-        wireMockServer.stubFor(get(urlEqualTo(path))
-                .willReturn(aResponse().withHeader("Content-Type", contentType)
-                        .withStatus(statusCode)
-                        .withBodyFile(fileName)))
-    }
-
-    private fun setupPostStub() {
-        wireMockServer.stubFor(post(urlEqualTo("/"))
-                .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=UTF-8")
-                        .withStatus(200)
-                        .withBodyFile("data.json")))
     }
 }
