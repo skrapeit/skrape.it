@@ -1,4 +1,4 @@
-![master build status](https://img.shields.io/travis/skrapeit/skrape.it.svg?label=master&style=for-the-badge)
+[![master build status](https://img.shields.io/travis/skrapeit/skrape.it.svg?label=master&style=for-the-badge)](https://travis-ci.org/skrapeit/skrape.it)
 
 [skrape.it](https://docs.skrape.it)
 =================================
