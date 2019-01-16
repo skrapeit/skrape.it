@@ -49,6 +49,7 @@
     <properties>
         <java.version>1.8</java.version>
         <kotlin.version>1.3.11</kotlin.version>
+        <junit.version>5.2.0</junit.version>
     </properties>
 
     <dependencies>
@@ -56,6 +57,31 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
             <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.11.3</version>
+        </dependency>
+
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.wuerl.kotlin</groupId>
+            <artifactId>assertj-core-kotlin</artifactId>
+            <version>0.2.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -98,6 +124,21 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <!-- take good care of the version combination surefire<->junit -->
+                <version>2.21.0</version>
+                <configuration>
+                    <failIfNoTests>true</failIfNoTests>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.junit.platform</groupId>
+                        <artifactId>junit-platform-surefire-provider</artifactId>
+                        <version>1.2.0</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
