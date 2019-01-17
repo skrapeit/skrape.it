@@ -1,24 +1,22 @@
 package it.skrape.core
 
-import it.skrape.Skrape
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.io.File
 
-class Scraper(var options: Scraper.Options = Options()) : Skrape {
+class Scraper(var options: Scraper.Options = Options()) {
 
-    override fun fetch(): Result {
-        return options.fetch()
+    fun scrape(): Result {
+        return options.scrape()
     }
 
-    override fun read(pathToFile: String): Doc {
+    fun read(pathToFile: String): Doc {
         val input = File(pathToFile)
         return Jsoup.parse(input, "UTF-8", "http://skrape.it/")
-
     }
 
-    override fun parse(html: String): Doc {
+    fun parse(html: String): Doc {
         return Jsoup.parse(html)
     }
 
@@ -38,12 +36,16 @@ class Scraper(var options: Scraper.Options = Options()) : Skrape {
             var validateTLSCertificates: Boolean = false,
             var headers: Map<String, String> = mutableMapOf()
     ) {
-        fun fetch(): Result {
+        fun scrape(): Result {
             val response = Fetcher(this).fetch()
-
             val document = response.parse()
-
             return Result(document, response)
+        }
+
+        fun result(init: Result.() -> Unit): Result {
+            val result = Scraper(this).scrape()
+            result.init()
+            return result
         }
     }
 }

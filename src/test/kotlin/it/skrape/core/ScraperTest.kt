@@ -14,7 +14,7 @@ internal class ScraperTest : WireMockSetup() {
     @Test
     fun `can scrape directly with default options`() {
         wireMockServer.setupStub(contentType = "test/type")
-        val result = Scraper().fetch()
+        val result = Scraper().scrape()
 
         assertThat(result.response.statusCode()).isEqualTo(200)
         assertThat(result.document.title()).isEqualTo("i'm the title")
@@ -25,7 +25,7 @@ internal class ScraperTest : WireMockSetup() {
         wireMockServer.setupStub(path = "/example")
         val result = Scraper().options.apply {
             url = "http://localhost:8080/example"
-        }.fetch()
+        }.scrape()
 
         assertThat(result.response.statusCode()).isEqualTo(200)
         assertThat(result.document.title()).isEqualTo("i'm the title")

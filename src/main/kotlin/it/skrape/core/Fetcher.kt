@@ -3,7 +3,7 @@ package it.skrape.core
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 
-internal class Fetcher(
+class Fetcher(
         private val options: Scraper.Options
 ) {
 
