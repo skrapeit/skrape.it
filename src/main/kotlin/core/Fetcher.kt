@@ -5,7 +5,7 @@ import org.jsoup.Jsoup
 
 class Fetcher(private val params: Params = Params()) {
 
-    fun fetch(): Connection.Response {
+    fun fetch(): Response {
 
         System.setProperty("sun.net.http.allowRestrictedHeaders", "true")
         System.setProperty("javax.net.ssl.trustStore", "/etc/ssl/certs/java/cacerts")
@@ -20,9 +20,19 @@ class Fetcher(private val params: Params = Params()) {
                 .validateTLSCertificates(params.validateTLSCertificates)
                 .maxBodySize(0)
 
-        return request.execute()
+        val response = request.execute()
+
+        return Response(
+                response = response,
+                requestParams = params
+        )
     }
 }
+
+data class Response(
+        val response: Connection.Response,
+        val requestParams: Params
+)
 
 data class Params(
         val url: String = "http://localhost:8080",

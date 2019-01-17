@@ -7,7 +7,7 @@ import java.io.File
 class Skraper {
 
     fun fetch(): Document {
-        return Fetcher().fetch().parse()
+        return Fetcher().fetch().response.parse()
     }
 
     fun read(pathToFile: String): Document {
