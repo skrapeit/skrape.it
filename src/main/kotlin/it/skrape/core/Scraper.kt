@@ -12,24 +12,24 @@ class Scraper(var options: Scraper.Options = Options()) : Skrape {
         return options.fetch()
     }
 
-    override fun read(pathToFile: String): Document {
+    override fun read(pathToFile: String): Doc {
         val input = File(pathToFile)
         return Jsoup.parse(input, "UTF-8", "http://skrape.it/")
 
     }
 
-    override fun parse(html: String): Document {
+    override fun parse(html: String): Doc {
         return Jsoup.parse(html)
     }
 
     data class Result(
-            val document: Document,
-            val response: Connection.Response
+            val document: Doc,
+            val response: Response
     )
 
     data class Options(
             var url: String = "http://localhost:8080",
-            var method: HttpMethod = HttpMethod.GET,
+            var method: Method = Method.GET,
             var userAgent: String = "Mozilla/5.0 skrape.it",
             var timeout: Int = 5000,
             var followRedirects: Boolean = true,
@@ -46,15 +46,7 @@ class Scraper(var options: Scraper.Options = Options()) : Skrape {
             return Result(document, response)
         }
     }
-
-    enum class HttpMethod(val verb: Connection.Method) {
-        GET(Connection.Method.GET),
-        POST(Connection.Method.POST),
-        DELETE(Connection.Method.DELETE),
-        PUT(Connection.Method.PUT),
-        PATCH(Connection.Method.PATCH),
-        HEAD(Connection.Method.HEAD),
-        OPTIONS(Connection.Method.OPTIONS),
-        TRACE(Connection.Method.TRACE)
-    }
 }
+
+typealias Doc = Document
+typealias Method = Connection.Method

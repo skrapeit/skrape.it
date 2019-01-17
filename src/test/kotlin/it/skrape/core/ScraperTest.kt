@@ -3,7 +3,7 @@ package it.skrape.core
 import org.assertj.core.api.KotlinAssertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class SkraperTest : WireMockSetup() {
+internal class ScraperTest : WireMockSetup() {
 
     @Test
     fun `can parse html from file system`() {

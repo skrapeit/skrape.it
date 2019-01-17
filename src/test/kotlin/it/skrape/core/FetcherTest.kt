@@ -84,7 +84,7 @@ internal class FetcherTest : WireMockSetup() {
         // given
         wireMockServer.setupPostStub()
         val params = Scraper.Options().apply {
-            method = Scraper.HttpMethod.POST
+            method = Method.POST
         }
 
         // when

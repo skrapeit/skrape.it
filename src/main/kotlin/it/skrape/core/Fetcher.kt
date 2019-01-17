@@ -7,13 +7,13 @@ internal class Fetcher(
         private val options: Scraper.Options
 ) {
 
-    fun fetch(): Connection.Response {
+    fun fetch(): Response {
 
         System.setProperty("sun.net.http.allowRestrictedHeaders", "true")
         System.setProperty("javax.net.ssl.trustStore", "/etc/ssl/certs/java/cacerts")
 
         val request = Jsoup.connect(options.url)
-                .method(options.method.verb)
+                .method(options.method)
                 .userAgent(options.userAgent)
                 .timeout(options.timeout)
                 .headers(options.headers)
@@ -26,3 +26,5 @@ internal class Fetcher(
         return request.execute()
     }
 }
+
+typealias Response = Connection.Response
