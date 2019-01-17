@@ -3,6 +3,22 @@ package core
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+
+open class WireMockSetup {
+    protected val wireMockServer = WireMockServer(8080, 8089)
+
+    @BeforeEach
+    fun setup() {
+        wireMockServer.start()
+    }
+
+    @AfterEach
+    fun teardown() {
+        wireMockServer.stop()
+    }
+}
 
 fun WireMockServer.setupStub(
         path: String = "/",
