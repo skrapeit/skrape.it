@@ -9,10 +9,6 @@ class Skraper {
 
     var params: Skraper.Params = Params()
 
-    fun options(): Params {
-        return params
-    }
-
     fun fetch(): Result {
         return params.fetch()
     }

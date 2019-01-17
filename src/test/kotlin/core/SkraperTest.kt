@@ -23,7 +23,7 @@ internal class SkraperTest : WireMockSetup() {
     @Test
     fun `can scrape html via custom http request`() {
         wireMockServer.setupStub(path = "/example")
-        val result = Skraper().options().apply {
+        val result = Skraper().params.apply {
             url = "http://localhost:8080/example"
         }.fetch()
 
