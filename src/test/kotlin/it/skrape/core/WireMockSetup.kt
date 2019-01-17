@@ -1,4 +1,4 @@
-package core
+package it.skrape.core
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock

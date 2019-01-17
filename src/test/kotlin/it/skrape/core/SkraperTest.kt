@@ -1,4 +1,4 @@
-package core
+package it.skrape.core
 
 import org.assertj.core.api.KotlinAssertions.assertThat
 import org.junit.jupiter.api.Test
@@ -7,14 +7,14 @@ internal class SkraperTest : WireMockSetup() {
 
     @Test
     fun `can parse html from file system`() {
-        val document = Skraper().read("src/test/resources/__files/example.html")
+        val document = Scraper().read("src/test/resources/__files/example.html")
         assertThat(document.title()).isEqualTo("i'm the title")
     }
 
     @Test
     fun `can scrape directly with default options`() {
         wireMockServer.setupStub(contentType = "test/type")
-        val result = Skraper().fetch()
+        val result = Scraper().fetch()
 
         assertThat(result.response.statusCode()).isEqualTo(200)
         assertThat(result.document.title()).isEqualTo("i'm the title")
@@ -23,7 +23,7 @@ internal class SkraperTest : WireMockSetup() {
     @Test
     fun `can scrape html via custom http request`() {
         wireMockServer.setupStub(path = "/example")
-        val result = Skraper().params.apply {
+        val result = Scraper().options.apply {
             url = "http://localhost:8080/example"
         }.fetch()
 
@@ -44,7 +44,7 @@ internal class SkraperTest : WireMockSetup() {
             </html>
         """.trimIndent()
 
-        val result = Skraper().parse(htmlAsString)
+        val result = Scraper().parse(htmlAsString)
 
         assertThat(result.title()).isEqualTo("some title")
         assertThat(result.selectFirst("p").text()).isEqualTo("some text")

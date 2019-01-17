@@ -1,4 +1,4 @@
-package core
+package it.skrape.core
 
 import org.assertj.core.api.KotlinAssertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
@@ -13,7 +13,7 @@ internal class FetcherTest : WireMockSetup() {
         wireMockServer.setupStub()
 
         // when
-        val fetched = Fetcher(Skraper.Params()).fetch()
+        val fetched = Fetcher(Scraper.Options()).fetch()
 
         // then
         assertThat(fetched.statusCode()).isEqualTo(200)
@@ -25,7 +25,7 @@ internal class FetcherTest : WireMockSetup() {
     fun `can fetch url and use HTTP verb GET by default`() {
         // given
         wireMockServer.setupStub(path = "/example")
-        val params = Skraper.Params().apply {
+        val params = Scraper.Options().apply {
             url = "https://localhost:8089/example"
         }
 
@@ -41,7 +41,7 @@ internal class FetcherTest : WireMockSetup() {
     @Test
     fun `will not throw exception on non existing url`() {
         // given
-        val params = Skraper.Params().apply {
+        val params = Scraper.Options().apply {
             url = "http://localhost:8080/not-existing"
         }
 
@@ -56,7 +56,7 @@ internal class FetcherTest : WireMockSetup() {
     fun `will not follow redirects if configured`() {
         // given
         wireMockServer.setupRedirect()
-        val params = Skraper.Params().apply {
+        val params = Scraper.Options().apply {
             followRedirects = false
         }
 
@@ -73,7 +73,7 @@ internal class FetcherTest : WireMockSetup() {
         wireMockServer.setupRedirect()
 
         // when
-        val fetched = Fetcher(Skraper.Params()).fetch()
+        val fetched = Fetcher(Scraper.Options()).fetch()
 
         // then
         assertThat(fetched.statusCode()).isEqualTo(404)
@@ -83,8 +83,8 @@ internal class FetcherTest : WireMockSetup() {
     fun `can fetch url and use HTTP verb POST`() {
         // given
         wireMockServer.setupPostStub()
-        val params = Skraper.Params().apply {
-            method = Skraper.HttpMethod.POST
+        val params = Scraper.Options().apply {
+            method = Scraper.HttpMethod.POST
         }
 
         // when
@@ -102,7 +102,7 @@ internal class FetcherTest : WireMockSetup() {
 
         assertThrows(SocketTimeoutException::class.java
         ) {
-            Fetcher(Skraper.Params()).fetch()
+            Fetcher(Scraper.Options()).fetch()
         }
     }
 }

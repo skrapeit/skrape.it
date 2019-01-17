@@ -1,25 +1,24 @@
-package core
+package it.skrape.core
 
+import it.skrape.Skrape
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.io.File
 
-class Skraper {
+class Scraper(var options: Scraper.Options = Options()) : Skrape {
 
-    var params: Skraper.Params = Params()
-
-    fun fetch(): Result {
-        return params.fetch()
+    override fun fetch(): Result {
+        return options.fetch()
     }
 
-    fun read(pathToFile: String): Document {
+    override fun read(pathToFile: String): Document {
         val input = File(pathToFile)
         return Jsoup.parse(input, "UTF-8", "http://skrape.it/")
 
     }
 
-    fun parse(html: String): Document {
+    override fun parse(html: String): Document {
         return Jsoup.parse(html)
     }
 
@@ -28,7 +27,7 @@ class Skraper {
             val response: Connection.Response
     )
 
-    data class Params(
+    data class Options(
             var url: String = "http://localhost:8080",
             var method: HttpMethod = HttpMethod.GET,
             var userAgent: String = "Mozilla/5.0 skrape.it",
