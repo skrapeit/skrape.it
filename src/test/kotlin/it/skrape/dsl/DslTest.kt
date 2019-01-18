@@ -19,7 +19,6 @@ internal class DslTest : WireMockSetup() {
                 assertThat(document.title()).isEqualTo("i'm the title")
             }
         }
-
     }
 
     @Test

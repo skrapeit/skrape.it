@@ -4,7 +4,7 @@ import org.jsoup.Connection
 import org.jsoup.Jsoup
 
 class Fetcher(
-        private val options: Scraper.Options
+        private val options: Options
 ) {
 
     fun fetch(): Response {
