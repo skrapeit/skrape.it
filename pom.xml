@@ -30,6 +30,11 @@
         <developer>
             <name>Christian Dräger</name>
             <email>christian.draeger1@gmail.com</email>
+            <url>https://github.com/christian-draeger</url>
+        </developer>
+        <developer>
+            <name>Stefan Bissell</name>
+            <url>https://github.com/weaselflink</url>
         </developer>
     </developers>
 
