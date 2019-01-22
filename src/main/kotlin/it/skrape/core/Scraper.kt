@@ -10,6 +10,11 @@ class Scraper(val request: Request = Request()) {
     }
 }
 
+/**
+ * make http-request with given parameters or defaults
+ * @param init as callback on Request-Object
+ * @return Result
+ */
 @SkrapeItDslMarker
 fun skrape(init: Request.() -> Unit): Result {
     val scraper = Scraper()

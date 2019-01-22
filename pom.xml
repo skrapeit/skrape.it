@@ -51,6 +51,14 @@
 
     <packaging>jar</packaging>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jcenter</id>
+            <name>JCenter</name>
+            <url>https://jcenter.bintray.com/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
@@ -170,6 +178,21 @@
                             <attach>true</attach>
                             <forceCreation>true</forceCreation>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- generate javadocs-->
+            <plugin>
+                <groupId>org.jetbrains.dokka</groupId>
+                <artifactId>dokka-maven-plugin</artifactId>
+                <version>0.9.17</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>javadocJar</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
