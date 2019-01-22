@@ -11,7 +11,8 @@ data class Request(
         var ignoreContentType: Boolean = true,
         var ignoreHttpErrors: Boolean = true,
         var validateTLSCertificates: Boolean = false,
-        var headers: Map<String, String> = mutableMapOf()
+        var headers: Map<String, String> = mutableMapOf(),
+        var maxBodySizeInBytes: Int = 0
 ) {
     @SkrapeItDslMarker
     fun response(init: Result.() -> Unit): Result {
