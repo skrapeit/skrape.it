@@ -17,17 +17,17 @@ class Result(
     }
 
     @SkrapeItDslMarker
-    fun document(init: Doc.() -> Unit): Doc {
-        return document
+    fun document(init: Doc.() -> Unit) {
+        document.apply(init)
     }
 
     @SkrapeItDslMarker
-    fun element(selector: String, init: Element.() -> Unit): Element {
-        return document.selectFirst(selector)
+    fun element(selector: String, init: Element.() -> Unit) {
+        document.selectFirst(selector).apply(init)
     }
 
     @SkrapeItDslMarker
-    fun elements(selector: String, init: Elements.() -> Unit): Elements {
-        return document.select(selector)
+    fun elements(selector: String, init: Elements.() -> Unit) {
+        document.select(selector).apply(init)
     }
 }

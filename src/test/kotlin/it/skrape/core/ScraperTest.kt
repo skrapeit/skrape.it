@@ -39,7 +39,7 @@ internal class ScraperTest : WireMockSetup() {
                 }
 
                 element("p") {
-                    assertThat(text()).isEqualTo("i'm the title")
+                    assertThat(text()).isEqualTo("i'm a paragraph")
                 }
 
                 elements("p") {
