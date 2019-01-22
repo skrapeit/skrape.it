@@ -2,7 +2,7 @@ package it.skrape.core
 
 import org.jsoup.Connection
 
-data class Options(
+data class Request(
         var url: String = "http://localhost:8080",
         var method: Method = Method.GET,
         var userAgent: String = "Mozilla/5.0 skrape.it",
@@ -13,13 +13,7 @@ data class Options(
         var validateTLSCertificates: Boolean = false,
         var headers: Map<String, String> = mutableMapOf()
 ) {
-    fun scrape(): Scraper.Result {
-        val response = Fetcher(this).fetch()
-        val document = response.parse()
-        return Scraper.Result(document, response)
-    }
-
-    fun result(init: Scraper.Result.() -> Unit): Scraper.Result {
+    fun response(init: Result.() -> Unit): Result {
         val result = Scraper(this).scrape()
         result.init()
         return result

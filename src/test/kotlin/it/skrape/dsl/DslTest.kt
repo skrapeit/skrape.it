@@ -15,55 +15,67 @@ internal class DslTest : WireMockSetup() {
         skrape {
             url = "http://localhost:8080/example"
 
-            result {
-                assertThat(document.title()).isEqualTo("i'm the title")
+            response {
+
+                document {
+                    assertThat(title()).isEqualTo("i'm the title")
+                }
+
+                element("p") {
+                    assertThat(text()).isEqualTo("i'm the title")
+                }
+
+                elements("p") {
+                    assertThat(size).isEqualTo(2)
+                }
             }
         }
     }
 
     @Test
-    fun `will not follow redirects if configured`() {
+    internal fun `will not follow redirects if configured`() {
         // given
         wireMockServer.setupRedirect()
 
         skrape {
             followRedirects = false
 
-            result {
-                assertThat(response.statusCode()).isEqualTo(302)
+            response {
+                assertThat(statusCode).isEqualTo(302)
             }
         }
     }
 
     @Test
-    fun `will follow redirect by default`() {
+    internal fun `will follow redirect by default`() {
         // given
         wireMockServer.setupRedirect()
 
         skrape {
-            result {
-                assertThat(response.statusCode()).isEqualTo(404)
+            response {
+                assertThat(statusCode).isEqualTo(404)
             }
         }
     }
 
     @Test
-    fun `can fetch url and use HTTP verb POST`() {
+    internal fun `can fetch url and use HTTP verb POST`() {
         // given
         wireMockServer.setupPostStub()
 
         skrape {
             method = Method.POST
 
-            result {
-                assertThat(response.statusCode()).isEqualTo(200)
-                assertThat(response.contentType()).isEqualTo("application/json; charset=UTF-8")
+            response {
+                assertThat(statusCode).isEqualTo(200)
+                assertThat(statusMessage).isEqualTo("OK")
+                assertThat(contentType).isEqualTo("application/json; charset=UTF-8")
             }
         }
     }
 
     @Test
-    fun `will throw exception on timeout`() {
+    internal fun `will throw exception on timeout`() {
         wireMockServer.setupStub(delay = 3000)
 
         Assertions.assertThrows(SocketTimeoutException::class.java

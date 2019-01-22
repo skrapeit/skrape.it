@@ -8,12 +8,12 @@ import java.net.SocketTimeoutException
 internal class FetcherTest : WireMockSetup() {
 
     @Test
-    fun `will fetch localhost 8080 with defaults if no params`() {
+    internal fun `will fetch localhost 8080 with defaults if no params`() {
         // given
         wireMockServer.setupStub()
 
         // when
-        val fetched = Fetcher(Options()).fetch()
+        val fetched = Fetcher(Request()).fetch()
 
         // then
         assertThat(fetched.statusCode()).isEqualTo(200)
@@ -22,10 +22,10 @@ internal class FetcherTest : WireMockSetup() {
     }
 
     @Test
-    fun `can fetch url and use HTTP verb GET by default`() {
+    internal fun `can fetch url and use HTTP verb GET by default`() {
         // given
         wireMockServer.setupStub(path = "/example")
-        val options = Options().apply {
+        val options = Request().apply {
             url = "https://localhost:8089/example"
         }
 
@@ -39,9 +39,9 @@ internal class FetcherTest : WireMockSetup() {
     }
 
     @Test
-    fun `will not throw exception on non existing url`() {
+    internal fun `will not throw exception on non existing url`() {
         // given
-        val options = Options().apply {
+        val options = Request().apply {
             url = "http://localhost:8080/not-existing"
         }
 
@@ -53,10 +53,10 @@ internal class FetcherTest : WireMockSetup() {
     }
 
     @Test
-    fun `will not follow redirects if configured`() {
+    internal fun `will not follow redirects if configured`() {
         // given
         wireMockServer.setupRedirect()
-        val options = Options().apply {
+        val options = Request().apply {
             followRedirects = false
         }
 
@@ -68,22 +68,22 @@ internal class FetcherTest : WireMockSetup() {
     }
 
     @Test
-    fun `will follow redirect by default`() {
+    internal fun `will follow redirect by default`() {
         // given
         wireMockServer.setupRedirect()
 
         // when
-        val fetched = Fetcher(Options()).fetch()
+        val fetched = Fetcher(Request()).fetch()
 
         // then
         assertThat(fetched.statusCode()).isEqualTo(404)
     }
 
     @Test
-    fun `can fetch url and use HTTP verb POST`() {
+    internal fun `can fetch url and use HTTP verb POST`() {
         // given
         wireMockServer.setupPostStub()
-        val options = Options().apply {
+        val options = Request().apply {
             method = Method.POST
         }
 
@@ -97,12 +97,12 @@ internal class FetcherTest : WireMockSetup() {
     }
 
     @Test
-    fun `will throw exception on timeout`() {
+    internal fun `will throw exception on timeout`() {
         wireMockServer.setupStub(delay = 6000)
 
         assertThrows(SocketTimeoutException::class.java
         ) {
-            Fetcher(Options()).fetch()
+            Fetcher(Request()).fetch()
         }
     }
 }

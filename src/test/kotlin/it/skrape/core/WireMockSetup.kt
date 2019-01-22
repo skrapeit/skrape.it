@@ -40,4 +40,5 @@ fun WireMockServer.setupPostStub(): StubMapping =
 
 fun WireMockServer.setupRedirect(): StubMapping =
         this.stubFor(WireMock.get(WireMock.urlEqualTo("/"))
-                .willReturn(WireMock.temporaryRedirect("/redirected")))
+                .willReturn(WireMock.temporaryRedirect("/redirected")
+                        .withHeader("Content-Type", "text/html")))
