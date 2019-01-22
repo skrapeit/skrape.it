@@ -10,4 +10,14 @@ class Scraper(val request: Request = Request()) {
     }
 }
 
+@SkrapeItDslMarker
+fun skrape(init: Request.() -> Unit): Result {
+    val scraper = Scraper()
+    scraper.request.init()
+    return scraper.scrape()
+}
+
+@DslMarker
+annotation class SkrapeItDslMarker
+
 typealias Doc = Document

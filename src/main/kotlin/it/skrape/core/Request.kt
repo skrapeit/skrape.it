@@ -13,6 +13,7 @@ data class Request(
         var validateTLSCertificates: Boolean = false,
         var headers: Map<String, String> = mutableMapOf()
 ) {
+    @SkrapeItDslMarker
     fun response(init: Result.() -> Unit): Result {
         val result = Scraper(this).scrape()
         result.init()

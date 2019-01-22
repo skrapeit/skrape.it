@@ -16,14 +16,17 @@ class Result(
         return document
     }
 
+    @SkrapeItDslMarker
     fun document(init: Doc.() -> Unit): Doc {
         return document
     }
 
+    @SkrapeItDslMarker
     fun element(selector: String, init: Element.() -> Unit): Element {
         return document.selectFirst(selector)
     }
 
+    @SkrapeItDslMarker
     fun elements(selector: String, init: Elements.() -> Unit): Elements {
         return document.select(selector)
     }
