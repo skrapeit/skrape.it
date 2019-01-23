@@ -6,7 +6,7 @@ class Scraper(val request: Request = Request()) {
 
     fun scrape(): Result {
         val response = Fetcher(request).fetch()
-        return Result(response)
+        return Result(response = response, request = request)
     }
 }
 

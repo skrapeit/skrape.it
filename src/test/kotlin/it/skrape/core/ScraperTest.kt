@@ -34,6 +34,10 @@ internal class ScraperTest : WireMockSetup() {
 
             response {
 
+                assertThat(statusCode).isEqualTo(200)
+                assertThat(statusMessage).isEqualTo("OK")
+                assertThat(contentType).isEqualTo("text/html; charset=UTF-8")
+
                 document {
                     assertThat(title()).isEqualTo("i'm the title")
                 }
@@ -84,6 +88,9 @@ internal class ScraperTest : WireMockSetup() {
             method = Method.POST
 
             response {
+
+                assertThat(request.method).isEqualTo(Method.POST)
+
                 assertThat(statusCode).isEqualTo(200)
                 assertThat(statusMessage).isEqualTo("OK")
                 assertThat(contentType).isEqualTo("application/json; charset=UTF-8")

@@ -8,8 +8,8 @@ class Result(
         private val document: Doc = response.parse(),
         val statusCode: Int = response.statusCode(),
         val statusMessage: String = response.statusMessage(),
-        val contentType: String? = response.contentType()
-
+        val contentType: String? = response.contentType(),
+        val request: Request
 ) {
 
     fun document(): Doc {
