@@ -32,7 +32,7 @@ internal class ScraperTest : WireMockSetup() {
         skrape {
             url = "http://localhost:8080/example"
 
-            response {
+            expect {
 
                 assertThat(statusCode).isEqualTo(200)
                 assertThat(statusMessage).isEqualTo("OK")
@@ -43,6 +43,7 @@ internal class ScraperTest : WireMockSetup() {
                 }
 
                 element("p") {
+                    assertThat(text()).isEqualTo("i'm a paragraph")
                     assertThat(text()).isEqualTo("i'm a paragraph")
                 }
 
@@ -61,7 +62,7 @@ internal class ScraperTest : WireMockSetup() {
         skrape {
             followRedirects = false
 
-            response {
+            expect {
                 assertThat(statusCode).isEqualTo(302)
             }
         }
@@ -73,7 +74,7 @@ internal class ScraperTest : WireMockSetup() {
         wireMockServer.setupRedirect()
 
         skrape {
-            response {
+            expect {
                 assertThat(statusCode).isEqualTo(404)
             }
         }
@@ -87,7 +88,7 @@ internal class ScraperTest : WireMockSetup() {
         skrape {
             method = Method.POST
 
-            response {
+            expect {
 
                 assertThat(request.method).isEqualTo(Method.POST)
 

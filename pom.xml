@@ -100,7 +100,7 @@
             <groupId>net.wuerl.kotlin</groupId>
             <artifactId>assertj-core-kotlin</artifactId>
             <version>0.2.1</version>
-            <scope>test</scope>
+            <!--<scope>test</scope>-->
         </dependency>
         <dependency>
             <groupId>com.github.tomakehurst</groupId>

@@ -12,14 +12,21 @@ data class Request(
         var ignoreContentType: Boolean = true,
         var ignoreHttpErrors: Boolean = true,
         var validateTLSCertificates: Boolean = false,
-        var maxBodySizeInBytes: Int = 0
+        var maxBodySize: Int = 0
 ) {
     @SkrapeItDslMarker
-    fun response(init: Result.() -> Unit): Result {
+    fun expect(init: Result.() -> Unit) {
         val result = Scraper(this).scrape()
         result.init()
-        return result
     }
+
+//    @SkrapeItDslMarker
+//    fun <V> extract(init: ExtractableResult<V>.() -> Unit): ExtractableResult {
+//        val result = Scraper(this).scrape()
+//        val extractableResult = ExtractableResult<V>(result = result, store = V)
+//        extractableResult.init()
+//        return ExtractableResult
+//    }
 }
 
 typealias Method = Connection.Method

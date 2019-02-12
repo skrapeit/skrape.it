@@ -21,7 +21,7 @@ class Fetcher(
                 .ignoreContentType(request.ignoreContentType)
                 .ignoreHttpErrors(request.ignoreHttpErrors)
                 .validateTLSCertificates(request.validateTLSCertificates)
-                .maxBodySize(request.maxBodySizeInBytes)
+                .maxBodySize(request.maxBodySize)
 
         return request.execute()
     }
