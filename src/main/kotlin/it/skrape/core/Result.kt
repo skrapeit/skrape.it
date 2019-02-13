@@ -22,6 +22,11 @@ class Result(
     }
 
     @SkrapeItDslMarker
+    fun title(init: String.() -> Unit) {
+        document.title().apply(init)
+    }
+
+    @SkrapeItDslMarker
     fun element(selector: String, init: Element.() -> Unit) {
         document.selectFirst(selector).apply(init)
     }

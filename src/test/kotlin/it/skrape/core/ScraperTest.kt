@@ -1,5 +1,6 @@
 package it.skrape.core
 
+import it.skrape.matchers.toBe
 import org.assertj.core.api.KotlinAssertions.assertThat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -42,7 +43,12 @@ internal class ScraperTest : WireMockSetup() {
                     assertThat(title()).isEqualTo("i'm the title")
                 }
 
+                title {
+                    assertThat(this).isEqualTo("i'm the title")
+                }
+
                 element("p") {
+                    attr("bla") toBe ""
                     assertThat(text()).isEqualTo("i'm a paragraph")
                     assertThat(text()).isEqualTo("i'm a paragraph")
                 }
