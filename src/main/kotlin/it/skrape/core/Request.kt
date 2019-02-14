@@ -20,13 +20,13 @@ data class Request(
         result.init()
     }
 
-//    @SkrapeItDslMarker
-//    fun <V> extract(init: ExtractableResult<V>.() -> Unit): ExtractableResult {
-//        val result = Scraper(this).scrape()
-//        val extractableResult = ExtractableResult<V>(result = result, store = V)
-//        extractableResult.init()
-//        return ExtractableResult
-//    }
+    @SkrapeItDslMarker
+    inline fun <reified T> extract(init: Result.() -> Unit): T {
+        val result = Scraper(this).scrape()
+        result.init()
+
+        return Any() as T
+    }
 }
 
 typealias Method = Connection.Method
