@@ -22,8 +22,10 @@ class Result(
     }
 
     @SkrapeItDslMarker
-    fun title(init: String.() -> Unit) {
-        document.title().apply(init)
+    fun title(init: String.() -> Unit): String {
+        val title = document.title()
+        title.apply(init)
+        return title
     }
 
     @SkrapeItDslMarker
