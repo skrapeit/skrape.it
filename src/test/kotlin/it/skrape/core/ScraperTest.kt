@@ -106,25 +106,6 @@ internal class ScraperTest : WireMockSetup() {
         }
     }
 
-    @Disabled
-    @Test
-    internal fun `dsl can fetch url and extract`() {
-        // given
-        wireMockServer.setupStub()
-
-        skrape {
-            val extracted = extract<MyObject> {
-
-                assertThat(statusCode).isEqualTo(200)
-                //MyObject.message = response.statusMessage()
-                //element("p") { MyObject.paragraph = text() }
-
-            }
-
-            assertThat(extracted.message).isEqualTo("OK")
-        }
-    }
-
     @Test
     internal fun `dsl will throw exception on timeout`() {
         wireMockServer.setupStub(delay = 3000)
@@ -136,9 +117,30 @@ internal class ScraperTest : WireMockSetup() {
             }
         }
     }
+
+    @Disabled
+    @Test
+    internal fun `dsl can fetch url and extract`() {
+        // given
+        wireMockServer.setupStub()
+
+        skrape {
+
+            url = "http://localhost:8080"
+
+            val extracted: MyObject = extract<MyObject> {
+
+                assertThat(statusCode).isEqualTo(200)
+
+                // TODO: how to work with "MyObject" here
+                //MyObject.message = response.statusMessage()
+                //element("p") { MyObject.paragraph = text() }
+
+            }
+
+            assertThat(extracted.message).isEqualTo("OK")
+        }
+    }
 }
 
-data class MyObject(
-        val message: String,
-        val paragraph: String
-)
+data class MyObject(val message: String, val paragraph: String)
