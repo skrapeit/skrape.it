@@ -3,13 +3,19 @@ package it.skrape.core
 import org.jsoup.Jsoup
 import java.io.File
 
-class Reader(
+internal class Reader(
         var pathToFile: String = "",
         var charset: String = "UTF-8"
 ) {
 
-    fun read(): Doc {
+    internal fun read(): Doc {
         val input = File(pathToFile)
         return Jsoup.parse(input, charset, "http://skrape.it/")
     }
+
+}
+
+@SkrapeItDslMarker
+fun skrapeFile(path: String, init: Doc.() -> Unit) {
+    Reader(path).read().init()
 }
