@@ -16,10 +16,9 @@ class Scraper(val request: Request = Request()) {
  * @return Result
  */
 @SkrapeItDslMarker
-fun skrape(init: Request.() -> Unit): Result {
+fun <T> skrape(init: Request.() -> T): T {
     val scraper = Scraper()
-    scraper.request.init()
-    return scraper.scrape()
+    return scraper.request.init()
 }
 
 @DslMarker

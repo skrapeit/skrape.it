@@ -9,11 +9,8 @@ class Result(
         val statusCode: Int = response.statusCode(),
         val statusMessage: String? = response.statusMessage(),
         val contentType: String? = response.contentType(),
-        val request: Request,
-        val store: Any = Any()
+        val request: Request
 ) {
-
-
 
     fun document(): Doc {
         return document

@@ -3,7 +3,6 @@ package it.skrape.core
 import it.skrape.matchers.toBe
 import org.assertj.core.api.KotlinAssertions.assertThat
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.net.SocketTimeoutException
 
@@ -114,29 +113,52 @@ internal class ScraperTest : WireMockSetup() {
         ) {
             skrape {
                 timeout = 2000
+                expect {  }
             }
         }
     }
 
-    @Disabled
     @Test
     internal fun `dsl can fetch url and extract`() {
         // given
         wireMockServer.setupStub()
 
         skrape {
-
             url = "http://localhost:8080"
 
-            val extracted = extract<MyObject> {
-
-                assertThat(statusCode).isEqualTo(200)
-
-                it.message = statusMessage
-                element("p") { it.paragraph = text() }
-
+            val extracted = extract {
+                MyObject(statusMessage, "")
             }
+            assertThat(extracted.message).isEqualTo("OK")
+        }
+    }
 
+    @Test
+    internal fun `dsl can fetch url and extract from skrape`() {
+        // given
+        wireMockServer.setupStub()
+
+        val extracted = skrape {
+            url = "http://localhost:8080"
+
+            extract {
+                MyObject(statusMessage, "")
+            }
+        }
+        assertThat(extracted.message).isEqualTo("OK")
+    }
+
+    @Test
+    internal fun `dsl can fetch url and extract using it`() {
+        // given
+        wireMockServer.setupStub()
+
+        skrape {
+            url = "http://localhost:8080"
+
+            val extracted = extractIt {
+                MyObject(it.statusMessage, "")
+            }
             assertThat(extracted.message).isEqualTo("OK")
         }
     }
