@@ -1,8 +1,8 @@
 package it.skrape.core
 
+import it.skrape.matchers.toBe
 import it.skrape.select.`$`
 import it.skrape.select.el
-import it.skrape.matchers.toBe
 import org.assertj.core.api.KotlinAssertions.assertThat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
