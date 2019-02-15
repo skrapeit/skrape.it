@@ -21,11 +21,11 @@ data class Request(
     }
 
     @SkrapeItDslMarker
-    inline fun <reified T> extract(init: Result.() -> Unit): T {
+    inline fun <reified T> extract(init: Result.(T) -> Unit): T {
         val result = Scraper(this).scrape()
-        result.init()
+        result.init(result.store as T)
 
-        return Any() as T
+        return result.store
     }
 }
 

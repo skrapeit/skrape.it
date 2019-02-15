@@ -128,13 +128,12 @@ internal class ScraperTest : WireMockSetup() {
 
             url = "http://localhost:8080"
 
-            val extracted: MyObject = extract<MyObject> {
+            val extracted = extract<MyObject> {
 
                 assertThat(statusCode).isEqualTo(200)
 
-                // TODO: how to work with "MyObject" here
-                //MyObject.message = response.statusMessage()
-                //element("p") { MyObject.paragraph = text() }
+                it.message = statusMessage
+                element("p") { it.paragraph = text() }
 
             }
 
@@ -143,4 +142,4 @@ internal class ScraperTest : WireMockSetup() {
     }
 }
 
-data class MyObject(val message: String, val paragraph: String)
+data class MyObject(var message: String?, var paragraph: String)
