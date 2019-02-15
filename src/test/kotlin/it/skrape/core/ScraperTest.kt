@@ -1,5 +1,7 @@
 package it.skrape.core
 
+import it.skrape.core.select.`$`
+import it.skrape.core.select.element
 import it.skrape.matchers.toBe
 import org.assertj.core.api.KotlinAssertions.assertThat
 import org.junit.jupiter.api.Assertions
@@ -134,21 +136,6 @@ internal class ScraperTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `dsl can fetch url and extract from skrape`() {
-        // given
-        wireMockServer.setupStub()
-
-        val extracted = skrape {
-            url = "http://localhost:8080"
-
-            extract {
-                MyObject(statusMessage, "")
-            }
-        }
-        assertThat(extracted.message).isEqualTo("OK")
-    }
-
-    @Test
     internal fun `dsl can fetch url and extract using it`() {
         // given
         wireMockServer.setupStub()
@@ -162,6 +149,27 @@ internal class ScraperTest : WireMockSetup() {
             assertThat(extracted.message).isEqualTo("OK")
         }
     }
+
+    @Test
+    internal fun `dsl can fetch url and extract from skrape`() {
+        // given
+        wireMockServer.setupStub()
+
+        val extracted = skrape {
+            url = "http://localhost:8080"
+
+            extract {
+                MyObject(
+                        message = statusMessage,
+                        paragraph = element("p").text(),
+                        allParagraphs = `$`("p").map { it.text() }
+                )
+            }
+        }
+        assertThat(extracted.message).isEqualTo("OK")
+        assertThat(extracted.paragraph).isEqualTo("i'm a paragraph")
+        assertThat(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
+    }
 }
 
-data class MyObject(var message: String?, var paragraph: String)
+data class MyObject(val message: String?, val paragraph: String, val allParagraphs: List<String> = emptyList())
