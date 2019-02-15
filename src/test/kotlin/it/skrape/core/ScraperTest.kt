@@ -1,7 +1,7 @@
 package it.skrape.core
 
-import it.skrape.core.select.`$`
-import it.skrape.core.select.element
+import it.skrape.select.`$`
+import it.skrape.select.el
 import it.skrape.matchers.toBe
 import org.assertj.core.api.KotlinAssertions.assertThat
 import org.junit.jupiter.api.Assertions
@@ -161,7 +161,7 @@ internal class ScraperTest : WireMockSetup() {
             extract {
                 MyObject(
                         message = statusMessage,
-                        paragraph = element("p").text(),
+                        paragraph = el("p").text(),
                         allParagraphs = `$`("p").map { it.text() }
                 )
             }
@@ -170,6 +170,8 @@ internal class ScraperTest : WireMockSetup() {
         assertThat(extracted.paragraph).isEqualTo("i'm a paragraph")
         assertThat(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
     }
+
+
 }
 
 data class MyObject(val message: String?, val paragraph: String, val allParagraphs: List<String> = emptyList())
