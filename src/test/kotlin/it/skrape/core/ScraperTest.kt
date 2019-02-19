@@ -6,7 +6,6 @@ import it.skrape.selects.`$`
 import it.skrape.selects.el
 import org.assertj.core.api.KotlinAssertions.assertThat
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.net.SocketTimeoutException
 
@@ -133,13 +132,12 @@ internal class ScraperTest : WireMockSetup() {
         }
     }
 
-    @Disabled
     @Test
     internal fun `dsl can fetch url and extract using it`() {
         // given
         wireMockServer.setupStub()
 
-        val extracted: MyObject = skrape {
+        val extracted: MyOtherObject = skrape {
             url = "http://localhost:8080"
 
             extractIt {
@@ -173,4 +171,8 @@ internal class ScraperTest : WireMockSetup() {
 
 }
 
-data class MyObject(var message: String?, var paragraph: String, var allParagraphs: List<String>)
+class MyObject(var message: String? = null, var paragraph: String = "", var allParagraphs: List<String> = emptyList())
+
+class MyOtherObject {
+    var message: String? = null
+}

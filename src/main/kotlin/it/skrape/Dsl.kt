@@ -40,8 +40,9 @@ fun <T> Request.extract(extractor: Result.() -> T): T {
 @SkrapeItDslMarker
 inline fun <reified T: Any> Request.extractIt(extractor: Result.(T) -> Unit): T {
     val result = Scraper(this).scrape()
-    //return result.extractor(create(T::class))
-    return create(T::class)
+    val instance = create(T::class)
+    result.extractor(instance)
+    return instance
 }
 
 @SkrapeItDslMarker
