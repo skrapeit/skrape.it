@@ -3,6 +3,7 @@ package it.skrape
 import it.skrape.core.*
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
+import kotlin.reflect.KClass
 
 /**
  * make http-request with given parameters or defaults
@@ -37,9 +38,10 @@ fun <T> Request.extract(extractor: Result.() -> T): T {
 }
 
 @SkrapeItDslMarker
-fun <T> Request.extractIt(extractor: (result: Result) -> T): T {
+inline fun <reified T: Any> Request.extractIt(extractor: Result.(T) -> Unit): T {
     val result = Scraper(this).scrape()
-    return extractor(result)
+    //return result.extractor(create(T::class))
+    return create(T::class)
 }
 
 @SkrapeItDslMarker
@@ -57,6 +59,10 @@ fun Result.element(selector: String, init: Element.() -> Unit) {
 @SkrapeItDslMarker
 fun Result.elements(selector: String, init: Elements.() -> Unit) {
     document.select(selector).apply(init)
+}
+
+inline fun <reified T: Any> create(clazz: KClass<T>): T {
+    return clazz.constructors.first { it.parameters.isEmpty() }.call()
 }
 
 @DslMarker
