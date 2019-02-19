@@ -14,8 +14,3 @@ internal class Reader(
     }
 
 }
-
-@SkrapeItDslMarker
-fun skrapeFile(path: String, init: Doc.() -> Unit) {
-    Reader(path).read().init()
-}

@@ -3,7 +3,7 @@ package it.skrape.core
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 
-class Fetcher(
+internal class Fetcher(
         private val request: Request
 ) {
 

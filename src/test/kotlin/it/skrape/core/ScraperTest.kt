@@ -1,8 +1,8 @@
 package it.skrape.core
 
+import it.skrape.*
 import it.skrape.matchers.toBe
-import it.skrape.select.`$`
-import it.skrape.select.el
+import it.skrape.selects.*
 import org.assertj.core.api.KotlinAssertions.assertThat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -16,7 +16,7 @@ internal class ScraperTest : WireMockSetup() {
         val result = Scraper().scrape()
 
         assertThat(result.statusCode).isEqualTo(200)
-        assertThat(result.document().title()).isEqualTo("i'm the title")
+        assertThat(result.document.title()).isEqualTo("i'm the title")
     }
 
     @Test
@@ -25,7 +25,7 @@ internal class ScraperTest : WireMockSetup() {
         val result = Scraper(Request(url = "http://localhost:8080/example")).scrape()
 
         assertThat(result.statusCode).isEqualTo(200)
-        assertThat(result.document().title()).isEqualTo("i'm the title")
+        assertThat(result.document.title()).isEqualTo("i'm the title")
     }
 
     @Test
@@ -40,10 +40,6 @@ internal class ScraperTest : WireMockSetup() {
                 assertThat(statusCode).isEqualTo(200)
                 assertThat(statusMessage).isEqualTo("OK")
                 assertThat(contentType).isEqualTo("text/html; charset=UTF-8")
-
-                document {
-                    assertThat(title()).isEqualTo("i'm the title")
-                }
 
                 title {
                     assertThat(this).isEqualTo("i'm the title")
