@@ -20,7 +20,7 @@ fun <T> skrape(init: Request.() -> T): T {
  * @return Result
  */
 @SkrapeItDslMarker
-fun skrapeFile(path: String, init: Doc.() -> Unit) {
+fun skrape(path: String, init: Doc.() -> Unit) {
     Reader(path).read().init()
 }
 
