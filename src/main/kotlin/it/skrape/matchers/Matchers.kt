@@ -10,9 +10,3 @@ infix fun Int.toBe(expected: Int) {
 infix fun String.toBe(expected: String) {
     assertThat(this).isEqualTo(expected)
 }
-
-//    infix fun <T> T.toBe(expected: T) {
-//        assertThat(this).isEqualTo(expected)
-//    }
-
-
