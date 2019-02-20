@@ -1,9 +1,11 @@
 package it.skrape.core
 
 import it.skrape.*
+import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.matchers.toBe
 import it.skrape.selects.`$`
 import it.skrape.selects.el
+import it.skrape.selects.element
 import org.assertj.core.api.KotlinAssertions.assertThat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -41,6 +43,8 @@ internal class ScraperTest : WireMockSetup() {
                 assertThat(statusCode).isEqualTo(200)
                 assertThat(statusMessage).isEqualTo("OK")
                 assertThat(contentType).isEqualTo("text/html; charset=UTF-8")
+
+                el("title").text() toBe "i'm the title"
 
                 title {
                     assertThat(this).isEqualTo("i'm the title")
@@ -145,6 +149,32 @@ internal class ScraperTest : WireMockSetup() {
             }
         }
         assertThat(extracted.message).isEqualTo("OK")
+    }
+
+    @Test
+    internal fun `will throw custom exception if element could not be found via lambda`() {
+
+        Assertions.assertThrows(ElementNotFoundException::class.java) {
+            skrape {
+                expect {
+                    element(".nonExistent") {
+                        text()
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
+    internal fun `will throw custom exception if element could not be found via function`() {
+
+        Assertions.assertThrows(ElementNotFoundException::class.java) {
+            skrape {
+                expect {
+                    this.element(".nonExistent")
+                }
+            }
+        }
     }
 
     @Test

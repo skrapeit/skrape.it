@@ -1,6 +1,7 @@
 package it.skrape
 
 import it.skrape.core.*
+import it.skrape.exceptions.ElementNotFoundException
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import kotlin.reflect.KClass
@@ -53,7 +54,8 @@ fun Result.title(init: String.() -> Unit): String {
 
 @SkrapeItDslMarker
 fun Result.element(selector: String, init: Element.() -> Unit) {
-    document.selectFirst(selector).apply(init)
+    val element = document.selectFirst(selector) ?: throw ElementNotFoundException(selector)
+    element.apply(init)
 }
 
 @SkrapeItDslMarker
