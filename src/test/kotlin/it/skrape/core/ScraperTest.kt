@@ -157,9 +157,7 @@ internal class ScraperTest : WireMockSetup() {
         Assertions.assertThrows(ElementNotFoundException::class.java) {
             skrape {
                 expect {
-                    element(".nonExistent") {
-                        text()
-                    }
+                    element(".nonExistent") {}
                 }
             }
         }
@@ -171,7 +169,14 @@ internal class ScraperTest : WireMockSetup() {
         Assertions.assertThrows(ElementNotFoundException::class.java) {
             skrape {
                 expect {
-                    this.element(".nonExistent")
+                    element(".nonExistent")
+                }
+            }
+        }
+        Assertions.assertThrows(ElementNotFoundException::class.java) {
+            skrape {
+                expect {
+                    el(".nonExistent")
                 }
             }
         }
