@@ -1,15 +1,23 @@
 package it.skrape.core
 
-import it.skrape.skrape
 import org.assertj.core.api.KotlinAssertions.assertThat
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import java.io.FileNotFoundException
 
 internal class ReaderTest {
 
     @Test
-    internal fun `can read html from file system using the DSL`() {
-        skrape("src/test/resources/__files/example.html") {
-            assertThat(title()).isEqualTo("i'm the title")
+    internal fun `can read html from file`() {
+        val parsedFile = Reader("src/test/resources/__files/example.html", "UTF-8").read()
+        assertThat(parsedFile.title()).isEqualTo("i'm the title")
+    }
+
+    @Test
+    internal fun `will throw exception if file not found`() {
+        Assertions.assertThrows(FileNotFoundException::class.java) {
+            Reader("invalid/path", "UTF-8").read()
         }
+
     }
 }

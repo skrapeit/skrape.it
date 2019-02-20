@@ -92,8 +92,7 @@ internal class DslTest : WireMockSetup() {
     internal fun `dsl will throw exception on timeout`() {
         wireMockServer.setupStub(delay = 3000)
 
-        Assertions.assertThrows(SocketTimeoutException::class.java
-        ) {
+        Assertions.assertThrows(SocketTimeoutException::class.java) {
             skrape {
                 timeout = 2000
                 expect {}
@@ -177,6 +176,13 @@ internal class DslTest : WireMockSetup() {
         KotlinAssertions.assertThat(extracted.message).isEqualTo("OK")
         KotlinAssertions.assertThat(extracted.paragraph).isEqualTo("i'm a paragraph")
         KotlinAssertions.assertThat(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
+    }
+
+    @Test
+    internal fun `can read html from file system using the DSL`() {
+        skrape("src/test/resources/__files/example.html") {
+            KotlinAssertions.assertThat(title()).isEqualTo("i'm the title")
+        }
     }
 }
 
