@@ -41,12 +41,13 @@ internal class SelectsTest : WireMockSetup() {
 
         skrape {
             extract {
-                val softly = SoftAssertions()
-                softly.assertThat(el("p").text()).isEqualTo(expectedValue)
-                softly.assertThat(element("p").text()).isEqualTo(expectedValue)
-                softly.assertThat(elements("p").first().text()).isEqualTo(expectedValue)
-                softly.assertThat(`$`("p").first().text()).isEqualTo(expectedValue)
-                softly.assertAll()
+                SoftAssertions().apply {
+                    assertThat(el("p").text()).isEqualTo(expectedValue)
+                    assertThat(element("p").text()).isEqualTo(expectedValue)
+                    assertThat(elements("p").first().text()).isEqualTo(expectedValue)
+                    assertThat(`$`("p").first().text()).isEqualTo(expectedValue)
+                }.assertAll()
+
             }
         }
     }
