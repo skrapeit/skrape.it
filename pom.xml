@@ -11,7 +11,7 @@
     <name>skrape{it}</name>
     <description>
         skrape{it} is a Kotlin-based HTML testing and web scraping library
-        that can be used seamlessly in both Spring boot and other JVM projects.
+        that can be used seamlessly in both Spring-Boot and other JVM projects.
         It places particular emphasis on ease of use, a high level of readability
         and attention to performance through the use of non-blocking operations.
     </description>
