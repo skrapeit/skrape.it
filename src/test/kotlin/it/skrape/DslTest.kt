@@ -229,8 +229,15 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can read html from file system using the DSL`() {
+    internal fun `can read html from file system with default charset (UTF-8) using the DSL`() {
         skrape("src/test/resources/__files/example.html") {
+            KotlinAssertions.assertThat(title()).isEqualTo("i'm the title")
+        }
+    }
+
+    @Test
+    internal fun `can read html from file system using the DSL and non default charset`() {
+        skrape("src/test/resources/__files/example.html", "iso-8859-1") {
             KotlinAssertions.assertThat(title()).isEqualTo("i'm the title")
         }
     }

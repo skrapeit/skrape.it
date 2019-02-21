@@ -22,8 +22,8 @@ fun <T> skrape(init: Request.() -> T): T {
  * @return Result
  */
 @SkrapeItDslMarker
-fun skrape(path: String, init: Doc.() -> Unit) {
-    Reader(path).read().init()
+fun skrape(path: String, charset: String = "UTF-8", init: Doc.() -> Unit) {
+    Reader(path, charset).read().init()
 }
 
 @SkrapeItDslMarker

@@ -4,7 +4,7 @@ import org.jsoup.Jsoup
 import java.io.File
 
 internal class Reader(
-        var pathToFile: String = "",
+        var pathToFile: String,
         var charset: String = "UTF-8"
 ) {
 
