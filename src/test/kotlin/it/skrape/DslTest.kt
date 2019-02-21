@@ -58,6 +58,56 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
+    internal fun `dsl can check certain header`() {
+        // given
+        wireMockServer.setupStub()
+
+        skrape {
+            expect {
+                val header = header("Content-Type") {
+                    KotlinAssertions.assertThat(this).isEqualTo("text/html; charset=UTF-8")
+                }
+                KotlinAssertions.assertThat(header).isEqualTo("text/html; charset=UTF-8")
+
+                val nonExistingHeader = header("Non-Existing") {
+                    KotlinAssertions.assertThat(this).isNull()
+                }
+                KotlinAssertions.assertThat(nonExistingHeader).isNull()
+            }
+        }
+    }
+
+    @Test
+    internal fun `dsl can check headers`() {
+        // given
+        wireMockServer.setupStub()
+
+        skrape {
+            expect {
+                val headers = headers {
+                    KotlinAssertions.assertThat(this).containsEntry("Content-Type", "text/html; charset=UTF-8")
+                }
+                KotlinAssertions.assertThat(headers).containsEntry("Content-Type", "text/html; charset=UTF-8")
+            }
+        }
+    }
+
+    @Test
+    internal fun `dsl can get body`() {
+        // given
+        wireMockServer.setupStub()
+
+        skrape {
+            expect {
+                val body = body {
+                    KotlinAssertions.assertThat(this.text()).contains("i'm a paragraph")
+                }
+                KotlinAssertions.assertThat(body.text()).contains("i'm a paragraph")
+            }
+        }
+    }
+
+    @Test
     internal fun `dsl will follow redirect by default`() {
         // given
         wireMockServer.setupRedirect()
