@@ -6,6 +6,8 @@ import it.skrape.core.setupStub
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.expect
 import it.skrape.extract
+import it.skrape.matchers.toBe
+import it.skrape.matchers.toContain
 import it.skrape.skrape
 import org.assertj.core.api.SoftAssertions
 import org.junit.jupiter.api.Assertions
@@ -48,6 +50,19 @@ internal class SelectsTest : WireMockSetup() {
                     assertThat(`$`("p").first().text()).isEqualTo(expectedValue)
                 }.assertAll()
 
+            }
+        }
+    }
+
+    @Test
+    internal fun `can pick certain header select functions`() {
+        wireMockServer.setupStub()
+
+        skrape {
+            expect {
+                header("Content-Type") toBe "text/html; charset=UTF-8"
+                header("Content-Type") toContain "html"
+                header("notExisting") toBe null
             }
         }
     }

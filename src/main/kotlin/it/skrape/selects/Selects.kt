@@ -14,7 +14,7 @@ import org.jsoup.select.Elements
  * @return Element
  * @see Element
  */
-fun Result.element(selector: String): Element = document.selectFirst(selector) ?: throw ElementNotFoundException(selector)
+infix fun Result.element(selector: String): Element = document.selectFirst(selector) ?: throw ElementNotFoundException(selector)
 
 /**
  * shorthand for element
@@ -32,7 +32,7 @@ fun Result.el(selector: String): Element = this.element(selector)
  * @return Elements
  * @see Elements
  */
-fun Result.elements(selector: String): Elements = document.select(selector)
+infix fun Result.elements(selector: String): Elements = document.select(selector)
 
 /**
  * shorthand for elements
@@ -41,3 +41,5 @@ fun Result.elements(selector: String): Elements = document.select(selector)
  * @see elements
  */
 fun Result.`$`(selector: String): Elements = document.select(selector)
+
+infix fun Result.header(name: String): String? = this.headers[name]
