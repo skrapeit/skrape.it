@@ -1,3 +1,5 @@
+<img width="150px" height="150px" align="right" src="skrape.png"/>
+
 [![master build status](https://img.shields.io/travis/skrapeit/skrape.it.svg?label=master)](https://travis-ci.org/skrapeit/skrape.it)
 ![maven central](https://img.shields.io/maven-central/v/it.skrape/core.svg)
 ![Codecov](https://img.shields.io/codecov/c/github/skrapeit/skrape.it.svg)
