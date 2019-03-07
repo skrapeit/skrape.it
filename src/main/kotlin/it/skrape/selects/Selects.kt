@@ -14,6 +14,7 @@ import org.jsoup.select.Elements
  * @return Element
  * @see Element
  */
+@Suppress("MaxLineLength")
 infix fun Result.element(selector: String): Element = document.selectFirst(selector) ?: throw ElementNotFoundException(selector)
 
 /**
