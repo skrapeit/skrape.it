@@ -4,6 +4,7 @@
 ![maven central](https://img.shields.io/maven-central/v/it.skrape/core.svg)
 ![Codecov](https://img.shields.io/codecov/c/github/skrapeit/skrape.it.svg)
 [![Awesome Kotlin Badge](https://kotlin.link/awesome-kotlin.svg)](https://github.com/KotlinBy/awesome-kotlin)
+[![Documentation](https://img.shields.io/badge/skrape%7Bit%7D-docs-blue.svg)](https://docs.skrape.it)
 
 [skrape{it}](https://docs.skrape.it)
 =================================
