@@ -4,6 +4,8 @@ import it.skrape.core.*
 import it.skrape.exceptions.ElementNotFoundException
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
+import java.io.File
+import java.nio.charset.Charset
 import kotlin.reflect.KClass
 
 
@@ -12,19 +14,24 @@ import kotlin.reflect.KClass
  * @return Result
  */
 @SkrapeItDslMarker
-fun <T> skrape(init: Request.() -> T): T {
-    val scraper = Scraper()
-    return scraper.request.init()
-}
+fun <T> skrape(init: Request.() -> T): T = Scraper().request.init()
 
 /**
  * read and parse a html file from local file-system
  * @param path to file
- * @return Result
  */
 @SkrapeItDslMarker
-fun skrape(path: String, charset: String = "UTF-8", init: Doc.() -> Unit) {
-    Reader(path, charset).read().init()
+fun skrape(file: File, charset: Charset = Charsets.UTF_8, init: Doc.() -> Unit) {
+    Reader(file, charset).read().init()
+}
+
+/**
+ * read and parse html from a String
+ * @param raw represents a html snippet
+ */
+@SkrapeItDslMarker
+fun skrape(raw: String, init: Doc.() -> Unit) {
+    Parser(raw).parse().init()
 }
 
 @SkrapeItDslMarker

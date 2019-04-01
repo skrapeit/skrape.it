@@ -8,6 +8,7 @@ import it.skrape.selects.el
 import org.assertj.core.api.KotlinAssertions
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import java.io.File
 import java.net.SocketTimeoutException
 
 internal class DslTest : WireMockSetup() {
@@ -230,14 +231,21 @@ internal class DslTest : WireMockSetup() {
 
     @Test
     internal fun `can read html from file system with default charset (UTF-8) using the DSL`() {
-        skrape("src/test/resources/__files/example.html") {
+        skrape(File("src/test/resources/__files/example.html")) {
             KotlinAssertions.assertThat(title()).isEqualTo("i'm the title")
         }
     }
 
     @Test
     internal fun `can read html from file system using the DSL and non default charset`() {
-        skrape("src/test/resources/__files/example.html", "iso-8859-1") {
+        skrape(File("src/test/resources/__files/example.html"), Charsets.ISO_8859_1) {
+            KotlinAssertions.assertThat(title()).isEqualTo("i'm the title")
+        }
+    }
+
+    @Test
+    internal fun `can read html from String`() {
+        skrape("<html><head><title>i'm the title</title></head></html>") {
             KotlinAssertions.assertThat(title()).isEqualTo("i'm the title")
         }
     }

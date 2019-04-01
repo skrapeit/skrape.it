@@ -12,7 +12,6 @@ import org.jsoup.select.Elements
  * @see <a href="https://www.w3schools.com/cssref/css_selectors.asp">Overview of CSS-Selectors for further information.</a>
  * @param selector that represents an CSS-Selector
  * @return Element
- * @see Element
  */
 @Suppress("MaxLineLength")
 infix fun Result.element(selector: String): Element = document.selectFirst(selector) ?: throw ElementNotFoundException(selector)
@@ -31,7 +30,6 @@ fun Result.el(selector: String): Element = this.element(selector)
  * @see <a href="https://www.w3schools.com/cssref/css_selectors.asp">Overview of CSS-Selectors for further information.</a>
  * @param selector that represents an CSS-Selector
  * @return Elements
- * @see Elements
  */
 infix fun Result.elements(selector: String): Elements = document.select(selector)
 
