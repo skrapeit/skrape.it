@@ -1,18 +1,18 @@
-package it.skrape.core
+package it.skrape.core.fetcher
 
+import it.skrape.core.Request
+import it.skrape.core.Result
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 
-internal class Fetcher(
-        private val request: Request
-) {
+internal class HttpFetcher(private val request: Request) {
 
-    fun fetch(): Response {
+    fun fetch(): Result {
 
         System.setProperty("sun.net.http.allowRestrictedHeaders", "true")
         System.setProperty("javax.net.ssl.trustStore", "/etc/ssl/certs/java/cacerts")
 
-        val request = Jsoup.connect(request.url)
+        val connection = Jsoup.connect(request.url)
                 .method(request.method)
                 .userAgent(request.userAgent)
                 .timeout(request.timeout)
@@ -23,7 +23,16 @@ internal class Fetcher(
                 .validateTLSCertificates(request.validateTLSCertificates)
                 .maxBodySize(request.maxBodySize)
 
-        return request.execute()
+        val response =  connection.execute()
+
+        return Result(
+                body = response.body(),
+                statusCode = response.statusCode(),
+                statusMessage = response.statusMessage(),
+                contentType = response.contentType(),
+                headers = response.headers(),
+                request = request
+        )
     }
 }
 

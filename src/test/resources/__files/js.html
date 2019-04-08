@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>i'm the title</title>
+    </head>
+    <body>
+        i'm the body
+        <h1>i'm the headline</h1>
+        <p>i'm a paragraph</p>
+        <p>i'm a second paragraph</p>
+    </body>
+    <script>
+        var dynamicallyAddedElement = document.createElement("div");
+        dynamicallyAddedElement.className = "dynamic";
+        var textNode = document.createTextNode("I have been dynamically added via Javascript");
+        dynamicallyAddedElement.appendChild(textNode);
+        document.body.appendChild(dynamicallyAddedElement);
+
+    </script>
+</html>

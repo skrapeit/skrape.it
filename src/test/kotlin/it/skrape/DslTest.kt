@@ -5,6 +5,7 @@ import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.matchers.toBe
 import it.skrape.selects.`$`
 import it.skrape.selects.el
+import it.skrape.selects.element
 import org.assertj.core.api.KotlinAssertions
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -247,6 +248,18 @@ internal class DslTest : WireMockSetup() {
     internal fun `can read html from String`() {
         skrape("<html><head><title>i'm the title</title></head></html>") {
             KotlinAssertions.assertThat(title()).isEqualTo("i'm the title")
+        }
+    }
+
+    @Test
+    internal fun `can scrape js rendered page`() {
+        wireMockServer.setupStub(fileName = "js.html")
+
+        skrape {
+            mode = Mode.BROWSER
+            expect {
+                element("div.dynamic").text() toBe "I have been dynamically added via Javascript"
+            }
         }
     }
 }

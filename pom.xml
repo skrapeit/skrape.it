@@ -95,6 +95,12 @@
             <version>1.11.3</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.machinepublishers</groupId>
+            <artifactId>jbrowserdriver</artifactId>
+            <version>1.0.1</version>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- test dependencies -->
         <dependency>

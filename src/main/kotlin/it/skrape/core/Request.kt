@@ -3,6 +3,7 @@ package it.skrape.core
 import org.jsoup.Connection
 
 data class Request(
+        var mode: Mode = Mode.HTTP,
         var url: String = "http://localhost:8080",
         var method: Method = Method.GET,
         var userAgent: String = "Mozilla/5.0 skrape.it",
@@ -14,5 +15,10 @@ data class Request(
         var validateTLSCertificates: Boolean = false,
         var maxBodySize: Int = 0
 )
+
+enum class Mode {
+    HTTP,
+    BROWSER
+}
 
 typealias Method = Connection.Method

@@ -17,7 +17,7 @@ internal class ScraperTest : WireMockSetup() {
     @Test
     internal fun `can scrape html via custom http request`() {
         wireMockServer.setupStub(path = "/example")
-        val result = Scraper(Request(url = "http://localhost:8080/example")).scrape()
+        val result = Scraper(request = Request(url = "http://localhost:8080/example")).scrape()
 
         assertThat(result.statusCode).isEqualTo(200)
         assertThat(result.document.title()).isEqualTo("i'm the title")

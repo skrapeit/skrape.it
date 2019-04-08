@@ -1,11 +1,12 @@
-package it.skrape.core
+package it.skrape.core.fetcher
 
+import it.skrape.core.*
 import org.assertj.core.api.KotlinAssertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import java.net.SocketTimeoutException
 
-internal class FetcherTest : WireMockSetup() {
+internal class HttpFetcherTest : WireMockSetup() {
 
     @Test
     internal fun `will fetch localhost 8080 with defaults if no params`() {
@@ -13,12 +14,12 @@ internal class FetcherTest : WireMockSetup() {
         wireMockServer.setupStub()
 
         // when
-        val fetched = Fetcher(Request()).fetch()
+        val fetched = HttpFetcher(Request()).fetch()
 
         // then
-        assertThat(fetched.statusCode()).isEqualTo(200)
-        assertThat(fetched.contentType()).isEqualTo("text/html; charset=UTF-8")
-        assertThat(fetched.parse().title()).isEqualTo("i'm the title")
+        assertThat(fetched.statusCode).isEqualTo(200)
+        assertThat(fetched.contentType).isEqualTo("text/html; charset=UTF-8")
+        assertThat(fetched.document.title()).isEqualTo("i'm the title")
     }
 
     @Test
@@ -30,12 +31,12 @@ internal class FetcherTest : WireMockSetup() {
         }
 
         // when
-        val fetched = Fetcher(options).fetch()
+        val fetched = HttpFetcher(options).fetch()
 
         // then
-        assertThat(fetched.statusCode()).isEqualTo(200)
-        assertThat(fetched.contentType()).isEqualTo("text/html; charset=UTF-8")
-        assertThat(fetched.parse().title()).isEqualTo("i'm the title")
+        assertThat(fetched.statusCode).isEqualTo(200)
+        assertThat(fetched.contentType).isEqualTo("text/html; charset=UTF-8")
+        assertThat(fetched.document.title()).isEqualTo("i'm the title")
     }
 
     @Test
@@ -46,10 +47,10 @@ internal class FetcherTest : WireMockSetup() {
         }
 
         // when
-        val fetched = Fetcher(options).fetch()
+        val fetched = HttpFetcher(options).fetch()
 
         // then
-        assertThat(fetched.statusCode()).isEqualTo(404)
+        assertThat(fetched.statusCode).isEqualTo(404)
     }
 
     @Test
@@ -61,10 +62,10 @@ internal class FetcherTest : WireMockSetup() {
         }
 
         // when
-        val fetched = Fetcher(options).fetch()
+        val fetched = HttpFetcher(options).fetch()
 
         // then
-        assertThat(fetched.statusCode()).isEqualTo(302)
+        assertThat(fetched.statusCode).isEqualTo(302)
     }
 
     @Test
@@ -73,10 +74,10 @@ internal class FetcherTest : WireMockSetup() {
         wireMockServer.setupRedirect()
 
         // when
-        val fetched = Fetcher(Request()).fetch()
+        val fetched = HttpFetcher(Request()).fetch()
 
         // then
-        assertThat(fetched.statusCode()).isEqualTo(404)
+        assertThat(fetched.statusCode).isEqualTo(404)
     }
 
     @Test
@@ -88,12 +89,12 @@ internal class FetcherTest : WireMockSetup() {
         }
 
         // when
-        val fetched = Fetcher(options).fetch()
+        val fetched = HttpFetcher(options).fetch()
 
         // then
-        assertThat(fetched.statusCode()).isEqualTo(200)
-        assertThat(fetched.contentType()).isEqualTo("application/json; charset=UTF-8")
-        assertThat(fetched.body()).isEqualTo("""{"data":"some value"}""")
+        assertThat(fetched.statusCode).isEqualTo(200)
+        assertThat(fetched.contentType).isEqualTo("application/json; charset=UTF-8")
+        assertThat(fetched.body).isEqualTo("""{"data":"some value"}""")
     }
 
     @Test
@@ -102,7 +103,7 @@ internal class FetcherTest : WireMockSetup() {
 
         assertThrows(SocketTimeoutException::class.java
         ) {
-            Fetcher(Request()).fetch()
+            HttpFetcher(Request()).fetch()
         }
     }
 }
