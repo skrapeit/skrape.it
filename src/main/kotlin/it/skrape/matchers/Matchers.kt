@@ -1,7 +1,10 @@
 package it.skrape.matchers
 
-import org.assertj.core.api.KotlinAssertions.assertThat
-
+import assertk.assertThat
+import assertk.assertions.contains
+import assertk.assertions.doesNotContain
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotEqualTo
 
 infix fun Int.toBe(expected: Int) {
     assertThat(this).isEqualTo(expected)

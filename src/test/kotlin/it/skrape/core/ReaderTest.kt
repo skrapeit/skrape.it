@@ -1,6 +1,7 @@
 package it.skrape.core
 
-import org.assertj.core.api.KotlinAssertions.assertThat
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.io.File

@@ -1,7 +1,8 @@
 package it.skrape.core.fetcher
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import it.skrape.core.*
-import org.assertj.core.api.KotlinAssertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import java.net.SocketTimeoutException

@@ -1,8 +1,8 @@
 package it.skrape.matchers
 
-import org.junit.ComparisonFailure
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.opentest4j.AssertionFailedError
 
 internal class MatchersTest {
 
@@ -23,10 +23,18 @@ internal class MatchersTest {
     }
 
     @Test
-    internal fun `toBe is can handle null as string`() {
-        Assertions.assertThrows(ComparisonFailure::class.java) {
+    internal fun `toBe can handle expected is null`() {
+        Assertions.assertThrows(AssertionFailedError::class.java) {
             "null" toBe null
             "null" `to be` null
+        }
+    }
+
+    @Test
+    internal fun `toBe can handle actual is null`() {
+        Assertions.assertThrows(AssertionFailedError::class.java) {
+            aNullableString toBe "foo"
+            aNullableString `to be` "foo"
         }
     }
 

@@ -1,8 +1,11 @@
 package it.skrape.core.fetcher
 
+import assertk.assertAll
+import assertk.assertThat
+import assertk.assertions.hasClass
+import assertk.assertions.hasMessage
+import assertk.assertions.isEqualTo
 import it.skrape.core.*
-import org.assertj.core.api.KotlinAssertions
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.net.SocketTimeoutException
@@ -18,8 +21,8 @@ internal class BrowserFetcherTest : WireMockSetup() {
         val fetched = BrowserFetcher(Request()).fetch()
 
         // then
-        KotlinAssertions.assertThat(fetched.statusCode).isEqualTo(200)
-        KotlinAssertions.assertThat(fetched.document.title()).isEqualTo("i'm the title")
+        assertThat(fetched.statusCode).isEqualTo(200)
+        assertThat(fetched.document.title()).isEqualTo("i'm the title")
     }
 
     @Test
@@ -34,8 +37,10 @@ internal class BrowserFetcherTest : WireMockSetup() {
         val fetched = BrowserFetcher(options).fetch()
 
         // then
-        KotlinAssertions.assertThat(fetched.statusCode).isEqualTo(200)
-        KotlinAssertions.assertThat(fetched.document.title()).isEqualTo("i'm the title")
+        assertAll {
+            assertThat(fetched.statusCode).isEqualTo(200)
+            assertThat(fetched.document.title()).isEqualTo("i'm the title")
+        }
     }
 
     @Test
@@ -49,7 +54,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
         val fetched = BrowserFetcher(options).fetch()
 
         // then
-        KotlinAssertions.assertThat(fetched.statusCode).isEqualTo(404)
+        assertThat(fetched.statusCode).isEqualTo(404)
     }
 
     @Test
@@ -60,9 +65,9 @@ internal class BrowserFetcherTest : WireMockSetup() {
             followRedirects = false
         }
 
-        Assertions.assertThrows(UnsupportedRequestOptionException::class.java
-        ) {
-            BrowserFetcher(options).fetch()
+        assertThat { BrowserFetcher(options).fetch() }.thrownError {
+            hasClass(UnsupportedRequestOptionException::class)
+            hasMessage("Browser mode only supports following redirects")
         }
     }
 
@@ -75,7 +80,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
         val fetched = BrowserFetcher(Request()).fetch()
 
         // then
-        KotlinAssertions.assertThat(fetched.statusCode).isEqualTo(404)
+        assertThat(fetched.statusCode).isEqualTo(404)
     }
 
     @Test
@@ -85,9 +90,8 @@ internal class BrowserFetcherTest : WireMockSetup() {
             method = Method.POST
         }
 
-        Assertions.assertThrows(UnsupportedRequestOptionException::class.java
-        ) {
-            BrowserFetcher(options).fetch()
+        assertThat { BrowserFetcher(options).fetch() }.thrownError {
+            hasClass(UnsupportedRequestOptionException::class)
         }
     }
 
@@ -99,7 +103,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
 
         val fetched = BrowserFetcher(Request()).fetch()
 
-        KotlinAssertions.assertThat(fetched.document.select("div.dynamic").text()).isEqualTo("I have been dynamically added via Javascript")
+        assertThat(fetched.document.select("div.dynamic").text()).isEqualTo("I have been dynamically added via Javascript")
     }
 
     @Disabled
@@ -107,9 +111,8 @@ internal class BrowserFetcherTest : WireMockSetup() {
     internal fun `will throw exception on timeout`() {
         wireMockServer.setupStub(delay = 6000)
 
-        Assertions.assertThrows(SocketTimeoutException::class.java
-        ) {
-            BrowserFetcher(Request()).fetch()
+        assertThat { BrowserFetcher(Request()).fetch() }.thrownError {
+            hasClass(SocketTimeoutException::class)
         }
     }
 }

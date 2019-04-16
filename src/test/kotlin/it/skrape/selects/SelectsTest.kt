@@ -1,5 +1,8 @@
 package it.skrape.selects
 
+import assertk.assertAll
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import it.skrape.core.Request
 import it.skrape.core.WireMockSetup
 import it.skrape.core.setupStub
@@ -9,7 +12,6 @@ import it.skrape.extract
 import it.skrape.matchers.toBe
 import it.skrape.matchers.toContain
 import it.skrape.skrape
-import org.assertj.core.api.SoftAssertions
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -43,12 +45,12 @@ internal class SelectsTest : WireMockSetup() {
 
         skrape {
             extract {
-                SoftAssertions().apply {
+                assertAll {
                     assertThat(el("p").text()).isEqualTo(expectedValue)
                     assertThat(element("p").text()).isEqualTo(expectedValue)
                     assertThat(elements("p").first().text()).isEqualTo(expectedValue)
                     assertThat(`$`("p").first().text()).isEqualTo(expectedValue)
-                }.assertAll()
+                }
 
             }
         }

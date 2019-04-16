@@ -1,10 +1,14 @@
 package it.skrape
 
+import assertk.assertThat
+import assertk.assertions.contains
+import assertk.assertions.containsExactly
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import it.skrape.core.*
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.matchers.toBe
 import it.skrape.selects.*
-import org.assertj.core.api.KotlinAssertions
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -20,24 +24,24 @@ internal class DslTest : WireMockSetup() {
 
             expect {
 
-                KotlinAssertions.assertThat(statusCode).isEqualTo(200)
-                KotlinAssertions.assertThat(statusMessage).isEqualTo("OK")
-                KotlinAssertions.assertThat(contentType).isEqualTo("text/html; charset=UTF-8")
+                assertThat(statusCode).isEqualTo(200)
+                assertThat(statusMessage).isEqualTo("OK")
+                assertThat(contentType).isEqualTo("text/html; charset=UTF-8")
 
                 el("title").text() toBe "i'm the title"
 
                 title {
-                    KotlinAssertions.assertThat(this).isEqualTo("i'm the title")
+                    assertThat(this).isEqualTo("i'm the title")
                 }
 
                 element("p") {
                     attr("bla") toBe ""
-                    KotlinAssertions.assertThat(text()).isEqualTo("i'm a paragraph")
-                    KotlinAssertions.assertThat(text()).isEqualTo("i'm a paragraph")
+                    assertThat(text()).isEqualTo("i'm a paragraph")
+                    assertThat(text()).isEqualTo("i'm a paragraph")
                 }
 
                 elements("p") {
-                    KotlinAssertions.assertThat(size).isEqualTo(2)
+                    assertThat(size).isEqualTo(2)
                 }
             }
         }
@@ -52,7 +56,7 @@ internal class DslTest : WireMockSetup() {
             followRedirects = false
 
             expect {
-                KotlinAssertions.assertThat(statusCode).isEqualTo(302)
+                assertThat(statusCode).isEqualTo(302)
             }
         }
     }
@@ -65,14 +69,14 @@ internal class DslTest : WireMockSetup() {
         skrape {
             expect {
                 val header = header("Content-Type") {
-                    KotlinAssertions.assertThat(this).isEqualTo("text/html; charset=UTF-8")
+                    assertThat(this).isEqualTo("text/html; charset=UTF-8")
                 }
-                KotlinAssertions.assertThat(header).isEqualTo("text/html; charset=UTF-8")
+                assertThat(header).isEqualTo("text/html; charset=UTF-8")
 
                 val nonExistingHeader = header("Non-Existing") {
-                    KotlinAssertions.assertThat(this).isNull()
+                    assertThat(this).isNull()
                 }
-                KotlinAssertions.assertThat(nonExistingHeader).isNull()
+                assertThat(nonExistingHeader).isNull()
             }
         }
     }
@@ -85,9 +89,9 @@ internal class DslTest : WireMockSetup() {
         skrape {
             expect {
                 val headers = headers {
-                    KotlinAssertions.assertThat(this).containsEntry("Content-Type", "text/html; charset=UTF-8")
+                    assertThat(this).contains("Content-Type", "text/html; charset=UTF-8")
                 }
-                KotlinAssertions.assertThat(headers).containsEntry("Content-Type", "text/html; charset=UTF-8")
+                assertThat(headers).contains("Content-Type", "text/html; charset=UTF-8")
             }
         }
     }
@@ -100,9 +104,9 @@ internal class DslTest : WireMockSetup() {
         skrape {
             expect {
                 val body = body {
-                    KotlinAssertions.assertThat(this.text()).contains("i'm a paragraph")
+                    assertThat(this.text()).contains("i'm a paragraph")
                 }
-                KotlinAssertions.assertThat(body.text()).contains("i'm a paragraph")
+                assertThat(body.text()).contains("i'm a paragraph")
             }
         }
     }
@@ -114,7 +118,7 @@ internal class DslTest : WireMockSetup() {
 
         skrape {
             expect {
-                KotlinAssertions.assertThat(statusCode).isEqualTo(404)
+                assertThat(statusCode).isEqualTo(404)
             }
         }
     }
@@ -129,11 +133,11 @@ internal class DslTest : WireMockSetup() {
 
             expect {
 
-                KotlinAssertions.assertThat(request.method).isEqualTo(Method.POST)
+                assertThat(request.method).isEqualTo(Method.POST)
 
-                KotlinAssertions.assertThat(statusCode).isEqualTo(200)
-                KotlinAssertions.assertThat(statusMessage).isEqualTo("OK")
-                KotlinAssertions.assertThat(contentType).isEqualTo("application/json; charset=UTF-8")
+                assertThat(statusCode).isEqualTo(200)
+                assertThat(statusMessage).isEqualTo("OK")
+                assertThat(contentType).isEqualTo("application/json; charset=UTF-8")
             }
         }
     }
@@ -161,7 +165,7 @@ internal class DslTest : WireMockSetup() {
             val extracted = extract {
                 MyObject(statusMessage, "", emptyList())
             }
-            KotlinAssertions.assertThat(extracted.message).isEqualTo("OK")
+            assertThat(extracted.message).isEqualTo("OK")
         }
     }
 
@@ -176,7 +180,7 @@ internal class DslTest : WireMockSetup() {
             val extracted = extract {
                 MyObject(statusMessage, "", emptyList())
             }
-            KotlinAssertions.assertThat(extracted.message).isEqualTo("OK")
+            assertThat(extracted.message).isEqualTo("OK")
         }
     }
 
@@ -192,7 +196,7 @@ internal class DslTest : WireMockSetup() {
                 it.message = statusMessage
             }
         }
-        KotlinAssertions.assertThat(extracted.message).isEqualTo("OK")
+        assertThat(extracted.message).isEqualTo("OK")
     }
 
     @Test
@@ -223,29 +227,29 @@ internal class DslTest : WireMockSetup() {
                 )
             }
         }
-        KotlinAssertions.assertThat(extracted.message).isEqualTo("OK")
-        KotlinAssertions.assertThat(extracted.paragraph).isEqualTo("i'm a paragraph")
-        KotlinAssertions.assertThat(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
+        assertThat(extracted.message).isEqualTo("OK")
+        assertThat(extracted.paragraph).isEqualTo("i'm a paragraph")
+        assertThat(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
     }
 
     @Test
     internal fun `can read html from file system with default charset (UTF-8) using the DSL`() {
         skrape(File("src/test/resources/__files/example.html")) {
-            KotlinAssertions.assertThat(title()).isEqualTo("i'm the title")
+            assertThat(title()).isEqualTo("i'm the title")
         }
     }
 
     @Test
     internal fun `can read html from file system using the DSL and non default charset`() {
         skrape(File("src/test/resources/__files/example.html"), Charsets.ISO_8859_1) {
-            KotlinAssertions.assertThat(title()).isEqualTo("i'm the title")
+            assertThat(title()).isEqualTo("i'm the title")
         }
     }
 
     @Test
     internal fun `can read html from String`() {
         skrape("<html><head><title>i'm the title</title></head></html>") {
-            KotlinAssertions.assertThat(title()).isEqualTo("i'm the title")
+            assertThat(title()).isEqualTo("i'm the title")
         }
     }
 
