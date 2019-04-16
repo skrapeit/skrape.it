@@ -107,6 +107,12 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.willowtreeapps.assertk</groupId>
+            <artifactId>assertk-jvm</artifactId>
+            <version>0.13</version>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- test dependencies -->
         <dependency>
@@ -121,18 +127,12 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>net.wuerl.kotlin</groupId>-->
-            <!--<artifactId>assertj-core-kotlin</artifactId>-->
-            <!--<version>0.2.1</version>-->
-            <!--&lt;!&ndash;<scope>test</scope>&ndash;&gt;-->
-        <!--</dependency>-->
         <dependency>
-            <groupId>com.willowtreeapps.assertk</groupId>
-            <artifactId>assertk-jvm</artifactId>
-            <version>0.13</version>
+            <groupId>com.nhaarman.mockitokotlin2</groupId>
+            <artifactId>mockito-kotlin</artifactId>
+            <version>2.1.0</version>
+            <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>com.github.tomakehurst</groupId>
             <artifactId>wiremock</artifactId>
