@@ -3,9 +3,7 @@ package it.skrape
 import it.skrape.core.*
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.matchers.toBe
-import it.skrape.selects.`$`
-import it.skrape.selects.el
-import it.skrape.selects.element
+import it.skrape.selects.*
 import org.assertj.core.api.KotlinAssertions
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
