@@ -139,6 +139,12 @@
             <version>2.19.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+            <scope>test</scope>
+        </dependency>
 
         <!-- provided dependencies for library extensions -->
         <dependency>
@@ -237,9 +243,17 @@
                         <phase>package</phase>
                         <goals>
                             <goal>javadocJar</goal>
+                            <!--<goal>javadoc</goal>-->
+                            <!--<goal>dokka</goal>-->
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <jdkVersion>8</jdkVersion>
+                    <impliedPlatforms>
+                        <platform>JVM</platform>
+                    </impliedPlatforms>
+                </configuration>
             </plugin>
 
             <!-- create coverage report -->

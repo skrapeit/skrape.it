@@ -1,0 +1,23 @@
+<configuration debug="false">
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <withJansi>true</withJansi>
+
+        <encoder>
+            <pattern>%highlight(%.-1level) %date{HH:mm:ss.SSS} [%30.30logger] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Turning down the wiremock logging -->
+    <logger name="org.eclipse.jetty" level="ERROR" />
+    <logger name="com.github.tomakehurst.wiremock" level="ERROR"/>
+    <logger name="wiremock.org" level="ERROR"/>
+    <logger name="WireMock" level="ERROR"/>
+    <!-- wiremock has per endpoint servlet logging -->
+    <logger name="/" level="ERROR"/>
+    <logger name="/__admin" level="ERROR"/>
+
+    <root level="INFO">
+        <appender-ref ref="console" />
+    </root>
+</configuration>
