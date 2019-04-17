@@ -1,10 +1,9 @@
 package it.skrape.matchers
 
 import assertk.assertThat
-import assertk.assertions.contains
-import assertk.assertions.doesNotContain
-import assertk.assertions.isEqualTo
-import assertk.assertions.isNotEqualTo
+import assertk.assertions.*
+import org.jsoup.nodes.Element
+import org.jsoup.select.Elements
 
 infix fun Int.toBe(expected: Int) {
     assertThat(this).isEqualTo(expected)
@@ -38,6 +37,14 @@ infix fun String?.`to not contain`(expected: String) = this toNotContain expecte
 
 infix fun List<Any>.toContain(expected: String) {
     assertThat(this).contains(expected)
+}
+
+fun Elements.toBePresent() {
+    assertThat(this.size).isGreaterThanOrEqualTo(1)
+}
+
+fun Element.toBePresent() {
+    assertThat(this.allElements.size).isGreaterThanOrEqualTo(1)
 }
 
 infix fun List<Any>.`to contain`(expected: String) = this.toContain(expected)

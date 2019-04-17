@@ -1,8 +1,13 @@
 package it.skrape.matchers
 
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
+import org.jsoup.nodes.Element
+import org.jsoup.select.Elements
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.opentest4j.AssertionFailedError
+
 
 internal class MatchersTest {
 
@@ -89,6 +94,49 @@ internal class MatchersTest {
         Assertions.assertThrows(AssertionError::class.java) {
             listOf("foo", "bar") toContain "schnitzel"
             listOf("foo", "bar") `to contain` "schnitzel"
+        }
+    }
+
+    @Test
+    internal fun `isPresent can handle multiple presents of matching ELEMENTS`() {
+        val elements = mock<Elements> { on { size } doReturn 2 }
+        elements.toBePresent()
+    }
+
+    @Test
+    internal fun `isPresent can handle single occurrence of matching ELEMENTS`() {
+        val elements = mock<Elements> { on { size } doReturn 1 }
+        elements.toBePresent()
+    }
+
+    @Test
+    internal fun `isPresent is throwing exception if no ELEMENTS matches`() {
+        val elements = mock<Elements> { on { size } doReturn 0 }
+        Assertions.assertThrows(AssertionFailedError::class.java) {
+            elements.toBePresent()
+        }
+    }
+
+    @Test
+    internal fun `isPresent can handle multiple occurrence of an ELEMENT`() {
+        val elements = mock<Elements> { on { size } doReturn 2 }
+        val element = mock<Element> { on { allElements } doReturn elements }
+        element.toBePresent()
+    }
+
+    @Test
+    internal fun `isPresent can handle single occurrence of an ELEMENT`() {
+        val elements = mock<Elements> { on { size } doReturn 1 }
+        val element = mock<Element> { on { allElements } doReturn elements }
+        element.toBePresent()
+    }
+
+    @Test
+    internal fun `isPresent is throwing exception if no ELEMENT matches`() {
+        val elements = mock<Elements> { on { size } doReturn 0 }
+        val element = mock<Element> { on { allElements } doReturn elements }
+        Assertions.assertThrows(AssertionFailedError::class.java) {
+            element.toBePresent()
         }
     }
 }
