@@ -1,7 +1,11 @@
 package it.skrape.matchers
 
 import assertk.assertThat
-import assertk.assertions.*
+import assertk.assertions.contains
+import assertk.assertions.doesNotContain
+import assertk.assertions.isEqualTo
+import assertk.assertions.isGreaterThanOrEqualTo
+import assertk.assertions.isNotEqualTo
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
