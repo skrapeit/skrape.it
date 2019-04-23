@@ -5,10 +5,22 @@ import assertk.assertions.contains
 import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
-import it.skrape.core.*
+import it.skrape.core.Method
+import it.skrape.core.Mode
+import it.skrape.core.WireMockSetup
+import it.skrape.core.setupPostStub
+import it.skrape.core.setupRedirect
+import it.skrape.core.setupStub
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.matchers.toBe
-import it.skrape.selects.*
+import it.skrape.selects.`$`
+import it.skrape.selects.body
+import it.skrape.selects.el
+import it.skrape.selects.element
+import it.skrape.selects.elements
+import it.skrape.selects.header
+import it.skrape.selects.headers
+import it.skrape.selects.title
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -233,22 +245,46 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
+    internal fun `can read and return html from file system with default charset (UTF-8) using the DSL`() {
+        val doc = skrape(File("src/test/resources/__files/example.html")) {
+            assertThat(title()).isEqualTo("i'm the title")
+        }
+        assertThat(doc.title()).isEqualTo("i'm the title")
+    }
+
+    @Test
+    internal fun `can read and return html from file system using the DSL and non default charset`() {
+        val doc = skrape(File("src/test/resources/__files/example.html"), Charsets.ISO_8859_1) {
+            assertThat(title()).isEqualTo("i'm the title")
+        }
+        assertThat(doc.title()).isEqualTo("i'm the title")
+    }
+
+    @Test
+    internal fun `can read and return html from String`() {
+        val doc = skrape("<html><head><title>i'm the title</title></head></html>") {
+            assertThat(title()).isEqualTo("i'm the title")
+        }
+        assertThat(doc.title()).isEqualTo("i'm the title")
+    }
+
+    @Test
     internal fun `can read html from file system with default charset (UTF-8) using the DSL`() {
-        skrape(File("src/test/resources/__files/example.html")) {
+        expect(File("src/test/resources/__files/example.html")) {
             assertThat(title()).isEqualTo("i'm the title")
         }
     }
 
     @Test
     internal fun `can read html from file system using the DSL and non default charset`() {
-        skrape(File("src/test/resources/__files/example.html"), Charsets.ISO_8859_1) {
+        expect(File("src/test/resources/__files/example.html"), Charsets.ISO_8859_1) {
             assertThat(title()).isEqualTo("i'm the title")
         }
     }
 
     @Test
     internal fun `can read html from String`() {
-        skrape("<html><head><title>i'm the title</title></head></html>") {
+        expect("<html><head><title>i'm the title</title></head></html>") {
             assertThat(title()).isEqualTo("i'm the title")
         }
     }
