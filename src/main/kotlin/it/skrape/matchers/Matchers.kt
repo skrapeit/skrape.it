@@ -6,6 +6,7 @@ import assertk.assertions.doesNotContain
 import assertk.assertions.isEqualTo
 import assertk.assertions.isGreaterThanOrEqualTo
 import assertk.assertions.isNotEqualTo
+import assertk.assertions.isZero
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
@@ -49,6 +50,14 @@ fun Elements.toBePresent() {
 
 fun Element.toBePresent() {
     assertThat(this.allElements.size).isGreaterThanOrEqualTo(1)
+}
+
+fun Elements.toBeNotPresent() {
+    assertThat(this.size).isZero()
+}
+
+fun Element.toBeNotPresent() {
+    assertThat(this.allElements.size).isZero()
 }
 
 infix fun List<Any>.`to contain`(expected: String) = this.toContain(expected)
