@@ -5,7 +5,11 @@ import assertk.assertThat
 import assertk.assertions.hasClass
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
-import it.skrape.core.*
+import it.skrape.core.Method
+import it.skrape.core.Request
+import it.skrape.core.WireMockSetup
+import it.skrape.core.setupRedirect
+import it.skrape.core.setupStub
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.net.SocketTimeoutException
@@ -61,10 +65,11 @@ internal class BrowserFetcherTest : WireMockSetup() {
     internal fun `will throw exception when trying to not follow redirects`() {
         // given
         wireMockServer.setupRedirect()
+        // when
         val options = Request().apply {
             followRedirects = false
         }
-
+        // then
         assertThat { BrowserFetcher(options).fetch() }.thrownError {
             hasClass(UnsupportedRequestOptionException::class)
             hasMessage("Browser mode only supports following redirects")
@@ -85,11 +90,11 @@ internal class BrowserFetcherTest : WireMockSetup() {
 
     @Test
     internal fun `will throw exception on HTTP verb POST`() {
-        // given
+        // when
         val options = Request().apply {
             method = Method.POST
         }
-
+        // then
         assertThat { BrowserFetcher(options).fetch() }.thrownError {
             hasClass(UnsupportedRequestOptionException::class)
         }
@@ -98,20 +103,21 @@ internal class BrowserFetcherTest : WireMockSetup() {
     @Test
     internal fun `can parse js rendered elements`() {
         // given
-        // given
         wireMockServer.setupStub(fileName = "js.html")
-
+        // when
         val fetched = BrowserFetcher(Request()).fetch()
-
+        // then
         assertThat(fetched.document.select("div.dynamic").text()).isEqualTo("I have been dynamically added via Javascript")
     }
 
     @Disabled
     @Test
     internal fun `will throw exception on timeout`() {
+        // given
         wireMockServer.setupStub(delay = 6000)
-
+        // when
         assertThat { BrowserFetcher(Request()).fetch() }.thrownError {
+            // then
             hasClass(SocketTimeoutException::class)
         }
     }

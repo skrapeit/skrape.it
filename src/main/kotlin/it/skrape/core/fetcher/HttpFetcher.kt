@@ -10,7 +10,6 @@ internal class HttpFetcher(private val request: Request) {
     fun fetch(): Result {
 
         System.setProperty("sun.net.http.allowRestrictedHeaders", "true")
-        System.setProperty("javax.net.ssl.trustStore", "/etc/ssl/certs/java/cacerts")
 
         val connection = Jsoup.connect(request.url)
                 .method(request.method)
