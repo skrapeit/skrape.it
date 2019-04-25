@@ -167,29 +167,4 @@ internal class MatchersTest {
             elements.toBeNotPresent()
         }
     }
-
-    @Test
-    internal fun `toBeNotPresent can handle non existent ELEMENT`() {
-        val elements = mock<Elements> { on { size } doReturn 0 }
-        val element = mock<Element> { on { allElements } doReturn elements }
-        element.toBeNotPresent()
-    }
-
-    @Test
-    internal fun `toBeNotPresent is throwing exception on single occurrence of matching ELEMENT`() {
-        val elements = mock<Elements> { on { size } doReturn 1 }
-        val element = mock<Element> { on { allElements } doReturn elements }
-        Assertions.assertThrows(AssertionFailedError::class.java) {
-            element.toBeNotPresent()
-        }
-    }
-
-    @Test
-    internal fun `toBeNotPresent is throwing exception on multiple presents of matching ELEMENT`() {
-        val elements = mock<Elements> { on { size } doReturn 2 }
-        val element = mock<Element> { on { allElements } doReturn elements }
-        Assertions.assertThrows(AssertionFailedError::class.java) {
-            element.toBeNotPresent()
-        }
-    }
 }
