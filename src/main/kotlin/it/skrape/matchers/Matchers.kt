@@ -56,8 +56,4 @@ fun Elements.toBeNotPresent() {
     assertThat(this.size).isZero()
 }
 
-fun Element.toBeNotPresent() {
-    assertThat(this.allElements.size).isZero()
-}
-
 infix fun List<Any>.`to contain`(expected: String) = this.toContain(expected)
