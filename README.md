@@ -1,7 +1,7 @@
 <img width="150px" height="150px" align="right" src="skrape.png"/>
 
 [![Documentation](https://img.shields.io/badge/skrape%7Bit%7D-docs-blue.svg)](https://docs.skrape.it)
-[![maven central](https://img.shields.io/maven-central/v/it.skrape/core.svg?color=0)](https://search.maven.org/search?q=g:it.skrape%20AND%20a:core&core=gav)
+[![maven central](https://img.shields.io/maven-central/v/it.skrape/skrapeit-core.svg?color=0)](https://search.maven.org/search?q=g:it.skrape%20AND%20a:skrapeit-core&skrapeit-core=gav)
 [![License](https://img.shields.io/github/license/skrapeit/skrape.it.svg)](https://github.com/skrapeit/skrape.it/blob/master/LICENSE)
 [![JDK](https://img.shields.io/badge/jdk-8-green.svg)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
