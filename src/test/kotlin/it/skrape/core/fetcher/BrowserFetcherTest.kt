@@ -49,7 +49,6 @@ internal class BrowserFetcherTest : WireMockSetup() {
         }
     }
 
-    @Disabled
     @Test
     internal fun `will not throw exception on non existing url`() {
         // given
@@ -74,7 +73,6 @@ internal class BrowserFetcherTest : WireMockSetup() {
         assertThat(result.statusCode).isEqualTo(302)
     }
 
-    @Disabled
     @Test
     internal fun `will follow redirect by default`() {
         // given

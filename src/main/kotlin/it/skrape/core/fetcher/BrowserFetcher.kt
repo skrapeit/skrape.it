@@ -2,9 +2,9 @@ package it.skrape.core.fetcher
 
 import com.gargoylesoftware.htmlunit.BrowserVersion
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController
+import com.gargoylesoftware.htmlunit.Page
 import com.gargoylesoftware.htmlunit.SilentCssErrorHandler
 import com.gargoylesoftware.htmlunit.WebClient
-import com.gargoylesoftware.htmlunit.html.HtmlPage
 import com.gargoylesoftware.htmlunit.util.NameValuePair
 import it.skrape.core.Request
 import it.skrape.core.Result
@@ -59,7 +59,7 @@ class BrowserFetcher(private val request: Request) {
             @Suppress("MagicNumber") waitForBackgroundJavaScriptStartingBefore(1000)
         }
 
-        val page: HtmlPage = client.getPage(request.url)
+        val page: Page = client.getPage(request.url)
         val response = page.webResponse
         val headers = response.responseHeaders.toMap()
 
