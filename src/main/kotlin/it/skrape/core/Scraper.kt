@@ -8,6 +8,9 @@ import org.jsoup.nodes.Document
 class Scraper(val request: Request = Request()) {
 
     fun scrape(): Result {
+
+        System.setProperty("sun.net.http.allowRestrictedHeaders", "true")
+
         return when (request.mode) {
             Mode.BROWSER -> BrowserFetcher(request).fetch()
             Mode.HTTP -> HttpFetcher(request).fetch()

@@ -2,20 +2,24 @@ package it.skrape.core.fetcher
 
 import assertk.assertAll
 import assertk.assertThat
+import assertk.assertions.containsOnly
 import assertk.assertions.hasClass
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
+import com.gargoylesoftware.htmlunit.util.NameValuePair
 import it.skrape.core.Method
 import it.skrape.core.Request
 import it.skrape.core.WireMockSetup
 import it.skrape.core.setupRedirect
 import it.skrape.core.setupStub
+import it.skrape.exceptions.UnsupportedRequestOptionException
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.net.SocketTimeoutException
 
 internal class BrowserFetcherTest : WireMockSetup() {
 
+    @Disabled
     @Test
     internal fun `will fetch localhost 8080 with defaults if no params`() {
         // given
@@ -29,6 +33,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
         assertThat(fetched.document.title()).isEqualTo("i'm the title")
     }
 
+    @Disabled
     @Test
     internal fun `can fetch url and use HTTP verb GET by default`() {
         // given
@@ -47,6 +52,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
         }
     }
 
+    @Disabled
     @Test
     internal fun `will not throw exception on non existing url`() {
         // given
@@ -61,6 +67,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
         assertThat(fetched.statusCode).isEqualTo(404)
     }
 
+    @Disabled
     @Test
     internal fun `will throw exception when trying to not follow redirects`() {
         // given
@@ -76,6 +83,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
         }
     }
 
+    @Disabled
     @Test
     internal fun `will follow redirect by default`() {
         // given
@@ -88,6 +96,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
         assertThat(fetched.statusCode).isEqualTo(404)
     }
 
+    @Disabled
     @Test
     internal fun `will throw exception on HTTP verb POST`() {
         // when
@@ -100,6 +109,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
         }
     }
 
+    @Disabled
     @Test
     internal fun `can parse js rendered elements`() {
         // given
@@ -120,5 +130,16 @@ internal class BrowserFetcherTest : WireMockSetup() {
             // then
             hasClass(SocketTimeoutException::class)
         }
+    }
+
+    @Test
+    internal fun `will extract headers to map`() {
+
+        val sut = listOf(
+                NameValuePair("first-name", "first-value"),
+                NameValuePair("second-name", "second-value")
+        )
+        val result = sut.toMap()
+        assertThat(result).containsOnly("first-name" to "first-value", "second-name" to "second-value")
     }
 }

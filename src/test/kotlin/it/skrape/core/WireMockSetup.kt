@@ -2,12 +2,17 @@ package it.skrape.core
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 
 open class WireMockSetup {
-    protected val wireMockServer = WireMockServer(8080, 8089)
+    private val options = options()
+            .port(8080)
+            .httpsPort(8089)
+
+    protected val wireMockServer = WireMockServer(options)
 
     @BeforeEach
     fun setup() {

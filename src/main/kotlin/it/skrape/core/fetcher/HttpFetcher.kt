@@ -9,8 +9,6 @@ internal class HttpFetcher(private val request: Request) {
 
     fun fetch(): Result {
 
-        System.setProperty("sun.net.http.allowRestrictedHeaders", "true")
-
         val connection = Jsoup.connect(request.url)
                 .method(request.method)
                 .userAgent(request.userAgent)
@@ -30,6 +28,7 @@ internal class HttpFetcher(private val request: Request) {
                 statusMessage = response.statusMessage(),
                 contentType = response.contentType(),
                 headers = response.headers(),
+                cookies = emptyMap(),
                 request = request
         )
     }
