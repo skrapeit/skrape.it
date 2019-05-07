@@ -59,7 +59,7 @@ class BrowserFetcher(private val request: Request) {
             @Suppress("MagicNumber") waitForBackgroundJavaScriptStartingBefore(1000)
         }
 
-        val page = client.getPage<HtmlPage>(request.url)
+        val page: HtmlPage = client.getPage(request.url)
         val response = page.webResponse
         val headers = response.responseHeaders.toMap()
 

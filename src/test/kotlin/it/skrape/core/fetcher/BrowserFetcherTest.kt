@@ -4,7 +4,6 @@ import assertk.assertAll
 import assertk.assertThat
 import assertk.assertions.containsOnly
 import assertk.assertions.hasClass
-import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import com.gargoylesoftware.htmlunit.util.NameValuePair
 import it.skrape.core.Method
@@ -19,7 +18,6 @@ import java.net.SocketTimeoutException
 
 internal class BrowserFetcherTest : WireMockSetup() {
 
-    @Disabled
     @Test
     internal fun `will fetch localhost 8080 with defaults if no params`() {
         // given
@@ -33,7 +31,6 @@ internal class BrowserFetcherTest : WireMockSetup() {
         assertThat(fetched.document.title()).isEqualTo("i'm the title")
     }
 
-    @Disabled
     @Test
     internal fun `can fetch url and use HTTP verb GET by default`() {
         // given
@@ -67,20 +64,14 @@ internal class BrowserFetcherTest : WireMockSetup() {
         assertThat(fetched.statusCode).isEqualTo(404)
     }
 
-    @Disabled
     @Test
-    internal fun `will throw exception when trying to not follow redirects`() {
+    internal fun `will not follow redirects if configured`() {
         // given
         wireMockServer.setupRedirect()
         // when
-        val options = Request().apply {
-            followRedirects = false
-        }
+        val result = BrowserFetcher(Request(followRedirects = false)).fetch()
         // then
-        assertThat { BrowserFetcher(options).fetch() }.thrownError {
-            hasClass(UnsupportedRequestOptionException::class)
-            hasMessage("Browser mode only supports following redirects")
-        }
+        assertThat(result.statusCode).isEqualTo(302)
     }
 
     @Disabled
@@ -96,7 +87,6 @@ internal class BrowserFetcherTest : WireMockSetup() {
         assertThat(fetched.statusCode).isEqualTo(404)
     }
 
-    @Disabled
     @Test
     internal fun `will throw exception on HTTP verb POST`() {
         // when
@@ -120,7 +110,6 @@ internal class BrowserFetcherTest : WireMockSetup() {
         assertThat(fetched.document.select("div.dynamic").text()).isEqualTo("I have been dynamically added via Javascript")
     }
 
-    @Disabled
     @Test
     internal fun `will throw exception on timeout`() {
         // given
