@@ -12,7 +12,6 @@ import it.skrape.core.WireMockSetup
 import it.skrape.core.setupRedirect
 import it.skrape.core.setupStub
 import it.skrape.exceptions.UnsupportedRequestOptionException
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.net.SocketTimeoutException
 
@@ -97,13 +96,24 @@ internal class BrowserFetcherTest : WireMockSetup() {
         }
     }
 
-    @Disabled
     @Test
     internal fun `can parse js rendered elements`() {
         // given
         wireMockServer.setupStub(fileName = "js.html")
         // when
         val fetched = BrowserFetcher(Request()).fetch()
+
+        // then
+        assertThat(fetched.document.select("div.dynamic").text()).isEqualTo("I have been dynamically added via Javascript")
+    }
+
+    @Test
+    internal fun `can parse js rendered elements from https page`() {
+        // given
+        wireMockServer.setupStub(fileName = "js.html")
+        // when
+        val fetched = BrowserFetcher(Request(url = "https://localhost:8089")).fetch()
+
         // then
         assertThat(fetched.document.select("div.dynamic").text()).isEqualTo("I have been dynamically added via Javascript")
     }

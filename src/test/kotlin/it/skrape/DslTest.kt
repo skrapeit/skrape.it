@@ -22,7 +22,6 @@ import it.skrape.selects.header
 import it.skrape.selects.headers
 import it.skrape.selects.title
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.io.File
 import java.net.SocketTimeoutException
@@ -290,7 +289,6 @@ internal class DslTest : WireMockSetup() {
         }
     }
 
-    @Disabled
     @Test
     internal fun `can scrape js rendered page`() {
         wireMockServer.setupStub(fileName = "js.html")
