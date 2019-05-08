@@ -19,25 +19,7 @@ class BrowserFetcher(private val request: Request) {
         if (request.method != Connection.Method.GET)
             throw UnsupportedRequestOptionException("Browser mode only supports the http verb GET")
 
-        val client = WebClient(BrowserVersion.BEST_SUPPORTED)
-        client.apply {
-            options.timeout = request.timeout
-            options.isRedirectEnabled = request.followRedirects
-            options.maxInMemory = request.maxBodySize
-            options.isCssEnabled = false
-            options.isPopupBlockerEnabled = true
-            options.isDownloadImages = false
-            options.isUseInsecureSSL = true
-            options.isThrowExceptionOnScriptError = false
-            options.isThrowExceptionOnFailingStatusCode = false
-            options.isPrintContentOnFailingStatusCode = false
-            options.historySizeLimit = 0
-            options.historyPageCacheLimit = 0
-            cssErrorHandler = SilentCssErrorHandler()
-        }.apply {
-            ajaxController = NicelyResynchronizingAjaxController()
-            @Suppress("MagicNumber") waitForBackgroundJavaScript(10_000)
-        }
+        val client = WebClient(BrowserVersion.BEST_SUPPORTED).withOptions()
 
         val page: Page = client.getPage(request.url)
         val httpResponse = page.webResponse
@@ -62,6 +44,26 @@ class BrowserFetcher(private val request: Request) {
         client.cache.clear()
         page.cleanUp()
         return result
+    }
+
+    private fun WebClient.withOptions() = apply {
+        cssErrorHandler = SilentCssErrorHandler()
+        ajaxController = NicelyResynchronizingAjaxController()
+        @Suppress("MagicNumber") waitForBackgroundJavaScript(10_000)
+        options.apply {
+            timeout = request.timeout
+            isRedirectEnabled = request.followRedirects
+            maxInMemory = request.maxBodySize
+            isCssEnabled = false
+            isPopupBlockerEnabled = true
+            isDownloadImages = false
+            isUseInsecureSSL = true
+            isThrowExceptionOnScriptError = false
+            isThrowExceptionOnFailingStatusCode = false
+            isPrintContentOnFailingStatusCode = false
+            historySizeLimit = 0
+            historyPageCacheLimit = 0
+        }
     }
 }
 
