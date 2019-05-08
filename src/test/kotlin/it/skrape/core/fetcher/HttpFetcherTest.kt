@@ -1,6 +1,7 @@
 package it.skrape.core.fetcher
 
 import assertk.assertThat
+import assertk.assertions.containsOnly
 import assertk.assertions.isEqualTo
 import it.skrape.core.Method
 import it.skrape.core.Request
@@ -8,6 +9,7 @@ import it.skrape.core.WireMockSetup
 import it.skrape.core.setupPostStub
 import it.skrape.core.setupRedirect
 import it.skrape.core.setupStub
+import it.skrape.core.setupWithCookie
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import java.net.SocketTimeoutException
@@ -84,6 +86,19 @@ internal class HttpFetcherTest : WireMockSetup() {
 
         // then
         assertThat(fetched.statusCode).isEqualTo(404)
+    }
+
+    @Test
+    internal fun `can set cookies by request`() {
+        // given
+        val cookies = mapOf("myCookie" to "myCookieValue")
+        wireMockServer.setupWithCookie(cookies = cookies)
+
+        // when
+        val fetched = HttpFetcher(Request(url = "http://localhost:8080/cookie-test", cookies = mapOf("myCookie" to "myCookieValue"))).fetch()
+
+        // then
+        assertThat(fetched.cookies).containsOnly("myCookie" to "myCookieValue")
     }
 
     @Test

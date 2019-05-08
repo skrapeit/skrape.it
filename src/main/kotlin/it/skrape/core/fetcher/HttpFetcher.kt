@@ -14,6 +14,7 @@ internal class HttpFetcher(private val request: Request) {
                 .userAgent(request.userAgent)
                 .timeout(request.timeout)
                 .headers(request.headers)
+                .cookies(request.cookies)
                 .followRedirects(request.followRedirects)
                 .ignoreContentType(request.ignoreContentType)
                 .ignoreHttpErrors(request.ignoreHttpErrors)
@@ -28,7 +29,7 @@ internal class HttpFetcher(private val request: Request) {
                 statusMessage = response.statusMessage(),
                 contentType = response.contentType(),
                 headers = response.headers(),
-                cookies = emptyMap(),
+                cookies = response.cookies(),
                 request = request
         )
     }
