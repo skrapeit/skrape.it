@@ -43,7 +43,7 @@ class BrowserFetcher(private val request: Request) {
         val httpResponse = page.webResponse
         val document = when {
             page.isHtmlPage -> (page as HtmlPage).asXml()
-            else -> ""
+            else -> httpResponse.contentAsString
         }
         val headers = httpResponse.responseHeaders.toMap()
 

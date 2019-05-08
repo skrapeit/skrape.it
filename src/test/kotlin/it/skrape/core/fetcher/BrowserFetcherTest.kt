@@ -119,6 +119,20 @@ internal class BrowserFetcherTest : WireMockSetup() {
     }
 
     @Test
+    internal fun `can parse es6 rendered elements from https page`() {
+        // given
+        wireMockServer.setupStub(fileName = "es6.html")
+        // when
+        val fetched = BrowserFetcher(Request()).fetch()
+        val paragraphs = fetched.document.select("div.dynamic")
+
+        // then
+        paragraphs.forEach {
+            assertThat(it.text()).isEqualTo("dynamically added")
+        }
+    }
+
+    @Test
     internal fun `will throw exception on timeout`() {
         // given
         wireMockServer.setupStub(delay = 6000)
