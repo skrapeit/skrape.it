@@ -16,6 +16,9 @@
     <!-- wiremock has per endpoint servlet logging -->
     <logger name="/" level="ERROR"/>
     <logger name="/__admin" level="ERROR"/>
+    <!-- turning down htmlunit logging -->
+    <logger name="com.gargoylesoftware.htmlunit" level="ERROR" />
+    <logger name="org.apache.http" level="ERROR" />
 
     <root level="INFO">
         <appender-ref ref="console" />

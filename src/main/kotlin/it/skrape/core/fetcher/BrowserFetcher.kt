@@ -6,11 +6,13 @@ import com.gargoylesoftware.htmlunit.Page
 import com.gargoylesoftware.htmlunit.SilentCssErrorHandler
 import com.gargoylesoftware.htmlunit.WebClient
 import com.gargoylesoftware.htmlunit.html.HtmlPage
+import com.gargoylesoftware.htmlunit.util.Cookie
 import com.gargoylesoftware.htmlunit.util.NameValuePair
 import it.skrape.core.Request
 import it.skrape.core.Result
 import it.skrape.exceptions.UnsupportedRequestOptionException
 import org.jsoup.Connection
+import java.net.URL
 
 class BrowserFetcher(private val request: Request) {
 
@@ -35,7 +37,6 @@ class BrowserFetcher(private val request: Request) {
                 statusMessage = httpResponse.statusMessage,
                 contentType = httpResponse.contentType,
                 headers = headers,
-                cookies = headers.extractCookies(),
                 request = request
         )
 
@@ -49,6 +50,7 @@ class BrowserFetcher(private val request: Request) {
     private fun WebClient.withOptions() = apply {
         cssErrorHandler = SilentCssErrorHandler()
         ajaxController = NicelyResynchronizingAjaxController()
+        createCookies()
         @Suppress("MagicNumber") waitForBackgroundJavaScript(10_000)
         options.apply {
             timeout = request.timeout
@@ -65,17 +67,22 @@ class BrowserFetcher(private val request: Request) {
             historyPageCacheLimit = 0
         }
     }
+
+    private fun WebClient.createCookies() {
+        request.cookies.forEach { cookieManager.addCookie(createCookie(it.key, it.value)) }
+    }
+
+    private fun createCookie(name: String, value: String): Cookie {
+        val domain = URL(request.url).host
+        return Cookie(domain, name, value)
+    }
+}
+
+fun Map<String, String>.asRawCookieSyntax(): String {
+    var result = ""
+    forEach { result += "${it.key}=${it.value};" }
+    return result
 }
 
 fun List<NameValuePair>.toMap(): Map<String, String> =
         associateByTo(mutableMapOf<String, String>(), {it.name}, {it.value})
-
-fun Map<String, String>.extractCookies(): Map<String, String> {
-    val rawCookieHeader = toMap()["Cookie"] ?: return emptyMap()
-    return rawCookieHeader
-            .trim()
-            .split(";")
-            .map { it.split("=") }
-            .map { it[0] to it[1] }
-            .toMap()
-}

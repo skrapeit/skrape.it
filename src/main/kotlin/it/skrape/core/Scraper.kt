@@ -12,8 +12,8 @@ class Scraper(val request: Request = Request()) {
         System.setProperty("sun.net.http.allowRestrictedHeaders", "true")
 
         return when (request.mode) {
-            Mode.BROWSER -> BrowserFetcher(request).fetch()
-            Mode.HTTP -> HttpFetcher(request).fetch()
+            Mode.DOM -> BrowserFetcher(request).fetch()
+            Mode.SOURCE -> HttpFetcher(request).fetch()
         }
     }
 }

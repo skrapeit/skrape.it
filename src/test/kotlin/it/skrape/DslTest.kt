@@ -23,10 +23,23 @@ import it.skrape.selects.headers
 import it.skrape.selects.title
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.testcontainers.containers.GenericContainer
+import org.testcontainers.containers.wait.strategy.Wait
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.junit.jupiter.Testcontainers
 import java.io.File
 import java.net.SocketTimeoutException
 
+@Testcontainers
 internal class DslTest : WireMockSetup() {
+
+    companion object {
+        @Container
+        private val httpBin = KGenericContainer("kennethreitz/httpbin")
+                .withExposedPorts(80)
+                .waitingFor(Wait.forHttp("/").forStatusCode(200))
+    }
+
     @Test
     internal fun `dsl can skrape by url`() {
         wireMockServer.setupStub(path = "/example")
@@ -294,9 +307,34 @@ internal class DslTest : WireMockSetup() {
         wireMockServer.setupStub(fileName = "js.html")
 
         skrape {
-            mode = Mode.BROWSER
+            mode = Mode.DOM
             expect {
                 element("div.dynamic").text() toBe "I have been dynamically added via Javascript"
+            }
+        }
+    }
+
+    @Test
+    internal fun `can send cookies with request in js rendering mode`() {
+
+        skrape {
+            mode = Mode.DOM
+            url = "http://localhost:${httpBin.firstMappedPort}/cookies"
+            cookies = mapOf("myCookie" to "myCookieValue")
+            expect {
+                assertThat(body).contains("\"myCookie\": \"myCookieValue\"")
+            }
+        }
+    }
+
+    @Test
+    internal fun `can send cookies with request in http mode`() {
+
+        skrape {
+            url = "http://localhost:${httpBin.firstMappedPort}/cookies"
+            cookies = mapOf("someCookie" to "someCookieValue")
+            expect {
+                assertThat(body).contains("\"someCookie\": \"someCookieValue\"")
             }
         }
     }
@@ -307,3 +345,5 @@ class MyObject(var message: String? = null, var paragraph: String = "", var allP
 class MyOtherObject {
     var message: String? = null
 }
+
+class KGenericContainer(imageName: String) : GenericContainer<KGenericContainer>(imageName)

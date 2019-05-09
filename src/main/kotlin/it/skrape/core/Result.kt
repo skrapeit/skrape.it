@@ -19,6 +19,5 @@ data class Result(
         val statusMessage: String?,
         val contentType: String?,
         val headers: Map<String, String>,
-        val cookies: Map<String, String>,
         val request: Request
 )

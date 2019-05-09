@@ -3,8 +3,6 @@ package it.skrape.core
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
-import com.github.tomakehurst.wiremock.http.HttpHeader
-import com.github.tomakehurst.wiremock.http.HttpHeaders
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -49,8 +47,3 @@ fun WireMockServer.setupRedirect(): StubMapping =
         this.stubFor(WireMock.get(WireMock.urlEqualTo("/"))
                 .willReturn(WireMock.temporaryRedirect("/redirected")
                         .withHeader("Content-Type", "text/html")))
-
-fun WireMockServer.setupWithCookie(cookies: Map<String, String> = emptyMap()): StubMapping =
-        this.stubFor(WireMock.get(WireMock.urlEqualTo("/cookie-test"))
-                .willReturn(WireMock.aResponse()
-                        .withHeaders(HttpHeaders(HttpHeader.httpHeader("Set-Cookie", "${cookies.keys.first()}=${cookies.values.first()}")))))

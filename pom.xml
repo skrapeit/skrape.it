@@ -90,6 +90,25 @@
             <version>1.2.3</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <version>1.7.26</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>1.11.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>1.11.2</version>
+            <scope>test</scope>
+        </dependency>
 
         <!-- fix transitive dependency convergence between wiremock and htmlunit -->
         <!-- wiremock depends on older jetty-io version (were org/eclipse/jetty/io/AbstractConnection#toString haven't been final) -->

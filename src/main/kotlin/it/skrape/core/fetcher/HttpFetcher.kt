@@ -29,7 +29,6 @@ internal class HttpFetcher(private val request: Request) {
                 statusMessage = response.statusMessage(),
                 contentType = response.contentType(),
                 headers = response.headers(),
-                cookies = response.cookies(),
                 request = request
         )
     }

@@ -153,4 +153,17 @@ internal class BrowserFetcherTest : WireMockSetup() {
         val result = sut.toMap()
         assertThat(result).containsOnly("first-name" to "first-value", "second-name" to "second-value")
     }
+
+    @Test
+    internal fun `will create raw cookie syntax representation of map`() {
+
+        val sut = mapOf(
+                "first-name" to "first-value",
+                "second-name" to "second-value"
+        )
+        val result = sut.asRawCookieSyntax()
+        assertThat(result).isEqualTo("first-name=first-value;second-name=second-value;")
+    }
+
+
 }
