@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>skrapeit-core</artifactId>
-    <version>0.5.1</version>
+    <version>0.6.0</version>
 
     <name>skrape{it}</name>
     <description>
@@ -51,11 +51,19 @@
 
     <packaging>jar</packaging>
 
+    <properties>
+        <version.jsoup>1.11.3</version.jsoup>
+        <version.assertk>0.13</version.assertk>
+        <version.htmlunit>2.35.0</version.htmlunit>
+        <version.wiremock>2.23.2</version.wiremock>
+        <version.testcontainers>1.11.2</version.testcontainers>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.11.3</version>
+            <version>${version.jsoup}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -67,13 +75,13 @@
         <dependency>
             <groupId>com.willowtreeapps.assertk</groupId>
             <artifactId>assertk-jvm</artifactId>
-            <version>0.13</version>
+            <version>${version.assertk}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.htmlunit</groupId>
             <artifactId>htmlunit</artifactId>
-            <version>2.35.0</version>
+            <version>${version.htmlunit}</version>
             <scope>compile</scope>
         </dependency>
 
@@ -81,9 +89,23 @@
         <dependency>
             <groupId>com.github.tomakehurst</groupId>
             <artifactId>wiremock</artifactId>
-            <version>2.23.2</version>
+            <version>${version.wiremock}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>${version.testcontainers}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${version.testcontainers}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- logging -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
@@ -97,18 +119,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers</artifactId>
-            <version>1.11.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>1.11.2</version>
-            <scope>test</scope>
-        </dependency>
 
         <!-- fix transitive dependency convergence between wiremock and htmlunit -->
         <!-- wiremock depends on older jetty-io version (were org/eclipse/jetty/io/AbstractConnection#toString haven't been final) -->
