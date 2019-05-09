@@ -331,6 +331,7 @@ internal class DslTest : WireMockSetup() {
     internal fun `can send cookies with request in http mode`() {
 
         skrape {
+            mode = Mode.SOURCE
             url = "http://localhost:${httpBin.firstMappedPort}/cookies"
             cookies = mapOf("someCookie" to "someCookieValue")
             expect {

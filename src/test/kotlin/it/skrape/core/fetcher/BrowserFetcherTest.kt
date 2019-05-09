@@ -133,6 +133,15 @@ internal class BrowserFetcherTest : WireMockSetup() {
     }
 
     @Test
+    internal fun `will not throw if response body is not html`() {
+        // given
+        wireMockServer.setupStub(fileName = "data.json", contentType = "application/json; charset=UTF-8")
+        // when
+        val response = BrowserFetcher(Request()).fetch()
+        assertThat(response.body).isEqualTo("{\"data\":\"some value\"}")
+    }
+
+    @Test
     internal fun `will throw exception on timeout`() {
         // given
         wireMockServer.setupStub(delay = 6000)
