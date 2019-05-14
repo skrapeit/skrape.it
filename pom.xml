@@ -35,6 +35,10 @@
             <name>Christian Dräger</name>
             <email>christian.draeger1@gmail.com</email>
             <url>https://github.com/christian-draeger</url>
+            <timezone>Europe/Berlin</timezone>
+            <properties>
+                <twitter>@JvmDefault</twitter>
+            </properties>
         </developer>
     </developers>
 

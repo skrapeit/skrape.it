@@ -14,6 +14,7 @@ import it.skrape.core.setupStub
 import it.skrape.exceptions.UnsupportedRequestOptionException
 import org.junit.jupiter.api.Test
 import java.net.SocketTimeoutException
+import java.util.*
 
 internal class BrowserFetcherTest : WireMockSetup() {
 
@@ -130,6 +131,21 @@ internal class BrowserFetcherTest : WireMockSetup() {
         paragraphs.forEach {
             assertThat(it.text()).isEqualTo("dynamically added")
         }
+    }
+
+    @Test
+    internal fun `can handle uri scheme`() {
+        // given
+        val aValideHtml = "<html><h1>headline</h1></html>"
+        val base64encoded = Base64.getEncoder().encodeToString(aValideHtml.toByteArray())
+        val uriScheme = "data:text/html;charset=utf-8;base64,$base64encoded"
+        // when
+        val fetched = BrowserFetcher(Request(url = uriScheme)).fetch()
+        val headline = fetched.document.select("h1")
+
+        // then
+        assertThat(headline.text()).isEqualTo("headline")
+
     }
 
     @Test
