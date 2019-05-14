@@ -23,11 +23,11 @@ It places particular emphasis on ease of use and a high level of readability by 
 First and foremost skrape{it} aims to be a testing tool (not tied to a particular test runner), but it can also be used to scrape websites in a convenient fashion.
 
 #### Extensions
-In addition, extensions for known testing libraries are provided to extend them with the mentioned skrape functionality.
+In addition, extensions for known testing libraries are provided to extend them with the mentioned skrape{it} functionality.
 Currently available:
-* [Srape{it} MockMvc extension](https://github.com/skrapeit/skrapeit-mockmvc-extension)
-* [Srape{it} Ktor extension](https://github.com/skrapeit/skrapeit-ktor-extension)
-### Read the Docs
+* [Skrape{it} MockMvc extension](https://github.com/skrapeit/skrapeit-mockmvc-extension)
+* [Skrape{it} Ktor extension](https://github.com/skrapeit/skrapeit-ktor-extension)
 
+### Read the Docs
 You'll always find latest documentation, release notes and examples at 
 **[https://docs.skrape.it](https://docs.skrape.it)**
