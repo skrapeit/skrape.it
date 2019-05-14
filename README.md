@@ -14,15 +14,20 @@
 [![Awesome Kotlin Badge](https://kotlin.link/awesome-kotlin.svg)](https://github.com/KotlinBy/awesome-kotlin)
 
 [skrape{it}](https://docs.skrape.it)
-=================================
+====================================
 
-_**[skrape{it}](http://www.skrape.it)**_ is a Kotlin-based HTML testing and web scraping library
-that can be used seamlessly in Spring-Boot, Android or other JVM projects.
-It places particular emphasis on ease of use, a high level of readability, 
-attention to performance through the use of non-blocking operations and is not 
-bound to a specific test runner.
+_**[skrape{it}](http://www.skrape.it)**_ is a Kotlin-based HTML/XML testing and web scraping library
+that can be used seamlessly in Spring-Boot, Ktor, Android or other Kotlin-JVM projects.
+The ability to analyze and extract HTML including client-side rendered DOM trees and all other XML-related markup specifications such as SVG, UML, RSS,... makes it unique.
+It places particular emphasis on ease of use and a high level of readability by providing an intuitive DSL.
+First and foremost skrape{it} aims to be a testing tool (not tied to a particular test runner), but it can also be used to scrape websites in a convenient fashion.
 
+#### Extensions
+In addition, extensions for known testing libraries are provided to extend them with the mentioned skrape functionality.
+Currently available:
+* [Srape{it} MockMvc extension](/skrapeit-mockmvc-extension)
+* [Srape{it} Ktor extension](/skrapeit-ktor-extension)
 ### Read the Docs
 
-You'll always find documentation of the latest release at 
+You'll always find latest documentation, release notes and examples at 
 **[https://docs.skrape.it](https://docs.skrape.it)**
