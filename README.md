@@ -25,8 +25,8 @@ First and foremost skrape{it} aims to be a testing tool (not tied to a particula
 #### Extensions
 In addition, extensions for known testing libraries are provided to extend them with the mentioned skrape functionality.
 Currently available:
-* [Srape{it} MockMvc extension](/skrapeit-mockmvc-extension)
-* [Srape{it} Ktor extension](/skrapeit-ktor-extension)
+* [Srape{it} MockMvc extension](https://github.com/skrapeit/skrapeit-mockmvc-extension)
+* [Srape{it} Ktor extension](https://github.com/skrapeit/skrapeit-ktor-extension)
 ### Read the Docs
 
 You'll always find latest documentation, release notes and examples at 
