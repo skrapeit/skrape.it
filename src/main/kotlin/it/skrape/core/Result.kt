@@ -8,7 +8,7 @@ import org.jsoup.Jsoup
  * @param document - the already parsed page-source
  * @param statusCode - the http responses status code
  * @param statusMessage - the http responses status message
- * @param contentType - the http responses status message
+ * @param contentType - the http responses content type
  * @param headers - the http responses headers
  * @param request - the initial request
  */

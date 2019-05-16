@@ -2,7 +2,7 @@ package it.skrape.core
 
 import it.skrape.core.fetcher.BrowserFetcher
 import org.jsoup.Jsoup
-import java.util.*
+import java.util.Base64
 
 class Parser(var html: String = "") {
 

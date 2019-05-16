@@ -36,10 +36,10 @@ internal class ParserTest {
         // given
         val htmlAsString = getMarkupFromFile("js.html")
 
+        // when
         val result = Parser(htmlAsString).parseDom()
 
-        println(result.body())
-
+        // then
         assertThat(result.title()).isEqualTo("i'm the title")
         assertThat(result.selectFirst("p").text()).isEqualTo("i'm a paragraph")
         assertThat(result.selectFirst(".dynamic").text()).isEqualTo("I have been dynamically added via Javascript")
@@ -50,8 +50,10 @@ internal class ParserTest {
         // given
         val htmlAsString = getMarkupFromFile("es6.html")
 
+        // when
         val result = Parser(htmlAsString).parseDom()
 
+        // then
         assertThat(result.title()).isEqualTo("i'm the title")
         assertThat(result.selectFirst("p").text()).isEqualTo("dynamically added")
     }
