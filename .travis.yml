@@ -1,8 +1,12 @@
 language: java
 dist: trusty
 
-jdk:
-  - oraclejdk8
+matrix:
+  include:
+    - jdk: openjdk8
+      env: JDK=8
+    - jdk: openjdk11
+      env: JDK=11
 
 script:
   - ./mvnw clean verify
