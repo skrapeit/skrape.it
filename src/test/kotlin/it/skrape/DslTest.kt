@@ -33,12 +33,12 @@ import java.net.SocketTimeoutException
 @Testcontainers
 internal class DslTest : WireMockSetup() {
 
-    companion object {
-        @Container
-        private val httpBin = KGenericContainer("kennethreitz/httpbin")
-                .withExposedPorts(80)
-                .waitingFor(Wait.forHttp("/").forStatusCode(200))
-    }
+//    companion object {
+//        @Container
+//        private val httpBin = KGenericContainer("kennethreitz/httpbin")
+//                .withExposedPorts(80)
+//                .waitingFor(Wait.forHttp("/").forStatusCode(200))
+//    }
 
     @Test
     internal fun `dsl can skrape by url`() {
@@ -314,31 +314,31 @@ internal class DslTest : WireMockSetup() {
         }
     }
 
-    @Test
-    internal fun `can send cookies with request in js rendering mode`() {
-
-        skrape {
-            mode = Mode.DOM
-            url = "http://localhost:${httpBin.firstMappedPort}/cookies"
-            cookies = mapOf("myCookie" to "myCookieValue")
-            expect {
-                assertThat(body).contains("\"myCookie\": \"myCookieValue\"")
-            }
-        }
-    }
-
-    @Test
-    internal fun `can send cookies with request in http mode`() {
-
-        skrape {
-            mode = Mode.SOURCE
-            url = "http://localhost:${httpBin.firstMappedPort}/cookies"
-            cookies = mapOf("someCookie" to "someCookieValue")
-            expect {
-                assertThat(body).contains("\"someCookie\": \"someCookieValue\"")
-            }
-        }
-    }
+//    @Test
+//    internal fun `can send cookies with request in js rendering mode`() {
+//
+//        skrape {
+//            mode = Mode.DOM
+//            url = "http://localhost:${httpBin.firstMappedPort}/cookies"
+//            cookies = mapOf("myCookie" to "myCookieValue")
+//            expect {
+//                assertThat(body).contains("\"myCookie\": \"myCookieValue\"")
+//            }
+//        }
+//    }
+//
+//    @Test
+//    internal fun `can send cookies with request in http mode`() {
+//
+//        skrape {
+//            mode = Mode.SOURCE
+//            url = "http://localhost:${httpBin.firstMappedPort}/cookies"
+//            cookies = mapOf("someCookie" to "someCookieValue")
+//            expect {
+//                assertThat(body).contains("\"someCookie\": \"someCookieValue\"")
+//            }
+//        }
+//    }
 }
 
 class MyObject(var message: String? = null, var paragraph: String = "", var allParagraphs: List<String> = emptyList())
