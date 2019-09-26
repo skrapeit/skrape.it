@@ -1,5 +1,5 @@
 language: java
-dist: bionic
+dist: trusty
 
 matrix:
   include:
