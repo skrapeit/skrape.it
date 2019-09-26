@@ -83,7 +83,7 @@
         <junit.version>5.5.2</junit.version>
         <version.jsoup>1.11.3</version.jsoup>
         <version.assertk>0.13</version.assertk>
-        <version.htmlunit>2.35.0</version.htmlunit>
+        <version.htmlunit>2.36.0</version.htmlunit>
         <version.wiremock>2.23.2</version.wiremock>
         <version.testcontainers>1.11.2</version.testcontainers>
     </properties>
@@ -238,25 +238,25 @@
             </plugin>
 
             <!-- generate javadocs-->
-            <plugin>
-                <groupId>org.jetbrains.dokka</groupId>
-                <artifactId>dokka-maven-plugin</artifactId>
-                <version>0.9.18</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>javadocJar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <jdkVersion>8</jdkVersion>
-                    <impliedPlatforms>
-                        <platform>JVM</platform>
-                    </impliedPlatforms>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.jetbrains.dokka</groupId>-->
+<!--                <artifactId>dokka-maven-plugin</artifactId>-->
+<!--                <version>0.9.18</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>javadocJar</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--                    <jdkVersion>8</jdkVersion>-->
+<!--                    <impliedPlatforms>-->
+<!--                        <platform>JVM</platform>-->
+<!--                    </impliedPlatforms>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
 
             <!-- create coverage report -->
             <plugin>
