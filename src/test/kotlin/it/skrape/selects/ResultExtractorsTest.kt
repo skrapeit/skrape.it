@@ -10,6 +10,7 @@ import it.skrape.core.setupStub
 import it.skrape.exceptions.DivElementNotFoundException
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.exceptions.MetaElementNotFoundException
+import it.skrape.exceptions.SpanElementNotFoundException
 import it.skrape.expect
 import it.skrape.extract
 import it.skrape.matchers.toBe
@@ -121,6 +122,58 @@ internal class ResultExtractorsTest : WireMockSetup() {
     internal fun `will throw custom exception if divs could not be found via lambda`() {
         Assertions.assertThrows(DivElementNotFoundException::class.java) {
             aValidResult().divs {}
+        }
+    }
+
+    @Test
+    internal fun `can read span from document`() {
+        val result = aValidResult("<html><span>span inner text</span></html>")
+        result.span {
+            assertThat(text()).isEqualTo("span inner text")
+        }
+    }
+
+    @Test
+    internal fun `can read span with selector from document`() {
+        val result = aValidResult("<html><span class=\"existent\">span inner text</span></html>")
+        result.span(".existent") {
+            assertThat(text()).isEqualTo("span inner text")
+        }
+    }
+
+    @Test
+    internal fun `will throw custom exception if span could not be found via lambda`() {
+        Assertions.assertThrows(SpanElementNotFoundException::class.java) {
+            aValidResult().span(".nonExistent") {}
+        }
+    }
+
+    @Test
+    internal fun `can read spans from document`() {
+        val result = aValidResult("<html><span>first</span><span>second</span></html>")
+        result.spans {
+            assertThat(size).isEqualTo(2)
+            assertThat(get(0).text()).isEqualTo("first")
+            assertThat(get(1).text()).isEqualTo("second")
+        }
+    }
+
+    @Test
+    internal fun `can read spans with selector from document`() {
+        val result = aValidResult("<html><span class=\"foo\">with class</span><span class=\"foo\">with class</span><span>without class</span></html>")
+        result.spans(".foo") {
+            assertThat(size).isEqualTo(2)
+            forEach {
+                assertThat(it.text()).isEqualTo("with class")
+            }
+        }
+
+    }
+
+    @Test
+    internal fun `will throw custom exception if spans could not be found via lambda`() {
+        Assertions.assertThrows(SpanElementNotFoundException::class.java) {
+            aValidResult().spans {}
         }
     }
 

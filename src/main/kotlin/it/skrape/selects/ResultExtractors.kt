@@ -5,6 +5,7 @@ import it.skrape.core.Result
 import it.skrape.exceptions.DivElementNotFoundException
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.exceptions.MetaElementNotFoundException
+import it.skrape.exceptions.SpanElementNotFoundException
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
@@ -91,6 +92,33 @@ fun Result.divs(selector: String = "", init: Elements.() -> Unit): Elements {
     if (divs.size == 0) throw DivElementNotFoundException(selector)
     divs.apply(init)
     return divs
+}
+
+/**
+ * Will pick the first occurrence of a Span-Element that
+ * is matching the CSS-Selector from a result.
+ * @see <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/span">Span-tag explained for further information.</a>
+ * @param selector that represents an CSS-Selector
+ * @return Element
+ */
+fun Result.span(selector: String = "", init: Element.() -> Unit): Element {
+    val span = document.selectFirst("span$selector") ?: throw SpanElementNotFoundException(selector)
+    span.apply(init)
+    return span
+}
+
+/**
+ * Will pick all occurrences of Span-Elements that
+ * are matching the CSS-Selector from a result.
+ * @see <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/span">Span-tag explained for further information.</a>
+ * @param selector that represents an CSS-Selector
+ * @return Elements
+ */
+fun Result.spans(selector: String = "", init: Elements.() -> Unit): Elements {
+    val spans = document.select("span$selector")
+    if (spans.size == 0) throw SpanElementNotFoundException(selector)
+    spans.apply(init)
+    return spans
 }
 
 /**
