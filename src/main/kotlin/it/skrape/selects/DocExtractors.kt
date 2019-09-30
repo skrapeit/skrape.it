@@ -1,6 +1,8 @@
 package it.skrape.selects
 
 import it.skrape.core.Doc
+import it.skrape.core.Result
+import it.skrape.exceptions.DivNotFoundException
 import it.skrape.exceptions.ElementNotFoundException
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
@@ -24,3 +26,16 @@ infix fun Doc.element(selector: String): Element = this.selectFirst(selector) ?:
  * @return Elements
  */
 infix fun Doc.elements(selector: String): Elements = this.select(selector)
+
+
+/**
+ * Will pick the first occurrence of a Div-Element that
+ * is matching the CSS-Selector from a parsed document.
+ * @see <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/div">Div-tag explained for further information.</a>
+ * @param selector that represents an CSS-Selector
+ * @return Element
+ */
+fun Doc.div(selector: String = "", init: Element.() -> Unit) {
+    val element = this.selectFirst("div$selector") ?: throw DivNotFoundException(selector)
+    element.apply(init)
+}

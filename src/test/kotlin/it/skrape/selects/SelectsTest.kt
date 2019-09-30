@@ -6,6 +6,7 @@ import assertk.assertions.isEqualTo
 import it.skrape.core.Request
 import it.skrape.core.WireMockSetup
 import it.skrape.core.setupStub
+import it.skrape.exceptions.DivNotFoundException
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.expect
 import it.skrape.extract
@@ -66,6 +67,34 @@ internal class SelectsTest : WireMockSetup() {
                 header("Content-Type") toContain "html"
                 header("notExisting") toBe null
             }
+        }
+    }
+
+    @Test
+    internal fun `can read div from document`() {
+        expect("<html><div>divs inner text</div></html>") {
+            div {
+                assertThat(text()).isEqualTo("divs inner text")
+            }
+        }
+    }
+
+    @Test
+    internal fun `can read div with selector from document`() {
+        expect("<html><div class=\"existent\">divs inner text</div></html>") {
+            div(".existent") {
+                assertThat(text()).isEqualTo("divs inner text")
+            }
+        }
+    }
+
+    @Test
+    internal fun `will throw custom exception if div could not be found via lambda`() {
+        Assertions.assertThrows(DivNotFoundException::class.java) {
+            expect("") {
+                div(".nonExistent") {}
+            }
+
         }
     }
 
