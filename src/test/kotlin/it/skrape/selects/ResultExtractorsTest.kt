@@ -7,8 +7,9 @@ import it.skrape.aValidResult
 import it.skrape.core.Request
 import it.skrape.core.WireMockSetup
 import it.skrape.core.setupStub
-import it.skrape.exceptions.DivNotFoundException
+import it.skrape.exceptions.DivElementNotFoundException
 import it.skrape.exceptions.ElementNotFoundException
+import it.skrape.exceptions.MetaElementNotFoundException
 import it.skrape.expect
 import it.skrape.extract
 import it.skrape.matchers.toBe
@@ -89,7 +90,7 @@ internal class ResultExtractorsTest : WireMockSetup() {
 
     @Test
     internal fun `will throw custom exception if div could not be found via lambda`() {
-        Assertions.assertThrows(DivNotFoundException::class.java) {
+        Assertions.assertThrows(DivElementNotFoundException::class.java) {
             aValidResult().div(".nonExistent") {}
         }
     }
@@ -118,8 +119,60 @@ internal class ResultExtractorsTest : WireMockSetup() {
 
     @Test
     internal fun `will throw custom exception if divs could not be found via lambda`() {
-        Assertions.assertThrows(DivNotFoundException::class.java) {
+        Assertions.assertThrows(DivElementNotFoundException::class.java) {
             aValidResult().divs {}
+        }
+    }
+
+    @Test
+    internal fun `can read meta from document`() {
+        val result = aValidResult("<html><meta first=\"First\" /></html>")
+        result.meta {
+            assertThat(attr("first")).isEqualTo("First")
+        }
+    }
+
+    @Test
+    internal fun `can read meta with selector from document`() {
+        val result = aValidResult("<html><meta first=\"First\" /></html>")
+        result.meta("[first]") {
+            assertThat(attr("first")).isEqualTo("First")
+        }
+    }
+
+    @Test
+    internal fun `will throw custom exception if meta could not be found via lambda`() {
+        Assertions.assertThrows(MetaElementNotFoundException::class.java) {
+            aValidResult().meta(".nonExistent") {}
+        }
+    }
+
+    @Test
+    internal fun `can read metas from document`() {
+        val result = aValidResult("<html><meta first=\"First\" /><meta second=\"Second\" /></html>")
+        result.metas {
+            assertThat(size).isEqualTo(2)
+            assertThat(get(0).attr("first")).isEqualTo("First")
+            assertThat(get(1).attr("second")).isEqualTo("Second")
+        }
+    }
+
+    @Test
+    internal fun `can read metas with selector from document`() {
+        val result = aValidResult("<html><meta first=\"First\" /><meta second=\"Second\" /></html>")
+        result.metas("[first]") {
+            assertThat(size).isEqualTo(1)
+            forEach {
+                assertThat(it.attr("first")).isEqualTo("First")
+            }
+        }
+
+    }
+
+    @Test
+    internal fun `will throw custom exception if metas could not be found via lambda`() {
+        Assertions.assertThrows(MetaElementNotFoundException::class.java) {
+            aValidResult().metas {}
         }
     }
 }

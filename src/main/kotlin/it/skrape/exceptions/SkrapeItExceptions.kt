@@ -1,9 +1,12 @@
 package it.skrape.exceptions
 
 
-class ElementNotFoundException(selector: String): Exception("Could not find element \"$selector\"")
+open class ElementNotFoundException(selector: String, tag: String = ""):
+        Exception("Could not find element \"$tag$selector\"")
 
-class DivNotFoundException(selector: String): Exception("Could not find element \"div$selector\"")
+class DivElementNotFoundException(selector: String): ElementNotFoundException(selector, "div")
+
+class MetaElementNotFoundException(selector: String): ElementNotFoundException(selector, "meta")
 
 class DocumentNotParsable(documentToParse: String): Exception("Could not parse string \n\"$documentToParse\"")
 
