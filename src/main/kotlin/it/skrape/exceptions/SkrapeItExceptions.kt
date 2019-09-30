@@ -8,6 +8,8 @@ class DivElementNotFoundException(selector: String): ElementNotFoundException(se
 
 class MetaElementNotFoundException(selector: String): ElementNotFoundException(selector, "meta")
 
+class SpanElementNotFoundException(selector: String): ElementNotFoundException(selector, "span")
+
 class DocumentNotParsable(documentToParse: String): Exception("Could not parse string \n\"$documentToParse\"")
 
 class UnsupportedRequestOptionException(message:String): IllegalArgumentException(message)
