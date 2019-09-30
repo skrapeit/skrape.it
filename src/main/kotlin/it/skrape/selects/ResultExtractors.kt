@@ -2,10 +2,7 @@ package it.skrape.selects
 
 import it.skrape.SkrapeItDslMarker
 import it.skrape.core.Result
-import it.skrape.exceptions.DivElementNotFoundException
-import it.skrape.exceptions.ElementNotFoundException
-import it.skrape.exceptions.MetaElementNotFoundException
-import it.skrape.exceptions.SpanElementNotFoundException
+import it.skrape.exceptions.*
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
@@ -122,6 +119,33 @@ fun Result.spans(selector: String = "", init: Elements.() -> Unit): Elements {
 }
 
 /**
+ * Will pick the first occurrence of a strong-Element that
+ * is matching the CSS-Selector from a result.
+ * @see <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/strong">strong-tag explained for further information.</a>
+ * @param selector that represents an CSS-Selector
+ * @return Element
+ */
+fun Result.strong(selector: String = "", init: Element.() -> Unit): Element {
+    val strong = document.selectFirst("strong$selector") ?: throw StrongElementNotFoundException(selector)
+    strong.apply(init)
+    return strong
+}
+
+/**
+ * Will pick all occurrences of strong-Elements that
+ * are matching the CSS-Selector from a result.
+ * @see <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/strong">strong-tag explained for further information.</a>
+ * @param selector that represents an CSS-Selector
+ * @return Elements
+ */
+fun Result.strongs(selector: String = "", init: Elements.() -> Unit): Elements {
+    val strongs = document.select("strong$selector")
+    if (strongs.size == 0) throw StrongElementNotFoundException(selector)
+    strongs.apply(init)
+    return strongs
+}
+
+/**
  * Will pick the first occurrence of a Meta-Element that
  * is matching the CSS-Selector from a result.
  * @see <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/meta">Meta-tag explained for further information.</a>
@@ -160,14 +184,14 @@ fun Result.elements(selector: String, init: Elements.() -> Unit) {
 }
 
 @SkrapeItDslMarker
-fun Result.headers(init: Map<String, String>.() -> Unit) : Map<String, String> {
+fun Result.headers(init: Map<String, String>.() -> Unit): Map<String, String> {
     val headers = this.headers
     headers.apply(init)
     return headers
 }
 
 @SkrapeItDslMarker
-fun Result.header(name: String, init: String?.() -> Unit) : String? {
+fun Result.header(name: String, init: String?.() -> Unit): String? {
     val header = this.headers[name]
     header.apply(init)
     return header

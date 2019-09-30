@@ -1,10 +1,7 @@
 package it.skrape.selects
 
 import it.skrape.core.Doc
-import it.skrape.exceptions.DivElementNotFoundException
-import it.skrape.exceptions.ElementNotFoundException
-import it.skrape.exceptions.MetaElementNotFoundException
-import it.skrape.exceptions.SpanElementNotFoundException
+import it.skrape.exceptions.*
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
@@ -76,6 +73,31 @@ fun Doc.span(selector: String = "", init: Element.() -> Unit) {
 fun Doc.spans(selector: String = "", init: Elements.() -> Unit) {
     val elements = this.select("span$selector")
     if (elements.size == 0) throw SpanElementNotFoundException(selector)
+    elements.apply(init)
+}
+
+/**
+ * Will pick the first occurrence of a strong-Element that
+ * is matching the CSS-Selector from a parsed document.
+ * @see <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/strong">strong-tag explained for further information.</a>
+ * @param selector that represents an CSS-Selector
+ * @return Element
+ */
+fun Doc.strong(selector: String = "", init: Element.() -> Unit) {
+    val element = this.selectFirst("strong$selector") ?: throw StrongElementNotFoundException(selector)
+    element.apply(init)
+}
+
+/**
+ * Will pick all occurrences of Span-Elements that
+ * are matching the CSS-Selector from a parsed document.
+ * @see <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/span">Span-tag explained for further information.</a>
+ * @param selector that represents an CSS-Selector
+ * @return Elements
+ */
+fun Doc.strongs(selector: String = "", init: Elements.() -> Unit) {
+    val elements = this.select("strong$selector")
+    if (elements.size == 0) throw StrongElementNotFoundException(selector)
     elements.apply(init)
 }
 

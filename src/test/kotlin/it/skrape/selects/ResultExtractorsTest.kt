@@ -7,10 +7,7 @@ import it.skrape.aValidResult
 import it.skrape.core.Request
 import it.skrape.core.WireMockSetup
 import it.skrape.core.setupStub
-import it.skrape.exceptions.DivElementNotFoundException
-import it.skrape.exceptions.ElementNotFoundException
-import it.skrape.exceptions.MetaElementNotFoundException
-import it.skrape.exceptions.SpanElementNotFoundException
+import it.skrape.exceptions.*
 import it.skrape.expect
 import it.skrape.extract
 import it.skrape.matchers.toBe
@@ -115,7 +112,6 @@ internal class ResultExtractorsTest : WireMockSetup() {
                 assertThat(it.text()).isEqualTo("with class")
             }
         }
-
     }
 
     @Test
@@ -167,13 +163,63 @@ internal class ResultExtractorsTest : WireMockSetup() {
                 assertThat(it.text()).isEqualTo("with class")
             }
         }
-
     }
 
     @Test
     internal fun `will throw custom exception if spans could not be found via lambda`() {
         Assertions.assertThrows(SpanElementNotFoundException::class.java) {
             aValidResult().spans {}
+        }
+    }
+
+    @Test
+    internal fun `can read strong from document`() {
+        val result = aValidResult("<html><strong>strong inner text</strong></html>")
+        result.strong {
+            assertThat(text()).isEqualTo("strong inner text")
+        }
+    }
+
+    @Test
+    internal fun `can read strong with selector from document`() {
+        val result = aValidResult("<html><strong class=\"existent\">strong inner text</strong></html>")
+        result.strong(".existent") {
+            assertThat(text()).isEqualTo("strong inner text")
+        }
+    }
+
+    @Test
+    internal fun `will throw custom exception if strong could not be found via lambda`() {
+        Assertions.assertThrows(StrongElementNotFoundException::class.java) {
+            aValidResult().strong(".nonExistent") {}
+        }
+    }
+
+    @Test
+    internal fun `can read strongs from document`() {
+        val result = aValidResult("<html><strong>first</strong><strong>second</strong></html>")
+        result.strongs {
+            assertThat(size).isEqualTo(2)
+            assertThat(get(0).text()).isEqualTo("first")
+            assertThat(get(1).text()).isEqualTo("second")
+        }
+    }
+
+    @Test
+    internal fun `can read strongs with selector from document`() {
+        val result = aValidResult("<html><strong class=\"foo\">with class</strong><strong class=\"foo\">with class</strong><strong>without class</strong></html>")
+        result.strongs(".foo") {
+            assertThat(size).isEqualTo(2)
+            forEach {
+                assertThat(it.text()).isEqualTo("with class")
+            }
+        }
+    }
+
+    @Test
+    internal fun `will throw custom exception if strongs could not be found via lambda`() {
+        Assertions.assertThrows(StrongElementNotFoundException::class.java) {
+            aValidResult().strongs {}
         }
     }
 
