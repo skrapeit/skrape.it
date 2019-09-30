@@ -77,6 +77,19 @@ fun Result.div(selector: String = "", init: Element.() -> Unit) {
     element.apply(init)
 }
 
+/**
+ * Will pick all occurrences of a Div-Elements that
+ * are matching the CSS-Selector from a parsed document.
+ * @see <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/div">Div-tag explained for further information.</a>
+ * @param selector that represents an CSS-Selector
+ * @return Element
+ */
+fun Result.divs(selector: String = "", init: Elements.() -> Unit) {
+    val elements = document.select("div$selector")
+    if (elements.size == 0) throw DivNotFoundException(selector)
+    elements.apply(init)
+}
+
 @SkrapeItDslMarker
 fun Result.element(selector: String, init: Element.() -> Unit) {
     val element = document.selectFirst(selector) ?: throw ElementNotFoundException(selector)

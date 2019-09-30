@@ -342,6 +342,41 @@ internal class DslTest : WireMockSetup() {
         }
     }
 
+    @Test
+    internal fun `can read divs from document`() {
+        skrape {
+            expect("<html><div>first</div><div>second</div></html>") {
+                divs {
+                    assertThat(size).isEqualTo(2)
+                    assertThat(get(0).text()).isEqualTo("first")
+                    assertThat(get(1).text()).isEqualTo("second")
+                }
+            }
+        }
+    }
+
+    @Test
+    internal fun `can read divs with selector from document`() {
+        expect("<html><div class=\"foo\">with class</div><div class=\"foo\">with class</div><div>without class</div></html>") {
+            divs(".foo") {
+                assertThat(size).isEqualTo(2)
+                forEach {
+                    assertThat(it.text()).isEqualTo("with class")
+                }
+            }
+        }
+    }
+
+    @Test
+    internal fun `will throw custom exception if divs could not be found via lambda`() {
+        Assertions.assertThrows(DivNotFoundException::class.java) {
+            expect("") {
+                divs {}
+            }
+
+        }
+    }
+
 //    @Test
 //    internal fun `can send cookies with request in js rendering mode`() {
 //
