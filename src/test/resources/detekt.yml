@@ -519,5 +519,5 @@ style:
   VarCouldBeVal:
     active: true
   WildcardImport:
-    active: true
+    active: false
     excludeImports: 'it.skrape.core.*'

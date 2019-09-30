@@ -10,6 +10,8 @@ class MetaElementNotFoundException(selector: String): ElementNotFoundException(s
 
 class SpanElementNotFoundException(selector: String): ElementNotFoundException(selector, "span")
 
+class StrongElementNotFoundException(selector: String): ElementNotFoundException(selector, "strong")
+
 class DocumentNotParsable(documentToParse: String): Exception("Could not parse string \n\"$documentToParse\"")
 
 class UnsupportedRequestOptionException(message:String): IllegalArgumentException(message)

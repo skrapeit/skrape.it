@@ -5,6 +5,7 @@ import assertk.assertions.isEqualTo
 import it.skrape.exceptions.DivElementNotFoundException
 import it.skrape.exceptions.MetaElementNotFoundException
 import it.skrape.exceptions.SpanElementNotFoundException
+import it.skrape.exceptions.StrongElementNotFoundException
 import it.skrape.expect
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -35,7 +36,6 @@ internal class DocExtractorsTest {
             expect("") {
                 div(".nonExistent") {}
             }
-
         }
     }
 
@@ -68,7 +68,6 @@ internal class DocExtractorsTest {
             expect("") {
                 divs {}
             }
-
         }
     }
 
@@ -96,7 +95,6 @@ internal class DocExtractorsTest {
             expect("") {
                 span(".nonExistent") {}
             }
-
         }
     }
 
@@ -130,6 +128,66 @@ internal class DocExtractorsTest {
                 spans {}
             }
 
+        }
+    }
+
+    @Test
+    internal fun `can read strong from document`() {
+        expect("<html><strong>strong inner text</strong></html>") {
+            strong {
+                assertThat(text()).isEqualTo("strong inner text")
+            }
+        }
+    }
+
+    @Test
+    internal fun `can read strong with selector from document`() {
+        expect("<html><strong class=\"existent\">strong inner text</strong></html>") {
+            strong(".existent") {
+                assertThat(text()).isEqualTo("strong inner text")
+            }
+        }
+    }
+
+    @Test
+    internal fun `will throw custom exception if strong could not be found via lambda`() {
+        Assertions.assertThrows(StrongElementNotFoundException::class.java) {
+            expect("") {
+                strong(".nonExistent") {}
+            }
+
+        }
+    }
+
+    @Test
+    internal fun `can read strongs from document`() {
+        expect("<html><strong>first</strong><strong>second</strong></html>") {
+            strongs {
+                assertThat(size).isEqualTo(2)
+                assertThat(get(0).text()).isEqualTo("first")
+                assertThat(get(1).text()).isEqualTo("second")
+            }
+        }
+    }
+
+    @Test
+    internal fun `can read strongs with selector from document`() {
+        expect("<html><strong class=\"foo\">with class</strong><strong class=\"foo\">with class</strong><strong>without class</strong></html>") {
+            strongs(".foo") {
+                assertThat(size).isEqualTo(2)
+                forEach {
+                    assertThat(it.text()).isEqualTo("with class")
+                }
+            }
+        }
+    }
+
+    @Test
+    internal fun `will throw custom exception if strongs could not be found via lambda`() {
+        Assertions.assertThrows(StrongElementNotFoundException::class.java) {
+            expect("") {
+                strongs {}
+            }
         }
     }
 
