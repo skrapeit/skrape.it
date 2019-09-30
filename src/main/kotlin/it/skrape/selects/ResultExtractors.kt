@@ -2,6 +2,7 @@ package it.skrape.selects
 
 import it.skrape.SkrapeItDslMarker
 import it.skrape.core.Result
+import it.skrape.exceptions.DivNotFoundException
 import it.skrape.exceptions.ElementNotFoundException
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
@@ -62,6 +63,31 @@ fun Result.body(init: Element.() -> Unit): Element {
     val body = document.body()
     body.apply(init)
     return body
+}
+
+/**
+ * Will pick the first occurrence of a Div-Element that
+ * is matching the CSS-Selector from a parsed document.
+ * @see <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/div">Div-tag explained for further information.</a>
+ * @param selector that represents an CSS-Selector
+ * @return Element
+ */
+fun Result.div(selector: String = "", init: Element.() -> Unit) {
+    val element = document.selectFirst("div$selector") ?: throw DivNotFoundException(selector)
+    element.apply(init)
+}
+
+/**
+ * Will pick all occurrences of a Div-Elements that
+ * are matching the CSS-Selector from a parsed document.
+ * @see <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/div">Div-tag explained for further information.</a>
+ * @param selector that represents an CSS-Selector
+ * @return Element
+ */
+fun Result.divs(selector: String = "", init: Elements.() -> Unit) {
+    val elements = document.select("div$selector")
+    if (elements.size == 0) throw DivNotFoundException(selector)
+    elements.apply(init)
 }
 
 @SkrapeItDslMarker

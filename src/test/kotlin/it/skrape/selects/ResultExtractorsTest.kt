@@ -3,9 +3,11 @@ package it.skrape.selects
 import assertk.assertAll
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import it.skrape.aValidResult
 import it.skrape.core.Request
 import it.skrape.core.WireMockSetup
 import it.skrape.core.setupStub
+import it.skrape.exceptions.DivNotFoundException
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.expect
 import it.skrape.extract
@@ -15,7 +17,7 @@ import it.skrape.skrape
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-internal class SelectsTest : WireMockSetup() {
+internal class ResultExtractorsTest : WireMockSetup() {
 
     @Test
     internal fun `will throw custom exception if element could not be found via element function`() {
@@ -69,4 +71,55 @@ internal class SelectsTest : WireMockSetup() {
         }
     }
 
+    @Test
+    internal fun `can read div from document`() {
+        val result = aValidResult("<html><div>divs inner text</div></html>")
+        result.div {
+            assertThat(text()).isEqualTo("divs inner text")
+        }
+    }
+
+    @Test
+    internal fun `can read div with selector from document`() {
+        val result = aValidResult("<html><div class=\"existent\">divs inner text</div></html>")
+        result.div(".existent") {
+            assertThat(text()).isEqualTo("divs inner text")
+        }
+    }
+
+    @Test
+    internal fun `will throw custom exception if div could not be found via lambda`() {
+        Assertions.assertThrows(DivNotFoundException::class.java) {
+            aValidResult().div(".nonExistent") {}
+        }
+    }
+
+    @Test
+    internal fun `can read divs from document`() {
+        val result = aValidResult("<html><div>first</div><div>second</div></html>")
+        result.divs {
+            assertThat(size).isEqualTo(2)
+            assertThat(get(0).text()).isEqualTo("first")
+            assertThat(get(1).text()).isEqualTo("second")
+        }
+    }
+
+    @Test
+    internal fun `can read divs with selector from document`() {
+        val result = aValidResult("<html><div class=\"foo\">with class</div><div class=\"foo\">with class</div><div>without class</div></html>")
+        result.divs(".foo") {
+            assertThat(size).isEqualTo(2)
+            forEach {
+                assertThat(it.text()).isEqualTo("with class")
+            }
+        }
+
+    }
+
+    @Test
+    internal fun `will throw custom exception if divs could not be found via lambda`() {
+        Assertions.assertThrows(DivNotFoundException::class.java) {
+            aValidResult().divs {}
+        }
+    }
 }

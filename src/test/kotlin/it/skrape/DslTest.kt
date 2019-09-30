@@ -11,16 +11,10 @@ import it.skrape.core.WireMockSetup
 import it.skrape.core.setupPostStub
 import it.skrape.core.setupRedirect
 import it.skrape.core.setupStub
+import it.skrape.exceptions.DivNotFoundException
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.matchers.toBe
-import it.skrape.selects.`$`
-import it.skrape.selects.body
-import it.skrape.selects.el
-import it.skrape.selects.element
-import it.skrape.selects.elements
-import it.skrape.selects.header
-import it.skrape.selects.headers
-import it.skrape.selects.title
+import it.skrape.selects.*
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.testcontainers.containers.GenericContainer
@@ -311,6 +305,75 @@ internal class DslTest : WireMockSetup() {
             expect {
                 element("div.dynamic").text() toBe "I have been dynamically added via Javascript"
             }
+        }
+    }
+
+
+    @Test
+    internal fun `can pick div directly via dsl`() {
+        skrape {
+            expect("<html><div>divs inner text</div></html>") {
+                div {
+                    assertThat(text()).isEqualTo("divs inner text")
+                }
+            }
+        }
+    }
+
+    @Test
+    internal fun `can pick div with selector directly via dsl`() {
+        skrape {
+            expect("<html><div class=\"existent\">divs inner text</div></html>") {
+                div(".existent") {
+                    assertThat(text()).isEqualTo("divs inner text")
+                }
+            }
+        }
+    }
+
+    @Test
+    internal fun `will throw custom exception if div could not be found via lambda`() {
+        Assertions.assertThrows(DivNotFoundException::class.java) {
+            skrape {
+                expect {
+                    div(".nonExistent") {}
+                }
+            }
+        }
+    }
+
+    @Test
+    internal fun `can read divs from document`() {
+        skrape {
+            expect("<html><div>first</div><div>second</div></html>") {
+                divs {
+                    assertThat(size).isEqualTo(2)
+                    assertThat(get(0).text()).isEqualTo("first")
+                    assertThat(get(1).text()).isEqualTo("second")
+                }
+            }
+        }
+    }
+
+    @Test
+    internal fun `can read divs with selector from document`() {
+        expect("<html><div class=\"foo\">with class</div><div class=\"foo\">with class</div><div>without class</div></html>") {
+            divs(".foo") {
+                assertThat(size).isEqualTo(2)
+                forEach {
+                    assertThat(it.text()).isEqualTo("with class")
+                }
+            }
+        }
+    }
+
+    @Test
+    internal fun `will throw custom exception if divs could not be found via lambda`() {
+        Assertions.assertThrows(DivNotFoundException::class.java) {
+            expect("") {
+                divs {}
+            }
+
         }
     }
 
