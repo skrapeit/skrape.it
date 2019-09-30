@@ -2,7 +2,8 @@ package it.skrape.selects
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import it.skrape.exceptions.DivNotFoundException
+import it.skrape.exceptions.DivElementNotFoundException
+import it.skrape.exceptions.MetaElementNotFoundException
 import it.skrape.expect
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -29,7 +30,7 @@ internal class DocExtractorsTest {
 
     @Test
     internal fun `will throw custom exception if div could not be found via lambda`() {
-        Assertions.assertThrows(DivNotFoundException::class.java) {
+        Assertions.assertThrows(DivElementNotFoundException::class.java) {
             expect("") {
                 div(".nonExistent") {}
             }
@@ -62,9 +63,70 @@ internal class DocExtractorsTest {
 
     @Test
     internal fun `will throw custom exception if divs could not be found via lambda`() {
-        Assertions.assertThrows(DivNotFoundException::class.java) {
+        Assertions.assertThrows(DivElementNotFoundException::class.java) {
             expect("") {
                 divs {}
+            }
+
+        }
+    }
+
+    @Test
+    internal fun `can read meta from document`() {
+        expect("<html><meta foo=\"bar\" /></html>") {
+            meta {
+                assertThat(attr("foo")).isEqualTo("bar")
+            }
+        }
+    }
+
+    @Test
+    internal fun `can read meta with selector from document`() {
+        expect("<html><meta foo=\"bar\" /></html>") {
+            meta("[foo]") {
+                assertThat(attr("foo")).isEqualTo("bar")
+            }
+        }
+    }
+
+    @Test
+    internal fun `will throw custom exception if meta could not be found via lambda`() {
+        Assertions.assertThrows(MetaElementNotFoundException::class.java) {
+            expect("") {
+                meta {}
+            }
+
+        }
+    }
+
+    @Test
+    internal fun `can read metas from document`() {
+        expect("<html><meta first=\"First\" /><meta second=\"Second\" /></html>") {
+            metas {
+                assertThat(size).isEqualTo(2)
+                assertThat(get(0).attr("first")).isEqualTo("First")
+                assertThat(get(1).attr("second")).isEqualTo("Second")
+            }
+        }
+    }
+
+    @Test
+    internal fun `can read metas with selector from document`() {
+        expect("<html><meta first=\"First\" /><meta second=\"Second\" /></html>") {
+            metas("[first]") {
+                assertThat(size).isEqualTo(1)
+                forEach {
+                    assertThat(it.attr("first")).isEqualTo("First")
+                }
+            }
+        }
+    }
+
+    @Test
+    internal fun `will throw custom exception if metas could not be found via lambda`() {
+        Assertions.assertThrows(MetaElementNotFoundException::class.java) {
+            expect("") {
+                metas {}
             }
 
         }

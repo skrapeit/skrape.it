@@ -2,8 +2,9 @@ package it.skrape.selects
 
 import it.skrape.SkrapeItDslMarker
 import it.skrape.core.Result
-import it.skrape.exceptions.DivNotFoundException
+import it.skrape.exceptions.DivElementNotFoundException
 import it.skrape.exceptions.ElementNotFoundException
+import it.skrape.exceptions.MetaElementNotFoundException
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
@@ -67,27 +68,56 @@ fun Result.body(init: Element.() -> Unit): Element {
 
 /**
  * Will pick the first occurrence of a Div-Element that
- * is matching the CSS-Selector from a parsed document.
+ * is matching the CSS-Selector from a result.
  * @see <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/div">Div-tag explained for further information.</a>
  * @param selector that represents an CSS-Selector
  * @return Element
  */
-fun Result.div(selector: String = "", init: Element.() -> Unit) {
-    val element = document.selectFirst("div$selector") ?: throw DivNotFoundException(selector)
-    element.apply(init)
+fun Result.div(selector: String = "", init: Element.() -> Unit): Element {
+    val div = document.selectFirst("div$selector") ?: throw DivElementNotFoundException(selector)
+    div.apply(init)
+    return div
 }
 
 /**
- * Will pick all occurrences of a Div-Elements that
- * are matching the CSS-Selector from a parsed document.
+ * Will pick all occurrences of Div-Elements that
+ * are matching the CSS-Selector from a result.
  * @see <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/div">Div-tag explained for further information.</a>
+ * @param selector that represents an CSS-Selector
+ * @return Elements
+ */
+fun Result.divs(selector: String = "", init: Elements.() -> Unit): Elements {
+    val divs = document.select("div$selector")
+    if (divs.size == 0) throw DivElementNotFoundException(selector)
+    divs.apply(init)
+    return divs
+}
+
+/**
+ * Will pick the first occurrence of a Meta-Element that
+ * is matching the CSS-Selector from a result.
+ * @see <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/meta">Meta-tag explained for further information.</a>
  * @param selector that represents an CSS-Selector
  * @return Element
  */
-fun Result.divs(selector: String = "", init: Elements.() -> Unit) {
-    val elements = document.select("div$selector")
-    if (elements.size == 0) throw DivNotFoundException(selector)
-    elements.apply(init)
+fun Result.meta(selector: String = "", init: Element.() -> Unit): Element {
+    val meta = document.selectFirst("meta$selector") ?: throw MetaElementNotFoundException(selector)
+    meta.apply(init)
+    return meta
+}
+
+/**
+ * Will pick all occurrences of Meta-Elements that
+ * are matching the CSS-Selector from a result.
+ * @see <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/meta">Meta-tag explained for further information.</a>
+ * @param selector that represents an CSS-Selector
+ * @return Elements
+ */
+fun Result.metas(selector: String = "", init: Elements.() -> Unit): Elements {
+    val metas = document.select("meta$selector")
+    if (metas.size == 0) throw MetaElementNotFoundException(selector)
+    metas.apply(init)
+    return metas
 }
 
 @SkrapeItDslMarker
@@ -110,7 +140,7 @@ fun Result.headers(init: Map<String, String>.() -> Unit) : Map<String, String> {
 
 @SkrapeItDslMarker
 fun Result.header(name: String, init: String?.() -> Unit) : String? {
-    val headers = this.headers[name]
-    headers.apply(init)
-    return headers
+    val header = this.headers[name]
+    header.apply(init)
+    return header
 }

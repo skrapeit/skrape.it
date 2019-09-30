@@ -1,9 +1,9 @@
 package it.skrape.selects
 
 import it.skrape.core.Doc
-import it.skrape.core.Result
-import it.skrape.exceptions.DivNotFoundException
+import it.skrape.exceptions.DivElementNotFoundException
 import it.skrape.exceptions.ElementNotFoundException
+import it.skrape.exceptions.MetaElementNotFoundException
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
@@ -36,12 +36,12 @@ infix fun Doc.elements(selector: String): Elements = this.select(selector)
  * @return Element
  */
 fun Doc.div(selector: String = "", init: Element.() -> Unit) {
-    val element = this.selectFirst("div$selector") ?: throw DivNotFoundException(selector)
+    val element = this.selectFirst("div$selector") ?: throw DivElementNotFoundException(selector)
     element.apply(init)
 }
 
 /**
- * Will pick all occurrences of a Div-Elements that
+ * Will pick all occurrences of Div-Elements that
  * are matching the CSS-Selector from a parsed document.
  * @see <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/div">Div-tag explained for further information.</a>
  * @param selector that represents an CSS-Selector
@@ -49,6 +49,31 @@ fun Doc.div(selector: String = "", init: Element.() -> Unit) {
  */
 fun Doc.divs(selector: String = "", init: Elements.() -> Unit) {
     val elements = this.select("div$selector")
-    if (elements.size == 0) throw DivNotFoundException(selector)
+    if (elements.size == 0) throw DivElementNotFoundException(selector)
+    elements.apply(init)
+}
+
+/**
+ * Will pick the first occurrence of a Meta-Element that
+ * is matching the CSS-Selector from a parsed document.
+ * @see <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/div">Div-tag explained for further information.</a>
+ * @param selector that represents an CSS-Selector
+ * @return Element
+ */
+fun Doc.meta(selector: String = "", init: Element.() -> Unit) {
+    val element = this.selectFirst("meta$selector") ?: throw MetaElementNotFoundException(selector)
+    element.apply(init)
+}
+
+/**
+ * Will pick all occurrences of Meta-Elements that
+ * are matching the CSS-Selector from a parsed document.
+ * @see <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/div">Div-tag explained for further information.</a>
+ * @param selector that represents an CSS-Selector
+ * @return Element
+ */
+fun Doc.metas(selector: String = "", init: Elements.() -> Unit) {
+    val elements = this.select("meta$selector")
+    if (elements.size == 0) throw MetaElementNotFoundException(selector)
     elements.apply(init)
 }

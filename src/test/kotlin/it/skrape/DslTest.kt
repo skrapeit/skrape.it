@@ -11,15 +11,13 @@ import it.skrape.core.WireMockSetup
 import it.skrape.core.setupPostStub
 import it.skrape.core.setupRedirect
 import it.skrape.core.setupStub
-import it.skrape.exceptions.DivNotFoundException
+import it.skrape.exceptions.DivElementNotFoundException
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.matchers.toBe
 import it.skrape.selects.*
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.testcontainers.containers.GenericContainer
-import org.testcontainers.containers.wait.strategy.Wait
-import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import java.io.File
 import java.net.SocketTimeoutException
@@ -333,7 +331,7 @@ internal class DslTest : WireMockSetup() {
 
     @Test
     internal fun `will throw custom exception if div could not be found via lambda`() {
-        Assertions.assertThrows(DivNotFoundException::class.java) {
+        Assertions.assertThrows(DivElementNotFoundException::class.java) {
             skrape {
                 expect {
                     div(".nonExistent") {}
@@ -369,7 +367,7 @@ internal class DslTest : WireMockSetup() {
 
     @Test
     internal fun `will throw custom exception if divs could not be found via lambda`() {
-        Assertions.assertThrows(DivNotFoundException::class.java) {
+        Assertions.assertThrows(DivElementNotFoundException::class.java) {
             expect("") {
                 divs {}
             }
