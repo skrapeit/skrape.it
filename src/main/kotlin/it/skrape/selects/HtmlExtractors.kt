@@ -8,4 +8,7 @@ import org.jsoup.nodes.Element
 fun Result.html(init: Element.() -> Unit) = element("html", init)
 
 @SkrapeItDslMarker
+fun Result.head(init: Element.() -> Unit) = element("head", init)
+
+@SkrapeItDslMarker
 fun Result.p(init: Element.() -> Unit) = element("p", init)
