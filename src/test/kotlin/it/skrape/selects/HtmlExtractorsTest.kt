@@ -22,4 +22,19 @@ internal class HtmlExtractorsTest : WireMockSetup() {
             }
         }
     }
+
+    @Test
+    internal fun `can pick paragraphs via p function`() {
+        wireMockServer.setupStub()
+
+        val expectedValue = "i'm a paragraph"
+
+        skrape {
+            extract {
+                p {
+                    assertThat(text()).isEqualTo(expectedValue)
+                }
+            }
+        }
+    }
 }
