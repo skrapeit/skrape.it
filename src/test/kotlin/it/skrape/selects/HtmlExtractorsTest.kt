@@ -82,4 +82,19 @@ internal class HtmlExtractorsTest : WireMockSetup() {
 			}
 		}
 	}
+
+    @Test
+    internal fun `can pick header tag via header function`() {
+        wireMockServer.setupStub()
+
+        val expectedValue = "<h1>i'm the headline</h1>"
+
+        skrape {
+            extract {
+                header {
+                    assertThat(html()).isEqualTo(expectedValue)
+                }
+            }
+        }
+    }
 }
