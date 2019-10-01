@@ -12,3 +12,6 @@ fun Result.head(init: Element.() -> Unit) = element("head", init)
 
 @SkrapeItDslMarker
 fun Result.p(init: Element.() -> Unit) = element("p", init)
+
+@SkrapeItDslMarker
+fun Result.li(init: Element.() -> Unit) = element("li", init)

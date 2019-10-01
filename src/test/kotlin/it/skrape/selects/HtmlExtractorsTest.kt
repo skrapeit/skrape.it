@@ -52,4 +52,19 @@ internal class HtmlExtractorsTest : WireMockSetup() {
             }
         }
     }
+
+	@Test
+	internal fun `can pick list items via li function`() {
+		wireMockServer.setupStub(fileName = "li_tag_example.html")
+
+		val expectedValue = "First Item"
+
+		skrape {
+			extract {
+				li {
+					assertThat(html()).isEqualTo(expectedValue)
+				}
+			}
+		}
+	}
 }
