@@ -8,48 +8,104 @@ import org.junit.jupiter.api.Test
 internal class DynamicSelectorBuilderTest {
 
     @Test
-    fun `will calculate selector from parameter`() {
+    fun `can calculate selector from parameter`() {
         val selector = calculatedSelector("#foo.bar", ScrapebleElements())
         assertThat(selector).isEqualTo("#foo.bar")
     }
 
     @Test
-    fun `will calculate class selector from element`() {
+    fun `can calculate class selector from element`() {
         val elementWithSelectors = ScrapebleElements(className = "foo")
         val selector = calculatedSelector("", elementWithSelectors)
         assertThat(selector).isEqualTo(".foo")
     }
 
     @Test
-    fun `will calculate id selector from element`() {
+    fun `can calculate id selector from element`() {
         val elementWithSelectors = ScrapebleElements(id = "foo")
         val selector = calculatedSelector("", elementWithSelectors)
         assertThat(selector).isEqualTo("#foo")
     }
 
     @Test
-    fun `will calculate attributeKey selector from element`() {
+    fun `can calculate attributeKey selector from element`() {
         val elementWithSelectors = ScrapebleElements(attributeKey = "foo")
         val selector = calculatedSelector("", elementWithSelectors)
         assertThat(selector).isEqualTo("[foo]")
     }
 
     @Test
-    fun `will calculate attribute selector from element`() {
+    fun `can calculate attribute selector from element`() {
         val elementWithSelectors = ScrapebleElements(attribute = "foo" to "bar")
         val selector = calculatedSelector("", elementWithSelectors)
         assertThat(selector).isEqualTo("[foo='bar']")
     }
 
     @Test
-    fun `will calculate combination of id and class selector from element`() {
+    fun `can calculate combination of id and class selector from element`() {
         val elementWithSelectors = ScrapebleElements(className = "bar", id = "foo")
         val selector = calculatedSelector("", elementWithSelectors)
         assertThat(selector).isEqualTo("#foo.bar")
     }
 
     @Test
-    fun `will calculate complex css selector from element`() {
+    fun `can calculate combination of id and attributeKey selector from element`() {
+        val elementWithSelectors = ScrapebleElements(attributeKey = "bar", id = "foo")
+        val selector = calculatedSelector("", elementWithSelectors)
+        assertThat(selector).isEqualTo("#foo[bar]")
+    }
+
+    @Test
+    fun `can calculate combination of id and attribute selector from element`() {
+        val elementWithSelectors = ScrapebleElements(attribute = "foo" to "bar", id = "foobar")
+        val selector = calculatedSelector("", elementWithSelectors)
+        assertThat(selector).isEqualTo("#foobar[foo='bar']")
+    }
+
+    @Test
+    fun `can calculate combination of attribute and class selector from element`() {
+        val elementWithSelectors = ScrapebleElements(className = "foobar", attribute = "foo" to "bar")
+        val selector = calculatedSelector("", elementWithSelectors)
+        assertThat(selector).isEqualTo(".foobar[foo='bar']")
+    }
+
+    @Test
+    fun `can calculate combination of attribute and attributeKey selector from element`() {
+        val elementWithSelectors = ScrapebleElements(attributeKey = "foobar", attribute = "foo" to "bar")
+        val selector = calculatedSelector("", elementWithSelectors)
+        assertThat(selector).isEqualTo("[foobar][foo='bar']")
+    }
+
+    @Test
+    fun `can calculate combination of id, attributeKey and class selector from element`() {
+        val elementWithSelectors = ScrapebleElements(id = "foobar", attributeKey = "foo", className = "bar")
+        val selector = calculatedSelector("", elementWithSelectors)
+        assertThat(selector).isEqualTo("#foobar.bar[foo]")
+    }
+
+    @Test
+    fun `can calculate combination of id, attribute and attributeKey selector from element`() {
+        val elementWithSelectors = ScrapebleElements(id = "fb", attributeKey = "foobar", attribute = "foo" to "bar")
+        val selector = calculatedSelector("", elementWithSelectors)
+        assertThat(selector).isEqualTo("#fb[foobar][foo='bar']")
+    }
+
+    @Test
+    fun `can calculate combination of id, attribute and class selector from element`() {
+        val elementWithSelectors = ScrapebleElements(id = "fb", className= "foobar", attribute = "foo" to "bar")
+        val selector = calculatedSelector("", elementWithSelectors)
+        assertThat(selector).isEqualTo("#fb.foobar[foo='bar']")
+    }
+
+    @Test
+    fun `can calculate combination of attributeKey and class selector from element`() {
+        val elementWithSelectors = ScrapebleElements(attributeKey = "foo", className = "bar")
+        val selector = calculatedSelector("", elementWithSelectors)
+        assertThat(selector).isEqualTo(".bar[foo]")
+    }
+
+    @Test
+    fun `can calculate complex css selector from element`() {
         val elementWithSelectors = ScrapebleElements(
                 className = "bar",
                 id = "foo",
