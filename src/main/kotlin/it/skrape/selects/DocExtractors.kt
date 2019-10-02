@@ -17,7 +17,8 @@ import org.jsoup.select.Elements
  * @return Element
  */
 @Suppress("MaxLineLength")
-infix fun Doc.element(selector: String): Element = this.selectFirst(selector) ?: throw ElementNotFoundException(selector)
+infix fun Doc.element(selector: String): Element = this.selectFirst(selector)
+        ?: throw ElementNotFoundException(selector)
 
 /**
  * Will pick all occurrences of an Elements that are matching the CSS-Selector
