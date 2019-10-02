@@ -21,3 +21,6 @@ fun Result.ol(init: Element.() -> Unit) = element("ol", init)
 
 @SkrapeItDslMarker
 fun Result.header(init: Element.() -> Unit) = element("header", init)
+
+@SkrapeItDslMarker
+fun Result.nav(init: Element.() -> Unit) = element("nav", init)

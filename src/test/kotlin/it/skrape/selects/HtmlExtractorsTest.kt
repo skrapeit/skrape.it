@@ -92,6 +92,23 @@ internal class HtmlExtractorsTest : WireMockSetup() {
         skrape {
             extract {
                 header {
+                  assertThat(html()).isEqualTo(expectedValue)
+                }
+            }
+        }
+    }
+  
+    @Test
+    internal fun `can pick nav tag via nav function`() {
+        wireMockServer.setupStub(fileName = "li_tag_example.html")
+
+        val expectedValue = "<ol> \n" +
+                " <li>First Item</li> \n" +
+                "</ol>"
+
+        skrape {
+            extract {
+                nav {
                     assertThat(html()).isEqualTo(expectedValue)
                 }
             }
