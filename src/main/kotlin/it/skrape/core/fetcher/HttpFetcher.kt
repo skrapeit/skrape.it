@@ -24,7 +24,7 @@ internal class HttpFetcher(private val request: Request) {
         val response =  connection.execute()
 
         return Result(
-                body = response.body(),
+                responseBody = response.body(),
                 statusCode = response.statusCode(),
                 statusMessage = response.statusMessage(),
                 contentType = response.contentType(),

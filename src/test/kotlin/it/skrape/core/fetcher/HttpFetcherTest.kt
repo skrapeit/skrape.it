@@ -100,7 +100,7 @@ internal class HttpFetcherTest : WireMockSetup() {
         // then
         assertThat(fetched.statusCode).isEqualTo(200)
         assertThat(fetched.contentType).isEqualTo("application/json; charset=UTF-8")
-        assertThat(fetched.body).isEqualTo("""{"data":"some value"}""")
+        assertThat(fetched.responseBody).isEqualTo("""{"data":"some value"}""")
     }
 
     @Test

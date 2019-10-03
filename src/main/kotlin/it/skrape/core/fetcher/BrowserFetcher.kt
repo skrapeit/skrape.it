@@ -32,7 +32,7 @@ class BrowserFetcher(private val request: Request) {
         val headers = httpResponse.responseHeaders.toMap()
 
         val result = Result(
-                body = document,
+                responseBody = document,
                 statusCode = httpResponse.statusCode,
                 statusMessage = httpResponse.statusMessage,
                 contentType = httpResponse.contentType,

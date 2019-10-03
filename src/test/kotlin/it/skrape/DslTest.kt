@@ -11,10 +11,13 @@ import it.skrape.core.WireMockSetup
 import it.skrape.core.setupPostStub
 import it.skrape.core.setupRedirect
 import it.skrape.core.setupStub
-import it.skrape.exceptions.DivElementNotFoundException
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.matchers.toBe
 import it.skrape.selects.*
+import it.skrape.selects.html5.body
+import it.skrape.selects.html5.h1
+import it.skrape.selects.html5.header
+import it.skrape.selects.html5.title
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.testcontainers.containers.GenericContainer
@@ -24,13 +27,6 @@ import java.net.SocketTimeoutException
 
 @Testcontainers
 internal class DslTest : WireMockSetup() {
-
-//    companion object {
-//        @Container
-//        private val httpBin = KGenericContainer("kennethreitz/httpbin")
-//                .withExposedPorts(80)
-//                .waitingFor(Wait.forHttp("/").forStatusCode(200))
-//    }
 
     @Test
     internal fun `dsl can skrape by url`() {
@@ -45,10 +41,10 @@ internal class DslTest : WireMockSetup() {
                 assertThat(statusMessage).isEqualTo("OK")
                 assertThat(contentType).isEqualTo("text/html; charset=UTF-8")
 
-                el("title").text() toBe "i'm the title"
+                element("title").text() toBe "i'm the title"
 
                 title {
-                    assertThat(this).isEqualTo("i'm the title")
+                    assertThat(text()).isEqualTo("i'm the title")
                 }
 
                 element("p") {
@@ -85,12 +81,12 @@ internal class DslTest : WireMockSetup() {
 
         skrape {
             expect {
-                val header = header("Content-Type") {
+                val header = responseHeader("Content-Type") {
                     assertThat(this).isEqualTo("text/html; charset=UTF-8")
                 }
                 assertThat(header).isEqualTo("text/html; charset=UTF-8")
 
-                val nonExistingHeader = header("Non-Existing") {
+                val nonExistingHeader = responseHeader("Non-Existing") {
                     assertThat(this).isNull()
                 }
                 assertThat(nonExistingHeader).isNull()
@@ -121,7 +117,7 @@ internal class DslTest : WireMockSetup() {
         skrape {
             expect {
                 val body = body {
-                    assertThat(this.text()).contains("i'm a paragraph")
+                    assertThat(text()).contains("i'm a paragraph")
                 }
                 assertThat(body.text()).contains("i'm a paragraph")
             }
@@ -239,8 +235,8 @@ internal class DslTest : WireMockSetup() {
             extract {
                 MyObject(
                         message = statusMessage,
-                        paragraph = el("p").text(),
-                        allParagraphs = `$`("p").map { it.text() }
+                        paragraph = element("p").text(),
+                        allParagraphs = elements("p").map { it.text() }
                 )
             }
         }
@@ -305,101 +301,6 @@ internal class DslTest : WireMockSetup() {
             }
         }
     }
-
-
-    @Test
-    internal fun `can pick div directly via dsl`() {
-        skrape {
-            expect("<html><div>divs inner text</div></html>") {
-                div {
-                    assertThat(text()).isEqualTo("divs inner text")
-                }
-            }
-        }
-    }
-
-    @Test
-    internal fun `can pick div with selector directly via dsl`() {
-        skrape {
-            expect("<html><div class=\"existent\">divs inner text</div></html>") {
-                div(".existent") {
-                    assertThat(text()).isEqualTo("divs inner text")
-                }
-            }
-        }
-    }
-
-    @Test
-    internal fun `will throw custom exception if div could not be found via lambda`() {
-        Assertions.assertThrows(DivElementNotFoundException::class.java) {
-            skrape {
-                expect {
-                    div(".nonExistent") {}
-                }
-            }
-        }
-    }
-
-    @Test
-    internal fun `can read divs from document`() {
-        skrape {
-            expect("<html><div>first</div><div>second</div></html>") {
-                divs {
-                    assertThat(size).isEqualTo(2)
-                    assertThat(get(0).text()).isEqualTo("first")
-                    assertThat(get(1).text()).isEqualTo("second")
-                }
-            }
-        }
-    }
-
-    @Test
-    internal fun `can read divs with selector from document`() {
-        expect("<html><div class=\"foo\">with class</div><div class=\"foo\">with class</div><div>without class</div></html>") {
-            divs(".foo") {
-                assertThat(size).isEqualTo(2)
-                forEach {
-                    assertThat(it.text()).isEqualTo("with class")
-                }
-            }
-        }
-    }
-
-    @Test
-    internal fun `will throw custom exception if divs could not be found via lambda`() {
-        Assertions.assertThrows(DivElementNotFoundException::class.java) {
-            expect("") {
-                divs {}
-            }
-
-        }
-    }
-
-//    @Test
-//    internal fun `can send cookies with request in js rendering mode`() {
-//
-//        skrape {
-//            mode = Mode.DOM
-//            url = "http://localhost:${httpBin.firstMappedPort}/cookies"
-//            cookies = mapOf("myCookie" to "myCookieValue")
-//            expect {
-//                assertThat(body).contains("\"myCookie\": \"myCookieValue\"")
-//            }
-//        }
-//    }
-//
-//    @Test
-//    internal fun `can send cookies with request in http mode`() {
-//
-//        skrape {
-//            mode = Mode.SOURCE
-//            url = "http://localhost:${httpBin.firstMappedPort}/cookies"
-//            cookies = mapOf("someCookie" to "someCookieValue")
-//            expect {
-//                assertThat(body).contains("\"someCookie\": \"someCookieValue\"")
-//            }
-//        }
-//    }
 }
 
 class MyObject(var message: String? = null, var paragraph: String = "", var allParagraphs: List<String> = emptyList())
