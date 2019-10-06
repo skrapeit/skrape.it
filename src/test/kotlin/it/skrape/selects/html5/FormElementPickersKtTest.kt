@@ -4,10 +4,9 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import it.skrape.aValidHtml
 import it.skrape.aValidResult
-import it.skrape.aValidSelfClosingTag
+import it.skrape.aSelfClosingTag
 import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Assertions.*
 import java.util.*
 
 internal class FormElementPickersKtTest {
@@ -50,7 +49,7 @@ internal class FormElementPickersKtTest {
 
     @Test
     fun `can parse input-tag`() {
-        val result = aValidResult(aValidSelfClosingTag("input"))
+        val result = aValidResult(aSelfClosingTag("input"))
         result.input {
             assertThat(attr("custom-attr")).isEqualTo("input-attr")
         }

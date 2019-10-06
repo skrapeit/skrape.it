@@ -156,7 +156,7 @@ fun aValidResult(body: String = aValidHtml(""), statusCode: Int = 200) = Result(
         request = Request()
 )
 
-fun aValidSelfClosingTag(tag: String) = "<$tag custom-attr='$tag-attr' />"
+fun aSelfClosingTag(tag: String) = "<$tag custom-attr='$tag-attr' />"
 
 fun aStandardTag(tag: String) = """<$tag class="$tag-class">i'm a $tag</$tag>"""
 

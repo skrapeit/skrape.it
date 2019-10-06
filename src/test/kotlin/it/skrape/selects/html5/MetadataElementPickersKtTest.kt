@@ -5,7 +5,7 @@ import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import it.skrape.aStandardTag
 import it.skrape.aValidResult
-import it.skrape.aValidSelfClosingTag
+import it.skrape.aSelfClosingTag
 import it.skrape.selects.firstOccurrence
 import org.junit.jupiter.api.Test
 
@@ -13,7 +13,7 @@ internal class MetadataElementPickersKtTest {
 
     @Test
     fun `can parse base-tag`() {
-        val result = aValidResult(aValidSelfClosingTag("base"))
+        val result = aValidResult(aSelfClosingTag("base"))
         result.base {
             assertThat(attr("custom-attr")).isEqualTo("base-attr")
         }
@@ -32,7 +32,7 @@ internal class MetadataElementPickersKtTest {
 
     @Test
     fun `can parse link-tag`() {
-        val result = aValidResult(aValidSelfClosingTag("link"))
+        val result = aValidResult(aSelfClosingTag("link"))
         result.link {
             assertThat(attr("custom-attr")).isEqualTo("link-attr")
         }
@@ -40,7 +40,7 @@ internal class MetadataElementPickersKtTest {
 
     @Test
     fun `can parse meta-tag`() {
-        val result = aValidResult(aValidSelfClosingTag("meta"))
+        val result = aValidResult(aSelfClosingTag("meta"))
         result.meta {
             assertThat(attr("custom-attr")).isEqualTo("meta-attr")
         }

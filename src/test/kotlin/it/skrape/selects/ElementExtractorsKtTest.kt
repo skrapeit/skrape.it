@@ -69,7 +69,7 @@ internal class ElementExtractorsKtTest {
     @Test
     fun `can pick elements secondlastOccurrence`() {
         result.p {
-            secondlastOccurrence {
+            secondLastOccurrence {
                 assertThat(text()).isEqualTo("i'm a paragraph with word break")
             }
         }

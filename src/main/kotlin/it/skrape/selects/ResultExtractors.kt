@@ -1,6 +1,7 @@
 package it.skrape.selects
 
 import it.skrape.SkrapeItDslMarker
+import it.skrape.core.Headers
 import it.skrape.core.Result
 import it.skrape.exceptions.*
 import org.jsoup.nodes.Element
@@ -43,7 +44,7 @@ fun Result.elements(selector: String, init: Elements.() -> Unit): Elements =
         document.elements(selector, init)
 
 @SkrapeItDslMarker
-fun Result.headers(init: Map<String, String>.() -> Unit): Map<String, String> {
+fun Result.headers(init: Headers.() -> Unit): Map<String, String> {
     headers.apply(init)
     return headers
 }

@@ -53,6 +53,6 @@ fun Elements.lastOccurrence(init: Element.() -> Unit) {
 
 
 @SkrapeItDslMarker
-fun Elements.secondlastOccurrence(init: Element.() -> Unit) {
+fun Elements.secondLastOccurrence(init: Element.() -> Unit) {
     get(size - 2).apply(init)
 }

@@ -3,6 +3,7 @@ package it.skrape.selects.html5
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import it.skrape.aValidResult
+import it.skrape.matchers.toBePresent
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
@@ -13,7 +14,7 @@ internal class SectioningElementPickersKtTest {
     fun `can parse body-tag`() {
         val result = aValidResult()
         result.body {
-            assertThat(size).isEqualTo(1)
+            toBePresent()
         }
     }
 

@@ -1,13 +1,9 @@
 package it.skrape.selects.html5
 
 import assertk.assertThat
-import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import it.skrape.aValidResult
-import it.skrape.aValidSelfClosingTag
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 
 internal class TableElementPickersKtTest {
 

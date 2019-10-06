@@ -5,7 +5,7 @@ import assertk.assertions.isEqualTo
 import it.skrape.aStandardTag
 import it.skrape.aValidHtml
 import it.skrape.aValidResult
-import it.skrape.aValidSelfClosingTag
+import it.skrape.aSelfClosingTag
 import it.skrape.selects.firstOccurrence
 import org.junit.jupiter.api.Test
 
@@ -34,7 +34,7 @@ internal class MediaElementPickersKtTest {
 
     @Test
     fun `can parse img-tag`() {
-        val result = aValidResult(aValidSelfClosingTag("img"))
+        val result = aValidResult(aSelfClosingTag("img"))
         result.img {
             assertThat(attr("custom-attr")).isEqualTo("img-attr")
         }
@@ -51,7 +51,7 @@ internal class MediaElementPickersKtTest {
 
     @Test
     fun `can parse track-tag`() {
-        val result = aValidResult(aValidSelfClosingTag("track"))
+        val result = aValidResult(aSelfClosingTag("track"))
         result.track {
             assertThat(attr("custom-attr")).isEqualTo("track-attr")
         }

@@ -4,10 +4,8 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import it.skrape.aValidHtml
 import it.skrape.aValidResult
-import it.skrape.aValidSelfClosingTag
 import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Assertions.*
 import java.util.*
 
 internal class EmbeddedContentElementPickersKtTest {
