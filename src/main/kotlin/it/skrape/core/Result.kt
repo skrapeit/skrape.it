@@ -13,11 +13,17 @@ import org.jsoup.Jsoup
  * @param request - the initial request
  */
 data class Result(
-        val responseBody: String,
+        val responseBody: ResponseBody,
         val document: Doc = Jsoup.parse(responseBody),
-        val statusCode: Int,
-        val statusMessage: String?,
-        val contentType: String?,
-        val headers: Map<String, String>,
+        val statusCode: StatusCode,
+        val statusMessage: StatusMessage,
+        val contentType: ContentType,
+        val headers: Headers,
         val request: Request
 )
+
+typealias ResponseBody = String
+typealias StatusCode = Int
+typealias StatusMessage = String
+typealias ContentType = String
+typealias Headers = Map<String, String>
