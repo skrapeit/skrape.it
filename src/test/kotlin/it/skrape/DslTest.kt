@@ -35,7 +35,7 @@ internal class DslTest : WireMockSetup() {
 
                 assertThat(statusCode).isEqualTo(200)
                 assertThat(statusMessage).isEqualTo("OK")
-                assertThat(contentType).isEqualTo("text/html; charset=UTF-8")
+                assertThat(contentType).isEqualTo("text/html;charset=utf-8")
 
                 element("title").text() toBe "i'm the title"
 
@@ -78,9 +78,9 @@ internal class DslTest : WireMockSetup() {
         skrape {
             expect {
                 val header = responseHeader("Content-Type") {
-                    assertThat(this).isEqualTo("text/html; charset=UTF-8")
+                    assertThat(this).isEqualTo("text/html;charset=utf-8")
                 }
-                assertThat(header).isEqualTo("text/html; charset=UTF-8")
+                assertThat(header).isEqualTo("text/html;charset=utf-8")
 
                 val nonExistingHeader = responseHeader("Non-Existing") {
                     assertThat(this).isNull()
@@ -98,9 +98,9 @@ internal class DslTest : WireMockSetup() {
         skrape {
             expect {
                 val headers = headers {
-                    assertThat(this).contains("Content-Type", "text/html; charset=UTF-8")
+                    assertThat(this).contains("Content-Type", "text/html;charset=utf-8")
                 }
-                assertThat(headers).contains("Content-Type", "text/html; charset=UTF-8")
+                assertThat(headers).contains("Content-Type", "text/html;charset=utf-8")
             }
         }
     }
@@ -146,7 +146,7 @@ internal class DslTest : WireMockSetup() {
 
                 assertThat(statusCode).isEqualTo(200)
                 assertThat(statusMessage).isEqualTo("OK")
-                assertThat(contentType).isEqualTo("application/json; charset=UTF-8")
+                assertThat(contentType).isEqualTo("application/json;charset=utf-8")
             }
         }
     }

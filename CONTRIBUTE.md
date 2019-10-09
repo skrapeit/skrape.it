@@ -1,12 +1,12 @@
 ### install project into local maven repository
 
-	./mvnw clean install
+	./gradlew clean publishToMavenLocal
 	
 ### run all tests
 
-	./mvnw clean verify
+	./gradlew clean check
 
 ### push release to maven central repository:
 
-	./mvnw clean deploy -Prelease
+	./gradlew clean publish
 

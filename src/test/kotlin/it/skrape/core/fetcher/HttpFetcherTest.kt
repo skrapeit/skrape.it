@@ -24,7 +24,7 @@ internal class HttpFetcherTest : WireMockSetup() {
 
         // then
         assertThat(fetched.statusCode).isEqualTo(200)
-        assertThat(fetched.contentType).isEqualTo("text/html; charset=UTF-8")
+        assertThat(fetched.contentType).isEqualTo("text/html;charset=utf-8")
         assertThat(fetched.document.title()).isEqualTo("i'm the title")
     }
 
@@ -41,7 +41,7 @@ internal class HttpFetcherTest : WireMockSetup() {
 
         // then
         assertThat(fetched.statusCode).isEqualTo(200)
-        assertThat(fetched.contentType).isEqualTo("text/html; charset=UTF-8")
+        assertThat(fetched.contentType).isEqualTo("text/html;charset=utf-8")
         assertThat(fetched.document.title()).isEqualTo("i'm the title")
     }
 
@@ -99,7 +99,7 @@ internal class HttpFetcherTest : WireMockSetup() {
 
         // then
         assertThat(fetched.statusCode).isEqualTo(200)
-        assertThat(fetched.contentType).isEqualTo("application/json; charset=UTF-8")
+        assertThat(fetched.contentType).isEqualTo("application/json;charset=utf-8")
         assertThat(fetched.responseBody).isEqualTo("""{"data":"some value"}""")
     }
 
