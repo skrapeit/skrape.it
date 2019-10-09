@@ -9,7 +9,7 @@ matrix:
       env: JDK=11
 
 script:
-  - ./mvnw clean verify
+  - ./gradlew clean check
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

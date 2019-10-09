@@ -62,7 +62,7 @@ internal class ResultExtractorsTest : WireMockSetup() {
 
         skrape {
             expect {
-                responseHeader("Content-Type") toBe "text/html; charset=UTF-8"
+                responseHeader("Content-Type") toBe "text/html;charset=utf-8"
                 responseHeader("Content-Type") toContain "html"
                 responseHeader("notExisting") toBe null
             }
