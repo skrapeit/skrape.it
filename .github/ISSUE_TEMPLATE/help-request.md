@@ -1,7 +1,7 @@
 ---
 name: Help request
-about: Ask a question about how to use scrape{it}.
-title: ''
+about: Ask a question about how to use skrape{it}.
+title: "[QUESTION] "
 labels: question
 assignees: skrapeit
 
