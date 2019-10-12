@@ -1,9 +1,16 @@
 import org.gradle.api.tasks.bundling.Jar
 
 plugins {
-    kotlin("jvm") version "1.2.50"
+    kotlin("jvm") version "1.3.50"
     `maven-publish`
     jacoco
+    id("com.github.ben-manes.versions") version "0.26.0"
+    id("com.adarshr.test-logger") version "1.7.0"
+}
+
+testlogger {
+    setTheme("mocha")
+    slowThreshold = 1000
 }
 
 repositories {
@@ -66,10 +73,10 @@ publishing {
             artifact(tasks["sourcesJar"])
             pom {
                 name.set("skrape{it}")
-                description.set("skrape{it} is a Kotlin-based HTML testing and web scraping library " +
-                        "that can be used seamlessly in both Spring-Boot and other JVM projects. " +
-                        "It places particular emphasis on ease of use, a high level of readability " +
-                        "and attention to performance through the use of non-blocking operations.")
+                description.set("""skrape{it} is a Kotlin-based HTML testing and web scraping library 
+                    that can be used seamlessly in both Spring-Boot and other JVM projects. 
+                    It places particular emphasis on ease of use, a high level of readability 
+                    and attention to performance through the use of non-blocking operations.""")
                 url.set("https://docs.skrape.it")
 
                 licenses {

@@ -9,4 +9,7 @@
 ### push release to maven central repository:
 
 	./gradlew clean publish
+	
+### check if all dependencies are up-to-date
 
+    ./gradlew dependencyUpdates
