@@ -13,7 +13,6 @@ data class Request(
         var followRedirects: Boolean = true,
         var ignoreContentType: Boolean = true,
         var ignoreHttpErrors: Boolean = true,
-        var validateTLSCertificates: Boolean = false,
         var maxBodySize: Int = 0
 )
 
