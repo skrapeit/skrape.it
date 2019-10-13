@@ -31,3 +31,66 @@ Currently available:
 ### Read the Docs
 You'll always find latest documentation, release notes and examples at 
 **[https://docs.skrape.it](https://docs.skrape.it)**
+
+### Quick Start
+
+#### Installation
+
+All our official and stable releases will be published to [mavens central repository](https://search.maven.org/search?q=g:it.skrape%20AND%20a:skrapeit-core&core=gav).
+
+#### Add dependency
+
+<details><summary>Gradle</summary>
+```
+dependencies {
+    implementation("it.skrape:skrapeit-core:0.6.0")
+}
+```
+</details>
+
+<details><summary>Maven</summary>
+```
+<dependency>
+    <groupId>it.skrape</groupId>
+    <artifactId>skrapeit-core</artifactId>
+    <version>0.6.0</version>
+</dependency>
+```
+</details>
+
+#### using bleeding edge features before official release
+
+We are offering snapshot releases via jitpack. Thereby you can install every commit and version you want.
+But be careful, these are non official releases and may be unstable as well as breaking changes can occur at any time.
+
+##### Add experimental stuff
+
+<details><summary>Gradle</summary>
+```
+repositories {
+        maven { url "https://jitpack.io" }
+   }
+   dependencies {
+         implementation("com.github.skrapeit:skrape.it:master-SNAPSHOT"
+   }
+```
+</details>
+
+<details><summary>Maven</summary>
+```
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
+...
+
+<dependency>
+    <groupId>com.github.skrapeit</groupId>
+    <artifactId>skrape.it</artifactId>
+    <version>master-SNAPSHOT</version>
+</dependency>
+```
+</details>
