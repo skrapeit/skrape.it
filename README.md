@@ -41,6 +41,7 @@ All our official and stable releases will be published to [mavens central reposi
 #### Add dependency
 
 <details><summary>Gradle</summary>
+
 ```
 dependencies {
     implementation("it.skrape:skrapeit-core:0.6.0")
@@ -49,6 +50,7 @@ dependencies {
 </details>
 
 <details><summary>Maven</summary>
+
 ```
 <dependency>
     <groupId>it.skrape</groupId>
@@ -66,17 +68,19 @@ But be careful, these are non official releases and may be unstable as well as b
 ##### Add experimental stuff
 
 <details><summary>Gradle</summary>
+
 ```
 repositories {
-        maven { url "https://jitpack.io" }
-   }
-   dependencies {
-         implementation("com.github.skrapeit:skrape.it:master-SNAPSHOT"
-   }
+    maven { url "https://jitpack.io" }
+}
+dependencies {
+    implementation("com.github.skrapeit:skrape.it:master-SNAPSHOT"
+}
 ```
 </details>
 
 <details><summary>Maven</summary>
+
 ```
 <repositories>
     <repository>
