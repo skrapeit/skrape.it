@@ -24,6 +24,6 @@ data class Result(
 
 typealias ResponseBody = String
 typealias StatusCode = Int
-typealias StatusMessage = String
-typealias ContentType = String
+typealias StatusMessage = String?
+typealias ContentType = String?
 typealias Headers = Map<String, String>
