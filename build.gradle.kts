@@ -14,7 +14,7 @@ testlogger {
 }
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -22,6 +22,7 @@ dependencies {
     val jsoupVersion = "1.11.3"
     val htmlUnitVersion = "2.36.0"
     val assertkVersion = "0.13"
+    val striktVersion = "0.22.2"
 
     val junitVersion = "5.5.2"
     val testContainersVersion = "1.12.2"
@@ -31,11 +32,12 @@ dependencies {
     val logbackVersion = "1.2.3"
 
     implementation("org.jsoup:jsoup:$jsoupVersion")
-    implementation("com.willowtreeapps.assertk:assertk-jvm:$assertkVersion")
+    implementation("io.strikt:strikt-core:$striktVersion")
     implementation("net.sourceforge.htmlunit:htmlunit:$htmlUnitVersion")
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     compileOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 
+    implementation("com.willowtreeapps.assertk:assertk-jvm:$assertkVersion")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("io.mockk:mockk-dsl-jvm:$mockkVersion")
