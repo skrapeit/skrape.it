@@ -5,7 +5,7 @@ plugins {
     `maven-publish`
     jacoco
     id("com.github.ben-manes.versions") version "0.26.0"
-    id("com.adarshr.test-logger") version "1.7.0"
+    id("com.adarshr.test-logger") version "2.0.0"
 }
 
 testlogger {
@@ -18,20 +18,32 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jsoup:jsoup:1.11.3")
-    implementation("com.willowtreeapps.assertk:assertk-jvm:0.13")
-    implementation("net.sourceforge.htmlunit:htmlunit:2.36.0")
-    compileOnly("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.50")
+    val kotlinVersion = "1.3.50"
+    val jsoupVersion = "1.11.3"
+    val htmlUnitVersion = "2.36.0"
+    val assertkVersion = "0.13"
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
-    testImplementation("io.mockk:mockk:1.9.3.kotlin12")
-    testImplementation("io.mockk:mockk-dsl-jvm:1.9.3.kotlin12")
-    testImplementation("com.github.tomakehurst:wiremock-jre8:2.25.0")
-    testImplementation("org.testcontainers:testcontainers:1.11.2")
-    testImplementation("org.testcontainers:junit-jupiter:1.11.2")
-    testImplementation("ch.qos.logback:logback-classic:1.2.3")
-    testImplementation("org.slf4j:log4j-over-slf4j:1.7.26")
+    val junitVersion = "5.5.2"
+    val testContainersVersion = "1.12.2"
+    val wireMockVersion = "2.25.0"
+    val mockkVersion = "1.9.3"
+    val log4jOverSlf4jVersion = "1.7.28"
+    val logbackVersion = "1.2.3"
+
+    implementation("org.jsoup:jsoup:$jsoupVersion")
+    implementation("com.willowtreeapps.assertk:assertk-jvm:$assertkVersion")
+    implementation("net.sourceforge.htmlunit:htmlunit:$htmlUnitVersion")
+    compileOnly("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
+    compileOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
+
+    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("io.mockk:mockk-dsl-jvm:$mockkVersion")
+    testImplementation("com.github.tomakehurst:wiremock-jre8:$wireMockVersion")
+    testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
+    testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
+    testImplementation("ch.qos.logback:logback-classic:$logbackVersion")
+    testImplementation("org.slf4j:log4j-over-slf4j:$log4jOverSlf4jVersion")
 }
 
 java {
