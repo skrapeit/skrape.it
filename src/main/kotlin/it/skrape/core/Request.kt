@@ -10,10 +10,7 @@ data class Request(
         var headers: Map<String, String> = emptyMap(),
         var cookies: Map<String, String> = emptyMap(),
         var timeout: Int = 5000,
-        var followRedirects: Boolean = true,
-        var ignoreContentType: Boolean = true,
-        var ignoreHttpErrors: Boolean = true,
-        var maxBodySize: Int = 0
+        var followRedirects: Boolean = true
 )
 
 enum class Mode {

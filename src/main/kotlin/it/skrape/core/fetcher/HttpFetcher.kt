@@ -16,9 +16,10 @@ internal class HttpFetcher(private val request: Request) {
                 .headers(request.headers)
                 .cookies(request.cookies)
                 .followRedirects(request.followRedirects)
-                .ignoreContentType(request.ignoreContentType)
-                .ignoreHttpErrors(request.ignoreHttpErrors)
-                .maxBodySize(request.maxBodySize)
+                .ignoreContentType(true)
+                .ignoreHttpErrors(true)
+                .validateTLSCertificates(false)
+                .maxBodySize(0)
 
         val response =  connection.execute()
 

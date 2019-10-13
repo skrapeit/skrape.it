@@ -55,7 +55,8 @@ class BrowserFetcher(private val request: Request) {
         options.apply {
             timeout = request.timeout
             isRedirectEnabled = request.followRedirects
-            maxInMemory = request.maxBodySize
+            maxInMemory = 0
+            isUseInsecureSSL = true
             isCssEnabled = false
             isPopupBlockerEnabled = true
             isDownloadImages = false
