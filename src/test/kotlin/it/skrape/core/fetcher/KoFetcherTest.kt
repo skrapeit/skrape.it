@@ -23,6 +23,23 @@ internal class KoFetcherTest : WireMockSetup() {
         assertThat(fetched.document.title()).isEqualTo("i'm the title")
     }
 
+	@Test
+	internal fun `will set correct headers`() {
+		val ua = "test user agent"
+
+		// given
+		wireMockServer.setupStub()
+		val options = Request().apply {
+			userAgent = ua
+			headers = mapOf("Content-Type" to "application/json")
+		}
+
+		// when
+		val fetched = KoFetcher(options).fetch()
+		assertThat(fetched.request.userAgent).isEqualTo(ua)
+		assertThat(fetched.request.headers.size).isEqualTo(1)
+	}
+
     @Test
     internal fun `can fetch url and use HTTP verb GET by default`() {
         // given
