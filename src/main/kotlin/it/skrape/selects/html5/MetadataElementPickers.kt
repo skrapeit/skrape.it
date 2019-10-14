@@ -11,52 +11,52 @@ import org.jsoup.select.Elements
  * Will pick all occurrences of <base> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.base(cssSelector: String = "", init: Elements.() -> Unit) = elements("base$cssSelector", init)
+fun <T> Doc.base(cssSelector: String = "", init: Elements.() -> T) = elements("base$cssSelector", init)
 
 /**
  * Will pick all occurrences of <head> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.head(cssSelector: String = "", init: Element.() -> Unit) = element("head$cssSelector", init)
+fun <T> Doc.head(cssSelector: String = "", init: Element.() -> T) = element("head$cssSelector", init)
 
 /**
  * Will pick all occurrences of <link> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.link(cssSelector: String = "", init: Elements.() -> Unit) = elements("link$cssSelector", init)
+fun <T> Doc.link(cssSelector: String = "", init: Elements.() -> T) = elements("link$cssSelector", init)
 
 /**
  * Will pick all occurrences of <meta> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.meta(cssSelector: String = "", init: Elements.() -> Unit) = elements("meta$cssSelector", init)
+fun <T> Doc.meta(cssSelector: String = "", init: Elements.() -> T) = elements("meta$cssSelector", init)
 
 /**
  * Will pick all occurrences of <style> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.style(cssSelector: String = "", init: Elements.() -> Unit) = elements("style$cssSelector", init)
+fun <T> Doc.style(cssSelector: String = "", init: Elements.() -> T) = elements("style$cssSelector", init)
 
 /**
  * Will pick all occurrences of <title> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.title(cssSelector: String = "", init: Elements.() -> Unit) = elements("title$cssSelector", init)
+fun <T> Doc.title(cssSelector: String = "", init: Elements.() -> T) = elements("title$cssSelector", init)

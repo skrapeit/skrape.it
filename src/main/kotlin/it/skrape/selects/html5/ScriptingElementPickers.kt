@@ -9,25 +9,25 @@ import org.jsoup.select.Elements
  * Will pick all occurrences of <script> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.script(cssSelector: String = "", init: Elements.() -> Unit) = elements("script$cssSelector", init)
+fun <T> Doc.script(cssSelector: String = "", init: Elements.() -> T) = elements("script$cssSelector", init)
 
 /**
  * Will pick all occurrences of <canvas> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.canvas(cssSelector: String = "", init: Elements.() -> Unit) = elements("canvas$cssSelector", init)
+fun <T> Doc.canvas(cssSelector: String = "", init: Elements.() -> T) = elements("canvas$cssSelector", init)
 
 /**
  * Will pick all occurrences of <noscript> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.noscript(cssSelector: String = "", init: Elements.() -> Unit) = elements("noscript$cssSelector", init)
+fun <T> Doc.noscript(cssSelector: String = "", init: Elements.() -> T) = elements("noscript$cssSelector", init)

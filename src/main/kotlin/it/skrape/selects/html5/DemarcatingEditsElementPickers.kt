@@ -9,16 +9,16 @@ import org.jsoup.select.Elements
  * Will pick all occurrences of <del> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.del(cssSelector: String = "", init: Elements.() -> Unit) = elements("del$cssSelector", init)
+fun <T> Doc.del(cssSelector: String = "", init: Elements.() -> T) = elements("del$cssSelector", init)
 
 /**
  * Will pick all occurrences of <ins> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.ins(cssSelector: String = "", init: Elements.() -> Unit) = elements("ins$cssSelector", init)
+fun <T> Doc.ins(cssSelector: String = "", init: Elements.() -> T) = elements("ins$cssSelector", init)

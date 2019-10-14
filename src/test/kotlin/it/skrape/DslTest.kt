@@ -45,15 +45,16 @@ internal class DslTest : WireMockSetup() {
                     }
 
                     p {
-                        firstOccurrence {
-                            attr("bla") toBe ""
-                            expectThat(text()).isEqualTo("i'm a paragraph")
-                            expectThat(text()).isEqualTo("i'm a paragraph")
-                        }
-                    }
+                        size toBe 2
 
-                    p {
-                        expectThat(size).isEqualTo(2)
+                        firstOccurrence {
+                            attr("data-foo") toBe "bar"
+                            text() toBe "i'm a paragraph"
+                        }
+
+                        lastOccurrence {
+                            text() toBe "i'm a second paragraph"
+                        }
                     }
                 }
             }

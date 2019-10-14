@@ -1,6 +1,5 @@
 package it.skrape.selects
 
-import it.skrape.SkrapeItDslMarker
 import it.skrape.core.Doc
 import it.skrape.exceptions.*
 import org.jsoup.nodes.Element
@@ -15,11 +14,7 @@ import org.jsoup.select.Elements
  * @return Element
  */
 @Suppress("MaxLineLength")
-fun Doc.element(selector: String, init: Element.() -> Unit): Element {
-    val element = selectFirst(selector) ?: throw ElementNotFoundException(selector)
-    element.apply(init)
-    return element
-}
+fun <T> Doc.element(selector: String, init: Element.() -> T) = element(selector).init()
 
 fun Doc.element(selector: String): Element = selectFirst(selector)
         ?: throw ElementNotFoundException(selector)
@@ -31,11 +26,10 @@ fun Doc.element(selector: String): Element = selectFirst(selector)
  * @param selector that represents an CSS-Selector
  * @return Elements
  */
-fun Doc.elements(selector: String, init: Elements.() -> Unit): Elements {
+fun <T> Doc.elements(selector: String, init: Elements.() -> T) = elements(selector).init()
+
+fun Doc.elements(selector: String): Elements {
     val elements = select(selector)
     if (elements.isEmpty()) throw ElementNotFoundException(selector)
-    elements.apply(init)
     return elements
 }
-
-fun Doc.elements(selector: String): Elements = select(selector)

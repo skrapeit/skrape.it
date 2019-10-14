@@ -14,139 +14,139 @@ import org.jsoup.select.Elements
  * @return Element
  */
 @SkrapeItDslMarker
-fun Doc.body(cssSelector: String = "", init: Element.() -> Unit) = element("body$cssSelector", init)
+fun <T> Doc.body(cssSelector: String = "", init: Element.() -> T) = element("body$cssSelector", init)
 
 /**
  * Will pick all occurrences of <div> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.div(cssSelector: String = "", init: Elements.() -> Unit) = elements("div$cssSelector", init)
+fun <T> Doc.div(cssSelector: String = "", init: Elements.() -> T) = elements("div$cssSelector", init)
 
 /**
  * Will pick all occurrences of <section> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.section(cssSelector: String = "", init: Elements.() -> Unit) = elements("section$cssSelector", init)
+fun <T> Doc.section(cssSelector: String = "", init: Elements.() -> T) = elements("section$cssSelector", init)
 
 /**
  * Will pick all occurrences of <nav> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.nav(cssSelector: String = "", init: Elements.() -> Unit) = elements("nav$cssSelector", init)
+fun <T> Doc.nav(cssSelector: String = "", init: Elements.() -> T) = elements("nav$cssSelector", init)
 
 /**
  * Will pick all occurrences of <article> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.article(cssSelector: String = "", init: Elements.() -> Unit) = elements("article$cssSelector", init)
+fun <T> Doc.article(cssSelector: String = "", init: Elements.() -> T) = elements("article$cssSelector", init)
 
 /**
  * Will pick all occurrences of <aside> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.aside(cssSelector: String = "", init: Elements.() -> Unit) = elements("aside$cssSelector", init)
+fun <T> Doc.aside(cssSelector: String = "", init: Elements.() -> T) = elements("aside$cssSelector", init)
 
 /**
  * Will pick all occurrences of <h1> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.h1(cssSelector: String = "", init: Elements.() -> Unit) = elements("h1$cssSelector", init)
+fun <T> Doc.h1(cssSelector: String = "", init: Elements.() -> T) = elements("h1$cssSelector", init)
 
 /**
  * Will pick all occurrences of <h2> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.h2(cssSelector: String = "", init: Elements.() -> Unit) = elements("h2$cssSelector", init)
+fun <T> Doc.h2(cssSelector: String = "", init: Elements.() -> T) = elements("h2$cssSelector", init)
 
 /**
  * Will pick all occurrences of <h3> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.h3(cssSelector: String = "", init: Elements.() -> Unit) = elements("h3$cssSelector", init)
+fun <T> Doc.h3(cssSelector: String = "", init: Elements.() -> T) = elements("h3$cssSelector", init)
 
 /**
  * Will pick all occurrences of <h4> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.h4(cssSelector: String = "", init: Elements.() -> Unit) = elements("h4$cssSelector", init)
+fun <T> Doc.h4(cssSelector: String = "", init: Elements.() -> T) = elements("h4$cssSelector", init)
 
 /**
  * Will pick all occurrences of <h5> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.h5(cssSelector: String = "", init: Elements.() -> Unit) = elements("h5$cssSelector", init)
+fun <T> Doc.h5(cssSelector: String = "", init: Elements.() -> T) = elements("h5$cssSelector", init)
 
 /**
  * Will pick all occurrences of <h6> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.h6(cssSelector: String = "", init: Elements.() -> Unit) = elements("h6$cssSelector", init)
+fun <T> Doc.h6(cssSelector: String = "", init: Elements.() -> T) = elements("h6$cssSelector", init)
 
 /**
  * Will pick all occurrences of <header> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.header(cssSelector: String = "", init: Elements.() -> Unit) = elements("header$cssSelector", init)
+fun <T> Doc.header(cssSelector: String = "", init: Elements.() -> T) = elements("header$cssSelector", init)
 
 /**
  * Will pick all occurrences of <footer> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.footer(cssSelector: String = "", init: Elements.() -> Unit) = elements("footer$cssSelector", init)
+fun <T> Doc.footer(cssSelector: String = "", init: Elements.() -> T) = elements("footer$cssSelector", init)
 
 /**
  * Will pick all occurrences of <address> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.address(cssSelector: String = "", init: Elements.() -> Unit) = elements("address$cssSelector", init)
+fun <T> Doc.address(cssSelector: String = "", init: Elements.() -> T) = elements("address$cssSelector", init)
 
 /**
  * Will pick all occurrences of <main> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.main(cssSelector: String = "", init: Elements.() -> Unit) = elements("main$cssSelector", init)
+fun <T> Doc.main(cssSelector: String = "", init: Elements.() -> T) = elements("main$cssSelector", init)

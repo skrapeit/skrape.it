@@ -9,34 +9,34 @@ import org.jsoup.select.Elements
  * Will pick all occurrences of <content> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.content(cssSelector: String = "", init: Elements.() -> Unit) = elements("content$cssSelector", init)
+fun <T> Doc.content(cssSelector: String = "", init: Elements.() -> T) = elements("content$cssSelector", init)
 
 /**
  * Will pick all occurrences of <shadow> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.shadow(cssSelector: String = "", init: Elements.() -> Unit) = elements("shadow$cssSelector", init)
+fun <T> Doc.shadow(cssSelector: String = "", init: Elements.() -> T) = elements("shadow$cssSelector", init)
 
 /**
  * Will pick all occurrences of <slot> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.slot(cssSelector: String = "", init: Elements.() -> Unit) = elements("slot$cssSelector", init)
+fun <T> Doc.slot(cssSelector: String = "", init: Elements.() -> T) = elements("slot$cssSelector", init)
 
 /**
  * Will pick all occurrences of <template> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.template(cssSelector: String = "", init: Elements.() -> Unit) = elements("template$cssSelector", init)
+fun <T> Doc.template(cssSelector: String = "", init: Elements.() -> T) = elements("template$cssSelector", init)

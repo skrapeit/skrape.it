@@ -13,38 +13,44 @@ import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotEqualTo
 
-infix fun Int.toBe(expected: Int) {
+infix fun Int.toBe(expected: Int): Int {
     expectThat(this).isEqualTo(expected)
+    return this
 }
 
 infix fun Int.`to be`(expected: Int) = this toBe expected
 
-infix fun String?.toBe(expected: String?) {
+infix fun String?.toBe(expected: String?): String? {
     expectThat(this).isEqualTo(expected)
+    return this
 }
 
 infix fun String?.`to be`(expected: String?) = this toBe expected
 
-infix fun String?.toBeNot(expected: String?) {
+infix fun String?.toBeNot(expected: String?): String? {
     expectThat(this).isNotEqualTo(expected)
+    return this
 }
 
 infix fun String?.`to be not`(expected: String?) = this toBeNot expected
 
-infix fun String?.toContain(expected: String) {
+infix fun String?.toContain(expected: String): String? {
     assertThat(this.toString()).contains(expected)
+    return this
 }
 
 infix fun String?.`to contain`(expected: String) = this toContain expected
 
-infix fun String?.toNotContain(expected: String) {
+infix fun String?.toNotContain(expected: String): String? {
     assertThat(this.toString()).doesNotContain(expected)
+    return this
 }
 
 infix fun String?.`to not contain`(expected: String) = this toNotContain expected
 
-infix fun List<Any>.toContain(expected: String) {
+infix fun List<Any>.toContain(expected: String): List<Any> {
     assertThat(this).contains(expected)
+    return this
 }
 
 fun Elements.toBePresent() {

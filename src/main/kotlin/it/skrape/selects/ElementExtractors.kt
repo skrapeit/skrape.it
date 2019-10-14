@@ -6,53 +6,45 @@ import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
 @SkrapeItDslMarker
-fun Element.element(cssSelector: String, init: Element.() -> Unit) {
+fun <T> Element.element(cssSelector: String, init: Element.() -> T): T {
     val element = selectFirst(cssSelector) ?: throw ElementNotFoundException(cssSelector)
-    element.apply(init)
+    return element.init()
 }
 
 @SkrapeItDslMarker
-fun Element.elements(cssSelector: String, init: Elements.() -> Unit) {
+fun <T> Element.elements(cssSelector: String, init: Elements.() -> T): T {
     val elements = select(cssSelector)
     if (elements.isEmpty()) throw ElementNotFoundException(cssSelector)
-    elements.apply(init)
+    return elements.init()
 }
 
 @SkrapeItDslMarker
-fun Elements.element(cssSselector: String, init: Element.() -> Unit) {
+fun <T> Elements.element(cssSselector: String, init: Element.() -> T): T {
     val element = select(cssSselector).first() ?: throw ElementNotFoundException(cssSselector)
-    element.apply(init)
+    return element.init()
 }
 
 @SkrapeItDslMarker
-fun Elements.elements(cssSelector: String, init: Elements.() -> Unit) {
+fun <T> Elements.elements(cssSelector: String, init: Elements.() -> T): T {
     val elements = select(cssSelector)
     if (elements.isEmpty()) throw ElementNotFoundException(cssSelector)
-    elements.apply(init)
+    return elements.init()
 }
 
 @SkrapeItDslMarker
-fun Elements.firstOccurrence(init: Element.() -> Unit) {
-    get(0).apply(init)
-}
+fun <T> Elements.firstOccurrence(init: Element.() -> T) = get(0).init()
 
 @SkrapeItDslMarker
-fun Elements.secondOccurrence(init: Element.() -> Unit) {
-    get(1).apply(init)
-}
+fun <T> Elements.nthOccurrence(index: Int, init: Element.() -> T) = get(index).init()
 
 @SkrapeItDslMarker
-fun Elements.thirdOccurrence(init: Element.() -> Unit) {
-    get(2).apply(init)
-}
+fun <T> Elements.secondOccurrence(init: Element.() -> T) = get(1).init()
 
 @SkrapeItDslMarker
-fun Elements.lastOccurrence(init: Element.() -> Unit) {
-    get(size - 1).apply(init)
-}
-
+fun <T> Elements.thirdOccurrence(init: Element.() -> T) = get(2).init()
 
 @SkrapeItDslMarker
-fun Elements.secondLastOccurrence(init: Element.() -> Unit) {
-    get(size - 2).apply(init)
-}
+fun <T> Elements.lastOccurrence(init: Element.() -> T) = get(size - 1).init()
+
+@SkrapeItDslMarker
+fun <T> Elements.secondLastOccurrence(init: Element.() -> T) = get(size - 2).init()

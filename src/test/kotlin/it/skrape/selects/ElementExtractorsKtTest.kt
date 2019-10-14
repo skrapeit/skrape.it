@@ -1,10 +1,11 @@
 package it.skrape.selects
 
-import assertk.assertThat
-import assertk.assertions.isEqualTo
 import it.skrape.aValidDocument
+import it.skrape.matchers.toBe
 import it.skrape.selects.html5.p
 import org.junit.jupiter.api.Test
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 
 internal class ElementExtractorsKtTest {
 
@@ -32,46 +33,61 @@ internal class ElementExtractorsKtTest {
 
     @Test
     fun `can pick elements firstOccurrence`() {
-        document.p {
+        val firstText = document.p {
             firstOccurrence {
-                assertThat(text()).isEqualTo("i'm a paragraph")
+                text() toBe "i'm a paragraph"
             }
         }
+        expectThat(firstText).isEqualTo("i'm a paragraph")
     }
 
     @Test
     fun `can pick elements secondOccurrence`() {
-        document.p {
+        val secondText = document.p {
             secondOccurrence {
-                assertThat(text()).isEqualTo("i'm a second paragraph")
+                text() toBe "i'm a second paragraph"
             }
         }
+        expectThat(secondText).isEqualTo("i'm a second paragraph")
+    }
+
+    @Test
+    fun `can pick elements by index`() {
+        val secondText = document.p {
+            nthOccurrence(1) {
+                text() toBe "i'm a second paragraph"
+            }
+        }
+        expectThat(secondText).isEqualTo("i'm a second paragraph")
     }
 
     @Test
     fun `can pick elements thirdOccurrence`() {
-        document.p {
+        val thirdText = document.p {
             thirdOccurrence {
-                assertThat(text()).isEqualTo("i'm a paragraph with word break")
+                text() toBe "i'm a paragraph with word break"
             }
         }
+        expectThat(thirdText).isEqualTo("i'm a paragraph with word break")
     }
 
     @Test
     fun `can pick elements lastOccurrence`() {
-        document.p {
+        val lastText = document.p {
             lastOccurrence {
-                assertThat(text()).isEqualTo("i'm the last paragraph")
+                text() toBe "i'm the last paragraph"
             }
         }
+        expectThat(lastText).isEqualTo("i'm the last paragraph")
     }
 
     @Test
     fun `can pick elements secondlastOccurrence`() {
-        document.p {
+        val secondLastText = document.p {
             secondLastOccurrence {
-                assertThat(text()).isEqualTo("i'm a paragraph with word break")
+                text() toBe "i'm a paragraph with word break"
             }
         }
+        expectThat(secondLastText).isEqualTo("i'm a paragraph with word break")
     }
 }

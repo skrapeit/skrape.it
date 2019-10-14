@@ -9,52 +9,52 @@ import org.jsoup.select.Elements
  * Will pick all occurrences of <area> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.area(cssSelector: String = "", init: Elements.() -> Unit) = elements("area$cssSelector", init)
+fun <T> Doc.area(cssSelector: String = "", init: Elements.() -> T) = elements("area$cssSelector", init)
 
 /**
  * Will pick all occurrences of <audio> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.audio(cssSelector: String = "", init: Elements.() -> Unit) = elements("audio$cssSelector", init)
+fun <T> Doc.audio(cssSelector: String = "", init: Elements.() -> T) = elements("audio$cssSelector", init)
 
 /**
  * Will pick all occurrences of <img> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.img(cssSelector: String = "", init: Elements.() -> Unit) = elements("img$cssSelector", init)
+fun <T> Doc.img(cssSelector: String = "", init: Elements.() -> T) = elements("img$cssSelector", init)
 
 /**
  * Will pick all occurrences of <map> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.map(cssSelector: String = "", init: Elements.() -> Unit) = elements("map$cssSelector", init)
+fun <T> Doc.map(cssSelector: String = "", init: Elements.() -> T) = elements("map$cssSelector", init)
 
 /**
  * Will pick all occurrences of <track> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.track(cssSelector: String = "", init: Elements.() -> Unit) = elements("track$cssSelector", init)
+fun <T> Doc.track(cssSelector: String = "", init: Elements.() -> T) = elements("track$cssSelector", init)
 
 /**
  * Will pick all occurrences of <video> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.video(cssSelector: String = "", init: Elements.() -> Unit) = elements("video$cssSelector", init)
+fun <T> Doc.video(cssSelector: String = "", init: Elements.() -> T) = elements("video$cssSelector", init)

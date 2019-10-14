@@ -2,6 +2,8 @@ package it.skrape.selects.html5
 
 import it.skrape.aValidDocument
 import it.skrape.selects.lastOccurrence
+import it.skrape.skrape
+import org.jsoup.Jsoup
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
@@ -105,6 +107,20 @@ internal class TextContentElementPickersKtTest {
             }
         }
     }
+
+    @Test
+    fun `can parse p-tag from within p-tags`() {
+        val result = skrape("""
+            <p>
+                parent
+                <p>child1</p>
+                <p>child2</p>
+            </p>""".trimIndent()) {}
+        result.p {
+            print(outerHtml())
+        }
+    }
+
 
     @Test
     fun `can parse pre-tag`() {

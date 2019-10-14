@@ -9,7 +9,7 @@ import org.jsoup.nodes.Element
  * Will pick the first occurrences of an <html> element from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Element
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.html(cssSelector: String = "", init: Element.() -> Unit) = element("html$cssSelector", init)
+fun <T> Doc.html(cssSelector: String = "", init: Element.() -> T) = element("html$cssSelector", init)

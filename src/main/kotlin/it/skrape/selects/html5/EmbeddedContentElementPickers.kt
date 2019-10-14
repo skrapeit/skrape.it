@@ -9,70 +9,70 @@ import org.jsoup.select.Elements
  * Will pick all occurrences of <applet> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.applet(cssSelector: String = "", init: Elements.() -> Unit) = elements("applet$cssSelector", init)
+fun <T> Doc.applet(cssSelector: String = "", init: Elements.() -> T) = elements("applet$cssSelector", init)
 
 /**
  * Will pick all occurrences of <embed> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.embed(cssSelector: String = "", init: Elements.() -> Unit) = elements("embed$cssSelector", init)
+fun <T> Doc.embed(cssSelector: String = "", init: Elements.() -> T) = elements("embed$cssSelector", init)
 
 /**
  * Will pick all occurrences of <iframe> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.iframe(cssSelector: String = "", init: Elements.() -> Unit) = elements("iframe$cssSelector", init)
+fun <T> Doc.iframe(cssSelector: String = "", init: Elements.() -> T) = elements("iframe$cssSelector", init)
 
 /**
  * Will pick all occurrences of <noembed> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.noembed(cssSelector: String = "", init: Elements.() -> Unit) = elements("noembed$cssSelector", init)
+fun <T> Doc.noembed(cssSelector: String = "", init: Elements.() -> T) = elements("noembed$cssSelector", init)
 
 /**
  * Will pick all occurrences of <object> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.`object`(cssSelector: String = "", init: Elements.() -> Unit) = elements("object$cssSelector", init)
+fun <T> Doc.`object`(cssSelector: String = "", init: Elements.() -> T) = elements("object$cssSelector", init)
 
 /**
  * Will pick all occurrences of <param> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.param(cssSelector: String = "", init: Elements.() -> Unit) = elements("param$cssSelector", init)
+fun <T> Doc.param(cssSelector: String = "", init: Elements.() -> T) = elements("param$cssSelector", init)
 
 /**
  * Will pick all occurrences of <picture> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.picture(cssSelector: String = "", init: Elements.() -> Unit) = elements("picture$cssSelector", init)
+fun <T> Doc.picture(cssSelector: String = "", init: Elements.() -> T) = elements("picture$cssSelector", init)
 
 /**
  * Will pick all occurrences of <source> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.source(cssSelector: String = "", init: Elements.() -> Unit) = elements("source$cssSelector", init)
+fun <T> Doc.source(cssSelector: String = "", init: Elements.() -> T) = elements("source$cssSelector", init)

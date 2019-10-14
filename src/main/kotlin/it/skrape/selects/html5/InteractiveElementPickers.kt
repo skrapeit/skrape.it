@@ -9,43 +9,43 @@ import org.jsoup.select.Elements
  * Will pick all occurrences of <details> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.details(cssSelector: String = "", init: Elements.() -> Unit) = elements("details$cssSelector", init)
+fun <T> Doc.details(cssSelector: String = "", init: Elements.() -> T) = elements("details$cssSelector", init)
 
 /**
  * Will pick all occurrences of <dialog> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.dialog(cssSelector: String = "", init: Elements.() -> Unit) = elements("dialog$cssSelector", init)
+fun <T> Doc.dialog(cssSelector: String = "", init: Elements.() -> T) = elements("dialog$cssSelector", init)
 
 /**
  * Will pick all occurrences of <menu> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.menu(cssSelector: String = "", init: Elements.() -> Unit) = elements("menu$cssSelector", init)
+fun <T> Doc.menu(cssSelector: String = "", init: Elements.() -> T) = elements("menu$cssSelector", init)
 
 /**
  * Will pick all occurrences of <menuitem> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.menuitem(cssSelector: String = "", init: Elements.() -> Unit) = elements("menuitem$cssSelector", init)
+fun <T> Doc.menuitem(cssSelector: String = "", init: Elements.() -> T) = elements("menuitem$cssSelector", init)
 
 /**
  * Will pick all occurrences of <summary> elements from a Doc.
  * The selection can be specified/limited by an additional css-selector.
  * @param cssSelector
- * @return Elements
+ * @return T
  */
 @SkrapeItDslMarker
-fun Doc.summary(cssSelector: String = "", init: Elements.() -> Unit) = elements("summary$cssSelector", init)
+fun <T> Doc.summary(cssSelector: String = "", init: Elements.() -> T) = elements("summary$cssSelector", init)
