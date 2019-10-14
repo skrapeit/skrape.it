@@ -52,6 +52,49 @@ You'll always find latest documentation, release notes and examples at
 **[https://docs.skrape.it](https://docs.skrape.it)**
 
 ### Quick Start
+
+```koltin
+@Test
+internal fun `dsl can skrape by url`() {
+    skrape {
+        url = "http://localhost:8080/example"
+        
+        mode = DOM // optional -> defaults to SOURCE (plain http request) - DOM will also render JS
+        method = GET // optional -> defaults to GET
+        timeout = 5000 // optional -> defaults to 5000ms
+        followRedirects = true // optional -> defaults to true
+        userAgent = "some custom user agent" // optional -> defaults to "Mozilla/5.0 skrape.it"
+        cookies = mapOf("some-cookie-name" to "some-value") // optional
+        headers = mapOf("some-custom-header" to "some-value") // optional
+        
+        expect {
+            statusCode toBe 200
+            statusMessage toBe "OK"
+            contentType toBe TEXT_HTML_UTF8
+
+            htmlDocument {
+                title {
+                    text() toBe "i'm the title"
+                }
+                p {
+                    size toBe 2
+                    firstOccurrence {
+                        attr("data-foo") toBe "bar"
+                        text() toBe "i'm a paragraph"
+                    }
+                    lastOccurrence {
+                        text() toBe "i'm a second paragraph"
+                    }
+                }
+                div(".some-class") {
+                    toBePresent()
+                }
+            }
+        }
+    }
+}
+```
+
 #### Installation
 All our official/stable releases will be published to [mavens central repository](https://search.maven.org/search?q=g:it.skrape%20AND%20a:skrapeit-core&core=gav).
 
