@@ -22,8 +22,27 @@ The ability to analyze and extract HTML including client-side rendered DOM trees
 It places particular emphasis on ease of use and a high level of readability by providing an intuitive DSL.
 First and foremost skrape{it} aims to be a testing tool (not tied to a particular test runner), but it can also be used to scrape websites in a convenient fashion.
 
+## Features
+- [x] Deserialization of HTML/XML from websites, local html files and html as string to data classes / POJOs.
+- [x] Can handle client side rendered webpages / Javascript execution
+- [x] Designed to deserialize HTML but can handly any XML-related markup specifications such as SVG, UML, RSS or XML itself.
+- [x] Easy to use, idiomatic and type-safe DSL to ensure a high level of readability.
+- [x] DSL supporting a very convenient way of selecting any valid html elements supporting CSS query-selector syntax.
+- [x] Not bind to a specific test runner or framework.
+- [x] Http-Client without verbosity and ceremony.
+- [x] HTTP `GET`/`POST`/`PUT`/`DELETE`/`HEAD`/`PATCH` requests and corresponding request options like headers, cookies etc in a fluent style interface.
+- [x] Custom matchers/assertions based on infix functions to archive a very high level of readability.
+- [x] Open to use any other assertion library of your choice.
+- [x] DSL is behaving like a Fluent-Api to make data extraction/scraping easy as pie.
+
+### Coming Soon
+- [x] Asynchronous and blocking requests
+- [x] Requests as [coroutines](https://github.com/Kotlin/kotlinx.coroutines)
+- [x] Cancel asynchronous request
+- [x] Store to file
+
 #### Extensions
-In addition, extensions for known testing libraries are provided to extend them with the mentioned skrape{it} functionality.
+In addition, extensions for well-known testing libraries are provided to extend them with the mentioned skrape{it} functionality.
 Currently available:
 * [Skrape{it} MockMvc extension](https://github.com/skrapeit/skrapeit-mockmvc-extension)
 * [Skrape{it} Ktor extension](https://github.com/skrapeit/skrapeit-ktor-extension)
@@ -33,10 +52,8 @@ You'll always find latest documentation, release notes and examples at
 **[https://docs.skrape.it](https://docs.skrape.it)**
 
 ### Quick Start
-
 #### Installation
-
-All our official and stable releases will be published to [mavens central repository](https://search.maven.org/search?q=g:it.skrape%20AND%20a:skrapeit-core&core=gav).
+All our official/stable releases will be published to [mavens central repository](https://search.maven.org/search?q=g:it.skrape%20AND%20a:skrapeit-core&core=gav).
 
 #### Add dependency
 
@@ -61,7 +78,6 @@ dependencies {
 </details>
 
 #### using bleeding edge features before official release
-
 We are offering snapshot releases via jitpack. Thereby you can install every commit and version you want.
 But be careful, these are non official releases and may be unstable as well as breaking changes can occur at any time.
 
@@ -98,3 +114,7 @@ dependencies {
 </dependency>
 ```
 </details>
+
+### Sponsoring
+Skrape{it} is and always will be free and open-source. However your sponsorship of this project is greatly appreciated and will fund the caffeine and pizzas that fuel its development. 
+To sponsor Skrape{it}, just click this button → [![Donate](https://img.shields.io/badge/-donate-blue.svg?logo=paypal)](https://www.paypal.me/skrapeit)
