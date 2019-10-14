@@ -10,13 +10,14 @@ import it.skrape.core.Result
 import org.jsoup.Connection
 
 class KoFetcher(private val request: Request): Fetcher {
+	// create a new client using our custom options
 	private val client = defaultHttpClient.fork {
 		followRedirects = request.followRedirects
 		readTimeout = request.timeout.toLong()
 	}
 
 	override fun fetch(): Result {
-		val requester = when(request.method) {
+		when(request.method) {
 			Connection.Method.GET -> httpGet(client, getContext())
 			Connection.Method.POST -> httpPost(client, getContext())
 			Connection.Method.PUT -> httpPut(client, getContext())
@@ -24,8 +25,8 @@ class KoFetcher(private val request: Request): Fetcher {
 			Connection.Method.PATCH -> httpPatch(client, getContext())
 			Connection.Method.HEAD -> httpHead(client, getContext())
 			else -> throw UnsupportedOperationException("Method is not supported by KoHttp")
-		}
-		requester.use {
+		}.use {
+			// assemble the result from the response data
 			return Result(
 				responseBody = it.body()?.string() ?: "",
 				statusCode = it.code(),
