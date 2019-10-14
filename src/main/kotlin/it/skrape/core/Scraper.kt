@@ -1,18 +1,19 @@
 package it.skrape.core
 
 import it.skrape.core.fetcher.BrowserFetcher
-import it.skrape.core.fetcher.KoFetcher
+import it.skrape.core.fetcher.HttpFetcher
+import java.lang.System.*
 
 
 class Scraper(val request: Request = Request()) {
 
     fun scrape(): Result {
 
-        System.setProperty("sun.net.http.allowRestrictedHeaders", "true")
+        setProperty("sun.net.http.allowRestrictedHeaders", "true")
 
         return when (request.mode) {
             Mode.DOM -> BrowserFetcher(request).fetch()
-            Mode.SOURCE -> KoFetcher(request).fetch()
+            Mode.SOURCE -> HttpFetcher(request).fetch()
         }
     }
 }
