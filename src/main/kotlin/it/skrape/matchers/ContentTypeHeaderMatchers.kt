@@ -29,35 +29,32 @@ enum class ContentTypes(val value: String) {
     IMAGE_SVG("image/svg");
 }
 
-infix fun ContentType.toBe(expected: ContentTypes) {
+infix fun ContentType.toBe(expected: ContentTypes): ContentType {
     expectThat(this.raw())
             .describedAs("content-type")
             .isEqualTo(expected.value)
+    return this
 }
 
-infix fun ContentType.`to be`(expected: ContentTypes) {
-    this toBe expected
-}
+infix fun ContentType.`to be`(expected: ContentTypes)= this toBe expected
 
-infix fun ContentType.toBeNot(expected: ContentTypes) {
+infix fun ContentType.toBeNot(expected: ContentTypes): ContentType {
     expectThat(this.raw())
             .describedAs("content-type")
             .isNotEqualTo(expected.value)
+    return this
 }
 
-infix fun ContentType.`to be not`(expected: ContentTypes) {
-    this toBeNot expected
-}
+infix fun ContentType.`to be not`(expected: ContentTypes) = this toBeNot expected
 
-infix fun ContentType.toContain(expected: ContentTypes) {
+infix fun ContentType.toContain(expected: ContentTypes): ContentType {
     expectThat(this.raw())
             .describedAs("content-type")
             .contains(expected.value)
+    return this
 }
 
-infix fun ContentType.`to contain`(expected: ContentTypes) {
-    this toContain expected
-}
+infix fun ContentType.`to contain`(expected: ContentTypes) = this toContain expected
 
 private fun ContentType.raw() = (this as String)
         .toLowerCase()
