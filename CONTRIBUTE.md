@@ -13,3 +13,8 @@
 ### check if all dependencies are up-to-date
 
     ./gradlew dependencyUpdates
+
+### publish new release to maven-central
+
+    ./gradlew publish 
+    

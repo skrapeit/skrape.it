@@ -1,7 +1,9 @@
 plugins {
     kotlin("jvm") version "1.3.50"
     `maven-publish`
+    signing
     jacoco
+    id("org.jetbrains.dokka") version "0.10.0"
     id("com.github.ben-manes.versions") version "0.26.0"
     id("com.adarshr.test-logger") version "2.0.0"
 }
@@ -52,19 +54,31 @@ java {
     sourceCompatibility = JavaVersion.VERSION_1_8
 }
 
-val sourcesJar by tasks.registering(Jar::class) {
-    archiveClassifier.set("sources")
-    from(sourceSets.main.get().allSource)
-}
-
 tasks {
     compileJava {
         options.encoding = "UTF-8"
     }
 
+    val sourcesJar by registering(Jar::class) {
+        archiveClassifier.set("sources")
+        from(sourceSets.main.get().allSource)
+    }
+
+    dokka {
+        dependsOn(javadoc)
+        outputFormat = "javadoc"
+        outputDirectory = javadoc.get().destinationDir!!.absolutePath
+    }
+
+    val javadocJar by registering(Jar::class) {
+        dependsOn(dokka)
+        archiveClassifier.set("javadoc")
+        from(javadoc.get().destinationDir)
+    }
+
     artifacts {
+        archives(javadocJar)
         archives(sourcesJar)
-        archives(jar)
     }
 
     test {
@@ -76,21 +90,23 @@ tasks {
 }
 
 group = "it.skrape"
-version = "0.6.0"
+version = "0-SNAPSHOT"
 description = "skrape{it}"
 
 publishing {
     publications {
-        register<MavenPublication>("default") {
+        register("mavenJava", MavenPublication::class) {
             artifactId = "skrapeit-core"
             from(components["java"])
             artifact(tasks["sourcesJar"])
+            artifact(tasks["javadocJar"])
             pom {
                 name.set("skrape{it}")
-                description.set("""skrape{it} is a Kotlin-based HTML testing and web scraping library 
-                    that can be used seamlessly in both Spring-Boot and other JVM projects. 
-                    It places particular emphasis on ease of use, a high level of readability 
-                    and attention to performance through the use of non-blocking operations.""")
+                description.set("""A Kotlin-based testing/scraping/parsing library providing the ability 
+                    |to analyze and extract data from HTML (server & client-side rendered). 
+                    |It places particular emphasis on ease of use and a high level of readability 
+                    |by providing an intuitive DSL. First and foremost it aims to be a testing lib, 
+                    |but it can also be used to scrape websites in a convenient fashion.""".trimMargin())
                 url.set("https://docs.skrape.it")
 
                 licenses {
@@ -125,8 +141,22 @@ publishing {
     }
     repositories {
         maven {
-            // This will publish the artifacts to a local repository in the build dir
-            url = uri("$buildDir/repository")
+            val releasesRepoUrl = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+            val snapshotsRepoUrl = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+
+            url = if (project.version.toString().contains("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
+            credentials {
+                username = System.getenv("OSSRH_USERNAME")
+                password = System.getenv("OSSRH_PASSWORD")
+            }
         }
+
     }
 }
+
+signing {
+    // useGpgCmd()
+    publishing.publications["mavenJava"]
+}
+
+// apply(from = "publish.gradle.kts")
