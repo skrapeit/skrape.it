@@ -1,8 +1,7 @@
 package it.skrape.core
 
 import it.skrape.core.fetcher.BrowserFetcher
-import it.skrape.core.fetcher.HttpFetcher
-import org.jsoup.nodes.Document
+import it.skrape.core.fetcher.KoFetcher
 
 
 class Scraper(val request: Request = Request()) {
@@ -13,7 +12,7 @@ class Scraper(val request: Request = Request()) {
 
         return when (request.mode) {
             Mode.DOM -> BrowserFetcher(request).fetch()
-            Mode.SOURCE -> HttpFetcher(request).fetch()
+            Mode.SOURCE -> KoFetcher(request).fetch()
         }
     }
 }
