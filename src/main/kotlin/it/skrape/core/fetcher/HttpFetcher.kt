@@ -2,12 +2,11 @@ package it.skrape.core.fetcher
 
 import it.skrape.core.Request
 import it.skrape.core.Result
-import org.jsoup.Connection
 import org.jsoup.Jsoup
 
-internal class HttpFetcher(private val request: Request) {
+internal class HttpFetcher(private val request: Request): Fetcher {
 
-    fun fetch(): Result {
+    override fun fetch(): Result {
 
         val connection = Jsoup.connect(request.url)
                 .method(request.method)
@@ -33,5 +32,3 @@ internal class HttpFetcher(private val request: Request) {
         )
     }
 }
-
-typealias Response = Connection.Response

@@ -1,5 +1,3 @@
-import org.gradle.api.tasks.bundling.Jar
-
 plugins {
     kotlin("jvm") version "1.3.50"
     `maven-publish`
@@ -23,6 +21,7 @@ dependencies {
     val htmlUnitVersion = "2.36.0"
     val assertkVersion = "0.13"
     val striktVersion = "0.22.2"
+    val kohttpVersion = "0.11.0"
 
     val junitVersion = "5.5.2"
     val testContainersVersion = "1.12.2"
@@ -34,6 +33,7 @@ dependencies {
     implementation("org.jsoup:jsoup:$jsoupVersion")
     implementation("io.strikt:strikt-core:$striktVersion")
     implementation("net.sourceforge.htmlunit:htmlunit:$htmlUnitVersion")
+    implementation("io.github.rybalkinsd:kohttp:$kohttpVersion")
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     compileOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 

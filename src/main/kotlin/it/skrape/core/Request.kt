@@ -4,7 +4,8 @@ import org.jsoup.Connection
 
 data class Request(
         var mode: Mode = Mode.SOURCE,
-        var url: String = "http://localhost:8080",
+        // trailing slash is required
+        var url: String = "http://localhost:8080/",
         var method: Method = Method.GET,
         var userAgent: String = "Mozilla/5.0 skrape.it",
         var headers: Map<String, String> = emptyMap(),

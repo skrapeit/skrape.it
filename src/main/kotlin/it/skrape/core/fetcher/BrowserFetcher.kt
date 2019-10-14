@@ -1,10 +1,6 @@
 package it.skrape.core.fetcher
 
-import com.gargoylesoftware.htmlunit.BrowserVersion
-import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController
-import com.gargoylesoftware.htmlunit.Page
-import com.gargoylesoftware.htmlunit.SilentCssErrorHandler
-import com.gargoylesoftware.htmlunit.WebClient
+import com.gargoylesoftware.htmlunit.*
 import com.gargoylesoftware.htmlunit.html.HtmlPage
 import com.gargoylesoftware.htmlunit.util.Cookie
 import com.gargoylesoftware.htmlunit.util.NameValuePair
@@ -14,9 +10,9 @@ import it.skrape.exceptions.UnsupportedRequestOptionException
 import org.jsoup.Connection
 import java.net.URL
 
-class BrowserFetcher(private val request: Request) {
+class BrowserFetcher(private val request: Request): Fetcher {
 
-    fun fetch(): Result {
+    override fun fetch(): Result {
 
         if (request.method != Connection.Method.GET)
             throw UnsupportedRequestOptionException("Browser mode only supports the http verb GET")
