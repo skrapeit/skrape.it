@@ -199,7 +199,7 @@ internal class DslTest : WireMockSetup() {
         wireMockServer.setupStub()
 
         skrape {
-            url = "http://localhost:8080"
+            url = "http://localhost:8080/"
 
             val extracted = extract {
                 MyObject(statusMessage, "", emptyList())
@@ -214,7 +214,7 @@ internal class DslTest : WireMockSetup() {
         wireMockServer.setupStub()
 
         skrape {
-            url = "http://localhost:8080"
+            url = "http://localhost:8080/"
 
             val extracted = extract {
                 MyObject(statusMessage, "", emptyList())
@@ -229,7 +229,7 @@ internal class DslTest : WireMockSetup() {
         wireMockServer.setupStub()
 
         val extracted = skrape {
-            url = "http://localhost:8080"
+            url = "http://localhost:8080/"
 
             extractIt<MyOtherObject> {
                 it.message = statusMessage
@@ -258,7 +258,7 @@ internal class DslTest : WireMockSetup() {
         wireMockServer.setupStub()
 
         val extracted = skrape {
-            url = "http://localhost:8080"
+            url = "http://localhost:8080/"
 
             extract {
                 htmlDocument {
