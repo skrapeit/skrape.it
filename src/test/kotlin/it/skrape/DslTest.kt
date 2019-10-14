@@ -1,23 +1,23 @@
 package it.skrape
 
-import assertk.assertThat
-import assertk.assertions.contains
-import assertk.assertions.containsExactly
-import assertk.assertions.isEqualTo
-import assertk.assertions.isNull
 import it.skrape.core.*
 import it.skrape.exceptions.ElementNotFoundException
-import it.skrape.matchers.toBe
-import it.skrape.selects.element
-import it.skrape.selects.elements
-import it.skrape.selects.headers
+import it.skrape.matchers.*
+import it.skrape.matchers.ContentTypes.*
+import it.skrape.selects.*
 import it.skrape.selects.html5.body
+import it.skrape.selects.html5.div
+import it.skrape.selects.html5.p
 import it.skrape.selects.html5.title
-import it.skrape.selects.responseHeader
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.junit.jupiter.Testcontainers
+import strikt.api.expectThat
+import strikt.assertions.containsExactly
+import strikt.assertions.hasEntry
+import strikt.assertions.isEqualTo
+import strikt.assertions.isNull
 import java.io.File
 import java.net.SocketTimeoutException
 
@@ -33,25 +33,52 @@ internal class DslTest : WireMockSetup() {
 
             expect {
 
-                assertThat(statusCode).isEqualTo(200)
-                assertThat(statusMessage).isEqualTo("OK")
-                assertThat(contentType).isEqualTo("text/html;charset=utf-8")
+                statusCode toBe 200
+                statusMessage toBe "OK"
 
-                element("title").text() toBe "i'm the title"
+                contentType toBe TEXT_HTML_UTF8
 
-                title {
-                    assertThat(text()).isEqualTo("i'm the title")
+                htmlDocument {
+
+                    title {
+                        text() toBe "i'm the title"
+                    }
+
+                    p {
+                        firstOccurrence {
+                            attr("bla") toBe ""
+                            expectThat(text()).isEqualTo("i'm a paragraph")
+                            expectThat(text()).isEqualTo("i'm a paragraph")
+                        }
+                    }
+
+                    p {
+                        expectThat(size).isEqualTo(2)
+                    }
                 }
+            }
+        }
+    }
 
-                element("p") {
-                    attr("bla") toBe ""
-                    assertThat(text()).isEqualTo("i'm a paragraph")
-                    assertThat(text()).isEqualTo("i'm a paragraph")
-                }
+    @Test
+    internal fun `dsl can assert content-type in highly readable way`() {
+        wireMockServer.setupStub(path = "/example")
 
-                elements("p") {
-                    assertThat(size).isEqualTo(2)
-                }
+        skrape {
+            url = "http://localhost:8080/example"
+
+            expect {
+                contentType `to contain` TEXT_HTML
+                contentType `to be` TEXT_HTML_UTF8
+                contentType `to be not` APPLICATION_XHTML
+                contentType `to be not` APPLICATION_GZIP
+                contentType `to be not` APPLICATION_JSON
+                contentType `to be not` APPLICATION_TAR
+                contentType `to be not` APPLICATION_XML
+                contentType `to be not` APPLICATION_XUL
+                contentType `to be not` APPLICATION_ZIP
+
+                expectThat(contentType).isEqualTo("text/html;charset=utf-8")
             }
         }
     }
@@ -65,7 +92,7 @@ internal class DslTest : WireMockSetup() {
             followRedirects = false
 
             expect {
-                assertThat(statusCode).isEqualTo(302)
+                statusCode toBe 302
             }
         }
     }
@@ -77,15 +104,15 @@ internal class DslTest : WireMockSetup() {
 
         skrape {
             expect {
-                val header = responseHeader("Content-Type") {
-                    assertThat(this).isEqualTo("text/html;charset=utf-8")
+                val header = httpHeader("Content-Type") {
+                    expectThat(this).isEqualTo("text/html;charset=utf-8")
                 }
-                assertThat(header).isEqualTo("text/html;charset=utf-8")
+                expectThat(header).isEqualTo("text/html;charset=utf-8")
 
-                val nonExistingHeader = responseHeader("Non-Existing") {
-                    assertThat(this).isNull()
+                val nonExistingHeader = httpHeader("Non-Existing") {
+                    expectThat(this).isNull()
                 }
-                assertThat(nonExistingHeader).isNull()
+                expectThat(nonExistingHeader).isNull()
             }
         }
     }
@@ -97,10 +124,10 @@ internal class DslTest : WireMockSetup() {
 
         skrape {
             expect {
-                val headers = headers {
-                    assertThat(this).contains("Content-Type", "text/html;charset=utf-8")
+                val headers = httpHeaders {
+                    expectThat(this).hasEntry("Content-Type", "text/html;charset=utf-8")
                 }
-                assertThat(headers).contains("Content-Type", "text/html;charset=utf-8")
+                expectThat(headers).hasEntry("Content-Type", "text/html;charset=utf-8")
             }
         }
     }
@@ -112,10 +139,11 @@ internal class DslTest : WireMockSetup() {
 
         skrape {
             expect {
-                val body = body {
-                    assertThat(text()).contains("i'm a paragraph")
+                htmlDocument {
+                    body {
+                        text() toContain "i'm a paragraph"
+                    }
                 }
-                assertThat(body.text()).contains("i'm a paragraph")
             }
         }
     }
@@ -127,7 +155,7 @@ internal class DslTest : WireMockSetup() {
 
         skrape {
             expect {
-                assertThat(statusCode).isEqualTo(404)
+                statusCode toBe 404
             }
         }
     }
@@ -142,11 +170,12 @@ internal class DslTest : WireMockSetup() {
 
             expect {
 
-                assertThat(request.method).isEqualTo(Method.POST)
+                expectThat(request.method).isEqualTo(Method.POST)
 
-                assertThat(statusCode).isEqualTo(200)
-                assertThat(statusMessage).isEqualTo("OK")
-                assertThat(contentType).isEqualTo("application/json;charset=utf-8")
+                statusCode toBe 200
+                statusMessage toBe "OK"
+                contentType toBe APPLICATION_JSON_UTF8
+                contentType toBe "application/json;charset=utf-8"
             }
         }
     }
@@ -174,7 +203,7 @@ internal class DslTest : WireMockSetup() {
             val extracted = extract {
                 MyObject(statusMessage, "", emptyList())
             }
-            assertThat(extracted.message).isEqualTo("OK")
+            expectThat(extracted.message).isEqualTo("OK")
         }
     }
 
@@ -189,7 +218,7 @@ internal class DslTest : WireMockSetup() {
             val extracted = extract {
                 MyObject(statusMessage, "", emptyList())
             }
-            assertThat(extracted.message).isEqualTo("OK")
+            expectThat(extracted.message).isEqualTo("OK")
         }
     }
 
@@ -205,7 +234,7 @@ internal class DslTest : WireMockSetup() {
                 it.message = statusMessage
             }
         }
-        assertThat(extracted.message).isEqualTo("OK")
+        expectThat(extracted.message).isEqualTo("OK")
     }
 
     @Test
@@ -214,7 +243,9 @@ internal class DslTest : WireMockSetup() {
         Assertions.assertThrows(ElementNotFoundException::class.java) {
             skrape {
                 expect {
-                    element(".nonExistent") {}
+                    htmlDocument {
+                        element(".nonExistent") {}
+                    }
                 }
             }
         }
@@ -229,60 +260,62 @@ internal class DslTest : WireMockSetup() {
             url = "http://localhost:8080"
 
             extract {
-                MyObject(
-                        message = statusMessage,
-                        paragraph = element("p").text(),
-                        allParagraphs = elements("p").map { it.text() }
-                )
+                htmlDocument {
+                    MyObject(
+                            message = statusMessage,
+                            paragraph = element("p").text(),
+                            allParagraphs = elements("p").map { it.text() }
+                    )
+                }
             }
         }
-        assertThat(extracted.message).isEqualTo("OK")
-        assertThat(extracted.paragraph).isEqualTo("i'm a paragraph")
-        assertThat(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
+        expectThat(extracted.message).isEqualTo("OK")
+        expectThat(extracted.paragraph).isEqualTo("i'm a paragraph")
+        expectThat(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
     }
 
     @Test
     internal fun `can read and return html from file system with default charset (UTF-8) using the DSL`() {
         val doc = skrape(File("src/test/resources/__files/example.html")) {
-            assertThat(title()).isEqualTo("i'm the title")
+            expectThat(title()).isEqualTo("i'm the title")
         }
-        assertThat(doc.title()).isEqualTo("i'm the title")
+        expectThat(doc.title()).isEqualTo("i'm the title")
     }
 
     @Test
     internal fun `can read and return html from file system using the DSL and non default charset`() {
         val doc = skrape(File("src/test/resources/__files/example.html"), Charsets.ISO_8859_1) {
-            assertThat(title()).isEqualTo("i'm the title")
+            expectThat(title()).isEqualTo("i'm the title")
         }
-        assertThat(doc.title()).isEqualTo("i'm the title")
+        expectThat(doc.title()).isEqualTo("i'm the title")
     }
 
     @Test
     internal fun `can read and return html from String`() {
         val doc = skrape("<html><head><title>i'm the title</title></head></html>") {
-            assertThat(title()).isEqualTo("i'm the title")
+            expectThat(title()).isEqualTo("i'm the title")
         }
-        assertThat(doc.title()).isEqualTo("i'm the title")
+        expectThat(doc.title()).isEqualTo("i'm the title")
     }
 
     @Test
     internal fun `can read html from file system with default charset (UTF-8) using the DSL`() {
         expect(File("src/test/resources/__files/example.html")) {
-            assertThat(title()).isEqualTo("i'm the title")
+            expectThat(title()).isEqualTo("i'm the title")
         }
     }
 
     @Test
     internal fun `can read html from file system using the DSL and non default charset`() {
         expect(File("src/test/resources/__files/example.html"), Charsets.ISO_8859_1) {
-            assertThat(title()).isEqualTo("i'm the title")
+            expectThat(title()).isEqualTo("i'm the title")
         }
     }
 
     @Test
     internal fun `can read html from String`() {
         expect("<html><head><title>i'm the title</title></head></html>") {
-            assertThat(title()).isEqualTo("i'm the title")
+            expectThat(title()).isEqualTo("i'm the title")
         }
     }
 
@@ -293,7 +326,11 @@ internal class DslTest : WireMockSetup() {
         skrape {
             mode = Mode.DOM
             expect {
-                element("div.dynamic").text() toBe "I have been dynamically added via Javascript"
+                htmlDocument {
+                    div(".dynamic") {
+                        text() toBe "I have been dynamically added via Javascript"
+                    }
+                }
             }
         }
     }

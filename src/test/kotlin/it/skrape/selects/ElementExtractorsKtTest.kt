@@ -2,13 +2,13 @@ package it.skrape.selects
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import it.skrape.aValidResult
+import it.skrape.aValidDocument
 import it.skrape.selects.html5.p
 import org.junit.jupiter.api.Test
 
 internal class ElementExtractorsKtTest {
 
-    private val result = aValidResult()
+    private val document = aValidDocument()
 
     @Test
     fun `can pick element from element`() {
@@ -32,7 +32,7 @@ internal class ElementExtractorsKtTest {
 
     @Test
     fun `can pick elements firstOccurrence`() {
-        result.p {
+        document.p {
             firstOccurrence {
                 assertThat(text()).isEqualTo("i'm a paragraph")
             }
@@ -41,7 +41,7 @@ internal class ElementExtractorsKtTest {
 
     @Test
     fun `can pick elements secondOccurrence`() {
-        result.p {
+        document.p {
             secondOccurrence {
                 assertThat(text()).isEqualTo("i'm a second paragraph")
             }
@@ -50,7 +50,7 @@ internal class ElementExtractorsKtTest {
 
     @Test
     fun `can pick elements thirdOccurrence`() {
-        result.p {
+        document.p {
             thirdOccurrence {
                 assertThat(text()).isEqualTo("i'm a paragraph with word break")
             }
@@ -59,7 +59,7 @@ internal class ElementExtractorsKtTest {
 
     @Test
     fun `can pick elements lastOccurrence`() {
-        result.p {
+        document.p {
             lastOccurrence {
                 assertThat(text()).isEqualTo("i'm the last paragraph")
             }
@@ -68,7 +68,7 @@ internal class ElementExtractorsKtTest {
 
     @Test
     fun `can pick elements secondlastOccurrence`() {
-        result.p {
+        document.p {
             secondLastOccurrence {
                 assertThat(text()).isEqualTo("i'm a paragraph with word break")
             }

@@ -1,267 +1,267 @@
 package it.skrape.selects.html5
 
-import assertk.assertThat
-import assertk.assertions.contains
-import assertk.assertions.isEqualTo
-import it.skrape.aValidResult
+import it.skrape.aValidDocument
 import org.junit.jupiter.api.Test
+import strikt.api.expectThat
+import strikt.assertions.contains
+import strikt.assertions.isEqualTo
 
 
 internal class TextSemanticsElementPickersKtTest {
 
     @Test
     fun `can parse a-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.a {
-            assertThat(text()).isEqualTo("i'm an anchor")
+            expectThat(text()).isEqualTo("i'm an anchor")
         }
     }
 
     @Test
     fun `can parse abbr-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.abbr {
-            assertThat(text()).isEqualTo("i'm an abbr")
+            expectThat(text()).isEqualTo("i'm an abbr")
         }
     }
 
     @Test
     fun `can parse b-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.b {
-            assertThat(text()).isEqualTo("i'm a bold text")
+            expectThat(text()).isEqualTo("i'm a bold text")
         }
     }
 
     @Test
     fun `can parse bdi-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.bdi {
-            assertThat(text()).isEqualTo("i'm a bdi")
+            expectThat(text()).isEqualTo("i'm a bdi")
         }
     }
 
     @Test
     fun `can parse bdo-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.bdo {
-            assertThat(text()).isEqualTo("i'm a bdo")
+            expectThat(text()).isEqualTo("i'm a bdo")
         }
     }
 
     @Test
     fun `can parse br-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.br {
-            assertThat(size).isEqualTo(2)
+            expectThat(size).isEqualTo(2)
         }
     }
 
     @Test
     fun `can parse cite-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.cite {
-            assertThat(text()).isEqualTo("i'm a cite")
+            expectThat(text()).isEqualTo("i'm a cite")
         }
     }
 
     @Test
     fun `can parse code-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.code {
-            assertThat(text()).isEqualTo("i'm a code")
+            expectThat(text()).isEqualTo("i'm a code")
         }
     }
 
     @Test
     fun `can parse data-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.data {
-            assertThat(text()).isEqualTo("i'm a data")
+            expectThat(text()).isEqualTo("i'm a data")
         }
     }
 
     @Test
     fun `can parse dfn-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.dfn {
-            assertThat(text()).isEqualTo("i'm a dfn")
+            expectThat(text()).isEqualTo("i'm a dfn")
         }
     }
 
     @Test
     fun `can parse em-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.em {
-            assertThat(text()).isEqualTo("i'm a em")
+            expectThat(text()).isEqualTo("i'm a em")
         }
     }
 
     @Test
     fun `can parse i-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.i {
-            assertThat(text()).isEqualTo("i'm a i")
+            expectThat(text()).isEqualTo("i'm a i")
         }
     }
 
     @Test
     fun `can parse kbd-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.kbd {
-            assertThat(text()).isEqualTo("i'm a kbd")
+            expectThat(text()).isEqualTo("i'm a kbd")
         }
     }
 
     @Test
     fun `can parse mark-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.mark {
-            assertThat(text()).isEqualTo("i'm a mark")
+            expectThat(text()).isEqualTo("i'm a mark")
         }
     }
 
     @Test
     fun `can parse q-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.q {
-            assertThat(text()).isEqualTo("i'm a q")
+            expectThat(text()).isEqualTo("i'm a q")
         }
     }
 
     @Test
     fun `can parse rb-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.rb {
-            assertThat(text()).isEqualTo("i'm a rb")
+            expectThat(text()).isEqualTo("i'm a rb")
         }
     }
 
     @Test
     fun `can parse rp-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.rp {
-            assertThat(text()).isEqualTo("i'm a rp")
+            expectThat(text()).isEqualTo("i'm a rp")
         }
     }
 
     @Test
     fun `can parse rt-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.rt {
-            assertThat(text()).isEqualTo("i'm a rt")
+            expectThat(text()).isEqualTo("i'm a rt")
         }
     }
 
     @Test
     fun `can parse rtc-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.rtc {
-            assertThat(text()).isEqualTo("i'm a rtc")
+            expectThat(text()).isEqualTo("i'm a rtc")
         }
     }
 
     @Test
     fun `can parse ruby-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.ruby {
-            assertThat(text()).contains("i'm a ruby")
+            expectThat(text()).contains("i'm a ruby")
         }
     }
 
     @Test
     fun `can parse s-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.s {
-            assertThat(text()).isEqualTo("i'm a s")
+            expectThat(text()).isEqualTo("i'm a s")
         }
     }
 
     @Test
     fun `can parse samp-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.samp {
-            assertThat(text()).isEqualTo("i'm a samp")
+            expectThat(text()).isEqualTo("i'm a samp")
         }
     }
 
     @Test
     fun `can parse small-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.small {
-            assertThat(text()).isEqualTo("i'm a small")
+            expectThat(text()).isEqualTo("i'm a small")
         }
     }
 
     @Test
     fun `can parse span-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.span {
-            assertThat(size).isEqualTo(6)
+            expectThat(size).isEqualTo(6)
         }
     }
 
     @Test
     fun `can parse strong-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.strong {
-            assertThat(text()).isEqualTo("i'm a strong")
+            expectThat(text()).isEqualTo("i'm a strong")
         }
     }
 
     @Test
     fun `can parse sub-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.sub {
-            assertThat(text()).isEqualTo("i'm a sub")
+            expectThat(text()).isEqualTo("i'm a sub")
         }
     }
 
     @Test
     fun `can parse sup-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.sup {
-            assertThat(text()).isEqualTo("i'm a sup")
+            expectThat(text()).isEqualTo("i'm a sup")
         }
     }
 
     @Test
     fun `can parse time-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.time {
-            assertThat(text()).isEqualTo("i'm a time")
+            expectThat(text()).isEqualTo("i'm a time")
         }
     }
 
     @Test
     fun `can parse tt-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.tt {
-            assertThat(text()).isEqualTo("i'm a tt")
+            expectThat(text()).isEqualTo("i'm a tt")
         }
     }
 
     @Test
     fun `can parse u-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.u {
-            assertThat(text()).isEqualTo("i'm a u")
+            expectThat(text()).isEqualTo("i'm a u")
         }
     }
 
     @Test
     fun `can parse var-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.`var` {
-            assertThat(text()).isEqualTo("i'm a var")
+            expectThat(text()).isEqualTo("i'm a var")
         }
     }
 
     @Test
     fun `can parse wbr-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.wbr {
-            assertThat(size).isEqualTo(1)
+            expectThat(size).isEqualTo(1)
         }
     }
 }

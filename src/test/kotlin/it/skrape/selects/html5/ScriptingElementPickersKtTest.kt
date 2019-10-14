@@ -1,34 +1,34 @@
 package it.skrape.selects.html5
 
-import assertk.assertThat
-import assertk.assertions.isEqualTo
-import it.skrape.aValidResult
 import it.skrape.aSelfClosingTag
+import it.skrape.aValidDocument
 import org.junit.jupiter.api.Test
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 
 internal class ScriptingElementPickersKtTest {
 
     @Test
     fun `can parse script-tag`() {
-        val result = aValidResult(aSelfClosingTag("script"))
+        val result = aValidDocument(aSelfClosingTag("script"))
         result.script {
-            assertThat(attr("custom-attr")).isEqualTo("script-attr")
+            expectThat(attr("custom-attr")).isEqualTo("script-attr")
         }
     }
 
     @Test
     fun `can parse canvas-tag`() {
-        val result = aValidResult(aSelfClosingTag("canvas"))
+        val result = aValidDocument(aSelfClosingTag("canvas"))
         result.canvas {
-            assertThat(attr("custom-attr")).isEqualTo("canvas-attr")
+            expectThat(attr("custom-attr")).isEqualTo("canvas-attr")
         }
     }
 
     @Test
     fun `can parse noscript-tag`() {
-        val result = aValidResult(aSelfClosingTag("noscript"))
+        val result = aValidDocument(aSelfClosingTag("noscript"))
         result.noscript {
-            assertThat(attr("custom-attr")).isEqualTo("noscript-attr")
+            expectThat(attr("custom-attr")).isEqualTo("noscript-attr")
         }
     }
 }

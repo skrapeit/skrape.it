@@ -9,21 +9,24 @@ import assertk.assertions.isNotEqualTo
 import assertk.assertions.isZero
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
+import strikt.assertions.isNotEqualTo
 
 infix fun Int.toBe(expected: Int) {
-    assertThat(this).isEqualTo(expected)
+    expectThat(this).isEqualTo(expected)
 }
 
 infix fun Int.`to be`(expected: Int) = this toBe expected
 
 infix fun String?.toBe(expected: String?) {
-    assertThat(this).isEqualTo(expected)
+    expectThat(this).isEqualTo(expected)
 }
 
 infix fun String?.`to be`(expected: String?) = this toBe expected
 
 infix fun String?.toBeNot(expected: String?) {
-    assertThat(this).isNotEqualTo(expected)
+    expectThat(this).isNotEqualTo(expected)
 }
 
 infix fun String?.`to be not`(expected: String?) = this toBeNot expected

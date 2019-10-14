@@ -1,44 +1,42 @@
 package it.skrape.selects.html5
 
-import assertk.assertThat
-import assertk.assertions.isEqualTo
 import it.skrape.aStandardTag
-import it.skrape.aValidResult
+import it.skrape.aValidDocument
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 
 internal class WebComponentsElementPickersKtTest {
 
     @Test
     fun `can parse content-tag`() {
-        val result = aValidResult(aStandardTag("content"))
+        val result = aValidDocument(aStandardTag("content"))
         result.content {
-            assertThat(text()).isEqualTo("i'm a content")
+            expectThat(text()).isEqualTo("i'm a content")
         }
     }
 
     @Test
     fun `can parse shadow-tag`() {
-        val result = aValidResult(aStandardTag("shadow"))
+        val result = aValidDocument(aStandardTag("shadow"))
         result.shadow {
-            assertThat(text()).isEqualTo("i'm a shadow")
+            expectThat(text()).isEqualTo("i'm a shadow")
         }
     }
 
     @Test
     fun `can parse slot-tag`() {
-        val result = aValidResult(aStandardTag("slot"))
+        val result = aValidDocument(aStandardTag("slot"))
         result.slot {
-            assertThat(text()).isEqualTo("i'm a slot")
+            expectThat(text()).isEqualTo("i'm a slot")
         }
     }
 
     @Test
     fun `can parse template-tag`() {
-        val result = aValidResult(aStandardTag("template"))
+        val result = aValidDocument(aStandardTag("template"))
         result.template {
-            assertThat(text()).isEqualTo("i'm a template")
+            expectThat(text()).isEqualTo("i'm a template")
         }
     }
 }

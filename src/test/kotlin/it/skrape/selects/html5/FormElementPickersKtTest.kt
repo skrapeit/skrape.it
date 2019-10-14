@@ -1,138 +1,123 @@
 package it.skrape.selects.html5
 
-import assertk.assertThat
-import assertk.assertions.isEqualTo
-import it.skrape.aValidHtml
-import it.skrape.aValidResult
 import it.skrape.aSelfClosingTag
+import it.skrape.aStandardTag
+import it.skrape.aValidDocument
 import org.junit.jupiter.api.Test
-
-import java.util.*
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 
 internal class FormElementPickersKtTest {
 
     @Test
     fun `can parse button-tag`() {
-        val uniqueString = UUID.randomUUID().toString()
-        val result = aValidResult(aValidHtml("<button>$uniqueString</button>"))
+        val result = aValidDocument(aStandardTag("button"))
         result.button {
-            assertThat(text()).isEqualTo(uniqueString)
+            expectThat(text()).isEqualTo("i'm a button")
         }
     }
 
     @Test
     fun `can parse datalist-tag`() {
-        val uniqueString = UUID.randomUUID().toString()
-        val result = aValidResult(aValidHtml("<datalist>$uniqueString</datalist>"))
+        val result = aValidDocument(aStandardTag("datalist"))
         result.datalist {
-            assertThat(text()).isEqualTo(uniqueString)
+            expectThat(text()).isEqualTo("i'm a datalist")
         }
     }
 
     @Test
     fun `can parse fieldset-tag`() {
-        val uniqueString = UUID.randomUUID().toString()
-        val result = aValidResult(aValidHtml("<fieldset>$uniqueString</fieldset>"))
+        val result = aValidDocument(aStandardTag("fieldset"))
         result.fieldset {
-            assertThat(text()).isEqualTo(uniqueString)
+            expectThat(text()).isEqualTo("i'm a fieldset")
         }
     }
 
     @Test
     fun `can parse form-tag`() {
-        val uniqueString = UUID.randomUUID().toString()
-        val result = aValidResult(aValidHtml("<form>$uniqueString</form>"))
+        val result = aValidDocument(aStandardTag("form"))
         result.form {
-            assertThat(text()).isEqualTo(uniqueString)
+            expectThat(text()).isEqualTo("i'm a form")
         }
     }
 
     @Test
     fun `can parse input-tag`() {
-        val result = aValidResult(aSelfClosingTag("input"))
+        val result = aValidDocument(aSelfClosingTag("input"))
         result.input {
-            assertThat(attr("custom-attr")).isEqualTo("input-attr")
+            expectThat(attr("custom-attr")).isEqualTo("input-attr")
         }
     }
 
     @Test
     fun `can parse label-tag`() {
-        val uniqueString = UUID.randomUUID().toString()
-        val result = aValidResult(aValidHtml("<label>$uniqueString</label>"))
+        val result = aValidDocument(aStandardTag("label"))
         result.label {
-            assertThat(text()).isEqualTo(uniqueString)
+            expectThat(text()).isEqualTo("i'm a label")
         }
     }
 
     @Test
     fun `can parse legend-tag`() {
-        val uniqueString = UUID.randomUUID().toString()
-        val result = aValidResult(aValidHtml("<legend>$uniqueString</legend>"))
+        val result = aValidDocument(aStandardTag("legend"))
         result.legend {
-            assertThat(text()).isEqualTo(uniqueString)
+            expectThat(text()).isEqualTo("i'm a legend")
         }
     }
 
     @Test
     fun `can parse meter-tag`() {
-        val uniqueString = UUID.randomUUID().toString()
-        val result = aValidResult(aValidHtml("<meter>$uniqueString</meter>"))
+        val result = aValidDocument(aStandardTag("meter"))
         result.meter {
-            assertThat(text()).isEqualTo(uniqueString)
+            expectThat(text()).isEqualTo("i'm a meter")
         }
     }
 
     @Test
     fun `can parse optgroup-tag`() {
-        val uniqueString = UUID.randomUUID().toString()
-        val result = aValidResult(aValidHtml("<optgroup>$uniqueString</optgroup>"))
+        val result = aValidDocument(aStandardTag("optgroup"))
         result.optgroup {
-            assertThat(text()).isEqualTo(uniqueString)
+            expectThat(text()).isEqualTo("i'm a optgroup")
         }
     }
 
     @Test
     fun `can parse option-tag`() {
-        val uniqueString = UUID.randomUUID().toString()
-        val result = aValidResult(aValidHtml("<option>$uniqueString</option>"))
+        val result = aValidDocument(aStandardTag("option"))
         result.option {
-            assertThat(text()).isEqualTo(uniqueString)
+            expectThat(text()).isEqualTo("i'm a option")
         }
     }
 
     @Test
     fun `can parse output-tag`() {
-        val uniqueString = UUID.randomUUID().toString()
-        val result = aValidResult(aValidHtml("<output>$uniqueString</output>"))
+        val result = aValidDocument(aStandardTag("output"))
         result.output {
-            assertThat(text()).isEqualTo(uniqueString)
+            expectThat(text()).isEqualTo("i'm a output")
         }
     }
 
     @Test
     fun `can parse progress-tag`() {
-        val uniqueString = UUID.randomUUID().toString()
-        val result = aValidResult(aValidHtml("<progress>$uniqueString</progress>"))
+        val result = aValidDocument(aStandardTag("progress"))
         result.progress {
-            assertThat(text()).isEqualTo(uniqueString)
+            expectThat(text()).isEqualTo("i'm a progress")
         }
     }
 
     @Test
     fun `can parse select-tag`() {
-        val uniqueString = UUID.randomUUID().toString()
-        val result = aValidResult(aValidHtml("<select>$uniqueString</select>"))
+        val result = aValidDocument(aStandardTag("select"))
         result.select {
-            assertThat(text()).isEqualTo(uniqueString)
+            expectThat(text()).isEqualTo("i'm a select")
         }
     }
 
     @Test
     fun `can parse textarea-tag`() {
-        val uniqueString = UUID.randomUUID().toString()
-        val result = aValidResult(aValidHtml("<textarea>$uniqueString</textarea>"))
+        val result = aValidDocument(aStandardTag("textarea"))
         result.textarea {
-            assertThat(text()).isEqualTo(uniqueString)
+            expectThat(text()).isEqualTo("i'm a textarea")
         }
     }
 }

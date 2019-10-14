@@ -1,5 +1,6 @@
 package it.skrape.selects
 
+import it.skrape.SkrapeItDslMarker
 import it.skrape.core.Doc
 import it.skrape.exceptions.*
 import org.jsoup.nodes.Element

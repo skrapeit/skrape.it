@@ -1,68 +1,62 @@
 package it.skrape.selects.html5
 
-import assertk.assertThat
-import assertk.assertions.isEqualTo
-import it.skrape.aStandardTag
-import it.skrape.aValidHtml
-import it.skrape.aValidResult
 import it.skrape.aSelfClosingTag
+import it.skrape.aStandardTag
+import it.skrape.aValidDocument
 import it.skrape.selects.firstOccurrence
 import org.junit.jupiter.api.Test
-
-import java.util.*
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 
 internal class MediaElementPickersKtTest {
 
     @Test
     fun `can parse area-tag`() {
-        val result = aValidResult(aStandardTag("area"))
+        val result = aValidDocument(aStandardTag("area"))
         result.area {
             firstOccurrence {
-                assertThat(className()).isEqualTo("area-class")
+                expectThat(className()).isEqualTo("area-class")
             }
         }
     }
 
     @Test
     fun `can parse audio-tag`() {
-        val uniqueString = UUID.randomUUID().toString()
-        val result = aValidResult(aValidHtml("<audio>$uniqueString</audio>"))
+        val result = aValidDocument(aStandardTag("audio"))
         result.audio {
-            assertThat(text()).isEqualTo(uniqueString)
+            expectThat(text()).isEqualTo("i'm a audio")
         }
     }
 
     @Test
     fun `can parse img-tag`() {
-        val result = aValidResult(aSelfClosingTag("img"))
+        val result = aValidDocument(aSelfClosingTag("img"))
         result.img {
-            assertThat(attr("custom-attr")).isEqualTo("img-attr")
+            expectThat(attr("custom-attr")).isEqualTo("img-attr")
         }
     }
 
     @Test
     fun `can parse map-tag`() {
-        val uniqueString = UUID.randomUUID().toString()
-        val result = aValidResult(aValidHtml("<map>$uniqueString</map>"))
+        val result = aValidDocument(aStandardTag("map"))
         result.map {
-            assertThat(text()).isEqualTo(uniqueString)
+            expectThat(text()).isEqualTo("i'm a map")
         }
     }
 
     @Test
     fun `can parse track-tag`() {
-        val result = aValidResult(aSelfClosingTag("track"))
+        val result = aValidDocument(aSelfClosingTag("track"))
         result.track {
-            assertThat(attr("custom-attr")).isEqualTo("track-attr")
+            expectThat(attr("custom-attr")).isEqualTo("track-attr")
         }
     }
 
     @Test
     fun `can parse video-tag`() {
-        val uniqueString = UUID.randomUUID().toString()
-        val result = aValidResult(aValidHtml("<video>$uniqueString</video>"))
+        val result = aValidDocument(aStandardTag("video"))
         result.video {
-            assertThat(text()).isEqualTo(uniqueString)
+            expectThat(text()).isEqualTo("i'm a video")
         }
     }
 }

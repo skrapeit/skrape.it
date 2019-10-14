@@ -1,89 +1,89 @@
 package it.skrape.selects.html5
 
-import assertk.assertThat
-import assertk.assertions.isEqualTo
-import it.skrape.aValidResult
+import it.skrape.aValidDocument
 import org.junit.jupiter.api.Test
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 
 internal class TableElementPickersKtTest {
 
     @Test
     fun `can parse caption-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.caption {
-            assertThat(text()).isEqualTo("i'm the caption")
+            expectThat(text()).isEqualTo("i'm the caption")
         }
     }
 
     @Test
     fun `can parse col-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.col {
-            assertThat(size).isEqualTo(2)
+            expectThat(size).isEqualTo(2)
         }
     }
 
     @Test
     fun `can parse colgroup-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.colgroup {
-            assertThat(size).isEqualTo(1)
+            expectThat(size).isEqualTo(1)
         }
     }
 
     @Test
     fun `can parse table-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.table {
-            assertThat(size).isEqualTo(1)
+            expectThat(size).isEqualTo(1)
         }
     }
 
     @Test
     fun `can parse tbody-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.tbody {
-            assertThat(size).isEqualTo(1)
+            expectThat(size).isEqualTo(1)
         }
     }
 
     @Test
     fun `can parse td-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.td {
-            assertThat(size).isEqualTo(6)
+            expectThat(size).isEqualTo(6)
         }
     }
 
     @Test
     fun `can parse tfoot-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.tfoot {
-            assertThat(size).isEqualTo(1)
+            expectThat(size).isEqualTo(1)
         }
     }
 
     @Test
     fun `can parse th-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.th {
-            assertThat(size).isEqualTo(2)
+            expectThat(size).isEqualTo(2)
         }
     }
 
     @Test
     fun `can parse thead-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.thead {
-            assertThat(size).isEqualTo(1)
+            expectThat(size).isEqualTo(1)
         }
     }
 
     @Test
     fun `can parse tr-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.tr {
-            assertThat(size).isEqualTo(4)
+            expectThat(size).isEqualTo(4)
         }
     }
 }

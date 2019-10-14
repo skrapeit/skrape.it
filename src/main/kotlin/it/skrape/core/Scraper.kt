@@ -17,5 +17,3 @@ class Scraper(val request: Request = Request()) {
         }
     }
 }
-
-typealias Doc = Document

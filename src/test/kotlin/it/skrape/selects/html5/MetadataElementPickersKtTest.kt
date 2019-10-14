@@ -1,67 +1,65 @@
 package it.skrape.selects.html5
 
-import assertk.assertThat
-import assertk.assertions.contains
-import assertk.assertions.isEqualTo
-import it.skrape.aStandardTag
-import it.skrape.aValidResult
 import it.skrape.aSelfClosingTag
+import it.skrape.aStandardTag
+import it.skrape.aValidDocument
 import it.skrape.selects.firstOccurrence
 import org.junit.jupiter.api.Test
+import strikt.api.expectThat
+import strikt.assertions.contains
+import strikt.assertions.isEqualTo
 
 internal class MetadataElementPickersKtTest {
 
     @Test
     fun `can parse base-tag`() {
-        val result = aValidResult(aSelfClosingTag("base"))
+        val result = aValidDocument(aSelfClosingTag("base"))
         result.base {
-            assertThat(attr("custom-attr")).isEqualTo("base-attr")
+            expectThat(attr("custom-attr")).isEqualTo("base-attr")
         }
     }
 
     @Test
     fun `can parse head-tag`() {
-        val result = aValidResult(aStandardTag("head"))
+        val result = aValidDocument()
         result.head {
-            firstOccurrence {
-                assertThat(this.className()).isEqualTo("head-class")
-            }
+            expectThat(html()).contains("<title>i'm the title</title>")
         }
     }
 
 
     @Test
     fun `can parse link-tag`() {
-        val result = aValidResult(aSelfClosingTag("link"))
+        val result = aValidDocument(aSelfClosingTag("link"))
         result.link {
-            assertThat(attr("custom-attr")).isEqualTo("link-attr")
+            expectThat(attr("custom-attr")).isEqualTo("link-attr")
         }
     }
 
     @Test
     fun `can parse meta-tag`() {
-        val result = aValidResult(aSelfClosingTag("meta"))
+        val result = aValidDocument(aSelfClosingTag("meta"))
         result.meta {
-            assertThat(attr("custom-attr")).isEqualTo("meta-attr")
+            expectThat(attr("custom-attr")).isEqualTo("meta-attr")
         }
     }
 
     @Test
     fun `can parse style-tag`() {
-        val result = aValidResult()
+        val result = aValidDocument()
         result.style {
             firstOccurrence {
-                assertThat(this.toString()).contains(".top-bar{margin-top")
+                expectThat(this.toString()).contains(".top-bar{margin-top")
             }
         }
     }
 
     @Test
     fun `can parse title-tag`() {
-        val result = aValidResult(aStandardTag("title"))
+        val result = aValidDocument(aStandardTag("title"))
         result.title {
             firstOccurrence {
-                assertThat(text()).isEqualTo("i'm a title")
+                expectThat(text()).isEqualTo("i'm the title")
             }
         }
     }

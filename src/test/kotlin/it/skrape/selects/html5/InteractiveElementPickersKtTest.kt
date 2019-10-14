@@ -1,52 +1,51 @@
 package it.skrape.selects.html5
 
-import assertk.assertThat
-import assertk.assertions.isEqualTo
 import it.skrape.aStandardTag
-import it.skrape.aValidResult
+import it.skrape.aValidDocument
 import org.junit.jupiter.api.Test
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 
-import org.junit.jupiter.api.Assertions.*
 
 internal class InteractiveElementPickersKtTest {
 
     @Test
     fun `can parse details-tag`() {
-        val result = aValidResult(aStandardTag("details"))
+        val result = aValidDocument(aStandardTag("details"))
         result.details {
-            assertThat(text()).isEqualTo("i'm a details")
+            expectThat(text()).isEqualTo("i'm a details")
         }
     }
 
     @Test
     fun `can parse dialog-tag`() {
-        val result = aValidResult(aStandardTag("dialog"))
+        val result = aValidDocument(aStandardTag("dialog"))
         result.dialog {
-            assertThat(text()).isEqualTo("i'm a dialog")
+            expectThat(text()).isEqualTo("i'm a dialog")
         }
     }
 
     @Test
     fun `can parse menu-tag`() {
-        val result = aValidResult(aStandardTag("menu"))
+        val result = aValidDocument(aStandardTag("menu"))
         result.menu {
-            assertThat(text()).isEqualTo("i'm a menu")
+            expectThat(text()).isEqualTo("i'm a menu")
         }
     }
 
     @Test
     fun `can parse menuitem-tag`() {
-        val result = aValidResult(aStandardTag("menuitem"))
+        val result = aValidDocument(aStandardTag("menuitem"))
         result.menuitem {
-            assertThat(text()).isEqualTo("i'm a menuitem")
+            expectThat(text()).isEqualTo("i'm a menuitem")
         }
     }
 
     @Test
     fun `can parse summary-tag`() {
-        val result = aValidResult(aStandardTag("summary"))
+        val result = aValidDocument(aStandardTag("summary"))
         result.summary {
-            assertThat(text()).isEqualTo("i'm a summary")
+            expectThat(text()).isEqualTo("i'm a summary")
         }
     }
 }

@@ -9,6 +9,7 @@ import strikt.assertions.isNotEqualTo
 enum class ContentTypes(val value: String) {
     APPLICATION_GZIP("application/gzip"),
     APPLICATION_JSON("application/json"),
+    APPLICATION_JSON_UTF8("application/json;charset=utf-8"),
     APPLICATION_TAR("application/x-tar"),
     APPLICATION_XHTML("application/xhtml+xml"),
     APPLICATION_XML("application/xml"),

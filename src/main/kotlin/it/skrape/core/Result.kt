@@ -1,6 +1,7 @@
 package it.skrape.core
 
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 
 /**
  * This object is representing the result of an request
@@ -23,6 +24,7 @@ data class Result(
 )
 
 typealias ResponseBody = String
+typealias Doc = Document
 typealias StatusCode = Int
 typealias StatusMessage = String?
 typealias ContentType = String?

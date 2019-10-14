@@ -1,18 +1,16 @@
 package it.skrape.selects.html5
 
-import assertk.assertThat
-import assertk.assertions.isEqualTo
-import it.skrape.aValidResult
+import it.skrape.aValidDocument
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 
 internal class MainRootElementPickersKtTest {
 
     @Test
     internal fun `can pick html-tag`() {
-        aValidResult().html {
-            assertThat(attr("lang")).isEqualTo("en")
+        aValidDocument().html("") {
+            expectThat(attr("lang")).isEqualTo("en")
         }
     }
 }
