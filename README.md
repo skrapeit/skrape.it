@@ -53,7 +53,7 @@ You'll always find latest documentation, release notes and examples at
 
 ### Quick Start
 
-```koltin
+```java
 @Test
 internal fun `dsl can skrape by url`() {
     skrape {
