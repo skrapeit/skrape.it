@@ -1,3 +1,5 @@
+import io.gitlab.arturbosch.detekt.extensions.DetektExtension
+
 plugins {
     kotlin("jvm") version "1.3.50"
     `maven-publish`
@@ -6,6 +8,7 @@ plugins {
     id("org.jetbrains.dokka") version "0.10.0"
     id("com.github.ben-manes.versions") version "0.26.0"
     id("com.adarshr.test-logger") version "2.0.0"
+    id("io.gitlab.arturbosch.detekt") version "1.1.1"
 }
 
 testlogger {
@@ -52,6 +55,12 @@ dependencies {
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
+}
+
+detekt {
+    toolVersion = "1.1.1"
+    input = files(DetektExtension.DEFAULT_SRC_DIR_KOTLIN)
+    config = files("$projectDir/src/test/resources/detekt.yml")
 }
 
 tasks {
