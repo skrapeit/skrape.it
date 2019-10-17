@@ -2,6 +2,8 @@ language: java
 dist: trusty
 
 matrix:
+  allow_failures:
+    - jdk: openjdk11
   include:
     - jdk: openjdk8
       env: JDK=8
