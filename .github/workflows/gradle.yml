@@ -20,6 +20,8 @@ jobs:
         java-version: ${{ matrix.java-versions }}
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Upload Jacoco coverage report to codecov
-      run: bash <(curl -s https://codecov.io/bash)
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1.0.3
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
   
