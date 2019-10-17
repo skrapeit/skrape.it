@@ -1,0 +1,25 @@
+name: master build
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java-versions: [1.8, 11]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: ${{ matrix.java-versions }}
+    - name: Build with Gradle
+      run: ./gradlew build
+    - name: Upload Jacoco coverage report to codecov
+      run: bash <(curl -s https://codecov.io/bash)
+  
