@@ -101,7 +101,7 @@ All our official/stable releases will be published to [mavens central repository
 
 <details><summary>Gradle</summary>
 
-```
+```kotlin
 dependencies {
     implementation("it.skrape:skrapeit-core:0.6.0")
 }
@@ -110,7 +110,7 @@ dependencies {
 
 <details><summary>Maven</summary>
 
-```
+```xml
 <dependency>
     <groupId>it.skrape</groupId>
     <artifactId>skrapeit-core</artifactId>
@@ -127,7 +127,7 @@ But be careful, these are non official releases and may be unstable as well as b
 
 <details><summary>Gradle</summary>
 
-```
+```kotlin
 repositories {
     maven { url "https://jitpack.io" }
 }
@@ -139,7 +139,7 @@ dependencies {
 
 <details><summary>Maven</summary>
 
-```
+```xml
 <repositories>
     <repository>
         <id>jitpack.io</id>
