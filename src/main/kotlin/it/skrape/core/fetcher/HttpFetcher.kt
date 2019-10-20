@@ -5,11 +5,9 @@ import io.github.rybalkinsd.kohttp.client.fork
 import io.github.rybalkinsd.kohttp.dsl.*
 import io.github.rybalkinsd.kohttp.dsl.context.HttpContext
 import io.github.rybalkinsd.kohttp.ext.url
+import it.skrape.core.Method.*
 import it.skrape.core.Request
 import it.skrape.core.Result
-import it.skrape.exceptions.UnsupportedRequestOptionException
-import org.jsoup.Connection
-import java.lang.System.setProperty
 
 class HttpFetcher(private val request: Request): Fetcher {
 
@@ -21,13 +19,12 @@ class HttpFetcher(private val request: Request): Fetcher {
 
 	override fun fetch(): Result {
 		when(request.method) {
-			Connection.Method.GET -> httpGet(client, getContext())
-			Connection.Method.POST -> httpPost(client, getContext())
-			Connection.Method.PUT -> httpPut(client, getContext())
-			Connection.Method.DELETE -> httpDelete(client, getContext())
-			Connection.Method.PATCH -> httpPatch(client, getContext())
-			Connection.Method.HEAD -> httpHead(client, getContext())
-			else -> throw UnsupportedRequestOptionException("Unsupported http verb.")
+			GET -> httpGet(client, getContext())
+			POST -> httpPost(client, getContext())
+			PUT -> httpPut(client, getContext())
+			DELETE -> httpDelete(client, getContext())
+			PATCH -> httpPatch(client, getContext())
+			HEAD -> httpHead(client, getContext())
 		}.use {
 			// assemble the result from the response data
 			return Result(

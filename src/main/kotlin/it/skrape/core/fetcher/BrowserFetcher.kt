@@ -4,6 +4,8 @@ import com.gargoylesoftware.htmlunit.*
 import com.gargoylesoftware.htmlunit.html.HtmlPage
 import com.gargoylesoftware.htmlunit.util.Cookie
 import com.gargoylesoftware.htmlunit.util.NameValuePair
+import it.skrape.core.Method
+import it.skrape.core.Method.*
 import it.skrape.core.Request
 import it.skrape.core.Result
 import it.skrape.exceptions.UnsupportedRequestOptionException
@@ -14,7 +16,7 @@ class BrowserFetcher(private val request: Request): Fetcher {
 
     override fun fetch(): Result {
 
-        if (request.method != Connection.Method.GET)
+        if (request.method != GET)
             throw UnsupportedRequestOptionException("Browser mode only supports the http verb GET")
 
         val client = WebClient(BrowserVersion.BEST_SUPPORTED).withOptions()
@@ -56,7 +58,6 @@ class BrowserFetcher(private val request: Request): Fetcher {
             isCssEnabled = false
             isPopupBlockerEnabled = true
             isDownloadImages = false
-            isUseInsecureSSL = true
             isThrowExceptionOnScriptError = false
             isThrowExceptionOnFailingStatusCode = false
             isPrintContentOnFailingStatusCode = false
