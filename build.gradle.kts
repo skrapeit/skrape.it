@@ -62,14 +62,15 @@ detekt {
     config = files("$projectDir/src/test/resources/detekt.yml")
 }
 
-jacoco {
-    toolVersion = "0.8.4"
-    reportsDir = file("$buildDir/customJacocoReportDir")
-}
-
 tasks {
     compileJava {
         options.encoding = "UTF-8"
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.isEnabled = true
+        }
     }
 
     test {
