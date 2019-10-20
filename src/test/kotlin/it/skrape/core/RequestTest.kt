@@ -1,6 +1,11 @@
 package it.skrape.core
 
+import it.skrape.matchers.ContentTypes
+import it.skrape.matchers.`to be not`
+import it.skrape.matchers.`to be`
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
@@ -12,10 +17,11 @@ internal class RequestTest {
         expectThat(url).isEqualTo("http://localhost:8080/")
     }
 
-    @Test
-    internal fun `can build valid url with defined protocol`() {
-        val url = Request(protocol = Protocol.HTTPS).url
-        expectThat(url).isEqualTo("https://localhost:8080/")
+    @ParameterizedTest
+    @EnumSource(Protocol::class)
+    internal fun `can build valid url with defined protocol`(protocol: Protocol) {
+        val url = Request(protocol = protocol).url
+        expectThat(url).isEqualTo("${protocol.value}localhost:8080/")
     }
 
     @Test
