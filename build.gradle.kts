@@ -21,15 +21,15 @@ repositories {
 
 dependencies {
     val kotlinVersion = "1.3.50"
-    val jsoupVersion = "1.11.3"
+    val jsoupVersion = "1.12.1"
     val htmlUnitVersion = "2.36.0"
-    val assertkVersion = "0.13"
+    val assertkVersion = "0.17"
     val striktVersion = "0.22.2"
     val kohttpVersion = "0.11.0"
 
     val junitVersion = "5.5.2"
     val testContainersVersion = "1.12.2"
-    val wireMockVersion = "2.25.0"
+    val wireMockVersion = "2.25.1"
     val mockkVersion = "1.9.3"
     val log4jOverSlf4jVersion = "1.7.28"
     val logbackVersion = "1.2.3"
@@ -62,6 +62,11 @@ detekt {
     config = files("$projectDir/src/test/resources/detekt.yml")
 }
 
+jacoco {
+    toolVersion = "0.8.4"
+    reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
 tasks {
     compileJava {
         options.encoding = "UTF-8"
@@ -73,6 +78,7 @@ tasks {
         testLogging {
             events("passed", "skipped", "failed")
         }
+        finalizedBy(jacocoTestReport)
     }
 }
 
