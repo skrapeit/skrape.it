@@ -41,7 +41,8 @@ class Selector(
     private fun Pair<String, String>?.toAttributeSelector() =
             this?.let { "[${it.first}='${it.second}']" }
 
-    private fun List<Pair<String, String>>?.toAttributesSelector() = this?.joinToString(separator = "") { "[${it.first}='${it.second}']" }
+    private fun List<Pair<String, String>>?.toAttributesSelector() =
+            this?.joinToString(separator = "") { "[${it.first}='${it.second}']" }
 
     private fun String.withoutSpaces() = replace("\\s".toRegex(), "")
 
