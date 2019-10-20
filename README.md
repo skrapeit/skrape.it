@@ -3,10 +3,10 @@
 [![Documentation](https://img.shields.io/badge/skrape%7Bit%7D-docs-blue.svg)](https://docs.skrape.it)
 [![maven central](https://img.shields.io/maven-central/v/it.skrape/skrapeit-core.svg?color=0)](https://search.maven.org/search?q=g:it.skrape%20AND%20a:skrapeit-core&skrapeit-core=gav)
 [![License](https://img.shields.io/github/license/skrapeit/skrape.it.svg)](https://github.com/skrapeit/skrape.it/blob/master/LICENSE)
-[![JDK](https://img.shields.io/badge/jdk-8-green.svg)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
 [![master build status](https://img.shields.io/travis/skrapeit/skrape.it.svg?label=master)](https://travis-ci.org/skrapeit/skrape.it)
 [![Codecov](https://img.shields.io/codecov/c/github/skrapeit/skrape.it.svg)](https://codecov.io/gh/skrapeit/skrape.it)
+[![JDK](https://img.shields.io/badge/jdk-8-green.svg)](#)
 
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/skrapeit/skrape.it/issues)
 [![Donate](https://img.shields.io/badge/-donate-blue.svg?logo=paypal)](https://www.paypal.me/skrapeit)
@@ -23,16 +23,15 @@ First and foremost skrape{it} aims to be a testing tool (not tied to a particula
 
 ## Features
 - [x] Deserialization of HTML/XML from websites, local html files and html as string to data classes / POJOs.
+- [x] Http-Client without verbosity and ceremony to make requests and corresponding request options like headers, cookies etc in a fluent style interface.
 - [x] Can handle client side rendered webpages / Javascript execution
-- [x] Designed to deserialize HTML but can handly any XML-related markup specifications such as SVG, UML, RSS or XML itself.
+- [x] Designed to deserialize HTML but can handle any XML-related markup specifications such as SVG, UML, RSS or XML itself.
 - [x] Easy to use, idiomatic and type-safe DSL to ensure a high level of readability.
-- [x] DSL supporting a very convenient way of selecting any valid html elements supporting CSS query-selector syntax.
+- [x] DSL to select html elements as well as supporting CSS query-selector syntax.
 - [x] Not bind to a specific test runner or framework.
-- [x] Http-Client without verbosity and ceremony.
-- [x] HTTP `GET`/`POST`/`PUT`/`DELETE`/`HEAD`/`PATCH` requests and corresponding request options like headers, cookies etc in a fluent style interface.
-- [x] Custom matchers/assertions based on infix functions to archive a very high level of readability.
+- [x] Build-in matchers/assertions based on infix functions to archive a very high level of readability.
 - [x] Open to use any other assertion library of your choice.
-- [x] DSL is behaving like a Fluent-Api to make data extraction/scraping easy as pie.
+- [x] DSL is behaving like a Fluent-Api to make data extraction/scraping as comfortable as possible.
 
 ### Coming Soon
 - [x] Asynchronous and blocking requests
