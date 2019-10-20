@@ -1,29 +1,48 @@
 package it.skrape.core
 
 
-data class Selector(
-        val className: String? = null,
-        val classNames: List<String>? = null,
-        val id: String? = null,
-        val attributeKey: String? = null,
-        val attributeKeys: List<String>? = null,
-        val attribute: Pair<String, String>? = null,
-        val attributes: List<Pair<String, String>>? = null
+class Selector(
+        val withClass: String? = null,
+        val withClasses: List<String>? = null,
+        val withId: String? = null,
+        val withAttributeKey: String? = null,
+        val withAttributeKeys: List<String>? = null,
+        val withAttribute: Pair<String, String>? = null,
+        val withAttributes: List<Pair<String, String>>? = null
 ) {
 
     fun toCssSelector(rawCssSelector: String): String {
-        if (rawCssSelector.isBlank()) {
-            val id = id?.let { "#$it" } ?: ""
-            val className = className?.let { ".$it" } ?: ""
-            val classNames = classNames?.joinToString(prefix = ".", separator = ".") ?: ""
-            val attributeKey = attributeKey?.let { "[$it]" } ?: ""
-            val attributeKeys = attributeKeys?.joinToString()
-            val attribute = attribute?.let { "[${it.first}='${it.second}']" } ?: ""
-            val attributes = attributes?.let {  }
-            return "$id$className$classNames$attributeKey$attribute"
-                    .replace("\\s".toRegex(), "")
-        }
-        return rawCssSelector
+        val calculatedSelector =
+                rawCssSelector +
+                withId.toIdSelector().orEmpty() +
+                withClass.toClassSelector().orEmpty() +
+                withClasses.toClassesSelector().orEmpty() +
+                withAttributeKey.toAttributeKeySelector().orEmpty() +
+                withAttributeKeys.toCssAttributeKeysSelector().orEmpty() +
+                withAttribute.toAttributeSelector().orEmpty() +
+                withAttributes.toAttributesSelector().orEmpty()
+        return calculatedSelector.withoutSpaces()
     }
+
+    private fun String?.toIdSelector() = this?.let { "#$it" }
+
+    private fun String?.toClassSelector() =
+            this?.let { ".$it" }
+
+    private fun List<String>?.toClassesSelector() =
+            this?.joinToString(prefix = ".", separator = ".")
+
+    private fun String?.toAttributeKeySelector() =
+            this?.let { "[$it]" }
+
+    private fun List<String>?.toCssAttributeKeysSelector() =
+            this?.joinToString(prefix = "['", separator = "']['", postfix = "']")
+
+    private fun Pair<String, String>?.toAttributeSelector() =
+            this?.let { "[${it.first}='${it.second}']" }
+
+    private fun List<Pair<String, String>>?.toAttributesSelector() = this?.joinToString(separator = "") { "[${it.first}='${it.second}']" }
+
+    private fun String.withoutSpaces() = replace("\\s".toRegex(), "")
 
 }
