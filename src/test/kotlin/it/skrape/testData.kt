@@ -143,6 +143,7 @@ fun aValidHtml(bodyInclude: String) = """
                 <u>i'm a u</u>
                 <var>i'm a var</var>
             </footer>
+            <a-custom-tag>i'm a custom html5 tag</a-custom-tag>
         </body>
     </html>
 """.trimIndent()
