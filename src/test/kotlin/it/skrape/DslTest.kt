@@ -256,6 +256,29 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
+    internal fun `will throw custom exception if element called by dsl could not be found`() {
+
+        Assertions.assertThrows(ElementNotFoundException::class.java) {
+            skrape {
+                expect {
+                    htmlDocument {
+                        div {
+                            withId = "non-existend"
+                            withClass = "non-existend"
+                            withClasses = listOf("non-existend")
+                            withAttribute = "non" to "existend"
+                            withAttributeKey = "non-existend"
+                            withAttributes = listOf("non" to "existend")
+                            withAttributeKeys = listOf("non-existend")
+                            findFirst {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
     internal fun `dsl can fetch url and extract from skrape`() {
         // given
         wireMockServer.setupStub()
