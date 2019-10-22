@@ -4,7 +4,7 @@
 [![maven central](https://img.shields.io/maven-central/v/it.skrape/skrapeit-core.svg?color=0)](https://search.maven.org/search?q=g:it.skrape%20AND%20a:skrapeit-core&skrapeit-core=gav)
 [![License](https://img.shields.io/github/license/skrapeit/skrape.it.svg)](https://github.com/skrapeit/skrape.it/blob/master/LICENSE)
 
-[![master build status](https://img.shields.io/travis/skrapeit/skrape.it.svg?label=master)](https://travis-ci.org/skrapeit/skrape.it)
+[![master build status](https://github.com/christian-draeger/kata-setup/workflows/master/badge.svg)](https://github.com/christian-draeger/kata-setup/actions)
 [![Codecov](https://img.shields.io/codecov/c/github/skrapeit/skrape.it.svg)](https://codecov.io/gh/skrapeit/skrape.it)
 [![JDK](https://img.shields.io/badge/jdk-8-green.svg)](#)
 
