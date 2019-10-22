@@ -7,23 +7,26 @@ import org.junit.jupiter.api.Test
 internal class SelectorTest {
 
     @Test
-    fun `can calculate selector from parameter`() {
-        val cssSelector = Selector()
-                .toCssSelector("#foo.bar")
+    fun `can calculate selector from raw css selector param`() {
+        val cssSelector = Selector(
+                rawCssSelector = "#foo.bar"
+        ).toCssSelector()
         assertThat(cssSelector).isEqualTo("#foo.bar")
     }
 
     @Test
     fun `can calculate class selector from element`() {
-        val cssSelector = Selector(withClass = "foo")
-                .toCssSelector("")
+        val cssSelector = Selector(
+                withClass = "foo"
+        ).toCssSelector()
         assertThat(cssSelector).isEqualTo(".foo")
     }
 
     @Test
     fun `can calculate list of classes selector from element`() {
-        val cssSelector = Selector(withClasses = listOf("foo", "bar"))
-                .toCssSelector("")
+        val cssSelector = Selector(
+                withClasses = listOf("foo", "bar")
+        ).toCssSelector()
         assertThat(cssSelector).isEqualTo(".foo.bar")
     }
 
@@ -35,91 +38,115 @@ internal class SelectorTest {
                 withAttribute = "   foooo " to "  bar   ",
                 withAttributes = listOf("fizz" to "buzz", "skrape" to "it"),
                 withAttributeKeys = listOf("key1", "key2")
-        ).toCssSelector("")
+        ).toCssSelector()
         assertThat(cssSelector).isEqualTo(".foobar.foo.bar['key1']['key2'][foooo='bar'][fizz='buzz'][skrape='it']")
     }
 
     @Test
     fun `can calculate id selector from element`() {
-        val cssSelector = Selector(withId = "foo")
-                .toCssSelector("")
+        val cssSelector = Selector(
+                withId = "foo"
+        ).toCssSelector()
         assertThat(cssSelector).isEqualTo("#foo")
     }
 
     @Test
     fun `can calculate attributeKey selector from element`() {
-        val cssSelector = Selector(withAttributeKey = "foo")
-                .toCssSelector("")
+        val cssSelector = Selector(
+                withAttributeKey = "foo"
+        ).toCssSelector()
         assertThat(cssSelector).isEqualTo("[foo]")
     }
 
     @Test
     fun `can calculate attribute selector from element`() {
-        val cssSelector = Selector(withAttribute = "foo" to "bar")
-                .toCssSelector("")
+        val cssSelector = Selector(
+                withAttribute = "foo" to "bar"
+        ).toCssSelector()
         assertThat(cssSelector).isEqualTo("[foo='bar']")
     }
 
     @Test
     fun `can calculate combination of id and class selector from element`() {
-        val cssSelector = Selector(withClass = "bar", withId = "foo")
-                .toCssSelector("")
+        val cssSelector = Selector(
+                withClass = "bar",
+                withId = "foo"
+        ).toCssSelector()
         assertThat(cssSelector).isEqualTo("#foo.bar")
     }
 
     @Test
     fun `can calculate combination of id and attributeKey selector from element`() {
-        val cssSelector = Selector(withAttributeKey = "bar", withId = "foo")
-                .toCssSelector("")
+        val cssSelector = Selector(
+                withAttributeKey = "bar",
+                withId = "foo"
+        ).toCssSelector()
         assertThat(cssSelector).isEqualTo("#foo[bar]")
     }
 
     @Test
     fun `can calculate combination of id and attribute selector from element`() {
-        val cssSelector = Selector(withAttribute = "foo" to "bar", withId = "foobar")
-                .toCssSelector("")
+        val cssSelector = Selector(
+                withAttribute = "foo" to "bar",
+                withId = "foobar"
+        ).toCssSelector()
         assertThat(cssSelector).isEqualTo("#foobar[foo='bar']")
     }
 
     @Test
     fun `can calculate combination of attribute and class selector from element`() {
-        val cssSelector = Selector(withClass = "foobar", withAttribute = "foo" to "bar")
-                .toCssSelector("")
+        val cssSelector = Selector(
+                withClass = "foobar",
+                withAttribute = "foo" to "bar"
+        ).toCssSelector()
         assertThat(cssSelector).isEqualTo(".foobar[foo='bar']")
     }
 
     @Test
     fun `can calculate combination of attribute and attributeKey selector from element`() {
-        val cssSelector = Selector(withAttributeKey = "foobar", withAttribute = "foo" to "bar")
-                .toCssSelector("")
+        val cssSelector = Selector(
+                withAttributeKey = "foobar",
+                withAttribute = "foo" to "bar"
+        ).toCssSelector()
         assertThat(cssSelector).isEqualTo("[foobar][foo='bar']")
     }
 
     @Test
     fun `can calculate combination of id, attributeKey and class selector from element`() {
-        val cssSelector = Selector(withId = "foobar", withAttributeKey = "foo", withClass = "bar")
-                .toCssSelector("")
+        val cssSelector = Selector(
+                withId = "foobar",
+                withAttributeKey = "foo",
+                withClass = "bar"
+        ).toCssSelector()
         assertThat(cssSelector).isEqualTo("#foobar.bar[foo]")
     }
 
     @Test
     fun `can calculate combination of id, attribute and attributeKey selector from element`() {
-        val cssSelector = Selector(withId = "fb", withAttributeKey = "foobar", withAttribute = "foo" to "bar")
-                .toCssSelector("")
+        val cssSelector = Selector(
+                withId = "fb",
+                withAttributeKey = "foobar",
+                withAttribute = "foo" to "bar"
+        ).toCssSelector()
         assertThat(cssSelector).isEqualTo("#fb[foobar][foo='bar']")
     }
 
     @Test
     fun `can calculate combination of id, attribute and class selector from element`() {
-        val cssSelector = Selector(withId = "fb", withClass = "foobar", withAttribute = "foo" to "bar")
-                .toCssSelector("")
+        val cssSelector = Selector(
+                withId = "fb",
+                withClass = "foobar",
+                withAttribute = "foo" to "bar"
+        ).toCssSelector()
         assertThat(cssSelector).isEqualTo("#fb.foobar[foo='bar']")
     }
 
     @Test
     fun `can calculate combination of attributeKey and class selector from element`() {
-        val cssSelector = Selector(withAttributeKey = "foo", withClass = "bar")
-                .toCssSelector("")
+        val cssSelector = Selector(
+                withAttributeKey = "foo",
+                withClass = "bar"
+        ).toCssSelector()
         assertThat(cssSelector).isEqualTo(".bar[foo]")
     }
 
@@ -130,14 +157,16 @@ internal class SelectorTest {
                 withId = "foo",
                 withAttributeKey = "foobar",
                 withAttribute = "fizz" to "buzz"
-        ).toCssSelector("")
+        ).toCssSelector()
         assertThat(cssSelector).isEqualTo("#foo.bar[foobar][fizz='buzz']")
     }
 
     @Test
     fun `parameter selector will be merged with element selector`() {
-        val cssSelector = Selector(withClass = "bar")
-                .toCssSelector("foo")
+        val cssSelector = Selector(
+                withClass = "bar",
+                rawCssSelector = "foo"
+        ).toCssSelector()
         assertThat(cssSelector).isEqualTo("foo.bar")
     }
 

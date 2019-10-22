@@ -1,7 +1,9 @@
 package it.skrape.selects
 
 import it.skrape.SkrapeItDslMarker
+import it.skrape.core.Selector
 import it.skrape.exceptions.ElementNotFoundException
+import it.skrape.selects.html5.select
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
@@ -32,19 +34,45 @@ fun <T> Elements.elements(cssSelector: String, init: Elements.() -> T): T {
 }
 
 @SkrapeItDslMarker
-fun <T> Elements.firstOccurrence(init: Element.() -> T) = get(0).init()
+fun <T> Elements.findFirst(init: Element.() -> T) = get(0).init()
 
 @SkrapeItDslMarker
-fun <T> Elements.nthOccurrence(index: Int, init: Element.() -> T) = get(index).init()
+fun <T> Selector.findFirst(init: Element.() -> T) = doc.element(toCssSelector(), init)
 
 @SkrapeItDslMarker
-fun <T> Elements.secondOccurrence(init: Element.() -> T) = get(1).init()
+fun <T> Elements.findByIndex(index: Int, init: Element.() -> T) = get(index).init()
 
 @SkrapeItDslMarker
-fun <T> Elements.thirdOccurrence(init: Element.() -> T) = get(2).init()
+fun <T> Selector.findByIndex(index: Int, init: Element.() -> T): T =
+        doc.elements(toCssSelector()).findByIndex(index, init)
 
 @SkrapeItDslMarker
-fun <T> Elements.lastOccurrence(init: Element.() -> T) = get(size - 1).init()
+fun <T> Elements.findSecond(init: Element.() -> T) = get(1).init()
 
 @SkrapeItDslMarker
-fun <T> Elements.secondLastOccurrence(init: Element.() -> T) = get(size - 2).init()
+fun <T> Selector.findSecond(init: Element.() -> T): T =
+        doc.elements(toCssSelector()).findSecond(init)
+
+@SkrapeItDslMarker
+fun <T> Elements.findThird(init: Element.() -> T) = get(2).init()
+
+@SkrapeItDslMarker
+fun <T> Selector.findThird(init: Element.() -> T): T =
+        doc.elements(toCssSelector()).findThird(init)
+
+@SkrapeItDslMarker
+fun <T> Elements.findLast(init: Element.() -> T) = get(size - 1).init()
+
+@SkrapeItDslMarker
+fun <T> Selector.findLast(init: Element.() -> T): T =
+        doc.elements(toCssSelector()).findLast(init)
+
+@SkrapeItDslMarker
+fun <T> Elements.findSecondLast(init: Element.() -> T) = get(size - 2).init()
+
+@SkrapeItDslMarker
+fun <T> Selector.findSecondLast(init: Element.() -> T): T =
+        doc.elements(toCssSelector()).findSecondLast(init)
+
+@SkrapeItDslMarker
+fun <T> Selector.findAll(init: Elements.() -> T) = doc.elements(toCssSelector(), init)

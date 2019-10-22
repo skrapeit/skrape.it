@@ -1,5 +1,6 @@
 package it.skrape
 
+import it.skrape.core.Doc
 import org.intellij.lang.annotations.Language
 
 
@@ -147,6 +148,8 @@ fun aValidHtml(bodyInclude: String) = """
 """.trimIndent()
 
 fun aValidDocument(body: String = "") = skrape(aValidHtml(body)) {}
+
+fun anEmptyDoc() = Doc("")
 
 fun aSelfClosingTag(tag: String) = "<$tag custom-attr='$tag-attr' />"
 

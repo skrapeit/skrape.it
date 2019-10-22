@@ -1,8 +1,5 @@
 package it.skrape.selects
 
-import assertk.assertAll
-import assertk.assertThat
-import assertk.assertions.isEqualTo
 import it.skrape.core.Request
 import it.skrape.core.WireMockSetup
 import it.skrape.core.setupStub
@@ -40,7 +37,7 @@ internal class ResultExtractorsTest : WireMockSetup() {
             extract {
                 htmlDocument {
                     p {
-                        firstOccurrence {
+                        findFirst {
                             text() toBe expectedValue
                         }
                     }

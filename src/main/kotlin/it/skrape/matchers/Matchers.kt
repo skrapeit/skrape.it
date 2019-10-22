@@ -57,6 +57,18 @@ fun Elements.toBePresent() {
     assertThat(this.size).isGreaterThanOrEqualTo(1)
 }
 
+fun Elements.toBePresentTimes(amount: Int) {
+    assertThat(this.size).isEqualTo(amount)
+}
+
+fun Elements.toBePresentExactlyOnce() {
+    toBePresentTimes(1)
+}
+
+fun Elements.toBePresentExactlyTwice() {
+    toBePresentTimes(2)
+}
+
 fun Element.toBePresent() {
     assertThat(this.allElements.size).isGreaterThanOrEqualTo(1)
 }

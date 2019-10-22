@@ -1,17 +1,18 @@
 package it.skrape.core
 
-
-class Selector(
-        val withClass: String? = null,
+data class Selector(
+        val rawCssSelector: String = "",
+        var withClass: String? = null,
         val withClasses: List<String>? = null,
         val withId: String? = null,
         val withAttributeKey: String? = null,
         val withAttributeKeys: List<String>? = null,
         val withAttribute: Pair<String, String>? = null,
-        val withAttributes: List<Pair<String, String>>? = null
+        val withAttributes: List<Pair<String, String>>? = null,
+        val doc: Doc = Doc("")
 ) {
 
-    fun toCssSelector(rawCssSelector: String): String {
+    fun toCssSelector(): String {
         val calculatedSelector =
                 rawCssSelector +
                 withId.toIdSelector().orEmpty() +

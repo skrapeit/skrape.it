@@ -1,6 +1,7 @@
 package it.skrape.selects
 
 import it.skrape.core.Doc
+import it.skrape.core.Selector
 import it.skrape.exceptions.*
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
@@ -33,3 +34,6 @@ fun Doc.elements(selector: String): Elements {
     if (elements.isEmpty()) throw ElementNotFoundException(selector)
     return elements
 }
+
+fun <T> Doc.selection(selector: String, init: Selector.() -> T) =
+        Selector(rawCssSelector = selector, doc = this).init()

@@ -34,7 +34,7 @@ internal class ElementExtractorsKtTest {
     @Test
     fun `can pick elements firstOccurrence`() {
         val firstText = document.p {
-            firstOccurrence {
+            findFirst {
                 text() toBe "i'm a paragraph"
             }
         }
@@ -44,7 +44,7 @@ internal class ElementExtractorsKtTest {
     @Test
     fun `can pick elements secondOccurrence`() {
         val secondText = document.p {
-            secondOccurrence {
+            findSecond {
                 text() toBe "i'm a second paragraph"
             }
         }
@@ -54,7 +54,7 @@ internal class ElementExtractorsKtTest {
     @Test
     fun `can pick elements by index`() {
         val secondText = document.p {
-            nthOccurrence(1) {
+            findByIndex(1) {
                 text() toBe "i'm a second paragraph"
             }
         }
@@ -64,7 +64,7 @@ internal class ElementExtractorsKtTest {
     @Test
     fun `can pick elements thirdOccurrence`() {
         val thirdText = document.p {
-            thirdOccurrence {
+            findThird {
                 text() toBe "i'm a paragraph with word break"
             }
         }
@@ -74,7 +74,7 @@ internal class ElementExtractorsKtTest {
     @Test
     fun `can pick elements lastOccurrence`() {
         val lastText = document.p {
-            lastOccurrence {
+            findLast {
                 text() toBe "i'm the last paragraph"
             }
         }
@@ -84,7 +84,7 @@ internal class ElementExtractorsKtTest {
     @Test
     fun `can pick elements secondlastOccurrence`() {
         val secondLastText = document.p {
-            secondLastOccurrence {
+            findSecondLast {
                 text() toBe "i'm a paragraph with word break"
             }
         }

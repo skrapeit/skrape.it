@@ -41,18 +41,21 @@ internal class DslTest : WireMockSetup() {
                 htmlDocument {
 
                     title {
-                        text() toBe "i'm the title"
+                        findFirst {
+                            text() toBe "i'm the title"
+                        }
                     }
 
                     p {
-                        size toBe 2
-
-                        firstOccurrence {
+                        findAll {
+                            toBePresentTimes(2)
+                        }
+                        findFirst {
                             attr("data-foo") toBe "bar"
                             text() toBe "i'm a paragraph"
                         }
 
-                        lastOccurrence {
+                        findLast {
                             text() toBe "i'm a second paragraph"
                         }
                     }
@@ -329,7 +332,9 @@ internal class DslTest : WireMockSetup() {
             expect {
                 htmlDocument {
                     div(".dynamic") {
-                        text() toBe "I have been dynamically added via Javascript"
+                        findFirst {
+                            text() toBe "I have been dynamically added via Javascript"
+                        }
                     }
                 }
             }
