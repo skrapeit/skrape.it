@@ -1,14 +1,14 @@
 package it.skrape.core
 
 data class DomSelector(
-        val rawCssSelector: String = "",
+        var rawCssSelector: String = "",
         var withClass: String? = null,
-        val withClasses: List<String>? = null,
-        val withId: String? = null,
-        val withAttributeKey: String? = null,
-        val withAttributeKeys: List<String>? = null,
-        val withAttribute: Pair<String, String>? = null,
-        val withAttributes: List<Pair<String, String>>? = null,
+        var withClasses: List<String>? = null,
+        var withId: String? = null,
+        var withAttributeKey: String? = null,
+        var withAttributeKeys: List<String>? = null,
+        var withAttribute: Pair<String, String>? = null,
+        var withAttributes: List<Pair<String, String>>? = null,
         val doc: Doc = Doc("")
 ) {
 
