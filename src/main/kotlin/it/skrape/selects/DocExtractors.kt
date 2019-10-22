@@ -1,7 +1,7 @@
 package it.skrape.selects
 
 import it.skrape.core.Doc
-import it.skrape.core.Selector
+import it.skrape.core.DomSelector
 import it.skrape.exceptions.*
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
@@ -21,10 +21,10 @@ fun Doc.element(selector: String): Element = selectFirst(selector)
         ?: throw ElementNotFoundException(selector)
 
 /**
- * Will pick all occurrences of an Elements that are matching the CSS-Selector
+ * Will pick all occurrences of an Elements that are matching the CSS-DomSelector
  * and return it as Elements which is basically a List<Element>
  * @see <a href="https://www.w3schools.com/cssref/css_selectors.asp">Overview of CSS-Selectors for further information.</a>
- * @param selector that represents an CSS-Selector
+ * @param selector that represents an CSS-DomSelector
  * @return Elements
  */
 fun <T> Doc.elements(selector: String, init: Elements.() -> T) = elements(selector).init()
@@ -35,5 +35,5 @@ fun Doc.elements(selector: String): Elements {
     return elements
 }
 
-fun <T> Doc.selection(selector: String, init: Selector.() -> T) =
-        Selector(rawCssSelector = selector, doc = this).init()
+fun <T> Doc.selection(selector: String, init: DomSelector.() -> T) =
+        DomSelector(rawCssSelector = selector, doc = this).init()

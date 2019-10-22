@@ -1,6 +1,6 @@
 package it.skrape.core
 
-data class Selector(
+data class DomSelector(
         val rawCssSelector: String = "",
         var withClass: String? = null,
         val withClasses: List<String>? = null,
