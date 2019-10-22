@@ -36,7 +36,7 @@ fun <T> Elements.elements(cssSelector: String, init: Elements.() -> T): T {
 fun <T> Elements.findFirst(init: Element.() -> T) = first().init()
 
 @SkrapeItDslMarker
-fun <T> DomSelector.findFirst(init: Element.() -> T) = doc.element(toCssSelector(), init)
+fun <T> DomSelector.findFirst(init: Element.() -> T) = doc.elements(toCssSelector()).findFirst(init)
 
 @SkrapeItDslMarker
 fun <T> Elements.findByIndex(index: Int, init: Element.() -> T) = elementAt(index).init()
