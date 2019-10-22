@@ -16,4 +16,5 @@ import it.skrape.selects.selection
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.customTag(tag: String, cssSelector: String = "", init: DomSelector.() -> T) = selection("$tag$cssSelector", init)
+fun <T> Doc.customTag(tag: String, cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("$tag$cssSelector", init)
