@@ -1,6 +1,8 @@
 package it.skrape.core
 
-data class DomSelector(
+import it.skrape.SkrapeItDslMarker
+
+class DomSelector(
         var rawCssSelector: String = "",
         var withClass: String? = null,
         var withClasses: List<String>? = null,
@@ -47,4 +49,24 @@ data class DomSelector(
 
     private fun String.withoutSpaces() = replace("\\s".toRegex(), "")
 
+}
+
+@SkrapeItDslMarker
+infix fun String.and(value: String): MutableList<String> {
+    val collectedValues = mutableListOf(this)
+    collectedValues.add(value)
+    return collectedValues
+}
+
+@SkrapeItDslMarker
+infix fun MutableList<String>.and(value: String): MutableList<String> {
+    this.add(value)
+    return this
+}
+
+@SkrapeItDslMarker
+infix fun Pair<String, String>.and(pair: Pair<String, String>): MutableList<Pair<String, String>> {
+    val collectedValues = mutableListOf(this)
+    collectedValues.add(pair)
+    return collectedValues
 }
