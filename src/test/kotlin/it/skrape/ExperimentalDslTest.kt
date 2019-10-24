@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test
 class ExperimentalDslTest : WireMockSetup() {
 
     @Test
-    internal fun name() {
+    internal fun `can use latest features`() {
         wireMockServer.setupStub(path = "/example")
 
         val myText = skrape {
@@ -26,7 +26,7 @@ class ExperimentalDslTest : WireMockSetup() {
             extract {
                 htmlDocument {
                     div {
-                        withClasses = "foo" and "bar" and "fizz"
+                        withClass = "foo" and "bar" and "fizz" and "buzz"
 
                         findFirst {
                             text() toBe "div with class foo"

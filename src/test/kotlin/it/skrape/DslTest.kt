@@ -265,7 +265,6 @@ internal class DslTest : WireMockSetup() {
                         div {
                             withId = "non-existend"
                             withClass = "non-existend"
-                            withClasses = listOf("non-existend")
                             withAttribute = "non" to "existend"
                             withAttributeKey = "non-existend"
                             withAttributes = listOf("non" to "existend")

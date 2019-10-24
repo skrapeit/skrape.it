@@ -4,8 +4,7 @@ import it.skrape.SkrapeItDslMarker
 
 class DomSelector(
         var rawCssSelector: String = "",
-        var withClass: String? = null,
-        var withClasses: List<String>? = null,
+        var withClass: CssClassName? = null,
         var withId: String? = null,
         var withAttributeKey: String? = null,
         var withAttributeKeys: List<String>? = null,
@@ -18,8 +17,7 @@ class DomSelector(
         val calculatedSelector =
                 rawCssSelector +
                 withId.toIdSelector().orEmpty() +
-                withClass.toClassSelector().orEmpty() +
-                withClasses.toClassesSelector().orEmpty() +
+                withClass.toClassesSelector().orEmpty() +
                 withAttributeKey.toAttributeKeySelector().orEmpty() +
                 withAttributeKeys.toCssAttributeKeysSelector().orEmpty() +
                 withAttribute.toAttributeSelector().orEmpty() +
@@ -29,11 +27,7 @@ class DomSelector(
 
     private fun String?.toIdSelector() = this?.let { "#$it" }
 
-    private fun String?.toClassSelector() =
-            this?.let { ".$it" }
-
-    private fun List<String>?.toClassesSelector() =
-            this?.joinToString(prefix = ".", separator = ".")
+    private fun CssClassName?.toClassesSelector() = this?.let { ".$it" }
 
     private fun String?.toAttributeKeySelector() =
             this?.let { "[$it]" }
@@ -51,18 +45,10 @@ class DomSelector(
 
 }
 
-@SkrapeItDslMarker
-infix fun String.and(value: String): MutableList<String> {
-    val collectedValues = mutableListOf(this)
-    collectedValues.add(value)
-    return collectedValues
-}
+typealias CssClassName = String
 
 @SkrapeItDslMarker
-infix fun MutableList<String>.and(value: String): MutableList<String> {
-    this.add(value)
-    return this
-}
+infix fun CssClassName.and(value: String) = "$this.$value"
 
 @SkrapeItDslMarker
 infix fun Pair<String, String>.and(pair: Pair<String, String>): MutableList<Pair<String, String>> {

@@ -25,7 +25,7 @@ internal class DomSelectorTest {
     @Test
     fun `can calculate list of classes selector from element`() {
         val cssSelector = DomSelector(
-                withClasses = "foo" and "bar"
+                withClass = "foo" and "bar"
         ).toCssSelector()
         assertThat(cssSelector).isEqualTo(".foo.bar")
     }
@@ -33,11 +33,10 @@ internal class DomSelectorTest {
     @Test
     fun `can calculate selector and be relaxed on miss-leading spaces`() {
         val cssSelector = DomSelector(
-                withClasses = " foo " and " bar ",
-                withClass = "   foobar ",
+                withClass = "   foobar " and " foo " and " bar ",
                 withAttribute = "   foooo " to "  bar   ",
                 withAttributes = "fizz" to "buzz" and Pair("skrape", "it"),
-                withAttributeKeys = "key1" and "key2"
+                withAttributeKeys = listOf("key1", "key2")
         ).toCssSelector()
         assertThat(cssSelector).isEqualTo(".foobar.foo.bar['key1']['key2'][foooo='bar'][fizz='buzz'][skrape='it']")
     }
