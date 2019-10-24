@@ -1,6 +1,6 @@
 package it.skrape.core
 
-import org.jsoup.Jsoup
+import it.skrape.selects.selection
 import org.jsoup.nodes.Document
 
 /**
@@ -15,7 +15,7 @@ import org.jsoup.nodes.Document
  */
 data class Result(
         val responseBody: ResponseBody,
-        val document: Doc = Jsoup.parse(responseBody),
+        val document: Doc = Parser(responseBody).parse(),
         val statusCode: StatusCode,
         val statusMessage: StatusMessage,
         val contentType: ContentType,
@@ -24,7 +24,6 @@ data class Result(
 )
 
 typealias ResponseBody = String
-typealias Doc = Document
 typealias StatusCode = Int
 typealias StatusMessage = String?
 typealias ContentType = String?

@@ -16,7 +16,8 @@ import it.skrape.selects.selection
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.area(cssSelector: String = "", init: DomSelector.() -> T) = selection("area$cssSelector", init)
+fun <T> Doc.area(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("area$cssSelector", init)
 
 /**
  * Will define a <audio>-tags css query selector.
@@ -29,7 +30,8 @@ fun <T> Doc.area(cssSelector: String = "", init: DomSelector.() -> T) = selectio
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.audio(cssSelector: String = "", init: DomSelector.() -> T) = selection("audio$cssSelector", init)
+fun <T> Doc.audio(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("audio$cssSelector", init)
 
 /**
  * Will define a <img>-tags css query selector.
@@ -42,7 +44,8 @@ fun <T> Doc.audio(cssSelector: String = "", init: DomSelector.() -> T) = selecti
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.img(cssSelector: String = "", init: DomSelector.() -> T) = selection("img$cssSelector", init)
+fun <T> Doc.img(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("img$cssSelector", init)
 
 /**
  * Will define a <map>-tags css query selector.
@@ -55,7 +58,8 @@ fun <T> Doc.img(cssSelector: String = "", init: DomSelector.() -> T) = selection
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.map(cssSelector: String = "", init: DomSelector.() -> T) = selection("map$cssSelector", init)
+fun <T> Doc.map(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("map$cssSelector", init)
 
 /**
  * Will define a <track>-tags css query selector.
@@ -68,7 +72,8 @@ fun <T> Doc.map(cssSelector: String = "", init: DomSelector.() -> T) = selection
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.track(cssSelector: String = "", init: DomSelector.() -> T) = selection("track$cssSelector", init)
+fun <T> Doc.track(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("track$cssSelector", init)
 
 /**
  * Will define a <video>-tags css query selector.
@@ -81,4 +86,5 @@ fun <T> Doc.track(cssSelector: String = "", init: DomSelector.() -> T) = selecti
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.video(cssSelector: String = "", init: DomSelector.() -> T) = selection("video$cssSelector", init)
+fun <T> Doc.video(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("video$cssSelector", init)

@@ -16,7 +16,8 @@ import it.skrape.selects.selection
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.caption(cssSelector: String = "", init: DomSelector.() -> T) = selection("caption$cssSelector", init)
+fun <T> Doc.caption(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("caption$cssSelector", init)
 
 /**
  * Will define a <col>-tags css query selector.
@@ -29,7 +30,8 @@ fun <T> Doc.caption(cssSelector: String = "", init: DomSelector.() -> T) = selec
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.col(cssSelector: String = "", init: DomSelector.() -> T) = selection("col$cssSelector", init)
+fun <T> Doc.col(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("col$cssSelector", init)
 
 /**
  * Will define a <colgroup>-tags css query selector.
@@ -42,7 +44,8 @@ fun <T> Doc.col(cssSelector: String = "", init: DomSelector.() -> T) = selection
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.colgroup(cssSelector: String = "", init: DomSelector.() -> T) = selection("colgroup$cssSelector", init)
+fun <T> Doc.colgroup(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("colgroup$cssSelector", init)
 
 /**
  * Will define a <table>-tags css query selector.
@@ -55,7 +58,8 @@ fun <T> Doc.colgroup(cssSelector: String = "", init: DomSelector.() -> T) = sele
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.table(cssSelector: String = "", init: DomSelector.() -> T) = selection("table$cssSelector", init)
+fun <T> Doc.table(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("table$cssSelector", init)
 
 /**
  * Will define a <tbody>-tags css query selector.
@@ -68,7 +72,8 @@ fun <T> Doc.table(cssSelector: String = "", init: DomSelector.() -> T) = selecti
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.tbody(cssSelector: String = "", init: DomSelector.() -> T) = selection("tbody$cssSelector", init)
+fun <T> Doc.tbody(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("tbody$cssSelector", init)
 
 /**
  * Will define a <td>-tags css query selector.
@@ -81,7 +86,8 @@ fun <T> Doc.tbody(cssSelector: String = "", init: DomSelector.() -> T) = selecti
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.td(cssSelector: String = "", init: DomSelector.() -> T) = selection("td$cssSelector", init)
+fun <T> Doc.td(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("td$cssSelector", init)
 
 /**
  * Will define a <tfoot>-tags css query selector.
@@ -94,7 +100,8 @@ fun <T> Doc.td(cssSelector: String = "", init: DomSelector.() -> T) = selection(
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.tfoot(cssSelector: String = "", init: DomSelector.() -> T) = selection("tfoot$cssSelector", init)
+fun <T> Doc.tfoot(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("tfoot$cssSelector", init)
 
 /**
  * Will define a <th>-tags css query selector.
@@ -107,7 +114,8 @@ fun <T> Doc.tfoot(cssSelector: String = "", init: DomSelector.() -> T) = selecti
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.th(cssSelector: String = "", init: DomSelector.() -> T) = selection("th$cssSelector", init)
+fun <T> Doc.th(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("th$cssSelector", init)
 
 /**
  * Will define a <thead>-tags css query selector.
@@ -120,7 +128,8 @@ fun <T> Doc.th(cssSelector: String = "", init: DomSelector.() -> T) = selection(
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.thead(cssSelector: String = "", init: DomSelector.() -> T) = selection("thead$cssSelector", init)
+fun <T> Doc.thead(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("thead$cssSelector", init)
 
 /**
  * Will define a <tr>-tags css query selector.
@@ -133,4 +142,5 @@ fun <T> Doc.thead(cssSelector: String = "", init: DomSelector.() -> T) = selecti
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.tr(cssSelector: String = "", init: DomSelector.() -> T) = selection("tr$cssSelector", init)
+fun <T> Doc.tr(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("tr$cssSelector", init)

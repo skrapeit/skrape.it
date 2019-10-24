@@ -1,6 +1,7 @@
 package it.skrape.core
 
 import it.skrape.SkrapeItDslMarker
+import org.jsoup.nodes.Document
 
 class DomSelector(
         var rawCssSelector: String = "",
@@ -10,7 +11,7 @@ class DomSelector(
         var withAttributeKeys: List<String>? = null,
         var withAttribute: Pair<String, String>? = null,
         var withAttributes: List<Pair<String, String>>? = null,
-        val doc: Doc = Doc("")
+        val doc: Doc = Doc(Document(""))
 ) {
 
     fun toCssSelector(): String {

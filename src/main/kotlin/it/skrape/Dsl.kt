@@ -1,11 +1,7 @@
 package it.skrape
 
-import it.skrape.core.Doc
-import it.skrape.core.Parser
+import it.skrape.core.*
 import it.skrape.core.Reader
-import it.skrape.core.Request
-import it.skrape.core.Result
-import it.skrape.core.Scraper
 import java.io.File
 import java.nio.charset.Charset
 import kotlin.reflect.KClass

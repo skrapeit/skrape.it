@@ -16,4 +16,5 @@ import it.skrape.selects.selection
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.html(cssSelector: String = "", init: DomSelector.() -> T) = selection("html$cssSelector", init)
+fun <T> Doc.html(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("html$cssSelector", init)

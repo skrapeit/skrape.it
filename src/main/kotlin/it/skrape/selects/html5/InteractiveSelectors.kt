@@ -16,7 +16,8 @@ import it.skrape.selects.selection
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.details(cssSelector: String = "", init: DomSelector.() -> T) = selection("details$cssSelector", init)
+fun <T> Doc.details(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("details$cssSelector", init)
 
 /**
  * Will define a <dialog>-tags css query selector.
@@ -29,7 +30,8 @@ fun <T> Doc.details(cssSelector: String = "", init: DomSelector.() -> T) = selec
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.dialog(cssSelector: String = "", init: DomSelector.() -> T) = selection("dialog$cssSelector", init)
+fun <T> Doc.dialog(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("dialog$cssSelector", init)
 
 /**
  * Will define a <menu>-tags css query selector.
@@ -42,7 +44,8 @@ fun <T> Doc.dialog(cssSelector: String = "", init: DomSelector.() -> T) = select
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.menu(cssSelector: String = "", init: DomSelector.() -> T) = selection("menu$cssSelector", init)
+fun <T> Doc.menu(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("menu$cssSelector", init)
 
 /**
  * Will define a <menuitem>-tags css query selector.
@@ -55,7 +58,8 @@ fun <T> Doc.menu(cssSelector: String = "", init: DomSelector.() -> T) = selectio
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.menuitem(cssSelector: String = "", init: DomSelector.() -> T) = selection("menuitem$cssSelector", init)
+fun <T> Doc.menuitem(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("menuitem$cssSelector", init)
 
 /**
  * Will define a <summary>-tags css query selector.
@@ -68,4 +72,5 @@ fun <T> Doc.menuitem(cssSelector: String = "", init: DomSelector.() -> T) = sele
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.summary(cssSelector: String = "", init: DomSelector.() -> T) = selection("summary$cssSelector", init)
+fun <T> Doc.summary(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("summary$cssSelector", init)

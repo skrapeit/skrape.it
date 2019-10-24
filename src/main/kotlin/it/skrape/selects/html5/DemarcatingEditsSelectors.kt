@@ -16,7 +16,8 @@ import it.skrape.selects.selection
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.del(cssSelector: String = "", init: DomSelector.() -> T) = selection("del$cssSelector", init)
+fun <T> Doc.del(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("del$cssSelector", init)
 
 /**
  * Will define a <ins>-tags css query selector.
@@ -29,4 +30,5 @@ fun <T> Doc.del(cssSelector: String = "", init: DomSelector.() -> T) = selection
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.ins(cssSelector: String = "", init: DomSelector.() -> T) = selection("ins$cssSelector", init)
+fun <T> Doc.ins(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("ins$cssSelector", init)

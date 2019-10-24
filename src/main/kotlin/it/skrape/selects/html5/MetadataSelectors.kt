@@ -16,7 +16,8 @@ import it.skrape.selects.selection
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.base(cssSelector: String = "", init: DomSelector.() -> T) = selection("base$cssSelector", init)
+fun <T> Doc.base(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("base$cssSelector", init)
 
 /**
  * Will define a <head>-tags css query selector.
@@ -29,7 +30,8 @@ fun <T> Doc.base(cssSelector: String = "", init: DomSelector.() -> T) = selectio
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.head(cssSelector: String = "", init: DomSelector.() -> T) = selection("head$cssSelector", init)
+fun <T> Doc.head(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("head$cssSelector", init)
 
 /**
  * Will define a <link>-tags css query selector.
@@ -42,7 +44,8 @@ fun <T> Doc.head(cssSelector: String = "", init: DomSelector.() -> T) = selectio
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.link(cssSelector: String = "", init: DomSelector.() -> T) = selection("link$cssSelector", init)
+fun <T> Doc.link(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("link$cssSelector", init)
 
 /**
  * Will define a <meta>-tags css query selector.
@@ -55,7 +58,8 @@ fun <T> Doc.link(cssSelector: String = "", init: DomSelector.() -> T) = selectio
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.meta(cssSelector: String = "", init: DomSelector.() -> T) = selection("meta$cssSelector", init)
+fun <T> Doc.meta(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("meta$cssSelector", init)
 
 /**
  * Will define a <style>-tags css query selector.
@@ -68,7 +72,8 @@ fun <T> Doc.meta(cssSelector: String = "", init: DomSelector.() -> T) = selectio
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.style(cssSelector: String = "", init: DomSelector.() -> T) = selection("style$cssSelector", init)
+fun <T> Doc.style(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("style$cssSelector", init)
 
 /**
  * Will define a <title>-tags css query selector.
@@ -81,4 +86,5 @@ fun <T> Doc.style(cssSelector: String = "", init: DomSelector.() -> T) = selecti
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.title(cssSelector: String = "", init: DomSelector.() -> T) = selection("title$cssSelector", init)
+fun <T> Doc.title(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("title$cssSelector", init)

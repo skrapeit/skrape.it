@@ -42,6 +42,28 @@ class ExperimentalDslTest : WireMockSetup() {
                             text()
                         }
                     }
+
+                    "a-custom-tag" {
+                        findFirst {
+                            text() toBe "i'm a custom html5 tag"
+                            text()
+                        }
+                    }
+
+                    "div.foo.bar.fizz.buzz" {
+                        findFirst {
+                            text() toBe "div with class foo"
+                        }
+                    }
+
+                    "div.foo" {
+
+                        withClass = "bar" and "fizz" and "buzz"
+
+                        findFirst {
+                            text() toBe "div with class foo"
+                        }
+                    }
                 }
             }
         }

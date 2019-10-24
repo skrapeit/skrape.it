@@ -16,7 +16,8 @@ import it.skrape.selects.selection
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.script(cssSelector: String = "", init: DomSelector.() -> T) = selection("script$cssSelector", init)
+fun <T> Doc.script(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("script$cssSelector", init)
 
 /**
  * Will define a <canvas>-tags css query selector.
@@ -29,7 +30,8 @@ fun <T> Doc.script(cssSelector: String = "", init: DomSelector.() -> T) = select
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.canvas(cssSelector: String = "", init: DomSelector.() -> T) = selection("canvas$cssSelector", init)
+fun <T> Doc.canvas(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("canvas$cssSelector", init)
 
 /**
  * Will define a <noscript>-tags css query selector.
@@ -42,4 +44,5 @@ fun <T> Doc.canvas(cssSelector: String = "", init: DomSelector.() -> T) = select
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.noscript(cssSelector: String = "", init: DomSelector.() -> T) = selection("noscript$cssSelector", init)
+fun <T> Doc.noscript(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("noscript$cssSelector", init)

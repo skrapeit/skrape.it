@@ -16,7 +16,8 @@ import it.skrape.selects.selection
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.applet(cssSelector: String = "", init: DomSelector.() -> T) = selection("applet$cssSelector", init)
+fun <T> Doc.applet(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("applet$cssSelector", init)
 
 /**
  * Will define a <embed>-tags css query selector.
@@ -29,7 +30,8 @@ fun <T> Doc.applet(cssSelector: String = "", init: DomSelector.() -> T) = select
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.embed(cssSelector: String = "", init: DomSelector.() -> T) = selection("embed$cssSelector", init)
+fun <T> Doc.embed(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("embed$cssSelector", init)
 
 /**
  * Will define a <iframe>-tags css query selector.
@@ -42,7 +44,8 @@ fun <T> Doc.embed(cssSelector: String = "", init: DomSelector.() -> T) = selecti
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.iframe(cssSelector: String = "", init: DomSelector.() -> T) = selection("iframe$cssSelector", init)
+fun <T> Doc.iframe(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("iframe$cssSelector", init)
 
 /**
  * Will define a <noembed>-tags css query selector.
@@ -55,7 +58,8 @@ fun <T> Doc.iframe(cssSelector: String = "", init: DomSelector.() -> T) = select
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.noembed(cssSelector: String = "", init: DomSelector.() -> T) = selection("noembed$cssSelector", init)
+fun <T> Doc.noembed(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("noembed$cssSelector", init)
 
 /**
  * Will define a <object>-tags css query selector.
@@ -68,7 +72,8 @@ fun <T> Doc.noembed(cssSelector: String = "", init: DomSelector.() -> T) = selec
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.`object`(cssSelector: String = "", init: DomSelector.() -> T) = selection("object$cssSelector", init)
+fun <T> Doc.`object`(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("object$cssSelector", init)
 
 /**
  * Will define a <param>-tags css query selector.
@@ -81,7 +86,8 @@ fun <T> Doc.`object`(cssSelector: String = "", init: DomSelector.() -> T) = sele
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.param(cssSelector: String = "", init: DomSelector.() -> T) = selection("param$cssSelector", init)
+fun <T> Doc.param(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("param$cssSelector", init)
 
 /**
  * Will define a <picture>-tags css query selector.
@@ -94,7 +100,8 @@ fun <T> Doc.param(cssSelector: String = "", init: DomSelector.() -> T) = selecti
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.picture(cssSelector: String = "", init: DomSelector.() -> T) = selection("picture$cssSelector", init)
+fun <T> Doc.picture(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("picture$cssSelector", init)
 
 /**
  * Will define a <source>-tags css query selector.
@@ -107,4 +114,5 @@ fun <T> Doc.picture(cssSelector: String = "", init: DomSelector.() -> T) = selec
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.source(cssSelector: String = "", init: DomSelector.() -> T) = selection("source$cssSelector", init)
+fun <T> Doc.source(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("source$cssSelector", init)

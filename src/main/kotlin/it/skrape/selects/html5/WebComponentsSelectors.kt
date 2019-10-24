@@ -16,7 +16,8 @@ import it.skrape.selects.selection
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.content(cssSelector: String = "", init: DomSelector.() -> T) = selection("content$cssSelector", init)
+fun <T> Doc.content(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("content$cssSelector", init)
 
 /**
  * Will define a <shadow>-tags css query selector.
@@ -29,7 +30,8 @@ fun <T> Doc.content(cssSelector: String = "", init: DomSelector.() -> T) = selec
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.shadow(cssSelector: String = "", init: DomSelector.() -> T) = selection("shadow$cssSelector", init)
+fun <T> Doc.shadow(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("shadow$cssSelector", init)
 
 /**
  * Will define a <slot>-tags css query selector.
@@ -42,7 +44,8 @@ fun <T> Doc.shadow(cssSelector: String = "", init: DomSelector.() -> T) = select
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.slot(cssSelector: String = "", init: DomSelector.() -> T) = selection("slot$cssSelector", init)
+fun <T> Doc.slot(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("slot$cssSelector", init)
 
 /**
  * Will define a <template>-tags css query selector.
@@ -55,4 +58,5 @@ fun <T> Doc.slot(cssSelector: String = "", init: DomSelector.() -> T) = selectio
  * @return T
  */
 @SkrapeItDslMarker
-fun <T> Doc.template(cssSelector: String = "", init: DomSelector.() -> T) = selection("template$cssSelector", init)
+fun <T> Doc.template(cssSelector: String = "", init: DomSelector.() -> T) =
+        selection("template$cssSelector", init)
