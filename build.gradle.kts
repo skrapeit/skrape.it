@@ -4,6 +4,7 @@ plugins {
     kotlin("jvm") version "1.3.50"
     jacoco
     id("org.jetbrains.dokka") version "0.10.0"
+    id("se.patrikerdes.use-latest-versions") version "0.2.12"
     id("com.github.ben-manes.versions") version "0.27.0"
     id("com.adarshr.test-logger") version "2.0.0"
     id("io.gitlab.arturbosch.detekt") version "1.1.1"
@@ -74,12 +75,17 @@ tasks {
     }
 
     test {
+        shouldRunAfter(useLatestVersions)
         dependsOn(detekt)
         useJUnitPlatform()
         testLogging {
             events("passed", "skipped", "failed")
         }
         finalizedBy(jacocoTestReport)
+    }
+
+    val updateDependencies by creating {
+        dependsOn(useLatestVersionsCheck, useLatestVersions, test)
     }
 }
 
