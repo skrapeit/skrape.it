@@ -3,7 +3,7 @@ package it.skrape.core
 import it.skrape.SkrapeItDslMarker
 import org.jsoup.nodes.Document
 
-class DomSelector(
+class CssSelector(
         var rawCssSelector: String = "",
         var withClass: CssClassName? = null,
         var withId: String? = null,

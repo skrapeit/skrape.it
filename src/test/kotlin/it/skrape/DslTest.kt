@@ -311,7 +311,9 @@ internal class DslTest : WireMockSetup() {
     @Test
     internal fun `can read and return html from file system using the DSL and non default charset`() {
         val doc = skrape(File("src/test/resources/__files/example.html"), Charsets.ISO_8859_1) {
-            expectThat(title()).isEqualTo("i'm the title")
+            title {
+                text() toBe "i'm the title"
+            }
         }
         expectThat(doc.title()).isEqualTo("i'm the title")
     }

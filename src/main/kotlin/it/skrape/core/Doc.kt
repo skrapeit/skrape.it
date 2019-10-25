@@ -17,6 +17,6 @@ class Doc(
 
     override fun toString() = document.toString()
 
-    operator fun String.invoke(init: DomSelector.() -> Unit) =
+    operator fun String.invoke(init: CssSelector.() -> Unit) =
             this@Doc.selection(this, init)
 }

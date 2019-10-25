@@ -4,11 +4,11 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import org.junit.jupiter.api.Test
 
-internal class DomSelectorTest {
+internal class CssSelectorTest {
 
     @Test
     fun `can calculate selector from raw css selector param`() {
-        val cssSelector = DomSelector(
+        val cssSelector = CssSelector(
                 rawCssSelector = "#foo.bar"
         ).toCssSelector()
         assertThat(cssSelector).isEqualTo("#foo.bar")
@@ -16,7 +16,7 @@ internal class DomSelectorTest {
 
     @Test
     fun `can calculate class selector from element`() {
-        val cssSelector = DomSelector(
+        val cssSelector = CssSelector(
                 withClass = "foo"
         ).toCssSelector()
         assertThat(cssSelector).isEqualTo(".foo")
@@ -24,7 +24,7 @@ internal class DomSelectorTest {
 
     @Test
     fun `can calculate list of classes selector from element`() {
-        val cssSelector = DomSelector(
+        val cssSelector = CssSelector(
                 withClass = "foo" and "bar"
         ).toCssSelector()
         assertThat(cssSelector).isEqualTo(".foo.bar")
@@ -32,7 +32,7 @@ internal class DomSelectorTest {
 
     @Test
     fun `can calculate selector and be relaxed on miss-leading spaces`() {
-        val cssSelector = DomSelector(
+        val cssSelector = CssSelector(
                 withClass = "   foobar " and " foo " and " bar ",
                 withAttribute = "   foooo " to "  bar   ",
                 withAttributes = "fizz" to "buzz" and Pair("skrape", "it"),
@@ -43,7 +43,7 @@ internal class DomSelectorTest {
 
     @Test
     fun `can calculate id selector from element`() {
-        val cssSelector = DomSelector(
+        val cssSelector = CssSelector(
                 withId = "foo"
         ).toCssSelector()
         assertThat(cssSelector).isEqualTo("#foo")
@@ -51,7 +51,7 @@ internal class DomSelectorTest {
 
     @Test
     fun `can calculate attributeKey selector from element`() {
-        val cssSelector = DomSelector(
+        val cssSelector = CssSelector(
                 withAttributeKey = "foo"
         ).toCssSelector()
         assertThat(cssSelector).isEqualTo("[foo]")
@@ -59,7 +59,7 @@ internal class DomSelectorTest {
 
     @Test
     fun `can calculate attribute selector from element`() {
-        val cssSelector = DomSelector(
+        val cssSelector = CssSelector(
                 withAttribute = "foo" to "bar"
         ).toCssSelector()
         assertThat(cssSelector).isEqualTo("[foo='bar']")
@@ -67,7 +67,7 @@ internal class DomSelectorTest {
 
     @Test
     fun `can calculate combination of id and class selector from element`() {
-        val cssSelector = DomSelector(
+        val cssSelector = CssSelector(
                 withClass = "bar",
                 withId = "foo"
         ).toCssSelector()
@@ -76,7 +76,7 @@ internal class DomSelectorTest {
 
     @Test
     fun `can calculate combination of id and attributeKey selector from element`() {
-        val cssSelector = DomSelector(
+        val cssSelector = CssSelector(
                 withAttributeKey = "bar",
                 withId = "foo"
         ).toCssSelector()
@@ -85,7 +85,7 @@ internal class DomSelectorTest {
 
     @Test
     fun `can calculate combination of id and attribute selector from element`() {
-        val cssSelector = DomSelector(
+        val cssSelector = CssSelector(
                 withAttribute = "foo" to "bar",
                 withId = "foobar"
         ).toCssSelector()
@@ -94,7 +94,7 @@ internal class DomSelectorTest {
 
     @Test
     fun `can calculate combination of attribute and class selector from element`() {
-        val cssSelector = DomSelector(
+        val cssSelector = CssSelector(
                 withClass = "foobar",
                 withAttribute = "foo" to "bar"
         ).toCssSelector()
@@ -103,7 +103,7 @@ internal class DomSelectorTest {
 
     @Test
     fun `can calculate combination of attribute and attributeKey selector from element`() {
-        val cssSelector = DomSelector(
+        val cssSelector = CssSelector(
                 withAttributeKey = "foobar",
                 withAttribute = "foo" to "bar"
         ).toCssSelector()
@@ -112,7 +112,7 @@ internal class DomSelectorTest {
 
     @Test
     fun `can calculate combination of id, attributeKey and class selector from element`() {
-        val cssSelector = DomSelector(
+        val cssSelector = CssSelector(
                 withId = "foobar",
                 withAttributeKey = "foo",
                 withClass = "bar"
@@ -122,7 +122,7 @@ internal class DomSelectorTest {
 
     @Test
     fun `can calculate combination of id, attribute and attributeKey selector from element`() {
-        val cssSelector = DomSelector(
+        val cssSelector = CssSelector(
                 withId = "fb",
                 withAttributeKey = "foobar",
                 withAttribute = "foo" to "bar"
@@ -132,7 +132,7 @@ internal class DomSelectorTest {
 
     @Test
     fun `can calculate combination of id, attribute and class selector from element`() {
-        val cssSelector = DomSelector(
+        val cssSelector = CssSelector(
                 withId = "fb",
                 withClass = "foobar",
                 withAttribute = "foo" to "bar"
@@ -142,7 +142,7 @@ internal class DomSelectorTest {
 
     @Test
     fun `can calculate combination of attributeKey and class selector from element`() {
-        val cssSelector = DomSelector(
+        val cssSelector = CssSelector(
                 withAttributeKey = "foo",
                 withClass = "bar"
         ).toCssSelector()
@@ -151,7 +151,7 @@ internal class DomSelectorTest {
 
     @Test
     fun `can calculate complex css selector from element`() {
-        val cssSelector = DomSelector(
+        val cssSelector = CssSelector(
                 withClass = "bar",
                 withId = "foo",
                 withAttributeKey = "foobar",
@@ -162,7 +162,7 @@ internal class DomSelectorTest {
 
     @Test
     fun `parameter selector will be merged with element selector`() {
-        val cssSelector = DomSelector(
+        val cssSelector = CssSelector(
                 withClass = "bar",
                 rawCssSelector = "foo"
         ).toCssSelector()
