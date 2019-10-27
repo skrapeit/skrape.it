@@ -302,7 +302,7 @@ internal class DslTest : WireMockSetup() {
 
     @Test
     internal fun `can read and return html from file system with default charset (UTF-8) using the DSL`() {
-        val doc = skrape(File("src/test/resources/__files/example.html")) {
+        val doc = htmlDocument(File("src/test/resources/__files/example.html")) {
             expectThat(title()).isEqualTo("i'm the title")
         }
         expectThat(doc.title()).isEqualTo("i'm the title")
@@ -310,17 +310,23 @@ internal class DslTest : WireMockSetup() {
 
     @Test
     internal fun `can read and return html from file system using the DSL and non default charset`() {
-        val doc = skrape(File("src/test/resources/__files/example.html"), Charsets.ISO_8859_1) {
+        val doc = htmlDocument(File("src/test/resources/__files/example.html"), Charsets.ISO_8859_1) {
             title {
-                text() toBe "i'm the title"
+                findFirst {
+                    text() toBe "i'm the title"
+                }
             }
         }
-        expectThat(doc.title()).isEqualTo("i'm the title")
+        doc.title {
+            findFirst {
+                expectThat(text()).isEqualTo("i'm the title")
+            }
+        }
     }
 
     @Test
     internal fun `can read and return html from String`() {
-        val doc = skrape("<html><head><title>i'm the title</title></head></html>") {
+        val doc = htmlDocument("<html><head><title>i'm the title</title></head></html>") {
             expectThat(title()).isEqualTo("i'm the title")
         }
         expectThat(doc.title()).isEqualTo("i'm the title")
@@ -328,21 +334,14 @@ internal class DslTest : WireMockSetup() {
 
     @Test
     internal fun `can read html from file system with default charset (UTF-8) using the DSL`() {
-        expect(File("src/test/resources/__files/example.html")) {
+        htmlDocument(File("src/test/resources/__files/example.html")) {
             expectThat(title()).isEqualTo("i'm the title")
         }
     }
 
     @Test
     internal fun `can read html from file system using the DSL and non default charset`() {
-        expect(File("src/test/resources/__files/example.html"), Charsets.ISO_8859_1) {
-            expectThat(title()).isEqualTo("i'm the title")
-        }
-    }
-
-    @Test
-    internal fun `can read html from String`() {
-        expect("<html><head><title>i'm the title</title></head></html>") {
+        htmlDocument(File("src/test/resources/__files/example.html"), Charsets.ISO_8859_1) {
             expectThat(title()).isEqualTo("i'm the title")
         }
     }

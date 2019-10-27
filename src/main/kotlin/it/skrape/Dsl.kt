@@ -18,44 +18,6 @@ fun <T> skrape(init: Request.() -> T): T {
 }
 
 /**
- * Read and parse a html file from local file-system.
- * @param file
- * @param charset defaults to UTF-8
- */
-@SkrapeItDslMarker
-fun skrape(file: File, charset: Charset = Charsets.UTF_8, init: Doc.() -> Unit): Doc {
-    return Reader(file, charset).read().also(init)
-}
-
-/**
- * Read and parse html from a String.
- * @param html represents a html snippet
- */
-@SkrapeItDslMarker
-fun skrape(html: String, init: Doc.() -> Unit): Doc {
-    return Parser(html).parse().also(init)
-}
-
-/**
- * Read and parse a html file from local file-system.
- * @param file
- * @param charset defaults to UTF-8
- */
-@SkrapeItDslMarker
-fun expect(file: File, charset: Charset = Charsets.UTF_8, init: Doc.() -> Unit) {
-    Reader(file, charset).read().init()
-}
-
-/**
- * Read and parse html from a String.
- * @param html represents a html snippet
- */
-@SkrapeItDslMarker
-fun expect(html: String, init: Doc.() -> Unit) {
-    Parser(html).parse().init()
-}
-
-/**
  * Read and parse html from a skrape{it} result.
  */
 @SkrapeItDslMarker
@@ -91,8 +53,6 @@ inline fun <reified T: Any> Request.extractIt(extractor: Result.(T) -> Unit): T 
 inline fun <reified T: Any> create(clazz: KClass<T>): T {
     return clazz.constructors.first { it.parameters.isEmpty() }.call()
 }
-
-
 
 @DslMarker
 annotation class SkrapeItDslMarker
