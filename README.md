@@ -65,27 +65,42 @@ internal fun `dsl can skrape by url`() {
         cookies = mapOf("some-cookie-name" to "some-value") // optional
         headers = mapOf("some-custom-header" to "some-value") // optional
         
-        expect {
-            statusCode toBe 200
-            statusMessage toBe "OK"
-            contentType toBe TEXT_HTML_UTF8
-
+        extract {
             htmlDocument {
-                title {
-                    text() toBe "i'm the title"
-                }
-                p {
-                    size toBe 2
-                    firstOccurrence {
-                        attr("data-foo") toBe "bar"
-                        text() toBe "i'm a paragraph"
+                // all offical html and html5 elements are supported by the DSL
+                div {
+                    withClass = "foo" and "bar" and "fizz" and "buzz"
+
+                    findFirst {
+                        text() toBe "div with class foo"
                     }
-                    lastOccurrence {
-                        text() toBe "i'm a second paragraph"
+
+                    findAll {
+                        toBePresentExactlyOnce()
                     }
                 }
-                div(".some-class") {
-                    toBePresent()
+                // can handle custom tags as well
+                "a-custom-tag" {
+                    findFirst {
+                        text() toBe "i'm a custom html5 tag"
+                        text()
+                    }
+                }
+                // can handle custom tags written in css selctor query syntax
+                "div.foo.bar.fizz.buzz" {
+                    findFirst {
+                        text() toBe "div with class foo"
+                    }
+                }
+
+                // can handle custom tags and add selector specificas via DSL
+                "div.foo" {
+
+                    withClass = "bar" and "fizz" and "buzz"
+
+                    findFirst {
+                        text() toBe "div with class foo"
+                    }
                 }
             }
         }
@@ -102,7 +117,7 @@ All our official/stable releases will be published to [mavens central repository
 
 ```kotlin
 dependencies {
-    implementation("it.skrape:skrapeit-core:0.6.0")
+    implementation("it.skrape:skrapeit-core:1.0.0-alpha1")
 }
 ```
 </details>
@@ -113,7 +128,7 @@ dependencies {
 <dependency>
     <groupId>it.skrape</groupId>
     <artifactId>skrapeit-core</artifactId>
-    <version>0.6.0</version>
+    <version>1.0.0-alpha1</version>
 </dependency>
 ```
 </details>
@@ -131,7 +146,7 @@ repositories {
     maven { url "https://jitpack.io" }
 }
 dependencies {
-    implementation("com.github.skrapeit:skrape.it:master-SNAPSHOT"
+    implementation("com.github.skrapeit:skrape.it:master-SNAPSHOT")
 }
 ```
 </details>
