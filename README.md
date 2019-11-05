@@ -34,6 +34,7 @@ First and foremost skrape{it} aims to be a testing tool (not tied to a particula
 - [x] DSL is behaving like a Fluent-Api to make data extraction/scraping as comfortable as possible.
 
 ### Coming Soon
+- [x] Pre-configure client regarding auth and other request settings 
 - [x] Asynchronous and blocking requests
 - [x] Requests as [coroutines](https://github.com/Kotlin/kotlinx.coroutines)
 - [x] Cancel asynchronous request
