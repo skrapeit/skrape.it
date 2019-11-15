@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_VARIABLE")
+
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 
 plugins {
@@ -11,8 +13,10 @@ plugins {
     id("com.vanniktech.maven.publish") version "0.8.0"
 }
 
+val isIdea = System.getProperty("idea.version") != null
+
 testlogger {
-    setTheme("mocha")
+    setTheme(if (isIdea) "plain" else "mocha")
     slowThreshold = 1000
 }
 
