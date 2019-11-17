@@ -5,9 +5,7 @@ import io.github.rybalkinsd.kohttp.client.fork
 import io.github.rybalkinsd.kohttp.dsl.*
 import io.github.rybalkinsd.kohttp.dsl.context.HttpContext
 import io.github.rybalkinsd.kohttp.ext.url
-import it.skrape.core.Method.*
-import it.skrape.core.Request
-import it.skrape.core.Result
+import it.skrape.core.fetcher.Method.*
 
 class HttpFetcher(private val request: Request) : Fetcher {
 

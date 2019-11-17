@@ -4,9 +4,7 @@ import com.gargoylesoftware.htmlunit.*
 import com.gargoylesoftware.htmlunit.html.HtmlPage
 import com.gargoylesoftware.htmlunit.util.Cookie
 import com.gargoylesoftware.htmlunit.util.NameValuePair
-import it.skrape.core.Method.GET
-import it.skrape.core.Request
-import it.skrape.core.Result
+import it.skrape.core.fetcher.Method.GET
 import it.skrape.exceptions.UnsupportedRequestOptionException
 import java.net.URL
 

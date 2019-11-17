@@ -1,6 +1,7 @@
 package it.skrape.core
 
 import it.skrape.SkrapeItDsl
+import it.skrape.selects.Doc
 import java.io.File
 import java.nio.charset.Charset
 

@@ -1,6 +1,8 @@
 package it.skrape
 
 import it.skrape.core.*
+import it.skrape.core.fetcher.Method
+import it.skrape.core.fetcher.Mode
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.matchers.*
 import it.skrape.matchers.ContentTypes.*
@@ -143,7 +145,7 @@ internal class DslTest : WireMockSetup() {
             expect {
                 htmlDocument {
                     body {
-                        text toContain "i'm a paragraph"
+                        text() toContain "i'm a paragraph"
                     }
                 }
             }
@@ -246,7 +248,7 @@ internal class DslTest : WireMockSetup() {
             skrape {
                 expect {
                     htmlDocument {
-                        element(".nonExistent") {}
+                        findFirst(".nonExistent") {}
                     }
                 }
             }
@@ -287,8 +289,8 @@ internal class DslTest : WireMockSetup() {
                 htmlDocument {
                     MyObject(
                             message = statusMessage,
-                            paragraph = selectFirst("p").text(),
-                            allParagraphs = select("p").map { it.text() }
+                            paragraph = findFirst("p").text(),
+                            allParagraphs = isPresent("p").map { it.text() }
                     )
                 }
             }

@@ -2,6 +2,8 @@ package it.skrape.core
 
 import it.skrape.SkrapeItDsl
 import it.skrape.core.fetcher.BrowserFetcher
+import it.skrape.core.fetcher.Request
+import it.skrape.selects.Doc
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.util.*

@@ -2,6 +2,7 @@ package it.skrape.core
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import it.skrape.core.fetcher.Request
 import org.junit.jupiter.api.Test
 
 internal class ScraperTest : WireMockSetup() {

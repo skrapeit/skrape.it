@@ -3,8 +3,8 @@ package it.skrape.matchers
 import assertk.assertThat
 import assertk.assertions.*
 import it.skrape.SkrapeItAssertion
-import it.skrape.core.DocElement
-import it.skrape.core.DocElements
+import it.skrape.selects.DocElement
+import it.skrape.selects.DocElements
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotEqualTo
@@ -85,7 +85,7 @@ fun DocElements.toBePresentExactlyTwice() {
 
 @SkrapeItAssertion
 fun DocElement.toBePresent() {
-    assertThat(this.findAll().size).isGreaterThanOrEqualTo(1)
+    assertThat(this.isPresent()).isTrue()
 }
 
 @SkrapeItAssertion

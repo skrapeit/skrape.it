@@ -1,4 +1,4 @@
-package it.skrape.core
+package it.skrape.selects
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo

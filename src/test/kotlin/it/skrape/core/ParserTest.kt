@@ -16,7 +16,7 @@ internal class ParserTest {
 
         // then
         assertThat(result.title()).isEqualTo("i'm the title")
-        assertThat(result.selectFirst("p").text()).isEqualTo("i'm a paragraph")
+        assertThat(result.findFirst("p").text()).isEqualTo("i'm a paragraph")
     }
 
     @Test
@@ -28,7 +28,7 @@ internal class ParserTest {
 
         // then
         assertThat(result.title()).isEqualTo("i'm the title")
-        assertThat(result.selectFirst("p").text()).isEqualTo("i'm a paragraph")
+        assertThat(result.findFirst("p").text()).isEqualTo("i'm a paragraph")
     }
 
     @Test
@@ -41,8 +41,8 @@ internal class ParserTest {
 
         // then
         assertThat(result.title()).isEqualTo("i'm the title")
-        assertThat(result.selectFirst("p").text()).isEqualTo("i'm a paragraph")
-        assertThat(result.selectFirst(".dynamic").text()).isEqualTo("I have been dynamically added via Javascript")
+        assertThat(result.findFirst("p").text()).isEqualTo("i'm a paragraph")
+        assertThat(result.findFirst(".dynamic").text()).isEqualTo("I have been dynamically added via Javascript")
     }
 
     @Test
@@ -55,7 +55,7 @@ internal class ParserTest {
 
         // then
         assertThat(result.title()).isEqualTo("i'm the title")
-        assertThat(result.selectFirst("p").text()).isEqualTo("dynamically added")
+        assertThat(result.findFirst("p").text()).isEqualTo("dynamically added")
     }
 
     private fun getMarkupFromFile(file: String) = javaClass.getResource("/__files/$file").readText()

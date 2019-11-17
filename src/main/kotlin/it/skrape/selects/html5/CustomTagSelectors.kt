@@ -1,8 +1,8 @@
 package it.skrape.selects.html5
 
 import it.skrape.SkrapeItElementPicker
-import it.skrape.core.CssSelector
-import it.skrape.core.Doc
+import it.skrape.selects.CssSelector
+import it.skrape.selects.Doc
 
 /**
  * Will define a html5 custom tags css query selector.

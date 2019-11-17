@@ -131,7 +131,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
         wireMockServer.setupStub(fileName = "es6.html")
         // when
         val fetched = BrowserFetcher(Request()).fetch()
-        val paragraphs = fetched.document.select("div.dynamic")
+        val paragraphs = fetched.document.findAll("div.dynamic")
 
         // then
         paragraphs.forEach {

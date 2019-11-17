@@ -1,7 +1,7 @@
 package it.skrape.matchers
 
 import it.skrape.SkrapeItAssertion
-import it.skrape.core.ContentType
+import it.skrape.core.fetcher.ContentType
 import strikt.api.expectThat
 import strikt.assertions.contains
 import strikt.assertions.isEqualTo

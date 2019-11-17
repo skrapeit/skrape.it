@@ -2,8 +2,8 @@ package it.skrape.matchers
 
 import io.mockk.every
 import io.mockk.mockk
-import it.skrape.core.DocElement
-import it.skrape.core.DocElements
+import it.skrape.selects.DocElement
+import it.skrape.selects.DocElements
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -119,25 +119,20 @@ internal class MatchersKtTest {
     }
 
     @Test
-    @Disabled
     internal fun `toBePresent can handle multiple occurrence of an ELEMENT`() {
-        val elements = mockk<DocElements> { every { size } returns 2 }
-        val element = mockk<DocElements> { every { findAll() } returns elements }
+        val element = mockk<DocElement> { every { isPresent() } returns true }
         element.toBePresent()
     }
 
     @Test
-    @Disabled
     internal fun `toBePresent can handle single occurrence of an ELEMENT`() {
-        val elements = mockk<DocElements> { every { size } returns 1 }
-        val element = mockk<DocElements> { every { findAll() } returns elements }
+        val element = mockk<DocElement> { every { isPresent() } returns true }
         element.toBePresent()
     }
 
     @Test
     internal fun `toBePresent is throwing exception if no ELEMENT matches`() {
-        val elements = mockk<DocElements> { every { size } returns 0 }
-        val element = mockk<DocElement> { every { findAll() } returns elements }
+        val element = mockk<DocElement> { every { isPresent() } returns false }
         Assertions.assertThrows(AssertionFailedError::class.java) {
             element.toBePresent()
         }

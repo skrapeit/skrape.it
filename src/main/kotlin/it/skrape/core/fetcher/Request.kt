@@ -1,9 +1,9 @@
-package it.skrape.core
+package it.skrape.core.fetcher
 
 import it.skrape.SkrapeItDsl
-import it.skrape.core.Method.GET
-import it.skrape.core.Mode.SOURCE
-import it.skrape.core.Protocol.HTTP
+import it.skrape.core.fetcher.Method.GET
+import it.skrape.core.fetcher.Mode.SOURCE
+import it.skrape.core.fetcher.Protocol.HTTP
 
 data class Request(
 

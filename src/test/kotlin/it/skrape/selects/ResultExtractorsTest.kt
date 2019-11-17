@@ -1,6 +1,6 @@
 package it.skrape.selects
 
-import it.skrape.core.Request
+import it.skrape.core.fetcher.Request
 import it.skrape.core.WireMockSetup
 import it.skrape.core.setupStub
 import it.skrape.exceptions.ElementNotFoundException
@@ -21,7 +21,7 @@ internal class ResultExtractorsTest : WireMockSetup() {
         Assertions.assertThrows(ElementNotFoundException::class.java) {
             Request().expect {
                 htmlDocument {
-                    select(".nonExistent")
+                    findAll(".nonExistent")
                 }
             }
         }

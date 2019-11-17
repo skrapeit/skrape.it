@@ -1,4 +1,4 @@
-package it.skrape.core
+package it.skrape.selects
 
 import it.skrape.SkrapeItElementPicker
 import org.jsoup.nodes.Document
@@ -17,30 +17,30 @@ class CssSelector(
 
     @SkrapeItElementPicker
     fun <T> findFirst(init: DocElement.() -> T): T =
-            doc.select(toCssSelector()).findFirst(init)
+            doc.findAll(toCssSelector()).findFirst(init)
 
     @SkrapeItElementPicker
     fun <T> findByIndex(index: Int, init: DocElement.() -> T): T =
-            doc.select(toCssSelector()).findByIndex(index, init)
+            doc.findAll(toCssSelector()).findByIndex(index, init)
 
     @SkrapeItElementPicker
     fun <T> findSecond(init: DocElement.() -> T): T =
-            doc.select(toCssSelector()).findSecond(init)
+            doc.findAll(toCssSelector()).findSecond(init)
 
     @SkrapeItElementPicker
     fun <T> findThird(init: DocElement.() -> T): T =
-            doc.select(toCssSelector()).findThird(init)
+            doc.findAll(toCssSelector()).findThird(init)
 
     @SkrapeItElementPicker
     fun <T> findLast(init: DocElement.() -> T): T =
-            doc.select(toCssSelector()).findLast(init)
+            doc.findAll(toCssSelector()).findLast(init)
 
     @SkrapeItElementPicker
     fun <T> findSecondLast(init: DocElement.() -> T): T =
-            doc.select(toCssSelector()).findSecondLast(init)
+            doc.findAll(toCssSelector()).findSecondLast(init)
 
     @SkrapeItElementPicker
-    fun <T> findAll(init: DocElements.() -> T) = doc.elements(toCssSelector(), init)
+    fun <T> findAll(init: DocElements.() -> T) = doc.findAll(toCssSelector(), init)
 
     fun toCssSelector(): String {
         val calculatedSelector =

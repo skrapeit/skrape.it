@@ -1,7 +1,7 @@
 package it.skrape
 
-import it.skrape.core.Request
-import it.skrape.core.Result
+import it.skrape.core.fetcher.Request
+import it.skrape.core.fetcher.Result
 import it.skrape.core.Scraper
 import kotlin.reflect.KClass
 

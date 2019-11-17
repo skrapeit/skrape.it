@@ -1,6 +1,8 @@
-package it.skrape.core
+package it.skrape.core.fetcher
 
 import it.skrape.SkrapeItResult
+import it.skrape.selects.Doc
+import it.skrape.core.Parser
 
 /**
  * This object is representing the result of an request

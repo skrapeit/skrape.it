@@ -1,8 +1,8 @@
 package it.skrape.selects.html5
 
 import it.skrape.SkrapeItElementPicker
-import it.skrape.core.CssSelector
-import it.skrape.core.Doc
+import it.skrape.selects.CssSelector
+import it.skrape.selects.Doc
 
 /**
  * Will define a <body>-tags css query selector.
@@ -10,7 +10,7 @@ import it.skrape.core.Doc
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
- * @see it.skrape.core.CssSelector
+ * @see CssSelector
  * @param cssSelector
  * @return T
  */
@@ -24,7 +24,7 @@ fun <T> Doc.body(cssSelector: String = "", init: CssSelector.() -> T) =
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
- * @see it.skrape.core.CssSelector
+ * @see CssSelector
  * @param cssSelector
  * @return T
  */
@@ -38,7 +38,7 @@ fun <T> Doc.div(cssSelector: String = "", init: CssSelector.() -> T) =
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
- * @see it.skrape.core.CssSelector
+ * @see CssSelector
  * @param cssSelector
  * @return T
  */
@@ -52,7 +52,7 @@ fun <T> Doc.section(cssSelector: String = "", init: CssSelector.() -> T) =
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
- * @see it.skrape.core.CssSelector
+ * @see CssSelector
  * @param cssSelector
  * @return T
  */
@@ -66,7 +66,7 @@ fun <T> Doc.nav(cssSelector: String = "", init: CssSelector.() -> T) =
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
- * @see it.skrape.core.CssSelector
+ * @see CssSelector
  * @param cssSelector
  * @return T
  */
@@ -80,7 +80,7 @@ fun <T> Doc.article(cssSelector: String = "", init: CssSelector.() -> T) =
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
- * @see it.skrape.core.CssSelector
+ * @see CssSelector
  * @param cssSelector
  * @return T
  */
@@ -94,7 +94,7 @@ fun <T> Doc.aside(cssSelector: String = "", init: CssSelector.() -> T) =
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
- * @see it.skrape.core.CssSelector
+ * @see CssSelector
  * @param cssSelector
  * @return T
  */
@@ -108,7 +108,7 @@ fun <T> Doc.h1(cssSelector: String = "", init: CssSelector.() -> T) =
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
- * @see it.skrape.core.CssSelector
+ * @see CssSelector
  * @param cssSelector
  * @return T
  */
@@ -122,7 +122,7 @@ fun <T> Doc.h2(cssSelector: String = "", init: CssSelector.() -> T) =
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
- * @see it.skrape.core.CssSelector
+ * @see CssSelector
  * @param cssSelector
  * @return T
  */
@@ -136,7 +136,7 @@ fun <T> Doc.h3(cssSelector: String = "", init: CssSelector.() -> T) =
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
- * @see it.skrape.core.CssSelector
+ * @see CssSelector
  * @param cssSelector
  * @return T
  */
@@ -150,7 +150,7 @@ fun <T> Doc.h4(cssSelector: String = "", init: CssSelector.() -> T) =
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
- * @see it.skrape.core.CssSelector
+ * @see CssSelector
  * @param cssSelector
  * @return T
  */
@@ -164,7 +164,7 @@ fun <T> Doc.h5(cssSelector: String = "", init: CssSelector.() -> T) =
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
- * @see it.skrape.core.CssSelector
+ * @see CssSelector
  * @param cssSelector
  * @return T
  */
@@ -178,7 +178,7 @@ fun <T> Doc.h6(cssSelector: String = "", init: CssSelector.() -> T) =
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
- * @see it.skrape.core.CssSelector
+ * @see CssSelector
  * @param cssSelector
  * @return T
  */
@@ -192,7 +192,7 @@ fun <T> Doc.header(cssSelector: String = "", init: CssSelector.() -> T) =
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
- * @see it.skrape.core.CssSelector
+ * @see CssSelector
  * @param cssSelector
  * @return T
  */
@@ -206,7 +206,7 @@ fun <T> Doc.footer(cssSelector: String = "", init: CssSelector.() -> T) =
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
- * @see it.skrape.core.CssSelector
+ * @see CssSelector
  * @param cssSelector
  * @return T
  */
@@ -220,7 +220,7 @@ fun <T> Doc.address(cssSelector: String = "", init: CssSelector.() -> T) =
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
- * @see it.skrape.core.CssSelector
+ * @see CssSelector
  * @param cssSelector
  * @return T
  */
