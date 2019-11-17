@@ -1,80 +1,94 @@
 package it.skrape.matchers
 
 import assertk.assertThat
-import assertk.assertions.contains
-import assertk.assertions.doesNotContain
-import assertk.assertions.isEqualTo
-import assertk.assertions.isGreaterThanOrEqualTo
-import assertk.assertions.isNotEqualTo
-import assertk.assertions.isZero
-import org.jsoup.nodes.Element
-import org.jsoup.select.Elements
+import assertk.assertions.*
+import it.skrape.SkrapeItAssertion
+import it.skrape.core.DocElement
+import it.skrape.core.DocElements
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotEqualTo
 
+@SkrapeItAssertion
 infix fun Int.toBe(expected: Int): Int {
     expectThat(this).isEqualTo(expected)
     return this
 }
 
+@SkrapeItAssertion
 infix fun Int.`to be`(expected: Int) = this toBe expected
 
+@SkrapeItAssertion
 infix fun String?.toBe(expected: String?): String? {
     expectThat(this).isEqualTo(expected)
     return this
 }
 
+@SkrapeItAssertion
 infix fun String?.`to be`(expected: String?) = this toBe expected
 
+@SkrapeItAssertion
 infix fun String?.toBeNot(expected: String?): String? {
     expectThat(this).isNotEqualTo(expected)
     return this
 }
 
+@SkrapeItAssertion
 infix fun String?.`to be not`(expected: String?) = this toBeNot expected
 
+@SkrapeItAssertion
 infix fun String?.toContain(expected: String): String? {
     assertThat(this.toString()).contains(expected)
     return this
 }
 
+@SkrapeItAssertion
 infix fun String?.`to contain`(expected: String) = this toContain expected
 
+@SkrapeItAssertion
 infix fun String?.toNotContain(expected: String): String? {
     assertThat(this.toString()).doesNotContain(expected)
     return this
 }
 
+@SkrapeItAssertion
 infix fun String?.`to not contain`(expected: String) = this toNotContain expected
 
+@SkrapeItAssertion
 infix fun List<Any>.toContain(expected: String): List<Any> {
     assertThat(this).contains(expected)
     return this
 }
 
-fun Elements.toBePresent() {
+@SkrapeItAssertion
+infix fun List<Any>.`to contain`(expected: String) = this.toContain(expected)
+
+@SkrapeItAssertion
+fun DocElements.toBePresent() {
     assertThat(this.size).isGreaterThanOrEqualTo(1)
 }
 
-fun Elements.toBePresentTimes(amount: Int) {
+@SkrapeItAssertion
+fun DocElements.toBePresentTimes(amount: Int) {
     assertThat(this.size).isEqualTo(amount)
 }
 
-fun Elements.toBePresentExactlyOnce() {
+@SkrapeItAssertion
+fun DocElements.toBePresentExactlyOnce() {
     toBePresentTimes(1)
 }
 
-fun Elements.toBePresentExactlyTwice() {
+@SkrapeItAssertion
+fun DocElements.toBePresentExactlyTwice() {
     toBePresentTimes(2)
 }
 
-fun Element.toBePresent() {
-    assertThat(this.allElements.size).isGreaterThanOrEqualTo(1)
+@SkrapeItAssertion
+fun DocElement.toBePresent() {
+    assertThat(this.findAll().size).isGreaterThanOrEqualTo(1)
 }
 
-fun Elements.toBeNotPresent() {
+@SkrapeItAssertion
+fun DocElements.toBeNotPresent() {
     assertThat(this.size).isZero()
 }
-
-infix fun List<Any>.`to contain`(expected: String) = this.toContain(expected)

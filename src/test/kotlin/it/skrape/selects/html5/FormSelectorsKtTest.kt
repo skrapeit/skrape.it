@@ -3,7 +3,6 @@ package it.skrape.selects.html5
 import it.skrape.aSelfClosingTag
 import it.skrape.aStandardTag
 import it.skrape.aValidDocument
-import it.skrape.selects.findFirst
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
@@ -62,7 +61,7 @@ internal class FormSelectorsKtTest {
     fun `can parse input-tag`() {
         val selector = aValidDocument(aSelfClosingTag("input")).input {
             findFirst {
-                expectThat(attr("custom-attr")).isEqualTo("input-attr")
+                expectThat(attribute("custom-attr")).isEqualTo("input-attr")
             }
             rawCssSelector
         }

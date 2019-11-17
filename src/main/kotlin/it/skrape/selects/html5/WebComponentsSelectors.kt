@@ -1,9 +1,8 @@
 package it.skrape.selects.html5
 
-import it.skrape.SkrapeItDslMarker
-import it.skrape.core.Doc
+import it.skrape.SkrapeItElementPicker
 import it.skrape.core.CssSelector
-import it.skrape.selects.selection
+import it.skrape.core.Doc
 
 /**
  * Will define a <content>-tags css query selector.
@@ -15,7 +14,7 @@ import it.skrape.selects.selection
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.content(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("content$cssSelector", init)
 
@@ -29,7 +28,7 @@ fun <T> Doc.content(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.shadow(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("shadow$cssSelector", init)
 
@@ -43,7 +42,7 @@ fun <T> Doc.shadow(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.slot(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("slot$cssSelector", init)
 
@@ -57,6 +56,6 @@ fun <T> Doc.slot(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.template(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("template$cssSelector", init)

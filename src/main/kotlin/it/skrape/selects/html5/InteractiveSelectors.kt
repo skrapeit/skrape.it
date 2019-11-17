@@ -1,9 +1,8 @@
 package it.skrape.selects.html5
 
-import it.skrape.SkrapeItDslMarker
-import it.skrape.core.Doc
+import it.skrape.SkrapeItElementPicker
 import it.skrape.core.CssSelector
-import it.skrape.selects.selection
+import it.skrape.core.Doc
 
 /**
  * Will define a <details>-tags css query selector.
@@ -15,7 +14,7 @@ import it.skrape.selects.selection
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.details(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("details$cssSelector", init)
 
@@ -29,7 +28,7 @@ fun <T> Doc.details(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.dialog(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("dialog$cssSelector", init)
 
@@ -43,7 +42,7 @@ fun <T> Doc.dialog(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.menu(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("menu$cssSelector", init)
 
@@ -57,7 +56,7 @@ fun <T> Doc.menu(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.menuitem(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("menuitem$cssSelector", init)
 
@@ -71,6 +70,6 @@ fun <T> Doc.menuitem(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.summary(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("summary$cssSelector", init)

@@ -4,15 +4,13 @@ import com.gargoylesoftware.htmlunit.*
 import com.gargoylesoftware.htmlunit.html.HtmlPage
 import com.gargoylesoftware.htmlunit.util.Cookie
 import com.gargoylesoftware.htmlunit.util.NameValuePair
-import it.skrape.core.Method
-import it.skrape.core.Method.*
+import it.skrape.core.Method.GET
 import it.skrape.core.Request
 import it.skrape.core.Result
 import it.skrape.exceptions.UnsupportedRequestOptionException
-import org.jsoup.Connection
 import java.net.URL
 
-class BrowserFetcher(private val request: Request): Fetcher {
+class BrowserFetcher(private val request: Request) : Fetcher {
 
     override fun fetch(): Result {
 
@@ -83,4 +81,4 @@ fun Map<String, String>.asRawCookieSyntax(): String {
 }
 
 fun List<NameValuePair>.toMap(): Map<String, String> =
-        associateByTo(mutableMapOf<String, String>(), {it.name}, {it.value})
+        associateByTo(mutableMapOf<String, String>(), { it.name }, { it.value })

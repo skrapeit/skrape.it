@@ -2,12 +2,7 @@ package it.skrape.core.fetcher
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import it.skrape.core.Method
-import it.skrape.core.Request
-import it.skrape.core.WireMockSetup
-import it.skrape.core.setupPostStub
-import it.skrape.core.setupRedirect
-import it.skrape.core.setupStub
+import it.skrape.core.*
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test

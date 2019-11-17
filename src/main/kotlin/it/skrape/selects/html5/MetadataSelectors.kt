@@ -1,9 +1,8 @@
 package it.skrape.selects.html5
 
-import it.skrape.SkrapeItDslMarker
-import it.skrape.core.Doc
+import it.skrape.SkrapeItElementPicker
 import it.skrape.core.CssSelector
-import it.skrape.selects.selection
+import it.skrape.core.Doc
 
 /**
  * Will define a <base>-tags css query selector.
@@ -15,7 +14,7 @@ import it.skrape.selects.selection
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.base(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("base$cssSelector", init)
 
@@ -29,7 +28,7 @@ fun <T> Doc.base(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.head(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("head$cssSelector", init)
 
@@ -43,7 +42,7 @@ fun <T> Doc.head(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.link(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("link$cssSelector", init)
 
@@ -57,7 +56,7 @@ fun <T> Doc.link(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.meta(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("meta$cssSelector", init)
 
@@ -71,7 +70,7 @@ fun <T> Doc.meta(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.style(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("style$cssSelector", init)
 
@@ -85,6 +84,6 @@ fun <T> Doc.style(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.title(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("title$cssSelector", init)

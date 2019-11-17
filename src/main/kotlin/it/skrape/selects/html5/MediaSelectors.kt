@@ -1,9 +1,8 @@
 package it.skrape.selects.html5
 
-import it.skrape.SkrapeItDslMarker
-import it.skrape.core.Doc
+import it.skrape.SkrapeItElementPicker
 import it.skrape.core.CssSelector
-import it.skrape.selects.selection
+import it.skrape.core.Doc
 
 /**
  * Will define a <area>-tags css query selector.
@@ -15,7 +14,7 @@ import it.skrape.selects.selection
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.area(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("area$cssSelector", init)
 
@@ -29,7 +28,7 @@ fun <T> Doc.area(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.audio(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("audio$cssSelector", init)
 
@@ -43,7 +42,7 @@ fun <T> Doc.audio(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.img(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("img$cssSelector", init)
 
@@ -57,7 +56,7 @@ fun <T> Doc.img(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.map(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("map$cssSelector", init)
 
@@ -71,7 +70,7 @@ fun <T> Doc.map(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.track(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("track$cssSelector", init)
 
@@ -85,6 +84,6 @@ fun <T> Doc.track(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.video(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("video$cssSelector", init)

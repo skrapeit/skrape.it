@@ -1,8 +1,9 @@
 package it.skrape.core
 
-import it.skrape.SkrapeItDslMarker
+import it.skrape.SkrapeItElementPicker
 import org.jsoup.nodes.Document
 
+@Suppress("TooManyFunctions")
 class CssSelector(
         var rawCssSelector: String = "",
         var withClass: CssClassName? = null,
@@ -14,15 +15,42 @@ class CssSelector(
         val doc: Doc = Doc(Document(""))
 ) {
 
+    @SkrapeItElementPicker
+    fun <T> findFirst(init: DocElement.() -> T): T =
+            doc.select(toCssSelector()).findFirst(init)
+
+    @SkrapeItElementPicker
+    fun <T> findByIndex(index: Int, init: DocElement.() -> T): T =
+            doc.select(toCssSelector()).findByIndex(index, init)
+
+    @SkrapeItElementPicker
+    fun <T> findSecond(init: DocElement.() -> T): T =
+            doc.select(toCssSelector()).findSecond(init)
+
+    @SkrapeItElementPicker
+    fun <T> findThird(init: DocElement.() -> T): T =
+            doc.select(toCssSelector()).findThird(init)
+
+    @SkrapeItElementPicker
+    fun <T> findLast(init: DocElement.() -> T): T =
+            doc.select(toCssSelector()).findLast(init)
+
+    @SkrapeItElementPicker
+    fun <T> findSecondLast(init: DocElement.() -> T): T =
+            doc.select(toCssSelector()).findSecondLast(init)
+
+    @SkrapeItElementPicker
+    fun <T> findAll(init: DocElements.() -> T) = doc.elements(toCssSelector(), init)
+
     fun toCssSelector(): String {
         val calculatedSelector =
                 rawCssSelector +
-                withId.toIdSelector().orEmpty() +
-                withClass.toClassesSelector().orEmpty() +
-                withAttributeKey.toAttributeKeySelector().orEmpty() +
-                withAttributeKeys.toCssAttributeKeysSelector().orEmpty() +
-                withAttribute.toAttributeSelector().orEmpty() +
-                withAttributes.toAttributesSelector().orEmpty()
+                        withId.toIdSelector().orEmpty() +
+                        withClass.toClassesSelector().orEmpty() +
+                        withAttributeKey.toAttributeKeySelector().orEmpty() +
+                        withAttributeKeys.toCssAttributeKeysSelector().orEmpty() +
+                        withAttribute.toAttributeSelector().orEmpty() +
+                        withAttributes.toAttributesSelector().orEmpty()
         return calculatedSelector.withoutSpaces()
     }
 
@@ -48,10 +76,10 @@ class CssSelector(
 
 typealias CssClassName = String
 
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 infix fun CssClassName.and(value: String) = "$this.$value"
 
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 infix fun Pair<String, String>.and(pair: Pair<String, String>): MutableList<Pair<String, String>> {
     val collectedValues = mutableListOf(this)
     collectedValues.add(pair)

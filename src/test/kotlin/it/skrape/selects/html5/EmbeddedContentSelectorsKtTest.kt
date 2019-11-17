@@ -2,7 +2,6 @@ package it.skrape.selects.html5
 
 import it.skrape.aStandardTag
 import it.skrape.aValidDocument
-import it.skrape.selects.findFirst
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
@@ -25,7 +24,7 @@ internal class EmbeddedContentSelectorsKtTest {
     fun `can parse embed-tag`() {
         val selector = aValidDocument("<embed src=\"helloworld.swf\">").embed {
             findFirst {
-                expectThat(attr("src")).isEqualTo("helloworld.swf")
+                expectThat(attribute("src")).isEqualTo("helloworld.swf")
             }
             rawCssSelector
         }
@@ -73,7 +72,7 @@ internal class EmbeddedContentSelectorsKtTest {
     fun `can parse param-tag`() {
         val selector = aValidDocument("<param name=\"autoplay\" value=\"true\">").param {
             findFirst {
-                expectThat(attr("name")).isEqualTo("autoplay")
+                expectThat(attribute("name")).isEqualTo("autoplay")
             }
             rawCssSelector
         }
@@ -97,7 +96,7 @@ internal class EmbeddedContentSelectorsKtTest {
     fun `can parse source-tag`() {
         val selector = aValidDocument("<source src=\"horse.ogg\" type=\"audio/ogg\">").source {
             findFirst {
-                expectThat(attr("src")).isEqualTo("horse.ogg")
+                expectThat(attribute("src")).isEqualTo("horse.ogg")
             }
             rawCssSelector
         }

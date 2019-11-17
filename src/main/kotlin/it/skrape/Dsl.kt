@@ -1,9 +1,8 @@
 package it.skrape
 
-import it.skrape.core.*
-import it.skrape.core.Reader
-import java.io.File
-import java.nio.charset.Charset
+import it.skrape.core.Request
+import it.skrape.core.Result
+import it.skrape.core.Scraper
 import kotlin.reflect.KClass
 
 
@@ -12,7 +11,7 @@ import kotlin.reflect.KClass
  * @param mode defaults to HTTP and represents the scraping mode (either pure http request or rendering via browser)
  * @return Result
  */
-@SkrapeItDslMarker
+@SkrapeItDsl
 fun <T> skrape(init: Request.() -> T): T {
     return Scraper().request.init()
 }
@@ -20,7 +19,7 @@ fun <T> skrape(init: Request.() -> T): T {
 /**
  * Read and parse html from a skrape{it} result.
  */
-@SkrapeItDslMarker
+@SkrapeItDsl
 fun Request.expect(init: Result.() -> Unit) {
     Scraper(request = this).scrape().also(init)
 }
@@ -29,7 +28,7 @@ fun Request.expect(init: Result.() -> Unit) {
  * Read and parse html from a skrape{it} result.
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItDsl
 fun <T> Request.extract(extractor: Result.() -> T): T {
     val result = Scraper(request = this).scrape()
     return result.extractor()
@@ -39,8 +38,8 @@ fun <T> Request.extract(extractor: Result.() -> T): T {
  * Read and parse html from a skrape{it} result.
  * @return T
  */
-@SkrapeItDslMarker
-inline fun <reified T: Any> Request.extractIt(extractor: Result.(T) -> Unit): T {
+@SkrapeItDsl
+inline fun <reified T : Any> Request.extractIt(extractor: Result.(T) -> Unit): T {
     val instance = create(T::class)
     Scraper(request = this).scrape().apply { extractor(instance) }
     return instance
@@ -50,9 +49,18 @@ inline fun <reified T: Any> Request.extractIt(extractor: Result.(T) -> Unit): T 
  * Creates an instance of generic with a no args constructor.
  * @return T
  */
-inline fun <reified T: Any> create(clazz: KClass<T>): T {
+inline fun <reified T : Any> create(clazz: KClass<T>): T {
     return clazz.constructors.first { it.parameters.isEmpty() }.call()
 }
 
 @DslMarker
-annotation class SkrapeItDslMarker
+annotation class SkrapeItDsl
+
+@DslMarker
+annotation class SkrapeItElementPicker
+
+@DslMarker
+annotation class SkrapeItResult
+
+@DslMarker
+annotation class SkrapeItAssertion

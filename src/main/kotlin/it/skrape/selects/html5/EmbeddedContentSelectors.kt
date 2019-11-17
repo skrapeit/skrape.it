@@ -1,9 +1,8 @@
 package it.skrape.selects.html5
 
-import it.skrape.SkrapeItDslMarker
-import it.skrape.core.Doc
+import it.skrape.SkrapeItElementPicker
 import it.skrape.core.CssSelector
-import it.skrape.selects.selection
+import it.skrape.core.Doc
 
 /**
  * Will define a <applet>-tags css query selector.
@@ -15,7 +14,7 @@ import it.skrape.selects.selection
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.applet(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("applet$cssSelector", init)
 
@@ -29,7 +28,7 @@ fun <T> Doc.applet(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.embed(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("embed$cssSelector", init)
 
@@ -43,7 +42,7 @@ fun <T> Doc.embed(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.iframe(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("iframe$cssSelector", init)
 
@@ -57,7 +56,7 @@ fun <T> Doc.iframe(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.noembed(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("noembed$cssSelector", init)
 
@@ -71,7 +70,7 @@ fun <T> Doc.noembed(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.`object`(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("object$cssSelector", init)
 
@@ -85,7 +84,7 @@ fun <T> Doc.`object`(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.param(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("param$cssSelector", init)
 
@@ -99,7 +98,7 @@ fun <T> Doc.param(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.picture(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("picture$cssSelector", init)
 
@@ -113,6 +112,6 @@ fun <T> Doc.picture(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.source(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("source$cssSelector", init)

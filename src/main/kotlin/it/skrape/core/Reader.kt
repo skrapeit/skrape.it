@@ -1,6 +1,6 @@
 package it.skrape.core
 
-import it.skrape.SkrapeItDslMarker
+import it.skrape.SkrapeItDsl
 import java.io.File
 import java.nio.charset.Charset
 
@@ -17,7 +17,7 @@ internal class Reader(
  * @param file
  * @param charset defaults to UTF-8
  */
-@SkrapeItDslMarker
+@SkrapeItDsl
 fun htmlDocument(file: File, charset: Charset = Charsets.UTF_8, init: Doc.() -> Unit): Doc {
     return Reader(file, charset).read().also(init)
 }

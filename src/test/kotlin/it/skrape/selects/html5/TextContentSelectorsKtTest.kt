@@ -4,9 +4,6 @@ import it.skrape.aValidDocument
 import it.skrape.matchers.toBePresentExactlyOnce
 import it.skrape.matchers.toBePresentExactlyTwice
 import it.skrape.matchers.toBePresentTimes
-import it.skrape.selects.findAll
-import it.skrape.selects.findFirst
-import it.skrape.selects.findLast
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo

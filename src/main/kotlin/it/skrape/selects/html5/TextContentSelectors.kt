@@ -1,9 +1,8 @@
 package it.skrape.selects.html5
 
-import it.skrape.SkrapeItDslMarker
-import it.skrape.core.Doc
+import it.skrape.SkrapeItElementPicker
 import it.skrape.core.CssSelector
-import it.skrape.selects.selection
+import it.skrape.core.Doc
 
 /**
  * Will define a <blockquote>-tags css query selector.
@@ -15,7 +14,7 @@ import it.skrape.selects.selection
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.blockquote(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("blockquote$cssSelector", init)
 
@@ -29,7 +28,7 @@ fun <T> Doc.blockquote(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.dd(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("dd$cssSelector", init)
 
@@ -43,7 +42,7 @@ fun <T> Doc.dd(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.dir(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("dir$cssSelector", init)
 
@@ -57,7 +56,7 @@ fun <T> Doc.dir(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.dl(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("dl$cssSelector", init)
 
@@ -71,7 +70,7 @@ fun <T> Doc.dl(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.dt(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("dt$cssSelector", init)
 
@@ -85,7 +84,7 @@ fun <T> Doc.dt(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.figcaption(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("figcaption$cssSelector", init)
 
@@ -99,7 +98,7 @@ fun <T> Doc.figcaption(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.figure(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("figure$cssSelector", init)
 
@@ -113,7 +112,7 @@ fun <T> Doc.figure(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.hr(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("hr$cssSelector", init)
 
@@ -127,7 +126,7 @@ fun <T> Doc.hr(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.li(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("li$cssSelector", init)
 
@@ -141,7 +140,7 @@ fun <T> Doc.li(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.ol(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("ol$cssSelector", init)
 
@@ -155,7 +154,7 @@ fun <T> Doc.ol(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.ul(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("ul$cssSelector", init)
 
@@ -169,7 +168,7 @@ fun <T> Doc.ul(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.p(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("p$cssSelector", init)
 
@@ -183,6 +182,6 @@ fun <T> Doc.p(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.pre(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("pre$cssSelector", init)

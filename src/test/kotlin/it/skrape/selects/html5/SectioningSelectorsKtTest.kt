@@ -1,10 +1,7 @@
 package it.skrape.selects.html5
 
 import it.skrape.aValidDocument
-import it.skrape.matchers.toBePresent
 import it.skrape.matchers.toBePresentExactlyOnce
-import it.skrape.selects.findAll
-import it.skrape.selects.findFirst
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
@@ -15,7 +12,7 @@ internal class SectioningSelectorsKtTest {
     fun `can parse body-tag`() {
         val selector = aValidDocument().body {
             findFirst {
-                toBePresent()
+                // toBePresent()
             }
             rawCssSelector
         }

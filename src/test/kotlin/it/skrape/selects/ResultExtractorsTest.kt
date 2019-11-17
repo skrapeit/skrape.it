@@ -3,7 +3,7 @@ package it.skrape.selects
 import it.skrape.core.Request
 import it.skrape.core.WireMockSetup
 import it.skrape.core.setupStub
-import it.skrape.exceptions.*
+import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.expect
 import it.skrape.extract
 import it.skrape.matchers.toBe
@@ -21,7 +21,7 @@ internal class ResultExtractorsTest : WireMockSetup() {
         Assertions.assertThrows(ElementNotFoundException::class.java) {
             Request().expect {
                 htmlDocument {
-                    element(".nonExistent")
+                    select(".nonExistent")
                 }
             }
         }

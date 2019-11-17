@@ -1,10 +1,10 @@
 package it.skrape.core
 
-import it.skrape.SkrapeItDslMarker
+import it.skrape.SkrapeItDsl
 import it.skrape.core.fetcher.BrowserFetcher
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import java.util.Base64
+import java.util.*
 
 class Parser(var html: String = "") {
 
@@ -25,7 +25,7 @@ class Parser(var html: String = "") {
  * Read and parse html from a String.
  * @param html represents a html snippet
  */
-@SkrapeItDslMarker
+@SkrapeItDsl
 fun htmlDocument(html: String, init: Doc.() -> Unit): Doc {
     return Parser(html).parse().also(init)
 }

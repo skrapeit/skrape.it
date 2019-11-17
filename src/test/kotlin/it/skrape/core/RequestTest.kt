@@ -1,8 +1,5 @@
 package it.skrape.core
 
-import it.skrape.matchers.ContentTypes
-import it.skrape.matchers.`to be not`
-import it.skrape.matchers.`to be`
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource

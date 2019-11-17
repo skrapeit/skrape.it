@@ -2,7 +2,7 @@ package it.skrape.core
 
 import it.skrape.core.fetcher.BrowserFetcher
 import it.skrape.core.fetcher.HttpFetcher
-import java.lang.System.*
+import java.lang.System.setProperty
 
 
 class Scraper(val request: Request = Request()) {

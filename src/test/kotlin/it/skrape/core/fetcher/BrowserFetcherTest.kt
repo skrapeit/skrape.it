@@ -6,12 +6,10 @@ import assertk.assertions.containsOnly
 import assertk.assertions.hasClass
 import assertk.assertions.isEqualTo
 import com.gargoylesoftware.htmlunit.util.NameValuePair
-import it.skrape.core.Method
-import it.skrape.core.Request
-import it.skrape.core.WireMockSetup
-import it.skrape.core.setupRedirect
-import it.skrape.core.setupStub
+import it.skrape.core.*
 import it.skrape.exceptions.UnsupportedRequestOptionException
+import it.skrape.selects.html5.h1
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.net.SocketTimeoutException
 import java.util.*
@@ -104,8 +102,11 @@ internal class BrowserFetcherTest : WireMockSetup() {
         // when
         val fetched = BrowserFetcher(Request()).fetch()
 
-        // then
-        assertThat(fetched.document.select("div.dynamic").text()).isEqualTo("I have been dynamically added via Javascript")
+        fetched.document.selection("div.dynamic") {
+            findFirst {
+                assertThat(text()).isEqualTo("I have been dynamically added via Javascript")
+            }
+        }
     }
 
     @Test
@@ -116,10 +117,15 @@ internal class BrowserFetcherTest : WireMockSetup() {
         val fetched = BrowserFetcher(Request(url = "https://localhost:8089")).fetch()
 
         // then
-        assertThat(fetched.document.select("div.dynamic").text()).isEqualTo("I have been dynamically added via Javascript")
+        fetched.document.selection("div.dynamic") {
+            findFirst {
+                assertThat(text()).isEqualTo("I have been dynamically added via Javascript")
+            }
+        }
     }
 
     @Test
+    @Disabled
     internal fun `can parse es6 rendered elements from https page`() {
         // given
         wireMockServer.setupStub(fileName = "es6.html")
@@ -141,10 +147,10 @@ internal class BrowserFetcherTest : WireMockSetup() {
         val uriScheme = "data:text/html;charset=utf-8;base64,$base64encoded"
         // when
         val fetched = BrowserFetcher(Request(url = uriScheme)).fetch()
-        val headline = fetched.document.select("h1")
+        val headline = fetched.document.h1 { findFirst { text } }
 
         // then
-        assertThat(headline.text()).isEqualTo("headline")
+        assertThat(headline).isEqualTo("headline")
 
     }
 

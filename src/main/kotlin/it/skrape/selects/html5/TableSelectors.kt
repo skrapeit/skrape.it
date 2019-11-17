@@ -1,9 +1,8 @@
 package it.skrape.selects.html5
 
-import it.skrape.SkrapeItDslMarker
-import it.skrape.core.Doc
+import it.skrape.SkrapeItElementPicker
 import it.skrape.core.CssSelector
-import it.skrape.selects.selection
+import it.skrape.core.Doc
 
 /**
  * Will define a <caption>-tags css query selector.
@@ -15,7 +14,7 @@ import it.skrape.selects.selection
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.caption(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("caption$cssSelector", init)
 
@@ -29,7 +28,7 @@ fun <T> Doc.caption(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.col(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("col$cssSelector", init)
 
@@ -43,7 +42,7 @@ fun <T> Doc.col(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.colgroup(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("colgroup$cssSelector", init)
 
@@ -57,7 +56,7 @@ fun <T> Doc.colgroup(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.table(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("table$cssSelector", init)
 
@@ -71,7 +70,7 @@ fun <T> Doc.table(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.tbody(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("tbody$cssSelector", init)
 
@@ -85,7 +84,7 @@ fun <T> Doc.tbody(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.td(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("td$cssSelector", init)
 
@@ -99,7 +98,7 @@ fun <T> Doc.td(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.tfoot(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("tfoot$cssSelector", init)
 
@@ -113,7 +112,7 @@ fun <T> Doc.tfoot(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.th(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("th$cssSelector", init)
 
@@ -127,7 +126,7 @@ fun <T> Doc.th(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.thead(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("thead$cssSelector", init)
 
@@ -141,6 +140,6 @@ fun <T> Doc.thead(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItDslMarker
+@SkrapeItElementPicker
 fun <T> Doc.tr(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("tr$cssSelector", init)

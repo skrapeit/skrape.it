@@ -2,8 +2,6 @@ package it.skrape.selects.html5
 
 import it.skrape.aSelfClosingTag
 import it.skrape.aValidDocument
-import it.skrape.selects.findAll
-import it.skrape.selects.findFirst
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
