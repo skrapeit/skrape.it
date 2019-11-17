@@ -1,13 +1,10 @@
 package it.skrape.matchers
 
-import assertk.assertThat
-import assertk.assertions.*
 import it.skrape.SkrapeItAssertion
 import it.skrape.selects.DocElement
 import it.skrape.selects.DocElements
 import strikt.api.expectThat
-import strikt.assertions.isEqualTo
-import strikt.assertions.isNotEqualTo
+import strikt.assertions.*
 
 @SkrapeItAssertion
 infix fun Int.toBe(expected: Int): Int {
@@ -16,7 +13,7 @@ infix fun Int.toBe(expected: Int): Int {
 }
 
 @SkrapeItAssertion
-infix fun Int.`to be`(expected: Int) = this toBe expected
+infix fun Int.`to be`(expected: Int): Int = this toBe expected
 
 @SkrapeItAssertion
 infix fun String?.toBe(expected: String?): String? {
@@ -25,7 +22,7 @@ infix fun String?.toBe(expected: String?): String? {
 }
 
 @SkrapeItAssertion
-infix fun String?.`to be`(expected: String?) = this toBe expected
+infix fun String?.`to be`(expected: String?): String? = this toBe expected
 
 @SkrapeItAssertion
 infix fun String?.toBeNot(expected: String?): String? {
@@ -34,61 +31,65 @@ infix fun String?.toBeNot(expected: String?): String? {
 }
 
 @SkrapeItAssertion
-infix fun String?.`to be not`(expected: String?) = this toBeNot expected
+infix fun String?.`to be not`(expected: String?): String? = this toBeNot expected
 
 @SkrapeItAssertion
 infix fun String?.toContain(expected: String): String? {
-    assertThat(this.toString()).contains(expected)
+    expectThat(this.toString()).contains(expected)
     return this
 }
 
 @SkrapeItAssertion
-infix fun String?.`to contain`(expected: String) = this toContain expected
+infix fun String?.`to contain`(expected: String): String? = this toContain expected
 
 @SkrapeItAssertion
 infix fun String?.toNotContain(expected: String): String? {
-    assertThat(this.toString()).doesNotContain(expected)
+    expectThat(this.toString()).not().contains(expected)
     return this
 }
 
 @SkrapeItAssertion
-infix fun String?.`to not contain`(expected: String) = this toNotContain expected
+infix fun String?.`to not contain`(expected: String): String? = this toNotContain expected
 
 @SkrapeItAssertion
 infix fun List<Any>.toContain(expected: String): List<Any> {
-    assertThat(this).contains(expected)
+    expectThat(this).contains(expected)
     return this
 }
 
 @SkrapeItAssertion
-infix fun List<Any>.`to contain`(expected: String) = this.toContain(expected)
+infix fun List<Any>.`to contain`(expected: String): List<Any> = this.toContain(expected)
 
 @SkrapeItAssertion
 fun DocElements.toBePresent() {
-    assertThat(this.size).isGreaterThanOrEqualTo(1)
+    expectThat(this.size).isGreaterThanOrEqualTo(1)
 }
 
 @SkrapeItAssertion
 fun DocElements.toBePresentTimes(amount: Int) {
-    assertThat(this.size).isEqualTo(amount)
+    expectThat(this.size).isEqualTo(amount)
 }
 
 @SkrapeItAssertion
-fun DocElements.toBePresentExactlyOnce() {
+fun DocElements.toBePresentExactlyOnce(): DocElements {
     toBePresentTimes(1)
+    return this
 }
 
 @SkrapeItAssertion
-fun DocElements.toBePresentExactlyTwice() {
+fun DocElements.toBePresentExactlyTwice(): DocElements {
     toBePresentTimes(2)
+    return this
 }
 
 @SkrapeItAssertion
-fun DocElement.toBePresent() {
-    assertThat(this.isPresent()).isTrue()
+fun DocElement.toBePresent(): DocElement {
+    expectThat(this.isPresent()).isTrue()
+    return this
 }
 
 @SkrapeItAssertion
-fun DocElements.toBeNotPresent() {
-    assertThat(this.size).isZero()
+fun DocElements.toBeNotPresent(): DocElements {
+    expectThat(this.size).isEqualTo(0)
+    return this
 }

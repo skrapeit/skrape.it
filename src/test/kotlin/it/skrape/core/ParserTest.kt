@@ -1,8 +1,8 @@
 package it.skrape.core
 
-import assertk.assertThat
-import assertk.assertions.isEqualTo
 import org.junit.jupiter.api.Test
+import strikt.api.expect
+import strikt.assertions.isEqualTo
 
 internal class ParserTest {
 
@@ -15,8 +15,10 @@ internal class ParserTest {
         val result = Parser(htmlAsString).parse()
 
         // then
-        assertThat(result.title()).isEqualTo("i'm the title")
-        assertThat(result.findFirst("p").text()).isEqualTo("i'm a paragraph")
+        expect {
+            that(result.title()).isEqualTo("i'm the title")
+            that(result.findFirst("p").text()).isEqualTo("i'm a paragraph")
+        }
     }
 
     @Test
@@ -27,8 +29,10 @@ internal class ParserTest {
         val result = Parser(htmlAsString).parseDom()
 
         // then
-        assertThat(result.title()).isEqualTo("i'm the title")
-        assertThat(result.findFirst("p").text()).isEqualTo("i'm a paragraph")
+        expect {
+            that(result.title()).isEqualTo("i'm the title")
+            that(result.findFirst("p").text()).isEqualTo("i'm a paragraph")
+        }
     }
 
     @Test
@@ -40,9 +44,11 @@ internal class ParserTest {
         val result = Parser(htmlAsString).parseDom()
 
         // then
-        assertThat(result.title()).isEqualTo("i'm the title")
-        assertThat(result.findFirst("p").text()).isEqualTo("i'm a paragraph")
-        assertThat(result.findFirst(".dynamic").text()).isEqualTo("I have been dynamically added via Javascript")
+        expect {
+            that(result.title()).isEqualTo("i'm the title")
+            that(result.findFirst("p").text()).isEqualTo("i'm a paragraph")
+            that(result.findFirst(".dynamic").text()).isEqualTo("I have been dynamically added via Javascript")
+        }
     }
 
     @Test
@@ -54,8 +60,10 @@ internal class ParserTest {
         val result = Parser(htmlAsString).parseDom()
 
         // then
-        assertThat(result.title()).isEqualTo("i'm the title")
-        assertThat(result.findFirst("p").text()).isEqualTo("dynamically added")
+        expect {
+            that(result.title()).isEqualTo("i'm the title")
+            that(result.findFirst("p").text()).isEqualTo("dynamically added")
+        }
     }
 
     private fun getMarkupFromFile(file: String) = javaClass.getResource("/__files/$file").readText()

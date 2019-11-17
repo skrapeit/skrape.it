@@ -1,16 +1,17 @@
 package it.skrape.core.fetcher
 
-import assertk.assertAll
-import assertk.assertThat
-import assertk.assertions.containsOnly
-import assertk.assertions.hasClass
-import assertk.assertions.isEqualTo
 import com.gargoylesoftware.htmlunit.util.NameValuePair
-import it.skrape.core.*
+import it.skrape.core.WireMockSetup
+import it.skrape.core.setupRedirect
+import it.skrape.core.setupStub
 import it.skrape.exceptions.UnsupportedRequestOptionException
 import it.skrape.selects.html5.h1
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import strikt.api.expect
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 import java.net.SocketTimeoutException
 import java.util.*
 
@@ -25,8 +26,10 @@ internal class BrowserFetcherTest : WireMockSetup() {
         val fetched = BrowserFetcher(Request()).fetch()
 
         // then
-        assertThat(fetched.statusCode).isEqualTo(200)
-        assertThat(fetched.document.title()).isEqualTo("i'm the title")
+        expect {
+            that(fetched.statusCode).isEqualTo(200)
+            that(fetched.document.title()).isEqualTo("i'm the title")
+        }
     }
 
     @Test
@@ -41,9 +44,9 @@ internal class BrowserFetcherTest : WireMockSetup() {
         val fetched = BrowserFetcher(options).fetch()
 
         // then
-        assertAll {
-            assertThat(fetched.statusCode).isEqualTo(200)
-            assertThat(fetched.document.title()).isEqualTo("i'm the title")
+        expect {
+            that(fetched.statusCode).isEqualTo(200)
+            that(fetched.document.title()).isEqualTo("i'm the title")
         }
     }
 
@@ -58,7 +61,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
         val fetched = BrowserFetcher(options).fetch()
 
         // then
-        assertThat(fetched.statusCode).isEqualTo(404)
+        expectThat(fetched.statusCode).isEqualTo(404)
     }
 
     @Test
@@ -68,7 +71,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
         // when
         val result = BrowserFetcher(Request(followRedirects = false)).fetch()
         // then
-        assertThat(result.statusCode).isEqualTo(302)
+        expectThat(result.statusCode).isEqualTo(302)
     }
 
     @Test
@@ -80,7 +83,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
         val fetched = BrowserFetcher(Request()).fetch()
 
         // then
-        assertThat(fetched.statusCode).isEqualTo(404)
+        expectThat(fetched.statusCode).isEqualTo(404)
     }
 
     @Test
@@ -90,8 +93,8 @@ internal class BrowserFetcherTest : WireMockSetup() {
             method = Method.POST
         }
         // then
-        assertThat { BrowserFetcher(options).fetch() }.thrownError {
-            hasClass(UnsupportedRequestOptionException::class)
+        assertThrows(UnsupportedRequestOptionException::class.java) {
+            BrowserFetcher(options).fetch()
         }
     }
 
@@ -104,7 +107,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
 
         fetched.document.selection("div.dynamic") {
             findFirst {
-                assertThat(text()).isEqualTo("I have been dynamically added via Javascript")
+                expectThat(text()).isEqualTo("I have been dynamically added via Javascript")
             }
         }
     }
@@ -119,7 +122,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
         // then
         fetched.document.selection("div.dynamic") {
             findFirst {
-                assertThat(text()).isEqualTo("I have been dynamically added via Javascript")
+                expectThat(text()).isEqualTo("I have been dynamically added via Javascript")
             }
         }
     }
@@ -135,7 +138,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
 
         // then
         paragraphs.forEach {
-            assertThat(it.text()).isEqualTo("dynamically added")
+            expectThat(it.text()).isEqualTo("dynamically added")
         }
     }
 
@@ -150,7 +153,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
         val headline = fetched.document.h1 { findFirst { text } }
 
         // then
-        assertThat(headline).isEqualTo("headline")
+        expectThat(headline).isEqualTo("headline")
 
     }
 
@@ -160,17 +163,16 @@ internal class BrowserFetcherTest : WireMockSetup() {
         wireMockServer.setupStub(fileName = "data.json", contentType = "application/json; charset=UTF-8")
         // when
         val response = BrowserFetcher(Request()).fetch()
-        assertThat(response.responseBody).isEqualTo("{\"data\":\"some value\"}")
+        expectThat(response.responseBody).isEqualTo("{\"data\":\"some value\"}")
     }
 
     @Test
     internal fun `will throw exception on timeout`() {
         // given
         wireMockServer.setupStub(delay = 6000)
-        // when
-        assertThat { BrowserFetcher(Request()).fetch() }.thrownError {
-            // then
-            hasClass(SocketTimeoutException::class)
+
+        assertThrows(SocketTimeoutException::class.java) {
+            BrowserFetcher(Request()).fetch()
         }
     }
 
@@ -182,7 +184,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
                 NameValuePair("second-name", "second-value")
         )
         val result = sut.toMap()
-        assertThat(result).containsOnly("first-name" to "first-value", "second-name" to "second-value")
+        expectThat(result).isEqualTo(mapOf("first-name" to "first-value", "second-name" to "second-value"))
     }
 
     @Test
@@ -193,7 +195,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
                 "second-name" to "second-value"
         )
         val result = sut.asRawCookieSyntax()
-        assertThat(result).isEqualTo("first-name=first-value;second-name=second-value;")
+        expectThat(result).isEqualTo("first-name=first-value;second-name=second-value;")
     }
 
 

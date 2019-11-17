@@ -1,9 +1,9 @@
 package it.skrape.core
 
-import assertk.assertThat
-import assertk.assertions.isEqualTo
 import it.skrape.core.fetcher.Request
 import org.junit.jupiter.api.Test
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 
 internal class ScraperTest : WireMockSetup() {
 
@@ -12,8 +12,8 @@ internal class ScraperTest : WireMockSetup() {
         wireMockServer.setupStub(contentType = "test/type")
         val result = Scraper().scrape()
 
-        assertThat(result.statusCode).isEqualTo(200)
-        assertThat(result.document.title()).isEqualTo("i'm the title")
+        expectThat(result.statusCode).isEqualTo(200)
+        expectThat(result.document.title()).isEqualTo("i'm the title")
     }
 
     @Test
@@ -21,7 +21,7 @@ internal class ScraperTest : WireMockSetup() {
         wireMockServer.setupStub(path = "/example")
         val result = Scraper(request = Request(url = "http://localhost:8080/example")).scrape()
 
-        assertThat(result.statusCode).isEqualTo(200)
-        assertThat(result.document.title()).isEqualTo("i'm the title")
+        expectThat(result.statusCode).isEqualTo(200)
+        expectThat(result.document.title()).isEqualTo("i'm the title")
     }
 }

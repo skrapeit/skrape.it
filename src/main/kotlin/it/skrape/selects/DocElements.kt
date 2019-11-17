@@ -77,4 +77,6 @@ class DocElements(private val elements: Elements) : Scrapable, ArrayList<DocElem
     override operator fun String.invoke(init: CssSelector.() -> Unit) =
             this@DocElements.selection(this, init)
 
+    fun isPresent() = elements.size > 0
+
 }

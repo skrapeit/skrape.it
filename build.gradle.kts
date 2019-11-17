@@ -28,7 +28,6 @@ dependencies {
     val kotlinVersion = "1.3.50"
     val jsoupVersion = "1.12.1"
     val htmlUnitVersion = "2.36.0"
-    val assertkVersion = "0.17"
     val striktVersion = "0.22.2"
     val kohttpVersion = "0.11.0"
 
@@ -46,7 +45,6 @@ dependencies {
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     compileOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 
-    implementation("com.willowtreeapps.assertk:assertk-jvm:$assertkVersion")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("io.mockk:mockk-dsl-jvm:$mockkVersion")

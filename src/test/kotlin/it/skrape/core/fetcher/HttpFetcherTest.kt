@@ -1,11 +1,11 @@
 package it.skrape.core.fetcher
 
-import assertk.assertThat
-import assertk.assertions.isEqualTo
 import it.skrape.core.*
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 import java.net.SocketTimeoutException
 
 internal class HttpFetcherTest : WireMockSetup() {
@@ -19,9 +19,9 @@ internal class HttpFetcherTest : WireMockSetup() {
         val fetched = HttpFetcher(Request()).fetch()
 
         // then
-        assertThat(fetched.statusCode).isEqualTo(200)
-        assertThat(fetched.contentType).isEqualTo("text/html;charset=utf-8")
-        assertThat(fetched.document.title()).isEqualTo("i'm the title")
+        expectThat(fetched.statusCode).isEqualTo(200)
+        expectThat(fetched.contentType).isEqualTo("text/html;charset=utf-8")
+        expectThat(fetched.document.title()).isEqualTo("i'm the title")
     }
 
     @Disabled("need to find a way to avoid SSLHandshakeException on JDK11")
@@ -37,9 +37,9 @@ internal class HttpFetcherTest : WireMockSetup() {
         val fetched = HttpFetcher(options).fetch()
 
         // then
-        assertThat(fetched.statusCode).isEqualTo(200)
-        assertThat(fetched.contentType).isEqualTo("text/html;charset=utf-8")
-        assertThat(fetched.document.title()).isEqualTo("i'm the title")
+        expectThat(fetched.statusCode).isEqualTo(200)
+        expectThat(fetched.contentType).isEqualTo("text/html;charset=utf-8")
+        expectThat(fetched.document.title()).isEqualTo("i'm the title")
     }
 
     @Test
@@ -53,7 +53,7 @@ internal class HttpFetcherTest : WireMockSetup() {
         val fetched = HttpFetcher(options).fetch()
 
         // then
-        assertThat(fetched.statusCode).isEqualTo(404)
+        expectThat(fetched.statusCode).isEqualTo(404)
     }
 
     @Test
@@ -68,7 +68,7 @@ internal class HttpFetcherTest : WireMockSetup() {
         val fetched = HttpFetcher(options).fetch()
 
         // then
-        assertThat(fetched.statusCode).isEqualTo(302)
+        expectThat(fetched.statusCode).isEqualTo(302)
     }
 
     @Test
@@ -80,7 +80,7 @@ internal class HttpFetcherTest : WireMockSetup() {
         val fetched = HttpFetcher(Request()).fetch()
 
         // then
-        assertThat(fetched.statusCode).isEqualTo(404)
+        expectThat(fetched.statusCode).isEqualTo(404)
     }
 
     @Test
@@ -95,9 +95,9 @@ internal class HttpFetcherTest : WireMockSetup() {
         val fetched = HttpFetcher(options).fetch()
 
         // then
-        assertThat(fetched.statusCode).isEqualTo(200)
-        assertThat(fetched.contentType).isEqualTo("application/json;charset=utf-8")
-        assertThat(fetched.responseBody).isEqualTo("""{"data":"some value"}""")
+        expectThat(fetched.statusCode).isEqualTo(200)
+        expectThat(fetched.contentType).isEqualTo("application/json;charset=utf-8")
+        expectThat(fetched.responseBody).isEqualTo("""{"data":"some value"}""")
     }
 
     @Test

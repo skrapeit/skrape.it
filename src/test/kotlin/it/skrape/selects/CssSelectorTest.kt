@@ -1,8 +1,8 @@
 package it.skrape.selects
 
-import assertk.assertThat
-import assertk.assertions.isEqualTo
 import org.junit.jupiter.api.Test
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 
 internal class CssSelectorTest {
 
@@ -11,7 +11,7 @@ internal class CssSelectorTest {
         val cssSelector = CssSelector(
                 rawCssSelector = "#foo.bar"
         ).toCssSelector()
-        assertThat(cssSelector).isEqualTo("#foo.bar")
+        expectThat(cssSelector).isEqualTo("#foo.bar")
     }
 
     @Test
@@ -19,7 +19,7 @@ internal class CssSelectorTest {
         val cssSelector = CssSelector(
                 withClass = "foo"
         ).toCssSelector()
-        assertThat(cssSelector).isEqualTo(".foo")
+        expectThat(cssSelector).isEqualTo(".foo")
     }
 
     @Test
@@ -27,7 +27,7 @@ internal class CssSelectorTest {
         val cssSelector = CssSelector(
                 withClass = "foo" and "bar"
         ).toCssSelector()
-        assertThat(cssSelector).isEqualTo(".foo.bar")
+        expectThat(cssSelector).isEqualTo(".foo.bar")
     }
 
     @Test
@@ -38,7 +38,7 @@ internal class CssSelectorTest {
                 withAttributes = "fizz" to "buzz" and Pair("skrape", "it"),
                 withAttributeKeys = listOf("key1", "key2")
         ).toCssSelector()
-        assertThat(cssSelector).isEqualTo(".foobar.foo.bar['key1']['key2'][foooo='bar'][fizz='buzz'][skrape='it']")
+        expectThat(cssSelector).isEqualTo(".foobar.foo.bar['key1']['key2'][foooo='bar'][fizz='buzz'][skrape='it']")
     }
 
     @Test
@@ -46,7 +46,7 @@ internal class CssSelectorTest {
         val cssSelector = CssSelector(
                 withId = "foo"
         ).toCssSelector()
-        assertThat(cssSelector).isEqualTo("#foo")
+        expectThat(cssSelector).isEqualTo("#foo")
     }
 
     @Test
@@ -54,7 +54,7 @@ internal class CssSelectorTest {
         val cssSelector = CssSelector(
                 withAttributeKey = "foo"
         ).toCssSelector()
-        assertThat(cssSelector).isEqualTo("[foo]")
+        expectThat(cssSelector).isEqualTo("[foo]")
     }
 
     @Test
@@ -62,7 +62,7 @@ internal class CssSelectorTest {
         val cssSelector = CssSelector(
                 withAttribute = "foo" to "bar"
         ).toCssSelector()
-        assertThat(cssSelector).isEqualTo("[foo='bar']")
+        expectThat(cssSelector).isEqualTo("[foo='bar']")
     }
 
     @Test
@@ -71,7 +71,7 @@ internal class CssSelectorTest {
                 withClass = "bar",
                 withId = "foo"
         ).toCssSelector()
-        assertThat(cssSelector).isEqualTo("#foo.bar")
+        expectThat(cssSelector).isEqualTo("#foo.bar")
     }
 
     @Test
@@ -80,7 +80,7 @@ internal class CssSelectorTest {
                 withAttributeKey = "bar",
                 withId = "foo"
         ).toCssSelector()
-        assertThat(cssSelector).isEqualTo("#foo[bar]")
+        expectThat(cssSelector).isEqualTo("#foo[bar]")
     }
 
     @Test
@@ -89,7 +89,7 @@ internal class CssSelectorTest {
                 withAttribute = "foo" to "bar",
                 withId = "foobar"
         ).toCssSelector()
-        assertThat(cssSelector).isEqualTo("#foobar[foo='bar']")
+        expectThat(cssSelector).isEqualTo("#foobar[foo='bar']")
     }
 
     @Test
@@ -98,7 +98,7 @@ internal class CssSelectorTest {
                 withClass = "foobar",
                 withAttribute = "foo" to "bar"
         ).toCssSelector()
-        assertThat(cssSelector).isEqualTo(".foobar[foo='bar']")
+        expectThat(cssSelector).isEqualTo(".foobar[foo='bar']")
     }
 
     @Test
@@ -107,7 +107,7 @@ internal class CssSelectorTest {
                 withAttributeKey = "foobar",
                 withAttribute = "foo" to "bar"
         ).toCssSelector()
-        assertThat(cssSelector).isEqualTo("[foobar][foo='bar']")
+        expectThat(cssSelector).isEqualTo("[foobar][foo='bar']")
     }
 
     @Test
@@ -117,7 +117,7 @@ internal class CssSelectorTest {
                 withAttributeKey = "foo",
                 withClass = "bar"
         ).toCssSelector()
-        assertThat(cssSelector).isEqualTo("#foobar.bar[foo]")
+        expectThat(cssSelector).isEqualTo("#foobar.bar[foo]")
     }
 
     @Test
@@ -127,7 +127,7 @@ internal class CssSelectorTest {
                 withAttributeKey = "foobar",
                 withAttribute = "foo" to "bar"
         ).toCssSelector()
-        assertThat(cssSelector).isEqualTo("#fb[foobar][foo='bar']")
+        expectThat(cssSelector).isEqualTo("#fb[foobar][foo='bar']")
     }
 
     @Test
@@ -137,7 +137,7 @@ internal class CssSelectorTest {
                 withClass = "foobar",
                 withAttribute = "foo" to "bar"
         ).toCssSelector()
-        assertThat(cssSelector).isEqualTo("#fb.foobar[foo='bar']")
+        expectThat(cssSelector).isEqualTo("#fb.foobar[foo='bar']")
     }
 
     @Test
@@ -146,7 +146,7 @@ internal class CssSelectorTest {
                 withAttributeKey = "foo",
                 withClass = "bar"
         ).toCssSelector()
-        assertThat(cssSelector).isEqualTo(".bar[foo]")
+        expectThat(cssSelector).isEqualTo(".bar[foo]")
     }
 
     @Test
@@ -157,7 +157,7 @@ internal class CssSelectorTest {
                 withAttributeKey = "foobar",
                 withAttribute = "fizz" to "buzz"
         ).toCssSelector()
-        assertThat(cssSelector).isEqualTo("#foo.bar[foobar][fizz='buzz']")
+        expectThat(cssSelector).isEqualTo("#foo.bar[foobar][fizz='buzz']")
     }
 
     @Test
@@ -166,7 +166,6 @@ internal class CssSelectorTest {
                 withClass = "bar",
                 rawCssSelector = "foo"
         ).toCssSelector()
-        assertThat(cssSelector).isEqualTo("foo.bar")
+        expectThat(cssSelector).isEqualTo("foo.bar")
     }
-
 }
