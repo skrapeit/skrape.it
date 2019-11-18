@@ -10,7 +10,7 @@ import it.skrape.selects.Doc
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
- * @see it.skrape.core.CssSelector
+ * @see CssSelector
  * @param cssSelector
  * @return T
  */

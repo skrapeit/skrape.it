@@ -9,21 +9,21 @@ data class Request(
         /**
          * Defines the request-mode.
          * Defaults to SOURCE.
-         * @see it.skrape.core.Mode for all possible values.
+         * @see Mode for all possible values.
          */
         var mode: Mode = SOURCE,
 
         /**
          * Defines the http verb of the request.
          * Defaults to GET.
-         * @see it.skrape.core.Method for all possible values.
+         * @see Method for all possible values.
          */
         var method: Method = GET,
 
         /**
          * Defines the protocol of the URL the request is made against.
          * Defaults to HTTP.
-         * @see it.skrape.core.Protocol for all possible values.
+         * @see Protocol for all possible values.
          */
         var protocol: Protocol = HTTP,
 
