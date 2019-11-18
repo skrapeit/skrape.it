@@ -144,6 +144,13 @@ fun aValidHtml(bodyInclude: String) = """
                 <var>i'm a var</var>
             </footer>
             <a-custom-tag>i'm a custom html5 tag</a-custom-tag>
+            <div class='with-children'>
+                i'm a parent div
+                <div>
+                    i'm a child div
+                    <div>i'm a grand-child div</div>
+                </div>
+            </div>
         </body>
     </html>
 """.trimIndent()

@@ -6,10 +6,7 @@ import it.skrape.core.fetcher.Mode
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.matchers.*
 import it.skrape.matchers.ContentTypes.*
-import it.skrape.selects.html5.body
-import it.skrape.selects.html5.div
-import it.skrape.selects.html5.p
-import it.skrape.selects.html5.title
+import it.skrape.selects.html5.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
