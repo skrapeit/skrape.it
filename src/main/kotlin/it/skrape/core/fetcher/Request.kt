@@ -1,6 +1,5 @@
 package it.skrape.core.fetcher
 
-import it.skrape.SkrapeItDsl
 import it.skrape.core.fetcher.Method.GET
 import it.skrape.core.fetcher.Mode.SOURCE
 import it.skrape.core.fetcher.Protocol.HTTP
@@ -12,39 +11,39 @@ data class Request(
          * Defaults to SOURCE.
          * @see it.skrape.core.Mode for all possible values.
          */
-        @SkrapeItDsl var mode: Mode = SOURCE,
+        var mode: Mode = SOURCE,
 
         /**
          * Defines the http verb of the request.
          * Defaults to GET.
          * @see it.skrape.core.Method for all possible values.
          */
-        @SkrapeItDsl var method: Method = GET,
+        var method: Method = GET,
 
         /**
          * Defines the protocol of the URL the request is made against.
          * Defaults to HTTP.
          * @see it.skrape.core.Protocol for all possible values.
          */
-        @SkrapeItDsl var protocol: Protocol = HTTP,
+        var protocol: Protocol = HTTP,
 
         /**
          * Defines the hostname of the URL the request is made against.
          * Defaults to "localhost"
          */
-        @SkrapeItDsl var host: String = "localhost",
+        var host: String = "localhost",
 
         /**
          * Defines the port of the URL the request is made against.
          * Defaults to 8080
          */
-        @SkrapeItDsl var port: Int = 8080,
+        var port: Int = 8080,
 
         /**
          * Defines the path of the URL the request is made against.
          * Defaults to "/"
          */
-        @SkrapeItDsl var path: String = "/",
+        var path: String = "/",
 
         /**
          * Defines the URL the request is made against.
@@ -52,14 +51,13 @@ data class Request(
          * If you set this parameter other url-specific parameters (protocol, host, port, path)
          * will have no effect.
          */
-        @SkrapeItDsl
         var url: String = "${protocol.value}$host:$port$path",
 
-        @SkrapeItDsl var userAgent: String = "Mozilla/5.0 skrape.it",
-        @SkrapeItDsl var headers: Map<String, String> = emptyMap(),
-        @SkrapeItDsl var cookies: Map<String, String> = emptyMap(),
-        @SkrapeItDsl var timeout: Int = 5000,
-        @SkrapeItDsl var followRedirects: Boolean = true
+        var userAgent: String = "Mozilla/5.0 skrape.it",
+        var headers: Map<String, String> = emptyMap(),
+        var cookies: Map<String, String> = emptyMap(),
+        var timeout: Int = 5000,
+        var followRedirects: Boolean = true
 )
 
 enum class Mode {
