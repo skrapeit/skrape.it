@@ -6,7 +6,7 @@ plugins {
     kotlin("jvm") version "1.3.50"
     jacoco
     id("org.jetbrains.dokka") version "0.10.0"
-    id("se.patrikerdes.use-latest-versions") version "0.2.12"
+    id("se.patrikerdes.use-latest-versions") version "0.2.13"
     id("com.github.ben-manes.versions") version "0.27.0"
     id("com.adarshr.test-logger") version "2.0.0"
     id("io.gitlab.arturbosch.detekt") version "1.1.1"
@@ -25,14 +25,14 @@ repositories {
 }
 
 dependencies {
-    val kotlinVersion = "1.3.50"
+    val kotlinVersion = "1.3.60"
     val jsoupVersion = "1.12.1"
     val htmlUnitVersion = "2.36.0"
     val striktVersion = "0.22.2"
-    val kohttpVersion = "0.11.0"
+    val kohttpVersion = "0.11.1"
 
     val junitVersion = "5.5.2"
-    val testContainersVersion = "1.12.2"
+    val testContainersVersion = "1.12.3"
     val wireMockVersion = "2.25.1"
     val mockkVersion = "1.9.3"
     val log4jOverSlf4jVersion = "1.7.28"
