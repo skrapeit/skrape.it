@@ -2,6 +2,7 @@ package it.skrape.selects.html5
 
 import it.skrape.aValidDocument
 import it.skrape.matchers.toBePresentExactlyOnce
+import it.skrape.matchers.toBePresentTimes
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
@@ -24,7 +25,7 @@ internal class SectioningSelectorsKtTest {
     fun `can parse div-tag`() {
         val selector = aValidDocument().div {
             findAll {
-                toBePresentExactlyOnce()
+                toBePresentTimes(4)
             }
             rawCssSelector
         }
