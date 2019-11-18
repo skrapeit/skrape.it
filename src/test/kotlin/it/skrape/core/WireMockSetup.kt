@@ -48,3 +48,27 @@ fun WireMockServer.setupRedirect(): StubMapping =
         this.stubFor(WireMock.get(WireMock.urlEqualTo("/"))
                 .willReturn(WireMock.temporaryRedirect("/redirected")
                         .withHeader("Content-Type", "text/html").withBody(UUID.randomUUID().toString())))
+
+fun WireMockServer.setupPutStub(): StubMapping =
+        this.stubFor(WireMock.put(WireMock.urlEqualTo("/"))
+                .willReturn(WireMock.aResponse()
+                        .withStatus(201)
+                        .withBody("i'm a PUT stub")))
+
+fun WireMockServer.setupDeleteStub(): StubMapping =
+        this.stubFor(WireMock.delete(WireMock.urlEqualTo("/"))
+                .willReturn(WireMock.aResponse()
+                        .withStatus(201)
+                        .withBody("i'm a DELETE stub")))
+
+fun WireMockServer.setupPatchStub(): StubMapping =
+        this.stubFor(WireMock.patch(WireMock.urlEqualTo("/"))
+                .willReturn(WireMock.aResponse()
+                        .withStatus(201)
+                        .withBody("i'm a PATCH stub")))
+
+fun WireMockServer.setupHeadStub(): StubMapping =
+        this.stubFor(WireMock.head(WireMock.urlEqualTo("/"))
+                .willReturn(WireMock.aResponse()
+                        .withStatus(201)
+                        .withHeader("result","i'm a HEAD stub")))

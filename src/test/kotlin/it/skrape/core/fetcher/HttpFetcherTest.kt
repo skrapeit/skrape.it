@@ -101,6 +101,70 @@ internal class HttpFetcherTest : WireMockSetup() {
     }
 
     @Test
+    internal fun `can fetch url and use HTTP verb PUT`() {
+        // given
+        wireMockServer.setupPutStub()
+        val options = Request().apply {
+            method = Method.PUT
+        }
+
+        // when
+        val fetched = HttpFetcher(options).fetch()
+
+        // then
+        expectThat(fetched.statusCode).isEqualTo(201)
+        expectThat(fetched.responseBody).isEqualTo("i'm a PUT stub")
+    }
+
+    @Test
+    internal fun `can fetch url and use HTTP verb DELETE`() {
+        // given
+        wireMockServer.setupDeleteStub()
+        val options = Request().apply {
+            method = Method.DELETE
+        }
+
+        // when
+        val fetched = HttpFetcher(options).fetch()
+
+        // then
+        expectThat(fetched.statusCode).isEqualTo(201)
+        expectThat(fetched.responseBody).isEqualTo("i'm a DELETE stub")
+    }
+
+    @Test
+    internal fun `can fetch url and use HTTP verb PATCH`() {
+        // given
+        wireMockServer.setupPatchStub()
+        val options = Request().apply {
+            method = Method.PATCH
+        }
+
+        // when
+        val fetched = HttpFetcher(options).fetch()
+
+        // then
+        expectThat(fetched.statusCode).isEqualTo(201)
+        expectThat(fetched.responseBody).isEqualTo("i'm a PATCH stub")
+    }
+
+    @Test
+    internal fun `can fetch url and use HTTP verb HEAD`() {
+        // given
+        wireMockServer.setupHeadStub()
+        val options = Request().apply {
+            method = Method.HEAD
+        }
+
+        // when
+        val fetched = HttpFetcher(options).fetch()
+
+        // then
+        expectThat(fetched.statusCode).isEqualTo(201)
+        expectThat(fetched.httpHeader("result")).isEqualTo("i'm a HEAD stub")
+    }
+
+    @Test
     internal fun `will throw exception on timeout`() {
         wireMockServer.setupStub(delay = 6000)
 
