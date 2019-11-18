@@ -6,6 +6,7 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
+import java.util.*
 
 open class WireMockSetup {
     private val options = options()
@@ -46,4 +47,4 @@ fun WireMockServer.setupPostStub(): StubMapping =
 fun WireMockServer.setupRedirect(): StubMapping =
         this.stubFor(WireMock.get(WireMock.urlEqualTo("/"))
                 .willReturn(WireMock.temporaryRedirect("/redirected")
-                        .withHeader("Content-Type", "text/html")))
+                        .withHeader("Content-Type", "text/html").withBody(UUID.randomUUID().toString())))

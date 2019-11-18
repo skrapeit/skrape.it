@@ -16,10 +16,7 @@ import org.junit.jupiter.api.Test
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.junit.jupiter.Testcontainers
 import strikt.api.expectThat
-import strikt.assertions.containsExactly
-import strikt.assertions.hasEntry
-import strikt.assertions.isEqualTo
-import strikt.assertions.isNull
+import strikt.assertions.*
 import java.io.File
 import java.net.SocketTimeoutException
 
@@ -365,6 +362,29 @@ internal class DslTest : WireMockSetup() {
                 }
             }
         }
+    }
+
+    @Test
+    internal fun `can preconfigure client`() {
+
+        val fetcher = skrape {
+            followRedirects = false
+            asConfig()
+        }
+
+        wireMockServer.setupRedirect()
+        val body1 = fetcher.extract {
+            statusCode toBe 302
+            responseBody
+        }
+
+        wireMockServer.setupRedirect()
+        val body2 = fetcher.extract {
+            statusCode toBe 302
+            responseBody
+        }
+
+        expectThat(body1).isNotEqualTo(body2)
     }
 }
 

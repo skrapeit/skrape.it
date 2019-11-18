@@ -58,7 +58,9 @@ data class Request(
         var cookies: Map<String, String> = emptyMap(),
         var timeout: Int = 5000,
         var followRedirects: Boolean = true
-)
+) {
+    fun asConfig() = this
+}
 
 enum class Mode {
     /**
