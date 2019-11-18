@@ -13,7 +13,7 @@ internal class FormSelectorsKtTest {
     fun `can parse button-tag`() {
         val selector = aValidDocument(aStandardTag("button")).button {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a button")
+                expectThat(text).isEqualTo("i'm a button")
             }
             rawCssSelector
         }
@@ -25,7 +25,7 @@ internal class FormSelectorsKtTest {
     fun `can parse datalist-tag`() {
         val selector = aValidDocument(aStandardTag("datalist")).datalist {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a datalist")
+                expectThat(text).isEqualTo("i'm a datalist")
             }
             rawCssSelector
         }
@@ -37,7 +37,7 @@ internal class FormSelectorsKtTest {
     fun `can parse fieldset-tag`() {
         val selector = aValidDocument(aStandardTag("fieldset")).fieldset {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a fieldset")
+                expectThat(text).isEqualTo("i'm a fieldset")
             }
             rawCssSelector
         }
@@ -49,7 +49,7 @@ internal class FormSelectorsKtTest {
     fun `can parse form-tag`() {
         val selector = aValidDocument(aStandardTag("form")).form {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a form")
+                expectThat(text).isEqualTo("i'm a form")
             }
             rawCssSelector
         }
@@ -73,7 +73,7 @@ internal class FormSelectorsKtTest {
     fun `can parse label-tag`() {
         val selector = aValidDocument(aStandardTag("label")).label {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a label")
+                expectThat(text).isEqualTo("i'm a label")
             }
             rawCssSelector
         }
@@ -85,7 +85,7 @@ internal class FormSelectorsKtTest {
     fun `can parse legend-tag`() {
         val selector = aValidDocument(aStandardTag("legend")).legend {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a legend")
+                expectThat(text).isEqualTo("i'm a legend")
             }
             rawCssSelector
         }
@@ -97,7 +97,7 @@ internal class FormSelectorsKtTest {
     fun `can parse meter-tag`() {
         val selector = aValidDocument(aStandardTag("meter")).meter {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a meter")
+                expectThat(text).isEqualTo("i'm a meter")
             }
             rawCssSelector
         }
@@ -109,7 +109,7 @@ internal class FormSelectorsKtTest {
     fun `can parse optgroup-tag`() {
         val selector = aValidDocument(aStandardTag("optgroup")).optgroup {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a optgroup")
+                expectThat(text).isEqualTo("i'm a optgroup")
             }
             rawCssSelector
         }
@@ -121,7 +121,7 @@ internal class FormSelectorsKtTest {
     fun `can parse option-tag`() {
         val selector = aValidDocument(aStandardTag("option")).option {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a option")
+                expectThat(text).isEqualTo("i'm a option")
             }
             rawCssSelector
         }
@@ -133,7 +133,7 @@ internal class FormSelectorsKtTest {
     fun `can parse output-tag`() {
         val selector = aValidDocument(aStandardTag("output")).output {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a output")
+                expectThat(text).isEqualTo("i'm a output")
             }
             rawCssSelector
         }
@@ -145,7 +145,7 @@ internal class FormSelectorsKtTest {
     fun `can parse progress-tag`() {
         val selector = aValidDocument(aStandardTag("progress")).progress {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a progress")
+                expectThat(text).isEqualTo("i'm a progress")
             }
             rawCssSelector
         }
@@ -157,7 +157,7 @@ internal class FormSelectorsKtTest {
     fun `can parse select-tag`() {
         val selector = aValidDocument(aStandardTag("isPresent")).select {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a isPresent")
+                expectThat(text).isEqualTo("i'm a isPresent")
             }
             rawCssSelector
         }
@@ -169,7 +169,7 @@ internal class FormSelectorsKtTest {
     fun `can parse textarea-tag`() {
         val selector = aValidDocument(aStandardTag("textarea")).textarea {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a textarea")
+                expectThat(text).isEqualTo("i'm a textarea")
             }
             rawCssSelector
         }

@@ -15,7 +15,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse a-tag`() {
         val selector = aValidDocument().a {
             findFirst {
-                expectThat(text()).isEqualTo("i'm an anchor")
+                expectThat(text).isEqualTo("i'm an anchor")
             }
             rawCssSelector
         }
@@ -27,7 +27,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse abbr-tag`() {
         val selector = aValidDocument().abbr {
             findFirst {
-                expectThat(text()).isEqualTo("i'm an abbr")
+                expectThat(text).isEqualTo("i'm an abbr")
             }
             rawCssSelector
         }
@@ -39,7 +39,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse b-tag`() {
         val selector = aValidDocument().b {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a bold text")
+                expectThat(text).isEqualTo("i'm a bold text")
             }
             rawCssSelector
         }
@@ -51,7 +51,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse bdi-tag`() {
         val selector = aValidDocument().bdi {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a bdi")
+                expectThat(text).isEqualTo("i'm a bdi")
             }
             rawCssSelector
         }
@@ -63,7 +63,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse bdo-tag`() {
         val selector = aValidDocument().bdo {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a bdo")
+                expectThat(text).isEqualTo("i'm a bdo")
             }
             rawCssSelector
         }
@@ -87,7 +87,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse cite-tag`() {
         val selector = aValidDocument().cite {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a cite")
+                expectThat(text).isEqualTo("i'm a cite")
             }
             rawCssSelector
         }
@@ -99,7 +99,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse code-tag`() {
         val selector = aValidDocument().code {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a code")
+                expectThat(text).isEqualTo("i'm a code")
             }
             rawCssSelector
         }
@@ -111,7 +111,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse data-tag`() {
         val selector = aValidDocument().data {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a data")
+                expectThat(text).isEqualTo("i'm a data")
             }
             rawCssSelector
         }
@@ -123,7 +123,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse dfn-tag`() {
         val selector = aValidDocument().dfn {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a dfn")
+                expectThat(text).isEqualTo("i'm a dfn")
             }
             rawCssSelector
         }
@@ -135,7 +135,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse em-tag`() {
         val selector = aValidDocument().em {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a em")
+                expectThat(text).isEqualTo("i'm a em")
             }
             rawCssSelector
         }
@@ -147,7 +147,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse i-tag`() {
         val selector = aValidDocument().i {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a i")
+                expectThat(text).isEqualTo("i'm a i")
             }
             rawCssSelector
         }
@@ -159,7 +159,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse kbd-tag`() {
         val selector = aValidDocument().kbd {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a kbd")
+                expectThat(text).isEqualTo("i'm a kbd")
             }
             rawCssSelector
         }
@@ -171,7 +171,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse mark-tag`() {
         val selector = aValidDocument().mark {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a mark")
+                expectThat(text).isEqualTo("i'm a mark")
             }
             rawCssSelector
         }
@@ -183,7 +183,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse q-tag`() {
         val selector = aValidDocument().q {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a q")
+                expectThat(text).isEqualTo("i'm a q")
             }
             rawCssSelector
         }
@@ -195,7 +195,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse rb-tag`() {
         val selector = aValidDocument().rb {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a rb")
+                expectThat(text).isEqualTo("i'm a rb")
             }
             rawCssSelector
         }
@@ -207,7 +207,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse rp-tag`() {
         val selector = aValidDocument().rp {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a rp")
+                expectThat(text).isEqualTo("i'm a rp")
             }
             rawCssSelector
         }
@@ -219,7 +219,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse rt-tag`() {
         val selector = aValidDocument().rt {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a rt")
+                expectThat(text).isEqualTo("i'm a rt")
             }
             rawCssSelector
         }
@@ -231,7 +231,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse rtc-tag`() {
         val selector = aValidDocument().rtc {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a rtc")
+                expectThat(text).isEqualTo("i'm a rtc")
             }
             rawCssSelector
         }
@@ -243,7 +243,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse ruby-tag`() {
         val selector = aValidDocument().ruby {
             findFirst {
-                expectThat(text()).contains("i'm a ruby")
+                expectThat(text).contains("i'm a ruby")
             }
             rawCssSelector
         }
@@ -255,7 +255,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse s-tag`() {
         val selector = aValidDocument().s {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a s")
+                expectThat(text).isEqualTo("i'm a s")
             }
             rawCssSelector
         }
@@ -267,7 +267,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse samp-tag`() {
         val selector = aValidDocument().samp {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a samp")
+                expectThat(text).isEqualTo("i'm a samp")
             }
             rawCssSelector
         }
@@ -279,7 +279,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse small-tag`() {
         val selector = aValidDocument().small {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a small")
+                expectThat(text).isEqualTo("i'm a small")
             }
             rawCssSelector
         }
@@ -303,7 +303,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse strong-tag`() {
         val selector = aValidDocument().strong {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a strong")
+                expectThat(text).isEqualTo("i'm a strong")
             }
             rawCssSelector
         }
@@ -315,7 +315,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse sub-tag`() {
         val selector = aValidDocument().sub {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a sub")
+                expectThat(text).isEqualTo("i'm a sub")
             }
             rawCssSelector
         }
@@ -327,7 +327,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse sup-tag`() {
         val selector = aValidDocument().sup {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a sup")
+                expectThat(text).isEqualTo("i'm a sup")
             }
             rawCssSelector
         }
@@ -339,7 +339,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse time-tag`() {
         val selector = aValidDocument().time {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a time")
+                expectThat(text).isEqualTo("i'm a time")
             }
             rawCssSelector
         }
@@ -351,7 +351,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse tt-tag`() {
         val selector = aValidDocument().tt {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a tt")
+                expectThat(text).isEqualTo("i'm a tt")
             }
             rawCssSelector
         }
@@ -363,7 +363,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse u-tag`() {
         val selector = aValidDocument().u {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a u")
+                expectThat(text).isEqualTo("i'm a u")
             }
             rawCssSelector
         }
@@ -375,7 +375,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse var-tag`() {
         val selector = aValidDocument().`var` {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a var")
+                expectThat(text).isEqualTo("i'm a var")
             }
             rawCssSelector
         }

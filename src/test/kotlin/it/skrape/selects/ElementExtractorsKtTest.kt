@@ -35,7 +35,7 @@ internal class ElementExtractorsKtTest {
     fun `can pick elements firstOccurrence`() {
         val firstText = document.p {
             findFirst {
-                text() toBe "i'm a paragraph"
+                text toBe "i'm a paragraph"
             }
         }
         expectThat(firstText).isEqualTo("i'm a paragraph")
@@ -45,7 +45,7 @@ internal class ElementExtractorsKtTest {
     fun `can pick elements secondOccurrence`() {
         val secondText = document.p {
             findSecond {
-                text() toBe "i'm a second paragraph"
+                text toBe "i'm a second paragraph"
             }
         }
         expectThat(secondText).isEqualTo("i'm a second paragraph")
@@ -55,7 +55,7 @@ internal class ElementExtractorsKtTest {
     fun `can pick elements by index`() {
         val secondText = document.p {
             findByIndex(1) {
-                text() toBe "i'm a second paragraph"
+                text toBe "i'm a second paragraph"
             }
         }
         expectThat(secondText).isEqualTo("i'm a second paragraph")
@@ -65,7 +65,7 @@ internal class ElementExtractorsKtTest {
     fun `can pick elements thirdOccurrence`() {
         val thirdText = document.p {
             findThird {
-                text() toBe "i'm a paragraph with word break"
+                text toBe "i'm a paragraph with word break"
             }
         }
         expectThat(thirdText).isEqualTo("i'm a paragraph with word break")
@@ -75,7 +75,7 @@ internal class ElementExtractorsKtTest {
     fun `can pick elements lastOccurrence`() {
         val lastText = document.p {
             findLast {
-                text() toBe "i'm the last paragraph"
+                text toBe "i'm the last paragraph"
             }
         }
         expectThat(lastText).isEqualTo("i'm the last paragraph")
@@ -85,7 +85,7 @@ internal class ElementExtractorsKtTest {
     fun `can pick elements secondlastOccurrence`() {
         val secondLastText = document.p {
             findSecondLast {
-                text() toBe "i'm a paragraph with word break"
+                text toBe "i'm a paragraph with word break"
             }
         }
         expectThat(secondLastText).isEqualTo("i'm a paragraph with word break")

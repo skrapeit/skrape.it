@@ -1,14 +1,21 @@
 package it.skrape.selects
 
 import it.skrape.SkrapeItElementPicker
+import it.skrape.SkrapeItValuePicker
 import it.skrape.exceptions.ElementNotFoundException
-import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
 @Suppress("TooManyFunctions")
 class DocElements(private val elements: Elements) : Scrapable, ArrayList<DocElement>() {
 
-    override fun text(): String = elements.text().orEmpty()
+    @SkrapeItValuePicker
+    override val text: String = elements.text().orEmpty()
+
+    @SkrapeItValuePicker
+    override val html = elements.html().orEmpty()
+
+    @SkrapeItValuePicker
+    override val outerHtml: String = elements.outerHtml().orEmpty()
 
     @SkrapeItElementPicker
     override fun <T> findAll(cssSelector: String, init: DocElements.() -> T): T = findAll(cssSelector).init()
@@ -42,14 +49,6 @@ class DocElements(private val elements: Elements) : Scrapable, ArrayList<DocElem
     override val size = elements.size
 
     /**
-     * Get the combined inner HTML of all matched isPresent.
-     * @return string of all findFirst's inner HTML.
-     * @see #text()
-     * @see #outerHtml()
-     */
-    fun html() = elements.html().orEmpty()
-
-    /**
     Get an attribute value from the first matched findFirst that has the attribute.
     @param attributeKey The attribute key.
     @return The attribute value from the first matched findFirst that has the attribute.
@@ -57,7 +56,7 @@ class DocElements(private val elements: Elements) : Scrapable, ArrayList<DocElem
     or if the no isPresent have the attribute, returns empty string.
     @see #hasAttr(String)
      */
-    infix fun attribute(attributeKey: String): String = elements.attr(attributeKey)
+    fun attribute(attributeKey: String): String = elements.attr(attributeKey)
 
     /**
     Checks if any of the matched isPresent have this attribute defined.

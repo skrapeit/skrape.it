@@ -13,7 +13,7 @@ internal class MediaSelectorsKtTest {
     fun `can parse area-tag`() {
         val selector = aValidDocument(aStandardTag("area")).area {
             findFirst {
-                expectThat(className()).isEqualTo("area-class")
+                expectThat(className).isEqualTo("area-class")
             }
             rawCssSelector
         }
@@ -25,7 +25,7 @@ internal class MediaSelectorsKtTest {
     fun `can parse audio-tag`() {
         val selector = aValidDocument(aStandardTag("audio")).audio {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a audio")
+                expectThat(text).isEqualTo("i'm a audio")
             }
             rawCssSelector
         }
@@ -37,7 +37,7 @@ internal class MediaSelectorsKtTest {
     fun `can parse img-tag`() {
         val selector = aValidDocument(aSelfClosingTag("img")).img {
             findFirst {
-                expectThat(attr("custom-attr")).isEqualTo("img-attr")
+                expectThat(attribute("custom-attr")).isEqualTo("img-attr")
             }
             rawCssSelector
         }
@@ -49,7 +49,7 @@ internal class MediaSelectorsKtTest {
     fun `can parse map-tag`() {
         val selector = aValidDocument(aStandardTag("map")).map {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a map")
+                expectThat(text).isEqualTo("i'm a map")
             }
             rawCssSelector
         }
@@ -61,7 +61,7 @@ internal class MediaSelectorsKtTest {
     fun `can parse track-tag`() {
         val selector = aValidDocument(aSelfClosingTag("track")).track {
             findFirst {
-                expectThat(attr("custom-attr")).isEqualTo("track-attr")
+                expectThat(attribute("custom-attr")).isEqualTo("track-attr")
             }
             rawCssSelector
         }
@@ -73,7 +73,7 @@ internal class MediaSelectorsKtTest {
     fun `can parse video-tag`() {
         val selector = aValidDocument(aStandardTag("video")).video {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a video")
+                expectThat(text).isEqualTo("i'm a video")
             }
             rawCssSelector
         }

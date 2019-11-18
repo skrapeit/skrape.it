@@ -14,7 +14,7 @@ internal class TextContentSelectorsKtTest {
     fun `can parse blockquote-tag`() {
         val selector = aValidDocument().blockquote {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a quote")
+                expectThat(text).isEqualTo("i'm a quote")
             }
             rawCssSelector
         }
@@ -146,7 +146,7 @@ internal class TextContentSelectorsKtTest {
     fun `can parse p-tag`() {
         val selector = aValidDocument().p {
             findLast {
-                expectThat(text()).isEqualTo("i'm the last paragraph")
+                expectThat(text).isEqualTo("i'm the last paragraph")
             }
             rawCssSelector
         }
@@ -158,7 +158,7 @@ internal class TextContentSelectorsKtTest {
     fun `can parse pre-tag`() {
         val selector = aValidDocument().pre {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a pre")
+                expectThat(text).isEqualTo("i'm a pre")
             }
             rawCssSelector
         }

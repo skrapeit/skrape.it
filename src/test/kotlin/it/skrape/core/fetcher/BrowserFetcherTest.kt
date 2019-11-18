@@ -107,7 +107,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
 
         fetched.document.selection("div.dynamic") {
             findFirst {
-                expectThat(text()).isEqualTo("I have been dynamically added via Javascript")
+                expectThat(text).isEqualTo("I have been dynamically added via Javascript")
             }
         }
     }
@@ -122,7 +122,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
         // then
         fetched.document.selection("div.dynamic") {
             findFirst {
-                expectThat(text()).isEqualTo("I have been dynamically added via Javascript")
+                expectThat(text).isEqualTo("I have been dynamically added via Javascript")
             }
         }
     }
@@ -138,7 +138,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
 
         // then
         paragraphs.forEach {
-            expectThat(it.text()).isEqualTo("dynamically added")
+            expectThat(it.text).isEqualTo("dynamically added")
         }
     }
 

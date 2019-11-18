@@ -14,7 +14,25 @@ interface Scrapable {
      * @see #ownText()
      * @see #textNodes()
      */
-    fun text(): String
+    val text: String
+
+    /**
+     * Retrieves the element's inner HTML. E.g. on a {@code <div>} with one empty {@code <p>}, would return
+     * {@code <p></p>}. (Whereas {@link #outerHtml()} would return {@code <div><p></p></div>}.)
+     *
+     * @return String of HTML.
+     * @see outerHtml
+     * @see text
+     */
+    val html: String
+
+    /**
+    * Get the outer HTML of this node. For example, on a {@code p} element, may return {@code <p>Para</p>}.
+    * @return outer HTML
+    * @see html
+    * @see text
+     */
+    val outerHtml: String
 
     /**
      * Will pick all occurrences of elements that are matching the CSS-Selector
@@ -61,7 +79,9 @@ interface Scrapable {
     operator fun String.invoke(init: CssSelector.() -> Unit)
 
     /**
-     *
+     * Will create a CssSelector scope to calculate a css selector
+     * @param cssSelector that represents an CSS-Selector that will be considered during calculation
+     * @return T
      */
     fun <T> selection(cssSelector: String, init: CssSelector.() -> T): T
 }

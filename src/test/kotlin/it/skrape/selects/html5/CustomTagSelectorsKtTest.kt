@@ -12,7 +12,7 @@ internal class CustomTagSelectorsKtTest {
     internal fun `can pick html5 custom-tag`() {
         val selector = aValidDocument(aStandardTag("custom-tag")).customTag("custom-tag") {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a custom-tag")
+                expectThat(text).isEqualTo("i'm a custom-tag")
             }
             rawCssSelector
         }

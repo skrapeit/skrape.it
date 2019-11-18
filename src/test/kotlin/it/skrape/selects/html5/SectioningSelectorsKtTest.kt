@@ -60,7 +60,7 @@ internal class SectioningSelectorsKtTest {
     fun `can parse article-tag`() {
         val selector = aValidDocument().article {
             findFirst {
-                expectThat(text()).isEqualTo("i'm an article")
+                expectThat(text).isEqualTo("i'm an article")
             }
             rawCssSelector
         }
@@ -72,7 +72,7 @@ internal class SectioningSelectorsKtTest {
     fun `can parse aside-tag`() {
         val selector = aValidDocument().aside {
             findFirst {
-                expectThat(text()).isEqualTo("i'm an aside")
+                expectThat(text).isEqualTo("i'm an aside")
             }
             rawCssSelector
         }
@@ -84,7 +84,7 @@ internal class SectioningSelectorsKtTest {
     fun `can parse h1-tag`() {
         val selector = aValidDocument().h1 {
             findFirst {
-                expectThat(text()).isEqualTo("i'm the headline")
+                expectThat(text).isEqualTo("i'm the headline")
             }
             rawCssSelector
         }
@@ -96,7 +96,7 @@ internal class SectioningSelectorsKtTest {
     fun `can parse h2-tag`() {
         val selector = aValidDocument().h2 {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a h2")
+                expectThat(text).isEqualTo("i'm a h2")
             }
             rawCssSelector
         }
@@ -108,7 +108,7 @@ internal class SectioningSelectorsKtTest {
     fun `can parse h3-tag`() {
         val selector = aValidDocument().h3 {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a h3")
+                expectThat(text).isEqualTo("i'm a h3")
             }
             rawCssSelector
         }
@@ -120,7 +120,7 @@ internal class SectioningSelectorsKtTest {
     fun `can parse h4-tag`() {
         val selector = aValidDocument().h4 {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a h4")
+                expectThat(text).isEqualTo("i'm a h4")
             }
             rawCssSelector
         }
@@ -132,7 +132,7 @@ internal class SectioningSelectorsKtTest {
     fun `can parse h5-tag`() {
         val selector = aValidDocument().h5 {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a h5")
+                expectThat(text).isEqualTo("i'm a h5")
             }
             rawCssSelector
         }
@@ -144,7 +144,7 @@ internal class SectioningSelectorsKtTest {
     fun `can parse h6-tag`() {
         val selector = aValidDocument().h6 {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a h6")
+                expectThat(text).isEqualTo("i'm a h6")
             }
             rawCssSelector
         }
@@ -180,7 +180,7 @@ internal class SectioningSelectorsKtTest {
     fun `can parse address-tag`() {
         val selector = aValidDocument().address {
             findFirst {
-                expectThat(text()).isEqualTo("i'm an address")
+                expectThat(text).isEqualTo("i'm an address")
             }
             rawCssSelector
         }

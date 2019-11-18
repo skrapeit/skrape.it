@@ -38,7 +38,7 @@ internal class ResultExtractorsTest : WireMockSetup() {
                 htmlDocument {
                     p {
                         findFirst {
-                            text() toBe expectedValue
+                            text toBe expectedValue
                         }
                     }
                 }

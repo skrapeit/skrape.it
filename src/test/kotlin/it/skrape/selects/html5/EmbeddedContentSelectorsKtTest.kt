@@ -12,7 +12,7 @@ internal class EmbeddedContentSelectorsKtTest {
     fun `can parse applet-tag`() {
         val selector = aValidDocument(aStandardTag("applet")).applet {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a applet")
+                expectThat(text).isEqualTo("i'm a applet")
             }
             rawCssSelector
         }
@@ -36,7 +36,7 @@ internal class EmbeddedContentSelectorsKtTest {
     fun `can parse iframe-tag`() {
         val selector = aValidDocument(aStandardTag("iframe")).iframe {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a iframe")
+                expectThat(text).isEqualTo("i'm a iframe")
             }
             rawCssSelector
         }
@@ -48,7 +48,7 @@ internal class EmbeddedContentSelectorsKtTest {
     fun `can parse noembed-tag`() {
         val selector = aValidDocument(aStandardTag("noembed")).noembed {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a noembed")
+                expectThat(text).isEqualTo("i'm a noembed")
             }
             rawCssSelector
         }
@@ -60,7 +60,7 @@ internal class EmbeddedContentSelectorsKtTest {
     fun `can parse object-tag`() {
         val selector = aValidDocument(aStandardTag("object")).`object` {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a object")
+                expectThat(text).isEqualTo("i'm a object")
             }
             rawCssSelector
         }
@@ -84,7 +84,7 @@ internal class EmbeddedContentSelectorsKtTest {
     fun `can parse picture-tag`() {
         val selector = aValidDocument(aStandardTag("picture")).picture {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a picture")
+                expectThat(text).isEqualTo("i'm a picture")
             }
             rawCssSelector
         }

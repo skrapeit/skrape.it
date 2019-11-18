@@ -1,5 +1,6 @@
 package it.skrape.selects
 
+import it.skrape.SkrapeItValuePicker
 import org.jsoup.nodes.Element
 
 @Suppress("TooManyFunctions")
@@ -7,8 +8,14 @@ class DocElement(
         private val element: Element
 ) : Scrapable {
 
+    @SkrapeItValuePicker
+    override val text = element.text().orEmpty()
 
-    override fun text() = element.text().orEmpty()
+    @SkrapeItValuePicker
+    override val html = element.html().orEmpty()
+
+    @SkrapeItValuePicker
+    override val outerHtml: String = element.outerHtml().orEmpty()
 
     override fun <T> findAll(cssSelector: String, init: DocElements.() -> T): T =
             findAll(cssSelector).init()
@@ -19,15 +26,13 @@ class DocElement(
 
     override infix fun findFirst(cssSelector: String): DocElement = findAll(cssSelector).findFirst { this }
 
+    @SkrapeItValuePicker
+    val className = element.className().orEmpty()
 
-    fun html() = element.html().orEmpty()
-    fun className() = element.className().orEmpty()
-    val text = element.text().orEmpty()
+    @SkrapeItValuePicker
     val cssSelector = element.cssSelector().orEmpty()
+
     infix fun attribute(attributeKey: String): String = element.attr(attributeKey)
-
-    fun attr(attributeKey: String): String = attribute(attributeKey)
-
 
     override fun <T> selection(cssSelector: String, init: CssSelector.() -> T) =
             CssSelector(rawCssSelector = cssSelector).init()

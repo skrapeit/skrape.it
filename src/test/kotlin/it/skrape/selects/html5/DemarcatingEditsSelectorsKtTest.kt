@@ -12,7 +12,7 @@ internal class DemarcatingEditsSelectorsKtTest {
     fun `can parse del-tag`() {
         val selector = aValidDocument(aStandardTag("del")).del {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a del")
+                expectThat(text).isEqualTo("i'm a del")
             }
             rawCssSelector
         }
@@ -24,7 +24,7 @@ internal class DemarcatingEditsSelectorsKtTest {
     fun `can parse ins-tag`() {
         val selector = aValidDocument(aStandardTag("ins")).ins {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a ins")
+                expectThat(text).isEqualTo("i'm a ins")
             }
             rawCssSelector
         }

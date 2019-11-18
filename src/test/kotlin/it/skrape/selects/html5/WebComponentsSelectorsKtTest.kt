@@ -12,7 +12,7 @@ internal class WebComponentsSelectorsKtTest {
     fun `can parse content-tag`() {
         val selector = aValidDocument(aStandardTag("content")).content {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a content")
+                expectThat(text).isEqualTo("i'm a content")
             }
             rawCssSelector
         }
@@ -24,7 +24,7 @@ internal class WebComponentsSelectorsKtTest {
     fun `can parse shadow-tag`() {
         val selector = aValidDocument(aStandardTag("shadow")).shadow {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a shadow")
+                expectThat(text).isEqualTo("i'm a shadow")
             }
             rawCssSelector
         }
@@ -36,7 +36,7 @@ internal class WebComponentsSelectorsKtTest {
     fun `can parse slot-tag`() {
         val selector = aValidDocument(aStandardTag("slot")).slot {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a slot")
+                expectThat(text).isEqualTo("i'm a slot")
             }
             rawCssSelector
         }
@@ -48,7 +48,7 @@ internal class WebComponentsSelectorsKtTest {
     fun `can parse template-tag`() {
         val selector = aValidDocument(aStandardTag("template")).template {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a template")
+                expectThat(text).isEqualTo("i'm a template")
             }
             rawCssSelector
         }

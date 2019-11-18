@@ -14,7 +14,7 @@ internal class MetadataSelectorsKtTest {
     fun `can parse base-tag`() {
         val selector = aValidDocument(aSelfClosingTag("base")).base {
             findFirst {
-                expectThat(attr("custom-attr")).isEqualTo("base-attr")
+                expectThat(attribute("custom-attr")).isEqualTo("base-attr")
             }
             rawCssSelector
         }
@@ -26,7 +26,8 @@ internal class MetadataSelectorsKtTest {
     fun `can parse head-tag`() {
         val selector = aValidDocument().head {
             findFirst {
-                expectThat(html()).contains("<title>i'm the title</title>")
+                expectThat(html).contains("<title>i'm the title</title>")
+                expectThat(outerHtml).contains("<title>i'm the title</title>")
             }
             rawCssSelector
         }
@@ -75,7 +76,7 @@ internal class MetadataSelectorsKtTest {
     fun `can parse title-tag`() {
         val selector = aValidDocument(aStandardTag("title")).title {
             findFirst {
-                expectThat(text()).isEqualTo("i'm the title")
+                expectThat(text).isEqualTo("i'm the title")
             }
             rawCssSelector
         }

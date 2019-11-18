@@ -13,7 +13,7 @@ internal class TableSelectorsKtTest {
     fun `can parse caption-tag`() {
         val selector = aValidDocument().caption {
             findFirst {
-                expectThat(text()).isEqualTo("i'm the caption")
+                expectThat(text).isEqualTo("i'm the caption")
             }
             rawCssSelector
         }

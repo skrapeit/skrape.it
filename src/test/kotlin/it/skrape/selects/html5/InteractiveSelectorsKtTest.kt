@@ -13,7 +13,7 @@ internal class InteractiveSelectorsKtTest {
     fun `can parse details-tag`() {
         val selector = aValidDocument(aStandardTag("details")).details {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a details")
+                expectThat(text).isEqualTo("i'm a details")
             }
             rawCssSelector
         }
@@ -25,7 +25,7 @@ internal class InteractiveSelectorsKtTest {
     fun `can parse dialog-tag`() {
         val selector = aValidDocument(aStandardTag("dialog")).dialog {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a dialog")
+                expectThat(text).isEqualTo("i'm a dialog")
             }
             rawCssSelector
         }
@@ -37,7 +37,7 @@ internal class InteractiveSelectorsKtTest {
     fun `can parse menu-tag`() {
         val selector = aValidDocument(aStandardTag("menu")).menu {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a menu")
+                expectThat(text).isEqualTo("i'm a menu")
             }
             rawCssSelector
         }
@@ -49,7 +49,7 @@ internal class InteractiveSelectorsKtTest {
     fun `can parse menuitem-tag`() {
         val selector = aValidDocument(aStandardTag("menuitem")).menuitem {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a menuitem")
+                expectThat(text).isEqualTo("i'm a menuitem")
             }
             rawCssSelector
         }
@@ -61,7 +61,7 @@ internal class InteractiveSelectorsKtTest {
     fun `can parse summary-tag`() {
         val selector = aValidDocument(aStandardTag("summary")).summary {
             findFirst {
-                expectThat(text()).isEqualTo("i'm a summary")
+                expectThat(text).isEqualTo("i'm a summary")
             }
             rawCssSelector
         }

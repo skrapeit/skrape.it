@@ -26,7 +26,7 @@ class ExperimentalDslTest : WireMockSetup() {
                         withClass = "foo" and "bar" and "fizz" and "buzz"
 
                         findFirst {
-                            text() toBe "div with class foo"
+                            text toBe "div with class foo"
                         }
 
                         findAll {
@@ -35,21 +35,21 @@ class ExperimentalDslTest : WireMockSetup() {
                     }
                     customTag("a-custom-tag") {
                         findFirst {
-                            text() toBe "i'm a custom html5 tag"
-                            text()
+                            text toBe "i'm a custom html5 tag"
+                            text
                         }
                     }
 
                     "a-custom-tag" {
                         findFirst {
-                            text() toBe "i'm a custom html5 tag"
-                            text()
+                            text toBe "i'm a custom html5 tag"
+                            text
                         }
                     }
 
                     "div.foo.bar.fizz.buzz" {
                         findFirst {
-                            text() toBe "div with class foo"
+                            text toBe "div with class foo"
                         }
                     }
 
@@ -58,7 +58,8 @@ class ExperimentalDslTest : WireMockSetup() {
                         withClass = "bar" and "fizz" and "buzz"
 
                         findFirst {
-                            text() toBe "div with class foo"
+                            text toBe "div with class foo"
+                            attribute("class")
                         }
                     }
                 }

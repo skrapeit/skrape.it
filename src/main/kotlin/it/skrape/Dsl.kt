@@ -60,6 +60,9 @@ annotation class SkrapeItDsl
 annotation class SkrapeItElementPicker
 
 @DslMarker
+annotation class SkrapeItValuePicker
+
+@DslMarker
 annotation class SkrapeItResult
 
 @DslMarker

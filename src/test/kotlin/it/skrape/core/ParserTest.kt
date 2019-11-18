@@ -17,7 +17,7 @@ internal class ParserTest {
         // then
         expect {
             that(result.title()).isEqualTo("i'm the title")
-            that(result.findFirst("p").text()).isEqualTo("i'm a paragraph")
+            that(result.findFirst("p").text).isEqualTo("i'm a paragraph")
         }
     }
 
@@ -31,7 +31,7 @@ internal class ParserTest {
         // then
         expect {
             that(result.title()).isEqualTo("i'm the title")
-            that(result.findFirst("p").text()).isEqualTo("i'm a paragraph")
+            that(result.findFirst("p").text).isEqualTo("i'm a paragraph")
         }
     }
 
@@ -46,8 +46,8 @@ internal class ParserTest {
         // then
         expect {
             that(result.title()).isEqualTo("i'm the title")
-            that(result.findFirst("p").text()).isEqualTo("i'm a paragraph")
-            that(result.findFirst(".dynamic").text()).isEqualTo("I have been dynamically added via Javascript")
+            that(result.findFirst("p").text).isEqualTo("i'm a paragraph")
+            that(result.findFirst(".dynamic").text).isEqualTo("I have been dynamically added via Javascript")
         }
     }
 
@@ -62,7 +62,7 @@ internal class ParserTest {
         // then
         expect {
             that(result.title()).isEqualTo("i'm the title")
-            that(result.findFirst("p").text()).isEqualTo("dynamically added")
+            that(result.findFirst("p").text).isEqualTo("dynamically added")
         }
     }
 

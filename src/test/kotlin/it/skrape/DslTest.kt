@@ -44,7 +44,7 @@ internal class DslTest : WireMockSetup() {
 
                     title {
                         findFirst {
-                            text() toBe "i'm the title"
+                            text toBe "i'm the title"
                         }
                     }
 
@@ -54,11 +54,11 @@ internal class DslTest : WireMockSetup() {
                         }
                         findFirst {
                             attribute("data-foo") toBe "bar"
-                            text() toBe "i'm a paragraph"
+                            text toBe "i'm a paragraph"
                         }
 
                         findLast {
-                            text() toBe "i'm a second paragraph"
+                            text toBe "i'm a second paragraph"
                         }
                     }
                 }
@@ -147,7 +147,7 @@ internal class DslTest : WireMockSetup() {
             expect {
                 htmlDocument {
                     body {
-                        text() toContain "i'm a paragraph"
+                        text toContain "i'm a paragraph"
                     }
                 }
             }
@@ -292,8 +292,8 @@ internal class DslTest : WireMockSetup() {
                 htmlDocument {
                     MyObject(
                             message = statusMessage,
-                            paragraph = findFirst("p").text(),
-                            allParagraphs = findAll("p").map { it.text() }
+                            paragraph = findFirst("p").text,
+                            allParagraphs = findAll("p").map { it.text }
                     )
                 }
             }
@@ -316,13 +316,13 @@ internal class DslTest : WireMockSetup() {
         val doc = htmlDocument(File("src/test/resources/__files/example.html"), Charsets.ISO_8859_1) {
             title {
                 findFirst {
-                    text() toBe "i'm the title"
+                    text toBe "i'm the title"
                 }
             }
         }
         doc.title {
             findFirst {
-                expectThat(text()).isEqualTo("i'm the title")
+                expectThat(text).isEqualTo("i'm the title")
             }
         }
     }
@@ -359,7 +359,7 @@ internal class DslTest : WireMockSetup() {
                 htmlDocument {
                     div(".dynamic") {
                         findFirst {
-                            text() toBe "I have been dynamically added via Javascript"
+                            text toBe "I have been dynamically added via Javascript"
                         }
                     }
                 }
