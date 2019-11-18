@@ -13,26 +13,26 @@ class Doc(
 
     override fun text() = document.text().orEmpty()
 
-    override fun findAll(cssSelector: String) =
+    override infix fun findAll(cssSelector: String) =
             findAllOrNull(cssSelector) ?: throw ElementNotFoundException(cssSelector)
 
     @SkrapeItElementPicker
     override fun <T> findAll(cssSelector: String, init: DocElements.() -> T) = findAll(cssSelector).init()
 
-    override fun findFirst(cssSelector: String) =
+    override infix fun findFirst(cssSelector: String) =
             findFirstOrNull(cssSelector) ?: throw ElementNotFoundException(cssSelector)
 
     @SkrapeItElementPicker
     override fun <T> findFirst(cssSelector: String, init: DocElement.() -> T) = findFirst(cssSelector).init()
 
-    fun findFirstOrNull(cssQuery: String): DocElement? {
-        val selection: Element? = document.selectFirst(cssQuery)
-        return selection?.let { DocElement(it) }
+    infix fun findFirstOrNull(cssSelector: String): DocElement? {
+        val element: Element? = document.selectFirst(cssSelector)
+        return element?.let { DocElement(it) }
     }
 
-    fun findAllOrNull(cssSelector: String): DocElements? {
-        val selection: Elements = document.select(cssSelector)
-        return if (selection.isEmpty()) null else DocElements(selection)
+    infix fun findAllOrNull(cssSelector: String): DocElements? {
+        val elements: Elements = document.select(cssSelector)
+        return if (elements.isEmpty()) null else DocElements(elements) // TODO: DocElements is empty after creation
     }
 
     fun title() = document.title()

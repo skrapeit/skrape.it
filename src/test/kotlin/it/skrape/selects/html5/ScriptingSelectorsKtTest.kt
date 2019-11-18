@@ -12,7 +12,7 @@ internal class ScriptingSelectorsKtTest {
     fun `can parse script-tag`() {
         val selector = aValidDocument(aSelfClosingTag("script")).script {
             findAll {
-                expectThat(attr("custom-attr")).isEqualTo("script-attr")
+                expectThat(attribute("custom-attr")).isEqualTo("script-attr")
             }
             rawCssSelector
         }
@@ -24,7 +24,7 @@ internal class ScriptingSelectorsKtTest {
     fun `can parse canvas-tag`() {
         val selector = aValidDocument(aSelfClosingTag("canvas")).canvas {
             findFirst {
-                expectThat(attr("custom-attr")).isEqualTo("canvas-attr")
+                expectThat(attribute("custom-attr")).isEqualTo("canvas-attr")
             }
             rawCssSelector
         }
@@ -36,7 +36,7 @@ internal class ScriptingSelectorsKtTest {
     fun `can parse noscript-tag`() {
         val selector = aValidDocument(aSelfClosingTag("noscript")).noscript {
             findAll {
-                expectThat(attr("custom-attr")).isEqualTo("noscript-attr")
+                expectThat(attribute("custom-attr")).isEqualTo("noscript-attr")
             }
             rawCssSelector
         }

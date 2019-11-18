@@ -127,8 +127,8 @@ internal class BrowserFetcherTest : WireMockSetup() {
         }
     }
 
+    @Disabled("see TODO at Doc#findAllOrNull")
     @Test
-    @Disabled
     internal fun `can parse es6 rendered elements from https page`() {
         // given
         wireMockServer.setupStub(fileName = "es6.html")

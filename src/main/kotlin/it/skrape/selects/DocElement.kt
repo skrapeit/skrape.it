@@ -13,18 +13,18 @@ class DocElement(
     override fun <T> findAll(cssSelector: String, init: DocElements.() -> T): T =
             findAll(cssSelector).init()
 
-    override fun findAll(cssSelector: String) = DocElements(element.allElements).findAll(cssSelector)
+    override infix fun findAll(cssSelector: String) = DocElements(element.allElements).findAll(cssSelector)
 
     override fun <T> findFirst(cssSelector: String, init: DocElement.() -> T): T = findFirst(cssSelector).init()
 
-    override fun findFirst(cssSelector: String): DocElement = findAll(cssSelector).findFirst { this }
+    override infix fun findFirst(cssSelector: String): DocElement = findAll(cssSelector).findFirst { this }
 
 
     fun html() = element.html().orEmpty()
     fun className() = element.className().orEmpty()
     val text = element.text().orEmpty()
     val cssSelector = element.cssSelector().orEmpty()
-    fun attribute(attributeKey: String): String = element.attr(attributeKey)
+    infix fun attribute(attributeKey: String): String = element.attr(attributeKey)
 
     fun attr(attributeKey: String): String = attribute(attributeKey)
 

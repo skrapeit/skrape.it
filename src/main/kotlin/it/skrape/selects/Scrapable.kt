@@ -23,7 +23,7 @@ interface Scrapable {
      * @param cssSelector that represents an CSS-Selector
      * @return DocElements
      */
-    fun findAll(cssSelector: String): DocElements
+    infix fun findAll(cssSelector: String): DocElements
 
     /**
      * Will pick all occurrences of elements that are matching the CSS-Selector
@@ -42,7 +42,7 @@ interface Scrapable {
      * @param cssSelector that represents an CSS-Selector
      * @return DocElement
      */
-    fun findFirst(cssSelector: String): DocElement
+    infix fun findFirst(cssSelector: String): DocElement
 
     /**
      * Will pick the first occurrence of an element that

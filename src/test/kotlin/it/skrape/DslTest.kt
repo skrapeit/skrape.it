@@ -10,12 +10,13 @@ import it.skrape.selects.html5.body
 import it.skrape.selects.html5.div
 import it.skrape.selects.html5.p
 import it.skrape.selects.html5.title
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.junit.jupiter.Testcontainers
 import strikt.api.expectThat
+import strikt.assertions.containsExactly
 import strikt.assertions.hasEntry
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNull
@@ -278,7 +279,8 @@ internal class DslTest : WireMockSetup() {
         }
     }
 
-    /*@Test
+    @Disabled("see TODO at Doc#findAllOrNull")
+    @Test
     internal fun `dsl can fetch url and extract from skrape`() {
         // given
         wireMockServer.setupStub()
@@ -291,7 +293,7 @@ internal class DslTest : WireMockSetup() {
                     MyObject(
                             message = statusMessage,
                             paragraph = findFirst("p").text(),
-                            allParagraphs = isPresent("p").map { it.text() }
+                            allParagraphs = findAll("p").map { it.text() }
                     )
                 }
             }
@@ -299,7 +301,7 @@ internal class DslTest : WireMockSetup() {
         expectThat(extracted.message).isEqualTo("OK")
         expectThat(extracted.paragraph).isEqualTo("i'm a paragraph")
         expectThat(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
-    }*/
+    }
 
     @Test
     internal fun `can read and return html from file system with default charset (UTF-8) using the DSL`() {

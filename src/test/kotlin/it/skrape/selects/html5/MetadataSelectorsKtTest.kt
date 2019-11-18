@@ -39,7 +39,7 @@ internal class MetadataSelectorsKtTest {
     fun `can parse link-tag`() {
         val selector = aValidDocument(aSelfClosingTag("link")).link {
             findAll {
-                expectThat(attr("custom-attr")).isEqualTo("link-attr")
+                expectThat(attribute("custom-attr")).isEqualTo("link-attr")
             }
             rawCssSelector
         }
@@ -51,7 +51,7 @@ internal class MetadataSelectorsKtTest {
     fun `can parse meta-tag`() {
         val selector = aValidDocument(aSelfClosingTag("meta")).meta {
             findAll {
-                expectThat(attr("custom-attr")).isEqualTo("meta-attr")
+                expectThat(attribute("custom-attr")).isEqualTo("meta-attr")
             }
             rawCssSelector
         }
