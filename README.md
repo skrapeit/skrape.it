@@ -38,7 +38,6 @@ First and foremost skrape{it} aims to be a testing tool (not tied to a particula
 - [x] Asynchronous and blocking requests
 - [x] Requests as [coroutines](https://github.com/Kotlin/kotlinx.coroutines)
 - [x] Cancel asynchronous request
-- [x] Store to file
 
 #### Extensions
 In addition, extensions for well-known testing libraries are provided to extend them with the mentioned skrape{it} functionality.
