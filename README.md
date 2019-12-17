@@ -72,24 +72,25 @@ internal fun `dsl can skrape by url`() {
                     withClass = "foo" and "bar" and "fizz" and "buzz"
 
                     findFirst {
-                        text() toBe "div with class foo"
+                        text toBe "div with class foo"
                     }
 
                     findAll {
-                        toBePresentExactlyOnce()
+                        toBePresentExactlyTwice
                     }
                 }
                 // can handle custom tags as well
                 "a-custom-tag" {
                     findFirst {
-                        text() toBe "i'm a custom html5 tag"
-                        text()
+                        toBePresentExactlyOnce
+                        text toBe "i'm a custom html5 tag"
+                        text
                     }
                 }
                 // can handle custom tags written in css selctor query syntax
                 "div.foo.bar.fizz.buzz" {
                     findFirst {
-                        text() toBe "div with class foo"
+                        text toBe "div with class foo"
                     }
                 }
 
@@ -99,7 +100,7 @@ internal fun `dsl can skrape by url`() {
                     withClass = "bar" and "fizz" and "buzz"
 
                     findFirst {
-                        text() toBe "div with class foo"
+                        text toBe "div with class foo"
                     }
                 }
             }
