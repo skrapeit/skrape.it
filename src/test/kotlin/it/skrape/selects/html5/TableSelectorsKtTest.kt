@@ -37,7 +37,7 @@ internal class TableSelectorsKtTest {
     fun `can parse colgroup-tag`() {
         val selector = aValidDocument().colgroup {
             findAll {
-                toBePresentExactlyOnce()
+                toBePresentExactlyOnce
             }
             rawCssSelector
         }
@@ -49,7 +49,7 @@ internal class TableSelectorsKtTest {
     fun `can parse table-tag`() {
         val selector = aValidDocument().table {
             findAll {
-                toBePresentExactlyOnce()
+                toBePresentExactlyOnce
             }
             rawCssSelector
         }
@@ -61,7 +61,7 @@ internal class TableSelectorsKtTest {
     fun `can parse tbody-tag`() {
         val selector = aValidDocument().tbody {
             findAll {
-                toBePresentExactlyOnce()
+                toBePresentExactlyOnce
             }
             rawCssSelector
         }
@@ -85,7 +85,7 @@ internal class TableSelectorsKtTest {
     fun `can parse tfoot-tag`() {
         val selector = aValidDocument().tfoot {
             findAll {
-                toBePresentExactlyOnce()
+                toBePresentExactlyOnce
             }
             rawCssSelector
         }
@@ -109,7 +109,7 @@ internal class TableSelectorsKtTest {
     fun `can parse thead-tag`() {
         val selector = aValidDocument().thead {
             findAll {
-                toBePresentExactlyOnce()
+                toBePresentExactlyOnce
             }
             rawCssSelector
         }

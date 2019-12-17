@@ -3,9 +3,7 @@ package it.skrape
 import it.skrape.core.fetcher.Mode
 import it.skrape.core.WireMockSetup
 import it.skrape.core.setupStub
-import it.skrape.matchers.toBe
-import it.skrape.matchers.toBePresentExactlyOnce
-import it.skrape.matchers.toContain
+import it.skrape.matchers.*
 import it.skrape.selects.and
 import it.skrape.selects.html5.customTag
 import it.skrape.selects.html5.div
@@ -30,7 +28,7 @@ class ExperimentalDslTest : WireMockSetup() {
                         }
 
                         findAll {
-                            toBePresentExactlyOnce()
+                            toBePresentExactlyOnce
                         }
                     }
                     customTag("a-custom-tag") {

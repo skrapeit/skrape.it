@@ -61,35 +61,25 @@ infix fun List<Any>.toContain(expected: String): List<Any> {
 infix fun List<Any>.`to contain`(expected: String): List<Any> = this.toContain(expected)
 
 @SkrapeItAssertion
-fun DocElements.toBePresent() {
-    expectThat(this.size).isGreaterThanOrEqualTo(1)
-}
+val DocElements.toBePresent
+    get() = expectThat(this.size).isGreaterThanOrEqualTo(1).let { this }
 
 @SkrapeItAssertion
-fun DocElements.toBePresentTimes(amount: Int) {
-    expectThat(this.size).isEqualTo(amount)
-}
+infix fun DocElements.toBePresentTimes(amount: Int) =
+        expectThat(this.size).isEqualTo(amount).let { this }
 
 @SkrapeItAssertion
-fun DocElements.toBePresentExactlyOnce(): DocElements {
-    toBePresentTimes(1)
-    return this
-}
+val DocElements.toBePresentExactlyOnce
+    get() = this toBePresentTimes 1
 
 @SkrapeItAssertion
-fun DocElements.toBePresentExactlyTwice(): DocElements {
-    toBePresentTimes(2)
-    return this
-}
+val DocElements.toBePresentExactlyTwice
+    get() = this toBePresentTimes 2
 
 @SkrapeItAssertion
-fun DocElement.toBePresent(): DocElement {
-    expectThat(this.isPresent()).isTrue()
-    return this
-}
+val DocElement.toBePresent
+    get() = expectThat(this.isPresent()).isTrue().let { this }
 
 @SkrapeItAssertion
-fun DocElements.toBeNotPresent(): DocElements {
-    expectThat(this.size).isEqualTo(0)
-    return this
-}
+val DocElements.toBeNotPresent
+    get() = expectThat(this.size).isEqualTo(0).let { this }

@@ -37,7 +37,7 @@ internal class SectioningSelectorsKtTest {
     fun `can parse section-tag`() {
         val selector = aValidDocument().section {
             findAll {
-                toBePresentExactlyOnce()
+                toBePresentExactlyOnce
             }
             rawCssSelector
         }
@@ -49,7 +49,7 @@ internal class SectioningSelectorsKtTest {
     fun `can parse nav-tag`() {
         val selector = aValidDocument().nav {
             findAll {
-                toBePresentExactlyOnce()
+                toBePresentExactlyOnce
             }
             rawCssSelector
         }
@@ -157,7 +157,7 @@ internal class SectioningSelectorsKtTest {
     fun `can parse header-tag`() {
         val selector = aValidDocument().header {
             findAll {
-                toBePresentExactlyOnce()
+                toBePresentExactlyOnce
             }
             rawCssSelector
         }
@@ -169,7 +169,7 @@ internal class SectioningSelectorsKtTest {
     fun `can parse footer-tag`() {
         val selector = aValidDocument().footer {
             findAll {
-                toBePresentExactlyOnce()
+                toBePresentExactlyOnce
             }
             rawCssSelector
         }
@@ -193,7 +193,7 @@ internal class SectioningSelectorsKtTest {
     fun `can parse main-tag`() {
         val selector = aValidDocument().main {
             findAll {
-                toBePresentExactlyOnce()
+                toBePresentExactlyOnce
             }
             rawCssSelector
         }

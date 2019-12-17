@@ -387,7 +387,7 @@ internal class TextSemanticsSelectorsKtTest {
     fun `can parse wbr-tag`() {
         val selector = aValidDocument().wbr {
             findAll {
-                toBePresentExactlyOnce()
+                toBePresentExactlyOnce
             }
             rawCssSelector
         }

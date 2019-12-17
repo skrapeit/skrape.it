@@ -38,7 +38,7 @@ internal class TextContentSelectorsKtTest {
     fun `can parse dir-tag`() {
         val selector = aValidDocument().dir {
             findAll {
-                toBePresentExactlyOnce()
+                toBePresentExactlyOnce
             }
             rawCssSelector
         }
@@ -50,7 +50,7 @@ internal class TextContentSelectorsKtTest {
     fun `can parse dl-tag`() {
         val selector = aValidDocument().dl {
             findAll {
-                toBePresentExactlyOnce()
+                toBePresentExactlyOnce
             }
             rawCssSelector
         }
@@ -74,7 +74,7 @@ internal class TextContentSelectorsKtTest {
     fun `can parse figcaption-tag`() {
         val selector = aValidDocument().figcaption {
             findAll {
-                toBePresentExactlyOnce()
+                toBePresentExactlyOnce
             }
             rawCssSelector
         }
@@ -86,7 +86,7 @@ internal class TextContentSelectorsKtTest {
     fun `can parse figure-tag`() {
         val selector = aValidDocument().figure {
             findAll {
-                toBePresentExactlyOnce()
+                toBePresentExactlyOnce
             }
             rawCssSelector
         }
@@ -98,7 +98,7 @@ internal class TextContentSelectorsKtTest {
     fun `can parse hr-tag`() {
         val selector = aValidDocument().hr {
             findAll {
-                toBePresentExactlyTwice()
+                toBePresentExactlyTwice
             }
             rawCssSelector
         }
@@ -122,7 +122,7 @@ internal class TextContentSelectorsKtTest {
     fun `can parse ol-tag`() {
         val selector = aValidDocument().ol {
             findAll {
-                toBePresentExactlyOnce()
+                toBePresentExactlyOnce
             }
             rawCssSelector
         }
@@ -134,7 +134,7 @@ internal class TextContentSelectorsKtTest {
     fun `can parse ul-tag`() {
         val selector = aValidDocument().ul {
             findAll {
-                toBePresentExactlyOnce()
+                toBePresentExactlyOnce
             }
             rawCssSelector
         }
