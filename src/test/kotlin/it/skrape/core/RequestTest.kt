@@ -1,6 +1,7 @@
 package it.skrape.core
 
 import it.skrape.core.fetcher.Protocol
+import it.skrape.core.fetcher.Protocol.*
 import it.skrape.core.fetcher.Request
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -16,7 +17,7 @@ internal class RequestTest {
         expectThat(url).isEqualTo("http://localhost:8080/")
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "can build valid {0}-Url if protocol param is defined")
     @EnumSource(Protocol::class)
     internal fun `can build valid url with defined protocol`(protocol: Protocol) {
         val url = Request(protocol = protocol).url
@@ -39,5 +40,38 @@ internal class RequestTest {
     internal fun `can build valid url with defined path`() {
         val url = Request(path = "/foo").url
         expectThat(url).isEqualTo("http://localhost:8080/foo")
+    }
+
+    @Test
+    internal fun `can build valid url by the use of several options`() {
+        val url = Request(
+                protocol = HTTPS,
+                path = "/my-path",
+                host = "skrape.it",
+                port = 12345,
+                queryParam = mapOf("skrape" to "it")
+        ).url
+        expectThat(url).isEqualTo("https://skrape.it:12345/my-path?skrape=it")
+    }
+
+    @Test
+    internal fun `can build valid url with ONE query parameter`() {
+        val url = Request(
+                queryParam = mapOf("foo" to "bar")
+        ).url
+        expectThat(url).isEqualTo("http://localhost:8080/?foo=bar")
+    }
+
+    @Test
+    internal fun `can build valid url with a bunch of query parameters`() {
+        val url = Request(
+                queryParam = mapOf(
+                        "aaa" to "zzz",
+                        "bbb" to "yyy",
+                        "ccc" to "xxx",
+                        "ddd" to "www"
+                )
+        ).url
+        expectThat(url).isEqualTo("http://localhost:8080/?aaa=zzz&bbb=yyy&ccc=xxx&ddd=www")
     }
 }

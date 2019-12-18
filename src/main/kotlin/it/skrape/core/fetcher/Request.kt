@@ -45,13 +45,15 @@ data class Request(
          */
         var path: String = "/",
 
+        var queryParam: Map<String, String> = emptyMap(),
+
         /**
          * Defines the URL the request is made against.
          * Defaults to "http://localhost:8080/"
-         * If you set this parameter other url-specific parameters (protocol, host, port, path)
+         * If you set this parameter other url-specific parameters (protocol, host, port, path, queryParam)
          * will have no effect.
          */
-        var url: String = "${protocol.value}$host:$port$path",
+        var url: String = "${protocol.value}$host:$port$path${queryParam.toUrlQuery()}",
 
         var userAgent: String = "Mozilla/5.0 skrape.it",
         var headers: Map<String, String> = emptyMap(),
@@ -60,7 +62,15 @@ data class Request(
         var followRedirects: Boolean = true
 ) {
     fun asConfig() = this
+
 }
+
+private fun Map<String, String>.toUrlQuery() =
+        if (!isEmpty()) {
+            entries.joinToString(separator = "&", prefix = "?") {
+                "${it.key}=${it.value}"
+            }
+        } else ""
 
 enum class Mode {
     /**
