@@ -7,7 +7,7 @@ import strikt.assertions.isEqualTo
 
 internal class ContentTypeHeaderMatchersKtTest {
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "can match content type {0}")
     @EnumSource(ContentTypes::class)
     internal fun `can match exact content types from string`(contentType: ContentTypes) {
         val returnedContentTypeValue = contentType.value `to be` contentType
@@ -15,7 +15,7 @@ internal class ContentTypeHeaderMatchersKtTest {
         expectThat(returnedContentTypeValue).isEqualTo(contentType.value)
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "can match partial content type {0}")
     @EnumSource(ContentTypes::class)
     internal fun `can match partial content types from string`(contentType: ContentTypes) {
         "${contentType.value}foo" `to contain` contentType
