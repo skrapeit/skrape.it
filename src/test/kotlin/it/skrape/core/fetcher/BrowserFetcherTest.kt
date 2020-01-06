@@ -1,9 +1,9 @@
 package it.skrape.core.fetcher
 
 import com.gargoylesoftware.htmlunit.util.NameValuePair
-import it.skrape.core.WireMockSetup
-import it.skrape.core.setupRedirect
-import it.skrape.core.setupStub
+import it.skrape.WireMockSetup
+import it.skrape.setupRedirect
+import it.skrape.setupStub
 import it.skrape.exceptions.UnsupportedRequestOptionException
 import it.skrape.selects.html5.h1
 import org.junit.jupiter.api.Assertions.*

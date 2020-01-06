@@ -1,5 +1,6 @@
 package it.skrape.core.fetcher
 
+import it.skrape.core.fetcher.Authentication.Type.*
 import it.skrape.core.fetcher.Method.GET
 import it.skrape.core.fetcher.Mode.SOURCE
 import it.skrape.core.fetcher.Protocol.HTTP
@@ -59,7 +60,8 @@ data class Request(
         var headers: Map<String, String> = emptyMap(),
         var cookies: Map<String, String> = emptyMap(),
         var timeout: Int = 5000,
-        var followRedirects: Boolean = true
+        var followRedirects: Boolean = true,
+        var authentication: Authentication = Authentication(NONE)
 ) {
     fun asConfig() = this
 

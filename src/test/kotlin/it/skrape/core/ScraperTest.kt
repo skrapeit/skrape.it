@@ -1,6 +1,8 @@
 package it.skrape.core
 
+import it.skrape.WireMockSetup
 import it.skrape.core.fetcher.Request
+import it.skrape.setupStub
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo

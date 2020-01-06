@@ -30,3 +30,4 @@ gen
 !gradle-wrapper.jar
 
 build
+/classes/

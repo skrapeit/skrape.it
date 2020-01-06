@@ -1,8 +1,10 @@
 package it.skrape.core
 
+import it.skrape.core.fetcher.Authentication
 import it.skrape.core.fetcher.Protocol
 import it.skrape.core.fetcher.Protocol.*
 import it.skrape.core.fetcher.Request
+import it.skrape.core.fetcher.basic
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
@@ -73,5 +75,18 @@ internal class RequestTest {
                 )
         ).url
         expectThat(url).isEqualTo("http://localhost:8080/?aaa=zzz&bbb=yyy&ccc=xxx&ddd=www")
+    }
+
+    @Test
+    internal fun `can configure basic auth`() {
+        val auth = Request(
+                authentication = basic {
+                    username = "my-username"
+                    password = "my-password"
+                }
+        ).authentication
+        expectThat(auth.type).isEqualTo(Authentication.Type.BASIC)
+        expectThat(auth.username).isEqualTo("my-username")
+        expectThat(auth.password).isEqualTo("my-password")
     }
 }

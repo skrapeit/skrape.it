@@ -40,6 +40,7 @@ class HttpFetcher(private val request: Request) : Fetcher {
         url(request.url)
         header {
             request.headers
+            request.authentication.toHeader()
             "User-Agent" to request.userAgent
             cookie {
                 request.cookies

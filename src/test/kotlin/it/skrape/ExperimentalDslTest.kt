@@ -1,12 +1,14 @@
 package it.skrape
 
 import it.skrape.core.fetcher.Mode
-import it.skrape.core.WireMockSetup
-import it.skrape.core.setupStub
-import it.skrape.matchers.*
+import it.skrape.core.fetcher.basic
+import it.skrape.matchers.toBe
+import it.skrape.matchers.toBePresentExactlyOnce
+import it.skrape.matchers.toContain
 import it.skrape.selects.and
 import it.skrape.selects.html5.customTag
 import it.skrape.selects.html5.div
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class ExperimentalDslTest : WireMockSetup() {
@@ -28,7 +30,7 @@ class ExperimentalDslTest : WireMockSetup() {
                         }
 
                         findAll {
-                            toBePresentExactlyOnce
+                            toBePresentExactlyOnce()
                         }
                     }
                     customTag("a-custom-tag") {
@@ -41,7 +43,6 @@ class ExperimentalDslTest : WireMockSetup() {
                     "a-custom-tag" {
                         findFirst {
                             text toBe "i'm a custom html5 tag"
-                            text
                         }
                     }
 
@@ -77,6 +78,44 @@ class ExperimentalDslTest : WireMockSetup() {
                 htmlDocument {
                     toString() toContain "A Story of Deserializing HTML / XML."
                 }
+            }
+        }
+    }
+
+    @Test
+    internal fun `can NOT scrape basic auth protected websites without credentials`() {
+        wireMockServer.setupBasicAuthStub(
+                username = "cr1z",
+                password = "secure"
+        )
+
+        skrape {
+            path = "/basic-auth"
+
+            expect {
+                statusCode toBe 403
+            }
+        }
+    }
+
+    @Disabled("find out how to configure basic auth for wiremock properly")
+    @Test
+    internal fun `can scrape basic auth protected websites`() {
+        wireMockServer.setupBasicAuthStub(
+                username = "cr1z",
+                password = "secure"
+        )
+
+        skrape {
+            path = "/basic-auth"
+
+            authentication = basic {
+                username = "cr1z"
+                password = "secure"
+            }
+
+            expect {
+                statusCode toBe 200
             }
         }
     }

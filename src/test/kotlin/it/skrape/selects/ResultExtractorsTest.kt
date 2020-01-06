@@ -1,8 +1,8 @@
 package it.skrape.selects
 
 import it.skrape.core.fetcher.Request
-import it.skrape.core.WireMockSetup
-import it.skrape.core.setupStub
+import it.skrape.WireMockSetup
+import it.skrape.setupStub
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.expect
 import it.skrape.extract
