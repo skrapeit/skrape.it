@@ -1,13 +1,16 @@
 package it.skrape
 
-import it.skrape.core.*
 import it.skrape.core.fetcher.Method
 import it.skrape.core.fetcher.Mode
+import it.skrape.core.htmlDocument
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.matchers.*
 import it.skrape.matchers.ContentTypes.*
-import it.skrape.selects.html5.*
-import org.junit.jupiter.api.Assertions.*
+import it.skrape.selects.html5.body
+import it.skrape.selects.html5.div
+import it.skrape.selects.html5.p
+import it.skrape.selects.html5.title
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.testcontainers.containers.GenericContainer
@@ -85,7 +88,6 @@ internal class DslTest : WireMockSetup() {
 
     @Test
     internal fun `dsl will not follow redirects if configured`() {
-        // given
         wireMockServer.setupRedirect()
 
         skrape {
@@ -99,7 +101,6 @@ internal class DslTest : WireMockSetup() {
 
     @Test
     internal fun `dsl can check certain header`() {
-        // given
         wireMockServer.setupStub()
 
         skrape {
@@ -119,7 +120,6 @@ internal class DslTest : WireMockSetup() {
 
     @Test
     internal fun `dsl can check headers`() {
-        // given
         wireMockServer.setupStub()
 
         skrape {
@@ -134,7 +134,6 @@ internal class DslTest : WireMockSetup() {
 
     @Test
     internal fun `dsl can get body`() {
-        // given
         wireMockServer.setupStub()
 
         skrape {
@@ -150,7 +149,6 @@ internal class DslTest : WireMockSetup() {
 
     @Test
     internal fun `dsl will follow redirect by default`() {
-        // given
         wireMockServer.setupRedirect()
 
         skrape {
@@ -162,7 +160,6 @@ internal class DslTest : WireMockSetup() {
 
     @Test
     internal fun `dsl can fetch url and use HTTP verb POST`() {
-        // given
         wireMockServer.setupPostStub()
 
         skrape {
@@ -194,7 +191,6 @@ internal class DslTest : WireMockSetup() {
 
     @Test
     internal fun `dsl can fetch url and extract`() {
-        // given
         wireMockServer.setupStub()
 
         skrape {
@@ -209,7 +205,6 @@ internal class DslTest : WireMockSetup() {
 
     @Test
     internal fun `dsl can fetch url and infer type on extract`() {
-        // given
         wireMockServer.setupStub()
 
         skrape {
@@ -224,7 +219,6 @@ internal class DslTest : WireMockSetup() {
 
     @Test
     internal fun `dsl can fetch url and extract using it`() {
-        // given
         wireMockServer.setupStub()
 
         val extracted = skrape {
@@ -276,7 +270,6 @@ internal class DslTest : WireMockSetup() {
     @Disabled("see TODO at Doc#findAllOrNull")
     @Test
     internal fun `dsl can fetch url and extract from skrape`() {
-        // given
         wireMockServer.setupStub()
 
         val extracted = skrape {
@@ -366,7 +359,7 @@ internal class DslTest : WireMockSetup() {
 
         val fetcher = skrape {
             followRedirects = false
-            asConfig()
+            asConfig
         }
 
         wireMockServer.setupRedirect()
@@ -390,5 +383,3 @@ class MyObject(var message: String? = null, var paragraph: String = "", var allP
 class MyOtherObject {
     var message: String? = null
 }
-
-class KGenericContainer(imageName: String) : GenericContainer<KGenericContainer>(imageName)

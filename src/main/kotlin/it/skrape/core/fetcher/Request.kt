@@ -1,10 +1,11 @@
 package it.skrape.core.fetcher
 
-import it.skrape.core.fetcher.Authentication.Type.*
+import it.skrape.SkrapeItDsl
+import it.skrape.core.fetcher.Authentication.Type.NONE
 import it.skrape.core.fetcher.Method.GET
 import it.skrape.core.fetcher.Mode.SOURCE
-import it.skrape.core.fetcher.Protocol.HTTP
 
+@SkrapeItDsl
 data class Request(
 
         /**
@@ -22,39 +23,12 @@ data class Request(
         var method: Method = GET,
 
         /**
-         * Defines the protocol of the URL the request is made against.
-         * Defaults to HTTP.
-         * @see Protocol for all possible values.
-         */
-        var protocol: Protocol = HTTP,
-
-        /**
-         * Defines the hostname of the URL the request is made against.
-         * Defaults to "localhost"
-         */
-        var host: String = "localhost",
-
-        /**
-         * Defines the port of the URL the request is made against.
-         * Defaults to 8080
-         */
-        var port: Int = 8080,
-
-        /**
-         * Defines the path of the URL the request is made against.
-         * Defaults to "/"
-         */
-        var path: String = "/",
-
-        var queryParam: Map<String, String> = emptyMap(),
-
-        /**
          * Defines the URL the request is made against.
          * Defaults to "http://localhost:8080/"
          * If you set this parameter other url-specific parameters (protocol, host, port, path, queryParam)
          * will have no effect.
          */
-        var url: String = "${protocol.value}$host:$port$path${queryParam.toUrlQuery()}",
+        var url: Url = UrlBuilder().toString(),
 
         var userAgent: String = "Mozilla/5.0 skrape.it",
         var headers: Map<String, String> = emptyMap(),
@@ -63,16 +37,13 @@ data class Request(
         var followRedirects: Boolean = true,
         var authentication: Authentication = Authentication(NONE)
 ) {
-    fun asConfig() = this
+    val asConfig
+        get() = this
 
+    fun urlBuilder(init: UrlBuilder.() -> Unit): String {
+        return UrlBuilder().also(init).toString()
+    }
 }
-
-private fun Map<String, String>.toUrlQuery() =
-        if (!isEmpty()) {
-            entries.joinToString(separator = "&", prefix = "?") {
-                "${it.key}=${it.value}"
-            }
-        } else ""
 
 enum class Mode {
     /**
@@ -94,11 +65,4 @@ enum class Method {
     DELETE,
     PATCH,
     HEAD
-}
-
-enum class Protocol(val value: String) {
-    HTTP("http://"),
-    HTTPS("https://"),
-    FTP("ftp://"),
-    FILE("file://")
 }

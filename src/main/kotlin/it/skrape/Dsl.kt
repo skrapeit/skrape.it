@@ -12,9 +12,7 @@ import kotlin.reflect.KClass
  * @return Result
  */
 @SkrapeItDsl
-fun <T> skrape(init: Request.() -> T): T {
-    return Scraper().request.init()
-}
+fun <T> skrape(init: Request.() -> T): T = Scraper().request.init()
 
 /**
  * Read and parse html from a skrape{it} result.

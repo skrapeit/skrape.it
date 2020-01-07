@@ -29,7 +29,7 @@ First and foremost skrape{it} aims to be a testing tool (not tied to a particula
 ### Http-Client
 - [x] Http-Client without verbosity and ceremony to make requests and corresponding request options like headers, cookies etc in a fluent style interface.
 - [x] Pre-configure client regarding auth and other request settings 
-- [x] Can handle client side rendered webpages.  Javascript execution results can optionally be considered in the response body.
+- [x] Can handle client side rendered web pages. Javascript execution results can optionally be considered in the response body.
 ### Idomatic
 - [x] Easy to use, idiomatic and type-safe DSL to ensure a high level of readability.
 - [x] Build-in matchers/assertions based on infix functions to archive a very high level of readability.
@@ -37,36 +37,90 @@ First and foremost skrape{it} aims to be a testing tool (not tied to a particula
 ### Compatibility
 - [x] Not bind to a specific test-runner, framework or whatever.
 - [x] Open to use any other assertion library of your choice.
-
-#### Extensions
+### Extensions
 In addition, extensions for well-known testing libraries are provided to extend them with the mentioned skrape{it} functionality.
 Currently available:
-* [Skrape{it} MockMvc extension](https://github.com/skrapeit/skrapeit-mockmvc-extension)
-* [Skrape{it} Ktor extension](https://github.com/skrapeit/skrapeit-ktor-extension)
+* **[skrape{it} MockMvc extension](https://github.com/skrapeit/skrapeit-mockmvc-extension)**
+* **[skrape{it} Ktor extension](https://github.com/skrapeit/skrapeit-ktor-extension)**
 
 ---
 
+## Quick Start
 ### Read the Docs
-You'll always find latest documentation, release notes and examples at 
-**[https://docs.skrape.it](https://docs.skrape.it)**
+You'll always find the latest documentation, release notes and examples at **[https://docs.skrape.it](https://docs.skrape.it)**.
+If you don't want to read that much or just want to get a rough overview on how to use **skrape{it}**, you can have a look at the [Documentation by Example](#documentation-by-example) section:
 
-### Quick Start
+#### Installation
+All our official/stable releases will be published to [mavens central repository](https://search.maven.org/search?q=g:it.skrape%20AND%20a:skrapeit-core&core=gav).
 
+#### Add dependency
+
+<details><summary>Gradle</summary>
+
+```kotlin
+dependencies {
+    implementation("it.skrape:skrapeit-core:1.0.0-alpha2")
+}
+```
+</details>
+
+<details><summary>Maven</summary>
+
+```xml
+<dependency>
+    <groupId>it.skrape</groupId>
+    <artifactId>skrapeit-core</artifactId>
+    <version>1.0.0-alpha2</version>
+</dependency>
+```
+</details>
+
+#### using bleeding edge features before official release
+We are offering snapshot releases via jitpack. Thereby you can install every commit and version you want.
+But be careful, these are non official releases and may be unstable as well as breaking changes can occur at any time.
+
+##### Add experimental stuff
+
+<details><summary>Gradle</summary>
+
+```kotlin
+repositories {
+    maven { url "https://jitpack.io" }
+}
+dependencies {
+    implementation("com.github.skrapeit:skrape.it:master-SNAPSHOT")
+}
+```
+</details>
+
+<details><summary>Maven</summary>
+
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
+...
+
+<dependency>
+    <groupId>com.github.skrapeit</groupId>
+    <artifactId>skrape.it</artifactId>
+    <version>master-SNAPSHOT</version>
+</dependency>
+```
+</details>
+
+## Documentation by Example
+### Testing HTML responses:
 ```java
 @Test
-internal fun `dsl can skrape by url`() {
+fun `dsl can skrape by url`() {
     skrape {
         url = "http://localhost:8080/example"
-        
-        mode = DOM // optional -> defaults to SOURCE (plain http request) - DOM will also render JS
-        method = GET // optional -> defaults to GET
-        timeout = 5000 // optional -> defaults to 5000ms
-        followRedirects = true // optional -> defaults to true
-        userAgent = "some custom user agent" // optional -> defaults to "Mozilla/5.0 skrape.it"
-        cookies = mapOf("some-cookie-name" to "some-value") // optional
-        headers = mapOf("some-custom-header" to "some-value") // optional
-        
-        extract {
+        expect {
             htmlDocument {
                 // all offical html and html5 elements are supported by the DSL
                 div {
@@ -110,68 +164,40 @@ internal fun `dsl can skrape by url`() {
 }
 ```
 
-#### Installation
-All our official/stable releases will be published to [mavens central repository](https://search.maven.org/search?q=g:it.skrape%20AND%20a:skrapeit-core&core=gav).
+### Configure HTTP-Client:
+```java
+class ExampleTest {
+    val myPreConfiguredClient = skrape {
+        // url can be a plain url as string or build by #urlBuilder
+        url = urlBuilder {
+            protocol = Protocol.HTTPS
+            host = "skrape.it"
+            port = 12345
+            path = "/foo"
+            queryParams = mapOf("foo" to "bar")
+        }
+        
+        mode = DOM // optional -> defaults to SOURCE (plain http request) - DOM will also render JS
+        method = GET // optional -> defaults to GET
+        timeout = 5000 // optional -> defaults to 5000ms
+        followRedirects = true // optional -> defaults to true
+        userAgent = "some custom user agent" // optional -> defaults to "Mozilla/5.0 skrape.it"
+        cookies = mapOf("some-cookie-name" to "some-value") // optional
+        headers = mapOf("some-custom-header" to "some-value") // optional
+        
+        asConfig
+    }
 
-#### Add dependency
+    @Test
+    fun `can use preconfigured client`() {
 
-<details><summary>Gradle</summary>
-
-```kotlin
-dependencies {
-    implementation("it.skrape:skrapeit-core:1.0.0-alpha2")
+        myPreConfiguredClient.expect { 
+            statusCode toBe 200
+            // do more stuff
+        }
+    }
 }
 ```
-</details>
-
-<details><summary>Maven</summary>
-
-```xml
-<dependency>
-    <groupId>it.skrape</groupId>
-    <artifactId>skrapeit-core</artifactId>
-    <version>1.0.0-alpha1</version>
-</dependency>
-```
-</details>
-
-#### using bleeding edge features before official release
-We are offering snapshot releases via jitpack. Thereby you can install every commit and version you want.
-But be careful, these are non official releases and may be unstable as well as breaking changes can occur at any time.
-
-##### Add experimental stuff
-
-<details><summary>Gradle</summary>
-
-```kotlin
-repositories {
-    maven { url "https://jitpack.io" }
-}
-dependencies {
-    implementation("com.github.skrapeit:skrape.it:master-SNAPSHOT")
-}
-```
-</details>
-
-<details><summary>Maven</summary>
-
-```xml
-<repositories>
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-    </repository>
-</repositories>
-
-...
-
-<dependency>
-    <groupId>com.github.skrapeit</groupId>
-    <artifactId>skrape.it</artifactId>
-    <version>master-SNAPSHOT</version>
-</dependency>
-```
-</details>
 
 ### Sponsoring
 Skrape{it} is and always will be **free and open-source**. However your sponsorship of this project is greatly appreciated and will fund the caffeine and pizzas that fuel its development. 

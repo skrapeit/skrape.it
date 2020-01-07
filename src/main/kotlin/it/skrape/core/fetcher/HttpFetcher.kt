@@ -37,10 +37,11 @@ class HttpFetcher(private val request: Request) : Fetcher {
     }
 
     private fun getContext(): HttpContext.() -> Unit = {
+        println(request.authentication.toHeaderValue())
         url(request.url)
         header {
             request.headers
-            request.authentication.toHeader()
+            "Authorization" to request.authentication.toHeaderValue()
             "User-Agent" to request.userAgent
             cookie {
                 request.cookies

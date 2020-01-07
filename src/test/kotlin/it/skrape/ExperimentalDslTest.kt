@@ -2,19 +2,32 @@ package it.skrape
 
 import it.skrape.core.fetcher.Mode
 import it.skrape.core.fetcher.basic
+import it.skrape.matchers.ContentTypes
 import it.skrape.matchers.toBe
 import it.skrape.matchers.toBePresentExactlyOnce
 import it.skrape.matchers.toContain
 import it.skrape.selects.and
 import it.skrape.selects.html5.customTag
 import it.skrape.selects.html5.div
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
+import org.testcontainers.containers.GenericContainer
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.junit.jupiter.Testcontainers
 
+@Testcontainers
 class ExperimentalDslTest : WireMockSetup() {
 
+    @Container
+    @JvmField
+    val httpBin = KGenericContainer("kennethreitz/httpbin:latest")
+            .apply { exposedPorts = listOf(80) }
+
+    fun httpBinUrl() = "http://${httpBin.containerIpAddress}:${httpBin.firstMappedPort}"
+
     @Test
-    internal fun `can use latest features`() {
+    fun `can use latest features`() {
         wireMockServer.setupStub(path = "/example")
 
         val myText = skrape {
@@ -69,7 +82,7 @@ class ExperimentalDslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can scrape our docs page`() {
+    fun `can scrape our docs page`() {
         skrape {
             url = "https://docs.skrape.it/docs/"
             mode = Mode.DOM
@@ -83,31 +96,24 @@ class ExperimentalDslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can NOT scrape basic auth protected websites without credentials`() {
-        wireMockServer.setupBasicAuthStub(
-                username = "cr1z",
-                password = "secure"
-        )
+    fun `can NOT scrape basic auth protected websites without credentials`() {
 
         skrape {
-            path = "/basic-auth"
+            url = "${httpBinUrl()}/basic-auth/cr1z/secure"
 
             expect {
-                statusCode toBe 403
+                statusCode toBe 401
             }
         }
     }
 
-    @Disabled("find out how to configure basic auth for wiremock properly")
-    @Test
-    internal fun `can scrape basic auth protected websites`() {
-        wireMockServer.setupBasicAuthStub(
-                username = "cr1z",
-                password = "secure"
-        )
+    @ParameterizedTest(name = "can scrape basic auth protected websites with the mode {0}")
+    @EnumSource(Mode::class)
+    fun `can scrape basic auth protected websites`(fetcherMode: Mode) {
 
         skrape {
-            path = "/basic-auth"
+            mode = fetcherMode
+            url = "${httpBinUrl()}/basic-auth/cr1z/secure"
 
             authentication = basic {
                 username = "cr1z"
@@ -116,7 +122,11 @@ class ExperimentalDslTest : WireMockSetup() {
 
             expect {
                 statusCode toBe 200
+                responseBody toContain """authenticated": true"""
+                responseBody toContain """user": "cr1z"""
             }
         }
     }
 }
+
+class KGenericContainer(imageName: String) : GenericContainer<KGenericContainer>(imageName)

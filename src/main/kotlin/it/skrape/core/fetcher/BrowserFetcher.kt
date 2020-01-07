@@ -45,6 +45,11 @@ class BrowserFetcher(private val request: Request) : Fetcher {
         cssErrorHandler = SilentCssErrorHandler()
         ajaxController = NicelyResynchronizingAjaxController()
         createCookies()
+        addRequestHeader("User-Agent", request.userAgent)
+        addRequestHeader("Authorization", request.authentication.toHeaderValue())
+        request.headers.forEach {
+            addRequestHeader(it.key, it.value)
+        }
         @Suppress("MagicNumber") waitForBackgroundJavaScript(10_000)
         options.apply {
             timeout = request.timeout

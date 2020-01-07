@@ -7,17 +7,17 @@ data class Authentication(
         var username: String = "",
         var password: String = ""
 ) {
-    enum class Type {
-        NONE,
-        BASIC,
-        OAUTH2
+    enum class Type(val classifier: String) {
+        NONE(""),
+        BASIC("Basic"),
+        OAUTH2("Bearer")
     }
 
-    fun toHeader(): Map<String, String> {
+    fun toHeaderValue(): String {
         val encodedCredentials = "$username:$password".base64Encoded()
         return when (type) {
-            Authentication.Type.BASIC -> mapOf("Authorization" to "Basic $encodedCredentials")
-            else -> emptyMap()
+            Type.BASIC -> "${type.classifier} $encodedCredentials"
+            else -> ""
         }
     }
 
