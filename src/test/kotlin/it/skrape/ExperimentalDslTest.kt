@@ -2,7 +2,6 @@ package it.skrape
 
 import it.skrape.core.fetcher.Mode
 import it.skrape.core.fetcher.basic
-import it.skrape.matchers.ContentTypes
 import it.skrape.matchers.toBe
 import it.skrape.matchers.toBePresentExactlyOnce
 import it.skrape.matchers.toContain
