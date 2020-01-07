@@ -24,7 +24,7 @@ class ExperimentalDslTest : WireMockSetup() {
     val httpBin = KGenericContainer("kennethreitz/httpbin:latest")
             .apply { exposedPorts = listOf(80) }
 
-    fun httpBinUrl() = "http://${httpBin.containerIpAddress}:${httpBin.firstMappedPort}"
+    private fun httpBinUrl() = "http://${httpBin.containerIpAddress}:${httpBin.firstMappedPort}"
 
     @Test
     fun `can use latest features`() {
