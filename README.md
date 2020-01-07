@@ -22,28 +22,29 @@ It places particular emphasis on ease of use and a high level of readability by 
 First and foremost skrape{it} aims to be a testing tool (not tied to a particular test runner), but it can also be used to scrape websites in a convenient fashion.
 
 ## Features
+### Parsing
 - [x] Deserialization of HTML/XML from websites, local html files and html as string to data classes / POJOs.
-- [x] Http-Client without verbosity and ceremony to make requests and corresponding request options like headers, cookies etc in a fluent style interface.
-- [x] Can handle client side rendered webpages / Javascript execution
 - [x] Designed to deserialize HTML but can handle any XML-related markup specifications such as SVG, UML, RSS or XML itself.
-- [x] Easy to use, idiomatic and type-safe DSL to ensure a high level of readability.
-- [x] DSL to select html elements as well as supporting CSS query-selector syntax.
-- [x] Not bind to a specific test runner or framework.
-- [x] Build-in matchers/assertions based on infix functions to archive a very high level of readability.
-- [x] Open to use any other assertion library of your choice.
-- [x] DSL is behaving like a Fluent-Api to make data extraction/scraping as comfortable as possible.
-
-### Coming Soon
+- [x] DSL to select html elements as well as supporting CSS query-selector syntax by string invocation.
+### Http-Client
+- [x] Http-Client without verbosity and ceremony to make requests and corresponding request options like headers, cookies etc in a fluent style interface.
 - [x] Pre-configure client regarding auth and other request settings 
-- [x] Asynchronous and blocking requests
-- [x] Requests as [coroutines](https://github.com/Kotlin/kotlinx.coroutines)
-- [x] Cancel asynchronous request
+- [x] Can handle client side rendered webpages.  Javascript execution results can optionally be considered in the response body.
+### Idomatic
+- [x] Easy to use, idiomatic and type-safe DSL to ensure a high level of readability.
+- [x] Build-in matchers/assertions based on infix functions to archive a very high level of readability.
+- [x] DSL is behaving like a Fluent-Api to make data extraction/scraping as comfortable as possible.
+### Compatibility
+- [x] Not bind to a specific test-runner, framework or whatever.
+- [x] Open to use any other assertion library of your choice.
 
 #### Extensions
 In addition, extensions for well-known testing libraries are provided to extend them with the mentioned skrape{it} functionality.
 Currently available:
 * [Skrape{it} MockMvc extension](https://github.com/skrapeit/skrapeit-mockmvc-extension)
 * [Skrape{it} Ktor extension](https://github.com/skrapeit/skrapeit-ktor-extension)
+
+---
 
 ### Read the Docs
 You'll always find latest documentation, release notes and examples at 
@@ -118,7 +119,7 @@ All our official/stable releases will be published to [mavens central repository
 
 ```kotlin
 dependencies {
-    implementation("it.skrape:skrapeit-core:1.0.0-alpha1")
+    implementation("it.skrape:skrapeit-core:1.0.0-alpha2")
 }
 ```
 </details>
@@ -173,5 +174,5 @@ dependencies {
 </details>
 
 ### Sponsoring
-Skrape{it} is and always will be free and open-source. However your sponsorship of this project is greatly appreciated and will fund the caffeine and pizzas that fuel its development. 
+Skrape{it} is and always will be **free and open-source**. However your sponsorship of this project is greatly appreciated and will fund the caffeine and pizzas that fuel its development. 
 To sponsor Skrape{it}, just click this button → [![Donate](https://img.shields.io/badge/-donate-blue.svg?logo=paypal)](https://www.paypal.me/skrapeit)
