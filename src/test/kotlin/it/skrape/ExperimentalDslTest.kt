@@ -30,7 +30,7 @@ class ExperimentalDslTest : WireMockSetup() {
                         }
 
                         findAll {
-                            toBePresentExactlyOnce()
+                            toBePresentExactlyOnce
                         }
                     }
                     customTag("a-custom-tag") {
