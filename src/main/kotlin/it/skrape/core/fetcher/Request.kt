@@ -1,7 +1,6 @@
 package it.skrape.core.fetcher
 
 import it.skrape.SkrapeItDsl
-import it.skrape.core.fetcher.Authentication.Type.NONE
 import it.skrape.core.fetcher.Method.GET
 import it.skrape.core.fetcher.Mode.SOURCE
 
@@ -35,7 +34,7 @@ data class Request(
         var cookies: Map<String, String> = emptyMap(),
         var timeout: Int = 5000,
         var followRedirects: Boolean = true,
-        var authentication: Authentication = Authentication(NONE)
+        var authentication: Authentication? = null
 ) {
     val asConfig
         get() = this

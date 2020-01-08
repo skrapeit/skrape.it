@@ -94,10 +94,12 @@ class ExperimentalDslTest : WireMockSetup() {
         }
     }
 
-    @Test
-    fun `can NOT scrape basic auth protected websites without credentials`() {
+    @ParameterizedTest(name = "can NOT scrape basic auth protected websites without credentials in {0}-mode")
+    @EnumSource(Mode::class)
+    fun `can NOT scrape basic auth protected websites without credentials`(fetcherMode: Mode) {
 
         skrape {
+            mode = fetcherMode
             url = "${httpBinUrl()}/basic-auth/cr1z/secure"
 
             expect {
@@ -106,7 +108,7 @@ class ExperimentalDslTest : WireMockSetup() {
         }
     }
 
-    @ParameterizedTest(name = "can scrape basic auth protected websites with the mode {0}")
+    @ParameterizedTest(name = "can scrape basic auth protected websites in {0}-mode")
     @EnumSource(Mode::class)
     fun `can scrape basic auth protected websites`(fetcherMode: Mode) {
 

@@ -2,26 +2,24 @@ package it.skrape.core.fetcher
 
 import java.util.*
 
-data class Authentication(
-        val type: Type = Type.NONE,
-        var username: String = "",
-        var password: String = ""
-) {
-    enum class Type(val classifier: String) {
-        NONE(""),
-        BASIC("Basic"),
-        OAUTH2("Bearer")
-    }
-
-    fun toHeaderValue(): String {
-        val encodedCredentials = "$username:$password".base64Encoded()
-        return when (type) {
-            Type.BASIC -> "${type.classifier} $encodedCredentials"
-            else -> ""
-        }
-    }
-
-    private fun String.base64Encoded() = Base64.getEncoder().encodeToString(toByteArray())
+interface Authentication {
+    fun toHeaderValue(): String
+    fun String.base64Encoded() = Base64.getEncoder().encodeToString(toByteArray()).orEmpty()
 }
 
-fun basic(init: Authentication.() -> Unit) = Authentication(Authentication.Type.BASIC).also(init)
+class BasicAuth(
+        var username: String = "",
+        var password: String = ""
+): Authentication {
+    override fun toHeaderValue(): String = "Basic ${"$username:$password".base64Encoded()}"
+}
+
+class OAuth2(
+        var clientId: String = "",
+        var clientSecret: String = ""
+): Authentication {
+    override fun toHeaderValue(): String = "Bearer TODO"
+}
+
+fun basic(init: BasicAuth.() -> Unit) = BasicAuth().also(init) as Authentication
+fun oauth2(init: OAuth2.() -> Unit) = OAuth2().also(init) as Authentication

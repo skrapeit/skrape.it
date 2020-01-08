@@ -46,7 +46,9 @@ class BrowserFetcher(private val request: Request) : Fetcher {
         ajaxController = NicelyResynchronizingAjaxController()
         createCookies()
         addRequestHeader("User-Agent", request.userAgent)
-        addRequestHeader("Authorization", request.authentication.toHeaderValue())
+        if (request.authentication != null) {
+            addRequestHeader("Authorization",request.authentication!!.toHeaderValue())
+        }
         request.headers.forEach {
             addRequestHeader(it.key, it.value)
         }
