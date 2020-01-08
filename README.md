@@ -50,7 +50,7 @@ Currently available:
 You'll always find the latest documentation, release notes and examples at **[https://docs.skrape.it](https://docs.skrape.it)**.
 If you don't want to read that much or just want to get a rough overview on how to use **skrape{it}**, you can have a look at the [Documentation by Example](#documentation-by-example) section:
 
-#### Installation
+### Installation
 All our official/stable releases will be published to [mavens central repository](https://search.maven.org/search?q=g:it.skrape%20AND%20a:skrapeit-core&core=gav).
 
 #### Add dependency
@@ -240,6 +240,6 @@ class ExampleTest {
 }
 ```
 
-### Sponsoring
+## Sponsoring
 Skrape{it} is and always will be **free and open-source**. However your sponsorship of this project is greatly appreciated and will fund the caffeine and pizzas that fuel its development. 
 To sponsor Skrape{it}, just click this button → [![Donate](https://img.shields.io/badge/-donate-blue.svg?logo=paypal)](https://www.paypal.me/skrapeit)
