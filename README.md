@@ -114,6 +114,47 @@ dependencies {
 </details>
 
 ## Documentation by Example
+### Parse and verify HTML from String
+```java
+@Test
+internal fun `can read and return html from String`() {
+    htmlDocument("""
+        <html>
+            <body>
+                <h1>welcome</h1>
+                <div>
+                    <p>first p-element</p>
+                    <p class="foo">some p-element</p>
+                    <p class="foo">last p-element</p>
+                </div>
+            </body>
+        </html>""") {
+
+        h1 {
+            findFirst {
+                text toBe "welcome"
+            }
+            p {
+                withClass = "foo"
+                findFirst {
+                    text toBe "some p-element"
+                    className  toBe "foo"
+                }
+            }
+            p {
+                findAll {
+                    text toContain "p-element"
+                }
+                findLast {
+                    text toBe "last p-element"
+                }
+            }
+        }
+    }
+}
+```
+
+
 ### Testing HTML responses:
 ```java
 @Test

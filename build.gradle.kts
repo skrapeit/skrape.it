@@ -92,9 +92,9 @@ tasks {
         gradleReleaseChannel = "current"
 
         rejectVersionIf {
-            val isFlaggedAsStable = listOf("RELEASE", "FINAL", "rc").any { candidate.version.toUpperCase().contains(it.toUpperCase()) }
+            val isFlaggedAsNonStable = listOf("alpha", "beta", "RC", "rc").any { candidate.version.contains(it) }.not()
             val isSemanticVersion =  "^[0-9,.v-]+(-r)?$".toRegex().matches(candidate.version)
-            (isFlaggedAsStable || isSemanticVersion).not()
+            (isFlaggedAsNonStable || isSemanticVersion).not()
         }
     }
 
