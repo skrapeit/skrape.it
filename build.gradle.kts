@@ -3,13 +3,13 @@
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 
 plugins {
-    kotlin("jvm") version "1.3.50"
+    kotlin("jvm") version "1.3.61"
     jacoco
     id("org.jetbrains.dokka") version "0.10.0"
     id("se.patrikerdes.use-latest-versions") version "0.2.13"
     id("com.github.ben-manes.versions") version "0.27.0"
     id("com.adarshr.test-logger") version "2.0.0"
-    id("io.gitlab.arturbosch.detekt") version "1.1.1"
+    id("io.gitlab.arturbosch.detekt") version "1.3.1"
     id("com.vanniktech.maven.publish") version "0.8.0"
 }
 
@@ -25,17 +25,17 @@ repositories {
 }
 
 dependencies {
-    val kotlinVersion = "1.3.60"
+    val kotlinVersion = "1.3.61"
     val jsoupVersion = "1.12.1"
     val htmlUnitVersion = "2.36.0"
-    val striktVersion = "0.22.2"
+    val striktVersion = "0.23.4"
     val kohttpVersion = "0.11.1"
 
     val junitVersion = "5.5.2"
-    val testContainersVersion = "1.12.3"
+    val testContainersVersion = "1.12.4"
     val wireMockVersion = "2.25.1"
     val mockkVersion = "1.9.3"
-    val log4jOverSlf4jVersion = "1.7.28"
+    val log4jOverSlf4jVersion = "1.7.30"
     val logbackVersion = "1.2.3"
 
     implementation("org.jsoup:jsoup:$jsoupVersion")
@@ -86,9 +86,26 @@ tasks {
         finalizedBy(jacocoTestReport)
     }
 
+    withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
+        rejectVersionIf {
+            isNonStable(candidate.version)
+        }
+    }
+
     val updateDependencies by creating {
         dependsOn(useLatestVersionsCheck, useLatestVersions, test)
     }
+
+    dependencyUpdates {
+        gradleReleaseChannel = "current"
+    }
+}
+
+fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    val isStable = stableKeyword || regex.matches(version)
+    return isStable.not()
 }
 
 mavenPublish {
