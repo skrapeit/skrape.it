@@ -115,7 +115,7 @@ dependencies {
 
 ## Documentation by Example
 ### Parse and verify HTML from String
-```java
+```kotlin
 @Test
 internal fun `can read and return html from String`() {
     htmlDocument("""
@@ -156,7 +156,7 @@ internal fun `can read and return html from String`() {
 
 
 ### Testing HTML responses:
-```java
+```kotlin
 @Test
 fun `dsl can skrape by url`() {
     skrape {
@@ -206,7 +206,7 @@ fun `dsl can skrape by url`() {
 ```
 
 ### Configure HTTP-Client:
-```java
+```kotlin
 class ExampleTest {
     val myPreConfiguredClient = skrape {
         // url can be a plain url as string or build by #urlBuilder
@@ -226,7 +226,7 @@ class ExampleTest {
         cookies = mapOf("some-cookie-name" to "some-value") // optional
         headers = mapOf("some-custom-header" to "some-value") // optional
         
-        asConfig
+        asConfig // <--- returns the configured request object
     }
 
     @Test
