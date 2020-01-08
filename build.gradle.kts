@@ -1,5 +1,6 @@
 @file:Suppress("UNUSED_VARIABLE")
 
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 
 plugins {
@@ -86,26 +87,20 @@ tasks {
         finalizedBy(jacocoTestReport)
     }
 
-    withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
+    withType<DependencyUpdatesTask> {
+
+        gradleReleaseChannel = "current"
+
         rejectVersionIf {
-            isNonStable(candidate.version)
+            val isFlaggedAsStable = listOf("RELEASE", "FINAL", "rc").any { candidate.version.toUpperCase().contains(it.toUpperCase()) }
+            val isSemanticVersion =  "^[0-9,.v-]+(-r)?$".toRegex().matches(candidate.version)
+            (isFlaggedAsStable || isSemanticVersion).not()
         }
     }
 
     val updateDependencies by creating {
         dependsOn(useLatestVersionsCheck, useLatestVersions, test)
     }
-
-    dependencyUpdates {
-        gradleReleaseChannel = "current"
-    }
-}
-
-fun isNonStable(version: String): Boolean {
-    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
-    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
-    val isStable = stableKeyword || regex.matches(version)
-    return isStable.not()
 }
 
 mavenPublish {
