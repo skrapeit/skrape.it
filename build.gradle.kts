@@ -99,7 +99,7 @@ tasks {
     }
 
     val updateDependencies by creating {
-        dependsOn(useLatestVersionsCheck, useLatestVersions, test)
+        dependsOn(useLatestVersions, test)
     }
 }
 
