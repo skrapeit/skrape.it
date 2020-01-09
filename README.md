@@ -55,7 +55,7 @@ All our official/stable releases will be published to [mavens central repository
 
 #### Add dependency
 
-<details><summary>Gradle</summary>
+<details open><summary>Gradle</summary>
 
 ```kotlin
 dependencies {
@@ -81,7 +81,7 @@ But be careful, these are non official releases and may be unstable as well as b
 
 ##### Add experimental stuff
 
-<details><summary>Gradle</summary>
+<details open><summary>Gradle</summary>
 
 ```kotlin
 repositories {
