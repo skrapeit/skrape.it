@@ -1,6 +1,5 @@
 package it.skrape.selects.html5
 
-import it.skrape.SkrapeItElementPicker
 import it.skrape.selects.CssSelector
 import it.skrape.selects.Doc
 
@@ -14,7 +13,6 @@ import it.skrape.selects.Doc
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.script(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("script$cssSelector", init)
 
@@ -28,7 +26,6 @@ fun <T> Doc.script(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.canvas(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("canvas$cssSelector", init)
 
@@ -42,6 +39,5 @@ fun <T> Doc.canvas(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.noscript(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("noscript$cssSelector", init)

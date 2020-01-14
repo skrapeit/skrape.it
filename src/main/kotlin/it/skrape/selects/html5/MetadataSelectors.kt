@@ -1,6 +1,5 @@
 package it.skrape.selects.html5
 
-import it.skrape.SkrapeItElementPicker
 import it.skrape.selects.CssSelector
 import it.skrape.selects.Doc
 
@@ -14,7 +13,6 @@ import it.skrape.selects.Doc
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.base(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("base$cssSelector", init)
 
@@ -28,7 +26,6 @@ fun <T> Doc.base(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.head(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("head$cssSelector", init)
 
@@ -42,7 +39,6 @@ fun <T> Doc.head(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.link(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("link$cssSelector", init)
 
@@ -56,7 +52,6 @@ fun <T> Doc.link(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.meta(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("meta$cssSelector", init)
 
@@ -70,7 +65,6 @@ fun <T> Doc.meta(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.style(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("style$cssSelector", init)
 
@@ -84,6 +78,5 @@ fun <T> Doc.style(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.title(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("title$cssSelector", init)

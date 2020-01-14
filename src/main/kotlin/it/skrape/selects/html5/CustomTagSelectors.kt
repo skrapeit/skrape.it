@@ -1,6 +1,5 @@
 package it.skrape.selects.html5
 
-import it.skrape.SkrapeItElementPicker
 import it.skrape.selects.CssSelector
 import it.skrape.selects.Doc
 
@@ -14,6 +13,5 @@ import it.skrape.selects.Doc
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.customTag(tag: String, cssSelector: String = "", init: CssSelector.() -> T) =
         selection("$tag$cssSelector", init)

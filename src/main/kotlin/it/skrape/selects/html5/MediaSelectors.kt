@@ -1,6 +1,5 @@
 package it.skrape.selects.html5
 
-import it.skrape.SkrapeItElementPicker
 import it.skrape.selects.CssSelector
 import it.skrape.selects.Doc
 
@@ -14,7 +13,6 @@ import it.skrape.selects.Doc
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.area(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("area$cssSelector", init)
 
@@ -28,7 +26,6 @@ fun <T> Doc.area(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.audio(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("audio$cssSelector", init)
 
@@ -42,7 +39,6 @@ fun <T> Doc.audio(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.img(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("img$cssSelector", init)
 
@@ -56,7 +52,6 @@ fun <T> Doc.img(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.map(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("map$cssSelector", init)
 
@@ -70,7 +65,6 @@ fun <T> Doc.map(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.track(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("track$cssSelector", init)
 
@@ -84,6 +78,5 @@ fun <T> Doc.track(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.video(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("video$cssSelector", init)

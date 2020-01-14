@@ -10,7 +10,6 @@ import it.skrape.selects.html5.*
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.testcontainers.containers.GenericContainer
 import org.testcontainers.junit.jupiter.Testcontainers
 import strikt.api.expectThat
 import strikt.assertions.*
@@ -137,7 +136,9 @@ internal class DslTest : WireMockSetup() {
             expect {
                 htmlDocument {
                     body {
-                        text toContain "i'm a paragraph"
+                        findFirst {
+                            text toContain "i'm a paragraph"
+                        }
                     }
                 }
             }
@@ -275,14 +276,12 @@ internal class DslTest : WireMockSetup() {
             extract {
                 htmlDocument {
                     MyObject(
-                            message = statusMessage,
-                            paragraph = findFirst("p").text,
-                            allParagraphs = findAll("p").map { it.text }
+                            allParagraphs = findAll("p").map { it.text },
+                            paragraph = findFirst("p").text
                     )
                 }
             }
         }
-        expectThat(extracted.message).isEqualTo("OK")
         expectThat(extracted.paragraph).isEqualTo("i'm a paragraph")
         expectThat(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
     }
@@ -329,20 +328,20 @@ internal class DslTest : WireMockSetup() {
                 findFirst {
                     text toBe "welcome"
                 }
-                p {
-                    withClass = "foo"
-                    findFirst {
-                        text toBe "some p-element"
-                        className  toBe "foo"
-                    }
+            }
+            p {
+                withClass = "foo"
+                findFirst {
+                    text toBe "some p-element"
+                    className toBe "foo"
                 }
-                p {
-                    findAll {
-                        text toContain "p-element"
-                    }
-                    findLast {
-                        text toBe "last p-element"
-                    }
+            }
+            p {
+                findAll {
+                    text toContain "p-element"
+                }
+                findLast {
+                    text toBe "last p-element"
                 }
             }
         }
@@ -404,7 +403,11 @@ internal class DslTest : WireMockSetup() {
     }
 }
 
-class MyObject(var message: String? = null, var paragraph: String = "", var allParagraphs: List<String> = emptyList())
+class MyObject(
+        var message: String? = null,
+        var paragraph: String = "",
+        var allParagraphs: List<String> = emptyList()
+)
 
 class MyOtherObject {
     var message: String? = null

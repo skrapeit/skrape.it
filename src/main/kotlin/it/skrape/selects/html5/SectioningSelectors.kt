@@ -1,6 +1,5 @@
 package it.skrape.selects.html5
 
-import it.skrape.SkrapeItElementPicker
 import it.skrape.selects.CssSelector
 import it.skrape.selects.Doc
 
@@ -14,7 +13,6 @@ import it.skrape.selects.Doc
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.body(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("body$cssSelector", init)
 
@@ -28,7 +26,6 @@ fun <T> Doc.body(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.div(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("div$cssSelector", init)
 
@@ -42,7 +39,6 @@ fun <T> Doc.div(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.section(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("section$cssSelector", init)
 
@@ -56,7 +52,6 @@ fun <T> Doc.section(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.nav(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("nav$cssSelector", init)
 
@@ -70,7 +65,6 @@ fun <T> Doc.nav(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.article(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("article$cssSelector", init)
 
@@ -84,7 +78,6 @@ fun <T> Doc.article(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.aside(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("aside$cssSelector", init)
 
@@ -98,7 +91,6 @@ fun <T> Doc.aside(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.h1(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("h1$cssSelector", init)
 
@@ -112,7 +104,6 @@ fun <T> Doc.h1(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.h2(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("h2$cssSelector", init)
 
@@ -126,7 +117,6 @@ fun <T> Doc.h2(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.h3(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("h3$cssSelector", init)
 
@@ -140,7 +130,6 @@ fun <T> Doc.h3(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.h4(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("h4$cssSelector", init)
 
@@ -154,7 +143,6 @@ fun <T> Doc.h4(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.h5(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("h5$cssSelector", init)
 
@@ -168,7 +156,6 @@ fun <T> Doc.h5(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.h6(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("h6$cssSelector", init)
 
@@ -182,7 +169,6 @@ fun <T> Doc.h6(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.header(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("header$cssSelector", init)
 
@@ -196,7 +182,6 @@ fun <T> Doc.header(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.footer(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("footer$cssSelector", init)
 
@@ -210,7 +195,6 @@ fun <T> Doc.footer(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.address(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("address$cssSelector", init)
 
@@ -224,6 +208,5 @@ fun <T> Doc.address(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.main(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("main$cssSelector", init)

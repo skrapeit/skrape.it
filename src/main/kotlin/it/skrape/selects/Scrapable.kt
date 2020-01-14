@@ -1,7 +1,8 @@
 package it.skrape.selects
 
-import it.skrape.SkrapeItElementPicker
+import it.skrape.SkrapeItDsl
 
+@SkrapeItDsl
 interface Scrapable {
 
     /**
@@ -50,7 +51,6 @@ interface Scrapable {
      * @param cssSelector that represents an CSS-Selector
      * @return T
      */
-    @SkrapeItElementPicker
     fun <T> findAll(cssSelector: String, init: DocElements.() -> T): T
 
     /**
@@ -69,13 +69,11 @@ interface Scrapable {
      * @param cssSelector that represents an CSS-Selector
      * @return T
      */
-    @SkrapeItElementPicker
     fun <T> findFirst(cssSelector: String, init: DocElement.() -> T): T
 
     /**
      * Will convert an invoked String to a CssSelector scope.
      */
-    @SkrapeItElementPicker
     operator fun String.invoke(init: CssSelector.() -> Unit)
 
     /**

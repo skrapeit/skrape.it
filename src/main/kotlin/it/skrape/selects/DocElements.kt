@@ -1,49 +1,38 @@
 package it.skrape.selects
 
-import it.skrape.SkrapeItElementPicker
-import it.skrape.SkrapeItValuePicker
+import it.skrape.SkrapeItDsl
 import it.skrape.exceptions.ElementNotFoundException
 import org.jsoup.select.Elements
 
 @Suppress("TooManyFunctions")
+@SkrapeItDsl
 class DocElements(private val elements: Elements) : Scrapable, ArrayList<DocElement>() {
 
-    @SkrapeItValuePicker
     override val text: String = elements.text().orEmpty()
 
-    @SkrapeItValuePicker
     override val html = elements.html().orEmpty()
 
-    @SkrapeItValuePicker
     override val outerHtml: String = elements.outerHtml().orEmpty()
 
-    @SkrapeItElementPicker
     override fun <T> findAll(cssSelector: String, init: DocElements.() -> T): T = findAll(cssSelector).init()
 
     override fun findAll(cssSelector: String): DocElements = DocElements(elements.select(cssSelector))
 
     override fun findFirst(cssSelector: String): DocElement = findAll(cssSelector).findFirst { this }
 
-    @SkrapeItElementPicker
     override fun <T> findFirst(cssSelector: String, init: DocElement.() -> T): T = findFirst(cssSelector).init()
 
-    @SkrapeItElementPicker
     fun <T> findFirst(init: DocElement.() -> T): T =
             DocElement(elements.first() ?: throw ElementNotFoundException("")).init()
 
-    @SkrapeItElementPicker
     fun <T> findByIndex(index: Int, init: DocElement.() -> T): T = DocElement(elements.elementAt(index)).init()
 
-    @SkrapeItElementPicker
     fun <T> findSecond(init: DocElement.() -> T): T = DocElement(elements.elementAt(index = 1)).init()
 
-    @SkrapeItElementPicker
     fun <T> findThird(init: DocElement.() -> T): T = DocElement(elements.elementAt(index = 2)).init()
 
-    @SkrapeItElementPicker
     fun <T> findSecondLast(init: DocElement.() -> T): T = DocElement(elements.elementAt(size - 2)).init()
 
-    @SkrapeItElementPicker
     fun <T> findLast(init: DocElement.() -> T): T = DocElement(elements.last()).init()
 
     override val size = elements.size

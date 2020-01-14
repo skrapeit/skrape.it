@@ -1,12 +1,13 @@
 package it.skrape.matchers
 
-import it.skrape.SkrapeItAssertion
+import it.skrape.SkrapeItDsl
 import it.skrape.core.fetcher.ContentType
 import strikt.api.expectThat
 import strikt.assertions.contains
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotEqualTo
 
+@SkrapeItDsl
 enum class ContentTypes(val value: String) {
     APPLICATION_GZIP("application/gzip"),
     APPLICATION_JSON("application/json"),
@@ -30,7 +31,6 @@ enum class ContentTypes(val value: String) {
     IMAGE_SVG("image/svg");
 }
 
-@SkrapeItAssertion
 infix fun ContentType.toBe(expected: ContentTypes): ContentType {
     expectThat(this.raw())
             .describedAs("content-type")
@@ -38,7 +38,6 @@ infix fun ContentType.toBe(expected: ContentTypes): ContentType {
     return this
 }
 
-@SkrapeItAssertion
 infix fun ContentType.`to be`(expected: ContentTypes) = this toBe expected
 
 infix fun ContentType.toBeNot(expected: ContentTypes): ContentType {
@@ -48,10 +47,8 @@ infix fun ContentType.toBeNot(expected: ContentTypes): ContentType {
     return this
 }
 
-@SkrapeItAssertion
 infix fun ContentType.`to be not`(expected: ContentTypes) = this toBeNot expected
 
-@SkrapeItAssertion
 infix fun ContentType.toContain(expected: ContentTypes): ContentType {
     expectThat(this.raw())
             .describedAs("content-type")
@@ -59,10 +56,8 @@ infix fun ContentType.toContain(expected: ContentTypes): ContentType {
     return this
 }
 
-@SkrapeItAssertion
 infix fun ContentType.`to contain`(expected: ContentTypes) = this toContain expected
 
-@SkrapeItAssertion
 private fun ContentType.raw() = (this as String)
         .toLowerCase()
         .replace("\\s".toRegex(), "")

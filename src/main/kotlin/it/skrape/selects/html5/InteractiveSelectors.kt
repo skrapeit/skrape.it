@@ -1,6 +1,5 @@
 package it.skrape.selects.html5
 
-import it.skrape.SkrapeItElementPicker
 import it.skrape.selects.CssSelector
 import it.skrape.selects.Doc
 
@@ -14,7 +13,6 @@ import it.skrape.selects.Doc
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.details(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("details$cssSelector", init)
 
@@ -28,7 +26,6 @@ fun <T> Doc.details(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.dialog(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("dialog$cssSelector", init)
 
@@ -42,7 +39,6 @@ fun <T> Doc.dialog(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.menu(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("menu$cssSelector", init)
 
@@ -56,7 +52,6 @@ fun <T> Doc.menu(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.menuitem(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("menuitem$cssSelector", init)
 
@@ -70,6 +65,5 @@ fun <T> Doc.menuitem(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-@SkrapeItElementPicker
 fun <T> Doc.summary(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("summary$cssSelector", init)

@@ -53,15 +53,3 @@ inline fun <reified T : Any> create(clazz: KClass<T>): T {
 
 @DslMarker
 annotation class SkrapeItDsl
-
-@DslMarker
-annotation class SkrapeItElementPicker
-
-@DslMarker
-annotation class SkrapeItValuePicker
-
-@DslMarker
-annotation class SkrapeItResult
-
-@DslMarker
-annotation class SkrapeItAssertion

@@ -1,6 +1,6 @@
 package it.skrape.core.fetcher
 
-import it.skrape.SkrapeItResult
+import it.skrape.SkrapeItDsl
 import it.skrape.selects.Doc
 import it.skrape.core.Parser
 
@@ -14,6 +14,7 @@ import it.skrape.core.Parser
  * @param headers - the http responses headers
  * @param request - the initial request
  */
+@SkrapeItDsl
 class Result(
         val responseBody: ResponseBody,
         val document: Doc = Parser(responseBody).parse(),
@@ -29,23 +30,19 @@ class Result(
      * @param name that represents the
      * @return String with value of a certain response header or null
      */
-    @SkrapeItResult
     infix fun httpHeader(name: String): String? = this.headers[name]
 
-    @SkrapeItResult
     fun httpHeaders(init: Headers.() -> Unit): Map<String, String> {
         headers.apply(init)
         return headers
     }
 
-    @SkrapeItResult
     fun httpHeader(name: String, init: String?.() -> Unit): String? {
         val header = headers[name]
         header.apply(init)
         return header
     }
 
-    @SkrapeItResult
     fun <T> htmlDocument(init: Doc.() -> T) = document.init()
 }
 

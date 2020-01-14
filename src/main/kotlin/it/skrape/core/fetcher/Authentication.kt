@@ -1,12 +1,15 @@
 package it.skrape.core.fetcher
 
+import it.skrape.SkrapeItDsl
 import java.util.*
 
+@SkrapeItDsl
 interface Authentication {
     fun toHeaderValue(): String
     fun String.base64Encoded() = Base64.getEncoder().encodeToString(toByteArray()).orEmpty()
 }
 
+@SkrapeItDsl
 class BasicAuth(
         var username: String = "",
         var password: String = ""
@@ -14,6 +17,7 @@ class BasicAuth(
     override fun toHeaderValue(): String = "Basic ${"$username:$password".base64Encoded()}"
 }
 
+@SkrapeItDsl
 class OAuth2(
         var clientId: String = "",
         var clientSecret: String = ""
