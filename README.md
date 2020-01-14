@@ -175,8 +175,8 @@ class HtmlExtractionService {
                 it.httpStatusMessage = statusMessage.toString()
                 htmlDocument {
                     it.allParagraphs = p { findAll { eachText }}
-                    it.paragraph = findFirst("p").text
-                    it.allLinks = findAll("[href]").eachHref
+                    it.paragraph = p { findFirst { text }}
+                    it.allLinks = a { findAll { eachHref }
                 }
             }
         }
