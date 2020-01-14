@@ -6,11 +6,12 @@ import it.skrape.setupRedirect
 import it.skrape.setupStub
 import it.skrape.exceptions.UnsupportedRequestOptionException
 import it.skrape.selects.html5.h1
+import it.skrape.selects.html5.p
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import strikt.api.expect
 import strikt.api.expectThat
+import strikt.assertions.contains
 import strikt.assertions.isEqualTo
 import java.net.SocketTimeoutException
 import java.util.*
@@ -115,11 +116,11 @@ internal class BrowserFetcherTest : WireMockSetup() {
         wireMockServer.setupStub(fileName = "es6.html")
 
         val fetched = BrowserFetcher(Request()).fetch()
-        val paragraphs = fetched.document.findAll("div.dynamic")
+        val paragraphsText = fetched.document.findAll("p").eachText
+        val paragraphsText2 = fetched.htmlDocument { p { findAll { eachText }} }
 
-        paragraphs.forEach {
-            expectThat(it.text).isEqualTo("dynamically added")
-        }
+        expectThat(paragraphsText).contains("dynamically added")
+        expectThat(paragraphsText2).contains("dynamically added")
     }
 
     @Test

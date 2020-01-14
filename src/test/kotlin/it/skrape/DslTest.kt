@@ -8,9 +8,9 @@ import it.skrape.matchers.*
 import it.skrape.matchers.ContentTypes.*
 import it.skrape.selects.html5.*
 import org.junit.jupiter.api.Assertions.assertThrows
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.testcontainers.junit.jupiter.Testcontainers
+import strikt.api.expect
 import strikt.api.expectThat
 import strikt.assertions.*
 import java.io.File
@@ -230,6 +230,30 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
+    internal fun `dsl can fetch url and extract using it in DSL-ish fashion`() {
+        wireMockServer.setupStub()
+
+        val extracted = skrape {
+            url = "http://localhost:8080/"
+
+            extractIt<MyObject> {
+                it.message = statusMessage
+                htmlDocument {
+                    it.allParagraphs = p { findAll { eachText }}
+                    it.paragraph = findFirst("p").text
+                    it.allLinks = findAll("[href]").eachHref
+                }
+            }
+        }
+        expect {
+            that(extracted.message).isEqualTo("OK")
+            that(extracted.paragraph).isEqualTo("i'm a paragraph")
+            that(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
+            that(extracted.allLinks).containsExactly("http://some.url", "http://some-other.url")
+        }
+    }
+
+    @Test
     internal fun `will throw custom exception if element could not be found via lambda`() {
 
         assertThrows(ElementNotFoundException::class.java) {
@@ -275,14 +299,16 @@ internal class DslTest : WireMockSetup() {
             extract {
                 htmlDocument {
                     MyObject(
-                            allParagraphs = findAll("p").eachText,
-                            paragraph = findFirst("p").text
+                            allParagraphs = p { findAll { eachText }},
+                            paragraph = findFirst("p").text,
+                            allLinks = selection("[href]") { findAll { eachHref } }
                     )
                 }
             }
         }
         expectThat(extracted.paragraph).isEqualTo("i'm a paragraph")
         expectThat(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
+        expectThat(extracted.allLinks).containsExactly("http://some.url", "http://some-other.url")
     }
 
     @Test
@@ -405,7 +431,8 @@ internal class DslTest : WireMockSetup() {
 class MyObject(
         var message: String? = null,
         var paragraph: String = "",
-        var allParagraphs: List<String> = emptyList()
+        var allParagraphs: List<String> = emptyList(),
+        var allLinks: List<String> = emptyList()
 )
 
 class MyOtherObject {

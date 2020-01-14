@@ -4,6 +4,7 @@ import it.skrape.core.fetcher.Request
 import it.skrape.core.fetcher.Result
 import it.skrape.core.Scraper
 import kotlin.reflect.KClass
+import kotlin.reflect.full.createInstance
 
 
 /**
@@ -38,17 +39,9 @@ fun <T> Request.extract(extractor: Result.() -> T): T {
  */
 @SkrapeItDsl
 inline fun <reified T : Any> Request.extractIt(extractor: Result.(T) -> Unit): T {
-    val instance = create(T::class)
+    val instance = T::class.createInstance()
     Scraper(request = this).scrape().apply { extractor(instance) }
     return instance
-}
-
-/**
- * Creates an instance of generic with a no args constructor.
- * @return T
- */
-inline fun <reified T : Any> create(clazz: KClass<T>): T {
-    return clazz.constructors.first { it.parameters.isEmpty() }.call()
 }
 
 @DslMarker
