@@ -195,7 +195,7 @@ internal class DslTest : WireMockSetup() {
             url = "http://localhost:8080/"
 
             val extracted = extract {
-                MyObject(statusMessage, "", emptyList())
+                MyObject(statusMessage.toString(), "", emptyList())
             }
             expectThat(extracted.message).isEqualTo("OK")
         }
@@ -209,7 +209,7 @@ internal class DslTest : WireMockSetup() {
             url = "http://localhost:8080/"
 
             val extracted = extract {
-                MyObject(statusMessage, "", emptyList())
+                MyObject(statusMessage.toString(), "", emptyList())
             }
             expectThat(extracted.message).isEqualTo("OK")
         }
@@ -250,6 +250,39 @@ internal class DslTest : WireMockSetup() {
             that(extracted.paragraph).isEqualTo("i'm a paragraph")
             that(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
             that(extracted.allLinks).containsExactly("http://some.url", "http://some-other.url")
+        }
+    }
+
+    /**
+     * TODO: fix Class should have a single no-arg constructor: class it.skrape.MyDataClass
+     * for classes or data classes that have none default values
+     */
+    @Test
+    internal fun `dsl can fetch url and extract to data class`() {
+        wireMockServer.setupStub()
+
+        val extracted = skrape {
+            url = "http://localhost:8080/"
+
+            extractIt<MyDataClass> {
+                it.httpStatusCode = statusCode
+                it.httpStatusMessage = statusMessage.toString()
+                htmlDocument {
+                    it.allParagraphs = p { findAll { eachText }}
+                    it.paragraph = findFirst("p").text
+                    it.allLinks = findAll("[href]").eachHref
+                }
+            }
+        }
+
+        print(extracted)
+
+        expect {
+            that(extracted.httpStatusCode).isEqualTo(200)
+            that(extracted.httpStatusMessage).isEqualTo("OK")
+            that(extracted.paragraph).isEqualTo("i'm a paragraph")
+            that(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
+            that(extracted.allLinks!!).containsExactly("http://some.url", "http://some-other.url")
         }
     }
 
@@ -299,6 +332,7 @@ internal class DslTest : WireMockSetup() {
             extract {
                 htmlDocument {
                     MyObject(
+                            message = "",
                             allParagraphs = p { findAll { eachText }},
                             paragraph = findFirst("p").text,
                             allLinks = selection("[href]") { findAll { eachHref } }
@@ -430,6 +464,14 @@ internal class DslTest : WireMockSetup() {
 
 class MyObject(
         var message: String? = null,
+        var paragraph: String = "",
+        var allParagraphs: List<String> = emptyList(),
+        var allLinks: List<String> = emptyList()
+)
+
+data class MyDataClass(
+        var httpStatusCode: Int = 0,
+        var httpStatusMessage: String = "",
         var paragraph: String = "",
         var allParagraphs: List<String> = emptyList(),
         var allLinks: List<String> = emptyList()
