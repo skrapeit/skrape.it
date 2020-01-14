@@ -154,6 +154,38 @@ internal fun `can read and return html from String`() {
 }
 ```
 
+### Parse HTML and extract it
+```kotlin
+data class MyDataClass(
+        var httpStatusCode: Int = 0,
+        var httpStatusMessage: String = "",
+        var paragraph: String = "",
+        var allParagraphs: List<String> = emptyList(),
+        var allLinks: List<String> = emptyList()
+)
+
+class HtmlExtractionService {
+
+    fun extract() {
+        val extracted = skrape {
+            url = "http://localhost:8080/"
+
+            extractIt<MyDataClass> {
+                it.httpStatusCode = statusCode
+                it.httpStatusMessage = statusMessage.toString()
+                htmlDocument {
+                    it.allParagraphs = p { findAll { eachText }}
+                    it.paragraph = findFirst("p").text
+                    it.allLinks = findAll("[href]").eachHref
+                }
+            }
+        }
+        print(extracted)
+        // will print:
+        // MyDataClass(httpStatusCode=200, httpStatusMessage=OK, paragraph=i'm a paragraph, allParagraphs=[i'm a paragraph, i'm a second paragraph], allLinks=[http://some.url, http://some-other.url])
+    }
+}
+```
 
 ### Testing HTML responses:
 ```kotlin
