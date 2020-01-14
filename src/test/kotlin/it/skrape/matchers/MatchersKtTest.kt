@@ -120,19 +120,19 @@ internal class MatchersKtTest {
 
     @Test
     internal fun `toBePresent can handle multiple occurrence of an ELEMENT`() {
-        val element = mockk<DocElement> { every { isPresent() } returns true }
+        val element = mockk<DocElement> { every { isPresent } returns true }
         element.toBePresent
     }
 
     @Test
     internal fun `toBePresent can handle single occurrence of an ELEMENT`() {
-        val element = mockk<DocElement> { every { isPresent() } returns true }
+        val element = mockk<DocElement> { every { isPresent } returns true }
         element.toBePresent
     }
 
     @Test
     internal fun `toBePresent is throwing exception if no ELEMENT matches`() {
-        val element = mockk<DocElement> { every { isPresent() } returns false }
+        val element = mockk<DocElement> { every { isPresent } returns false }
         Assertions.assertThrows(AssertionFailedError::class.java) {
             element.toBePresent
         }

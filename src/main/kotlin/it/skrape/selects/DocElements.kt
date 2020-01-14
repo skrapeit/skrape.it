@@ -8,11 +8,14 @@ import org.jsoup.select.Elements
 @SkrapeItDsl
 class DocElements(private val elements: Elements) : Scrapable, ArrayList<DocElement>() {
 
-    override val text: String = elements.text().orEmpty()
+    override val text
+        get() = elements.text().orEmpty()
 
-    override val html = elements.html().orEmpty()
+    override val html
+        get() = elements.html().orEmpty()
 
-    override val outerHtml: String = elements.outerHtml().orEmpty()
+    override val outerHtml
+        get() = elements.outerHtml().orEmpty()
 
     override fun <T> findAll(cssSelector: String, init: DocElements.() -> T): T = findAll(cssSelector).init()
 
@@ -35,7 +38,8 @@ class DocElements(private val elements: Elements) : Scrapable, ArrayList<DocElem
 
     fun <T> findLast(init: DocElement.() -> T): T = DocElement(elements.last()).init()
 
-    override val size = elements.size
+    override val size
+        get()= elements.size
 
     /**
     Get an attribute value from the first matched findFirst that has the attribute.
@@ -53,6 +57,10 @@ class DocElements(private val elements: Elements) : Scrapable, ArrayList<DocElem
     @return true if any of the isPresent have the attribute; false if none do.
      */
     fun hasAttribute(attributeKey: String): Boolean = elements.hasAttr(attributeKey)
+
+    val eachText
+        get() = elements.eachText().orEmpty()
+
     /**
      * Get the attribute value for each of the matched isPresent. If an findFirst does not have this attribute, no value is
      * included in the result set for that findFirst.
@@ -62,9 +70,11 @@ class DocElements(private val elements: Elements) : Scrapable, ArrayList<DocElem
      */
     fun eachAttribute(attributeKey: String): List<String> = elements.eachAttr(attributeKey).orEmpty()
 
-    val eachHref: List<String> = eachAttribute("href")
+    val eachHref
+        get() = eachAttribute("href")
 
-    val eachHrefAsAbsoluteLink: List<String> = eachAttribute("abs:href")
+    val eachHrefAsAbsoluteLink
+        get() = eachAttribute("abs:href")
 
     override fun <T> selection(cssSelector: String, init: CssSelector.() -> T) =
             CssSelector(rawCssSelector = cssSelector).init()
@@ -72,6 +82,7 @@ class DocElements(private val elements: Elements) : Scrapable, ArrayList<DocElem
     override operator fun String.invoke(init: CssSelector.() -> Unit) =
             this@DocElements.selection(this, init)
 
-    fun isPresent() = elements.size > 0
+    val isPresent
+        get() = elements.size > 0
 
 }

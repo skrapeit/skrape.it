@@ -9,11 +9,14 @@ class DocElement(
         private val element: Element
 ) : Scrapable {
 
-    override val text = element.text().orEmpty()
+    override val text
+        get() = element.text().orEmpty()
 
-    override val html = element.html().orEmpty()
+    override val html
+        get() = element.html().orEmpty()
 
-    override val outerHtml: String = element.outerHtml().orEmpty()
+    override val outerHtml
+        get() = element.outerHtml().orEmpty()
 
     override fun <T> findAll(cssSelector: String, init: DocElements.() -> T): T =
             findAll(cssSelector).init()
@@ -24,9 +27,11 @@ class DocElement(
 
     override infix fun findFirst(cssSelector: String): DocElement = findAll(cssSelector).findFirst { this }
 
-    val className = element.className().orEmpty()
+    val className
+        get() = element.className().orEmpty()
 
-    val cssSelector = element.cssSelector().orEmpty()
+    val cssSelector
+        get() = element.cssSelector().orEmpty()
 
     infix fun attribute(attributeKey: String): String = element.attr(attributeKey)
 
@@ -38,5 +43,6 @@ class DocElement(
 
     override fun toString() = element.toString()
 
-    fun isPresent() = element.allElements.size > 0
+    val isPresent
+        get() = element.allElements.size > 0
 }

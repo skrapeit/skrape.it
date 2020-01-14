@@ -265,7 +265,6 @@ internal class DslTest : WireMockSetup() {
         }
     }
 
-    @Disabled("see TODO at Doc#findAllOrNull")
     @Test
     internal fun `dsl can fetch url and extract from skrape`() {
         wireMockServer.setupStub()
@@ -276,7 +275,7 @@ internal class DslTest : WireMockSetup() {
             extract {
                 htmlDocument {
                     MyObject(
-                            allParagraphs = findAll("p").map { it.text },
+                            allParagraphs = findAll("p").eachText,
                             paragraph = findFirst("p").text
                     )
                 }

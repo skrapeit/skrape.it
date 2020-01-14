@@ -60,7 +60,7 @@ val DocElements.toBePresentExactlyTwice
     get() = this toBePresentTimes 2
 
 val DocElement.toBePresent
-    get() = expectThat(this.isPresent()).isTrue().let { this }
+    get() = expectThat(this.isPresent).isTrue().let { this }
 
 val DocElements.toBeNotPresent
     get() = expectThat(this.size).isEqualTo(0).let { this }

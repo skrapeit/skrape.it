@@ -19,13 +19,10 @@ internal class BrowserFetcherTest : WireMockSetup() {
 
     @Test
     internal fun `will fetch localhost 8080 with defaults if no params`() {
-        // given
         wireMockServer.setupStub()
 
-        // when
         val fetched = BrowserFetcher(Request()).fetch()
 
-        // then
         expect {
             that(fetched.statusCode).isEqualTo(200)
             that(fetched.document.title()).isEqualTo("i'm the title")
@@ -34,16 +31,14 @@ internal class BrowserFetcherTest : WireMockSetup() {
 
     @Test
     internal fun `can fetch url and use HTTP verb GET by default`() {
-        // given
         wireMockServer.setupStub(path = "/example")
+
         val options = Request().apply {
             url = "https://localhost:8089/example"
         }
 
-        // when
         val fetched = BrowserFetcher(options).fetch()
 
-        // then
         expect {
             that(fetched.statusCode).isEqualTo(200)
             that(fetched.document.title()).isEqualTo("i'm the title")
@@ -52,47 +47,38 @@ internal class BrowserFetcherTest : WireMockSetup() {
 
     @Test
     internal fun `will not throw exception on non existing url`() {
-        // given
         val options = Request().apply {
             url = "http://localhost:8080/not-existing"
         }
 
-        // when
         val fetched = BrowserFetcher(options).fetch()
 
-        // then
         expectThat(fetched.statusCode).isEqualTo(404)
     }
 
     @Test
     internal fun `will not follow redirects if configured`() {
-        // given
         wireMockServer.setupRedirect()
-        // when
+
         val result = BrowserFetcher(Request(followRedirects = false)).fetch()
-        // then
+
         expectThat(result.statusCode).isEqualTo(302)
     }
 
     @Test
     internal fun `will follow redirect by default`() {
-        // given
         wireMockServer.setupRedirect()
 
-        // when
         val fetched = BrowserFetcher(Request()).fetch()
 
-        // then
         expectThat(fetched.statusCode).isEqualTo(404)
     }
 
     @Test
     internal fun `will throw exception on HTTP verb POST`() {
-        // when
         val options = Request().apply {
             method = Method.POST
         }
-        // then
         assertThrows(UnsupportedRequestOptionException::class.java) {
             BrowserFetcher(options).fetch()
         }
@@ -100,9 +86,8 @@ internal class BrowserFetcherTest : WireMockSetup() {
 
     @Test
     internal fun `can parse js rendered elements`() {
-        // given
         wireMockServer.setupStub(fileName = "js.html")
-        // when
+
         val fetched = BrowserFetcher(Request()).fetch()
 
         fetched.document.selection("div.dynamic") {
@@ -114,12 +99,10 @@ internal class BrowserFetcherTest : WireMockSetup() {
 
     @Test
     internal fun `can parse js rendered elements from https page`() {
-        // given
         wireMockServer.setupStub(fileName = "js.html")
-        // when
+
         val fetched = BrowserFetcher(Request(url = "https://localhost:8089")).fetch()
 
-        // then
         fetched.document.selection("div.dynamic") {
             findFirst {
                 expectThat(text).isEqualTo("I have been dynamically added via Javascript")
@@ -127,16 +110,13 @@ internal class BrowserFetcherTest : WireMockSetup() {
         }
     }
 
-    @Disabled("see TODO at Doc#findAllOrNull")
     @Test
     internal fun `can parse es6 rendered elements from https page`() {
-        // given
         wireMockServer.setupStub(fileName = "es6.html")
-        // when
+
         val fetched = BrowserFetcher(Request()).fetch()
         val paragraphs = fetched.document.findAll("div.dynamic")
 
-        // then
         paragraphs.forEach {
             expectThat(it.text).isEqualTo("dynamically added")
         }
@@ -144,31 +124,27 @@ internal class BrowserFetcherTest : WireMockSetup() {
 
     @Test
     internal fun `can handle uri scheme`() {
-        // given
         val aValideHtml = "<html><h1>headline</h1></html>"
         val base64encoded = Base64.getEncoder().encodeToString(aValideHtml.toByteArray())
         val uriScheme = "data:text/html;charset=utf-8;base64,$base64encoded"
-        // when
+
         val fetched = BrowserFetcher(Request(url = uriScheme)).fetch()
         val headline = fetched.document.h1 { findFirst { text } }
 
-        // then
         expectThat(headline).isEqualTo("headline")
 
     }
 
     @Test
     internal fun `will not throw if response body is not html`() {
-        // given
         wireMockServer.setupStub(fileName = "data.json", contentType = "application/json; charset=UTF-8")
-        // when
+
         val response = BrowserFetcher(Request()).fetch()
         expectThat(response.responseBody).isEqualTo("{\"data\":\"some value\"}")
     }
 
     @Test
     internal fun `will throw exception on timeout`() {
-        // given
         wireMockServer.setupStub(delay = 6000)
 
         assertThrows(SocketTimeoutException::class.java) {
