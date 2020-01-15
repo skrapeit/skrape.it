@@ -31,3 +31,4 @@ gen
 
 build
 /classes/
+/gradle.properties-e

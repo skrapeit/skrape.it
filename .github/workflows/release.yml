@@ -2,8 +2,10 @@ name: Release
 
 on: 
   push:
+    branches: 
+      - master
     tags:
-      - 'v*'
+      - '*'
 
 jobs:
   build:
@@ -18,3 +20,8 @@ jobs:
       run: |
         echo Add other actions to build,
         echo test, and deploy your project.
+    - name: CHeck if git tag exists
+      run: echo "::set-env name=HEAD_TAG::$(git tag --points-at HEAD)"
+    - name: Runs only if git tag exists
+      if: env.HEAD_TAG != ''
+      run: echo "This runs because git tag is present at HEAD as $HEAD"
