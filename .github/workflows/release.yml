@@ -30,15 +30,13 @@ jobs:
         with:
           current-version: ${{ steps.current_version.outputs.value }}
           version-fragment: ${{ steps.latest_tag.outputs.tag }}
-      - name: Identify current version
-        id: current_version
+      - name: Write new version
         uses: christian-draeger/write-properties@1.0.0
         with:
           path: './gradle.properties'
           property: 'VERSION_NAME'
           value: ${{ steps.bump_version.outputs.next-version }}
       - name: verify version bump
-        id: current_version
         uses: christian-draeger/read-properties@1.0.0
         with:
           path: './gradle.properties'
