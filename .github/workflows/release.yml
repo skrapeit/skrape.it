@@ -41,6 +41,9 @@ jobs:
         with:
           path: './gradle.properties'
           property: 'VERSION_NAME'
-#      - uses: mikeal/publish-to-github-action@master
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: matheusalbino/git-commit@v1.0.1
+        with:
+          user-name: skrapeit
+          user-email: page.content.tester@gmail.com
+          message: bump version ${{ steps.current_version.outputs.value }} --> ${{ steps.bump_version.outputs.next-version }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
