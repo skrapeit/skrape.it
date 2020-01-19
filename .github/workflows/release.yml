@@ -2,26 +2,22 @@ name: Release
 
 on: 
   push:
-    branches: 
-      - master
     tags:
       - '*'
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=CURRENT_TAG::${GITHUB_REF/refs\/tags\//}
+    - name: print current tag
+      run: echo ${{ steps.get_version.outputs.CURRENT_TAG }}
     - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
-    - name: CHeck if git tag exists
-      run: echo "::set-env name=HEAD_TAG::$(git tag --points-at HEAD)"
     - name: Runs only if git tag exists
-      if: env.HEAD_TAG != ''
-      run: echo "This runs because git tag is present at HEAD as $HEAD"
+      if: steps.get_version.outputs.CURRENT_TAG != ''
+      run: |
+        cd release
+        ./bumpSemanticVersion.sh ${{ steps.get_version.outputs.CURRENT_TAG }}
