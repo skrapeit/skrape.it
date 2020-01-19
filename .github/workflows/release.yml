@@ -30,5 +30,19 @@ jobs:
         with:
           current-version: ${{ steps.current_version.outputs.value }}
           version-fragment: ${{ steps.latest_tag.outputs.tag }}
-      - name: Do something with your bumped release version
-        run: echo ${{ steps.bump_version.outputs.next-version }}
+      - name: Identify current version
+        id: current_version
+        uses: christian-draeger/write-properties@1.0.0
+        with:
+          path: './gradle.properties'
+          property: 'VERSION_NAME'
+          value: ${{ steps.bump_version.outputs.next-version }}
+      - name: verify version bump
+        id: current_version
+        uses: christian-draeger/read-properties@1.0.0
+        with:
+          path: './gradle.properties'
+          property: 'VERSION_NAME'
+#      - uses: mikeal/publish-to-github-action@master
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
