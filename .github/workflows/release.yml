@@ -24,13 +24,11 @@ jobs:
         with:
           path: './gradle.properties'
           property: 'VERSION_NAME'
-      - name: Do something with your bumped release version
-        run: echo ${{ steps.current_version.outputs.value }}
       - name: Bump release version
         id: bump_version
         uses: christian-draeger/increment-semantic-version@1.0.0
         with:
-          current-version: "2.11.7-alpha3"
+          current-version: ${{ steps.current_version.outputs.value }}
           version-fragment: ${{ steps.latest_tag.outputs.tag }}
       - name: Do something with your bumped release version
         run: echo ${{ steps.bump_version.outputs.next-version }}
