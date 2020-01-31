@@ -15,6 +15,14 @@ internal class CssSelectorTest {
     }
 
     @Test
+    fun `can calculate selector from raw css selector param with spaces`() {
+        val cssSelector = CssSelector(
+                rawCssSelector = "div #foo.bar"
+        ).toCssSelector()
+        expectThat(cssSelector).isEqualTo("div #foo.bar")
+    }
+
+    @Test
     fun `can calculate class selector from element`() {
         val cssSelector = CssSelector(
                 withClass = "foo"
@@ -152,12 +160,13 @@ internal class CssSelectorTest {
     @Test
     fun `can calculate complex css selector from element`() {
         val cssSelector = CssSelector(
+                rawCssSelector = "div span a",
                 withClass = "bar",
                 withId = "foo",
                 withAttributeKey = "foobar",
                 withAttribute = "fizz" to "buzz"
         ).toCssSelector()
-        expectThat(cssSelector).isEqualTo("#foo.bar[foobar][fizz='buzz']")
+        expectThat(cssSelector).isEqualTo("div span a#foo.bar[foobar][fizz='buzz']")
     }
 
     @Test

@@ -5,6 +5,7 @@ import it.skrape.WireMockSetup
 import it.skrape.setupRedirect
 import it.skrape.setupStub
 import it.skrape.exceptions.UnsupportedRequestOptionException
+import it.skrape.selects.eachText
 import it.skrape.selects.html5.h1
 import it.skrape.selects.html5.p
 import org.junit.jupiter.api.Assertions.*
@@ -26,7 +27,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
 
         expect {
             that(fetched.statusCode).isEqualTo(200)
-            that(fetched.document.title()).isEqualTo("i'm the title")
+            that(fetched.document.titleText).isEqualTo("i'm the title")
         }
     }
 
@@ -42,7 +43,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
 
         expect {
             that(fetched.statusCode).isEqualTo(200)
-            that(fetched.document.title()).isEqualTo("i'm the title")
+            that(fetched.document.titleText).isEqualTo("i'm the title")
         }
     }
 
@@ -116,8 +117,8 @@ internal class BrowserFetcherTest : WireMockSetup() {
         wireMockServer.setupStub(fileName = "es6.html")
 
         val fetched = BrowserFetcher(Request()).fetch()
-        val paragraphsText = fetched.document.findAll("p").eachText
-        val paragraphsText2 = fetched.htmlDocument { p { findAll { eachText }} }
+        val paragraphsText = fetched.document.findAll("p").eachText()
+        val paragraphsText2 = fetched.htmlDocument { p { findAll { eachText() }} }
 
         expectThat(paragraphsText).contains("dynamically added")
         expectThat(paragraphsText2).contains("dynamically added")

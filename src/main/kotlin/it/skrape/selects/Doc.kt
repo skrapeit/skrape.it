@@ -4,48 +4,43 @@ import it.skrape.SkrapeItDsl
 import it.skrape.exceptions.ElementNotFoundException
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
-import org.jsoup.select.Elements
 
 @Suppress("TooManyFunctions")
 @SkrapeItDsl
 class Doc(
         val document: Document
-) : Scrapable {
+) {
 
-    override val text = document.text().orEmpty()
+    val text = document.text().orEmpty()
 
-    override val html: String = document.html().orEmpty()
+    val html: String = document.html().orEmpty()
 
-    override val outerHtml: String = document.outerHtml().orEmpty()
+    val outerHtml: String = document.outerHtml().orEmpty()
 
-    override infix fun findAll(cssSelector: String) =
-            findAllOrNull(cssSelector) ?: throw ElementNotFoundException(cssSelector)
+    infix fun findAll(cssSelector: String) = document.select(cssSelector)
+            .map { DocElement(it) }
+            .takeIf { it.isNotEmpty() } ?: throw ElementNotFoundException(cssSelector)
 
-    override fun <T> findAll(cssSelector: String, init: DocElements.() -> T) = findAll(cssSelector).init()
+    fun <T> findAll(cssSelector: String, init: List<DocElement>.() -> T) = findAll(cssSelector).init()
 
-    override infix fun findFirst(cssSelector: String) =
+    infix fun findFirst(cssSelector: String) =
             findFirstOrNull(cssSelector) ?: throw ElementNotFoundException(cssSelector)
 
-    override fun <T> findFirst(cssSelector: String, init: DocElement.() -> T) = findFirst(cssSelector).init()
+    fun <T> findFirst(cssSelector: String, init: DocElement.() -> T) = findFirst(cssSelector).init()
 
     fun findFirstOrNull(cssSelector: String): DocElement? {
         val element: Element? = document.selectFirst(cssSelector)
         return element?.let { DocElement(it) }
     }
 
-    fun findAllOrNull(cssSelector: String): DocElements? {
-        val elements: Elements = document.select(cssSelector)
-        return if (elements.isEmpty()) null else DocElements(elements) // TODO: DocElements is empty after creation
-    }
-
-    fun title() = document.title()
+    val titleText = document.title().orEmpty()
 
     override fun toString() = document.toString()
 
-    override operator fun String.invoke(init: CssSelector.() -> Unit) =
+    operator fun String.invoke(init: CssSelector.() -> Unit) =
             this@Doc.selection(this, init)
 
-    override fun <T> selection(cssSelector: String, init: CssSelector.() -> T) =
+    fun <T> selection(cssSelector: String, init: CssSelector.() -> T) =
             CssSelector(rawCssSelector = cssSelector, doc = this).init()
 
 }

@@ -1,7 +1,6 @@
 package it.skrape.matchers
 
 import it.skrape.selects.DocElement
-import it.skrape.selects.DocElements
 import strikt.api.expectThat
 import strikt.assertions.*
 
@@ -47,20 +46,20 @@ infix fun List<Any>.toContain(expected: String): List<Any> {
 
 infix fun List<Any>.`to contain`(expected: String): List<Any> = this.toContain(expected)
 
-val DocElements.toBePresent
+val List<DocElement>.toBePresent
     get() = expectThat(this.size).isGreaterThanOrEqualTo(1).let { this }
 
-infix fun DocElements.toBePresentTimes(amount: Int) =
+infix fun List<DocElement>.toBePresentTimes(amount: Int) =
         expectThat(this.size).isEqualTo(amount).let { this }
 
-val DocElements.toBePresentExactlyOnce
+val List<DocElement>.toBePresentExactlyOnce
     get() = this toBePresentTimes 1
 
-val DocElements.toBePresentExactlyTwice
+val List<DocElement>.toBePresentExactlyTwice
     get() = this toBePresentTimes 2
 
 val DocElement.toBePresent
     get() = expectThat(this.isPresent).isTrue().let { this }
 
-val DocElements.toBeNotPresent
+val List<DocElement>.toBeNotPresent
     get() = expectThat(this.size).isEqualTo(0).let { this }

@@ -3,9 +3,7 @@ package it.skrape.matchers
 import io.mockk.every
 import io.mockk.mockk
 import it.skrape.selects.DocElement
-import it.skrape.selects.DocElements
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.opentest4j.AssertionFailedError
 
@@ -100,19 +98,19 @@ internal class MatchersKtTest {
 
     @Test
     internal fun `toBePresent can handle multiple presents of matching ELEMENTS`() {
-        val elements = mockk<DocElements> { every { size } returns 2 }
+        val elements = mockk<List<DocElement>> { every { size } returns 2 }
         elements.toBePresent
     }
 
     @Test
     internal fun `toBePresent can handle single occurrence of matching ELEMENTS`() {
-        val elements = mockk<DocElements> { every { size } returns 1 }
+        val elements = mockk<List<DocElement>> { every { size } returns 1 }
         elements.toBePresent
     }
 
     @Test
     internal fun `toBePresent is throwing exception if no ELEMENTS matches`() {
-        val elements = mockk<DocElements> { every { size } returns 0 }
+        val elements = mockk<List<DocElement>> { every { size } returns 0 }
         Assertions.assertThrows(AssertionFailedError::class.java) {
             elements.toBePresent
         }
@@ -140,19 +138,19 @@ internal class MatchersKtTest {
 
     @Test
     internal fun `toBeNotPresent can handle multiple presents of matching ELEMENTS`() {
-        val elements = mockk<DocElements> { every { size } returns 2 }
+        val elements = mockk<List<DocElement>> { every { size } returns 2 }
         elements.toBePresent
     }
 
     @Test
     internal fun `toBeNotPresent can handle non existent ELEMENTS`() {
-        val elements = mockk<DocElements> { every { size } returns 0 }
+        val elements = mockk<List<DocElement>> { every { size } returns 0 }
         elements.toBeNotPresent
     }
 
     @Test
     internal fun `toBeNotPresent is throwing exception on single occurrence of matching ELEMENTS`() {
-        val elements = mockk<DocElements> { every { size } returns 1 }
+        val elements = mockk<List<DocElement>> { every { size } returns 1 }
         Assertions.assertThrows(AssertionFailedError::class.java) {
             elements.toBeNotPresent
         }
@@ -160,7 +158,7 @@ internal class MatchersKtTest {
 
     @Test
     internal fun `toBeNotPresent is throwing exception on multiple presents of matching ELEMENTS`() {
-        val elements = mockk<DocElements> { every { size } returns 2 }
+        val elements = mockk<List<DocElement>> { every { size } returns 2 }
         Assertions.assertThrows(AssertionFailedError::class.java) {
             elements.toBeNotPresent
         }

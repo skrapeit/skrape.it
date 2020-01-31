@@ -15,7 +15,7 @@ internal class ScraperTest : WireMockSetup() {
         val result = Scraper().scrape()
 
         expectThat(result.statusCode).isEqualTo(200)
-        expectThat(result.document.title()).isEqualTo("i'm the title")
+        expectThat(result.document.titleText).isEqualTo("i'm the title")
     }
 
     @Test
@@ -24,6 +24,6 @@ internal class ScraperTest : WireMockSetup() {
         val result = Scraper(request = Request(url = "http://localhost:8080/example")).scrape()
 
         expectThat(result.statusCode).isEqualTo(200)
-        expectThat(result.document.title()).isEqualTo("i'm the title")
+        expectThat(result.document.titleText).isEqualTo("i'm the title")
     }
 }
