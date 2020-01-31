@@ -2,12 +2,15 @@ package it.skrape
 
 import it.skrape.core.fetcher.Mode
 import it.skrape.core.fetcher.basic
+import it.skrape.core.htmlDocument
 import it.skrape.matchers.toBe
 import it.skrape.matchers.toBePresentExactlyOnce
 import it.skrape.matchers.toContain
 import it.skrape.selects.and
+import it.skrape.selects.html5.a
 import it.skrape.selects.html5.customTag
 import it.skrape.selects.html5.div
+import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
@@ -125,6 +128,32 @@ class ExperimentalDslTest : WireMockSetup() {
                 statusCode toBe 200
                 responseBody toContain """authenticated": true"""
                 responseBody toContain """user": "cr1z"""
+            }
+        }
+    }
+
+    @Test
+    fun `get invoke cascading css-selectors`() {
+
+        @Language("HTML") val myMarkUp = """
+            <div class="CollapsiblePanelTab" tabindex="0">Today's Interest (1)</div>
+                <div class="CollapsiblePanelContent">
+                <table width="667px" class="tabularData">
+                    <tr>
+                        <td width="407px" height="21"><a href="link info i need in here">description </a></td>
+                        <td width="130px">15:28</td>
+                        <td width="130px">Western</td>
+                    </tr> 
+                </table>
+            </div>
+        """.trimIndent()
+
+        htmlDocument(myMarkUp) {
+            "table tr td a" {
+                withAttributeKey = "href"
+                findFirst {
+                    println(attribute("href"))
+                }
             }
         }
     }

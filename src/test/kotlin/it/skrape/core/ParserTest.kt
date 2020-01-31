@@ -13,7 +13,7 @@ internal class ParserTest {
         val result = Parser(htmlAsString).parse()
 
         expect {
-            that(result.title()).isEqualTo("i'm the title")
+            that(result.titleText).isEqualTo("i'm the title")
             that(result.findFirst("p").text).isEqualTo("i'm a paragraph")
         }
     }
@@ -25,7 +25,7 @@ internal class ParserTest {
         val result = Parser(htmlAsString).parseDom()
 
         expect {
-            that(result.title()).isEqualTo("i'm the title")
+            that(result.titleText).isEqualTo("i'm the title")
             that(result.findFirst("p").text).isEqualTo("i'm a paragraph")
         }
     }
@@ -37,7 +37,7 @@ internal class ParserTest {
         val result = Parser(htmlAsString).parseDom()
 
         expect {
-            that(result.title()).isEqualTo("i'm the title")
+            that(result.titleText).isEqualTo("i'm the title")
             that(result.findFirst("p").text).isEqualTo("i'm a paragraph")
             that(result.findFirst(".dynamic").text).isEqualTo("I have been dynamically added via Javascript")
         }
@@ -50,7 +50,7 @@ internal class ParserTest {
         val result = Parser(htmlAsString).parseDom()
 
         expect {
-            that(result.title()).isEqualTo("i'm the title")
+            that(result.titleText).isEqualTo("i'm the title")
             that(result.findFirst("p").text).isEqualTo("dynamically added")
         }
     }

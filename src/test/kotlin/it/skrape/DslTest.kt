@@ -6,7 +6,11 @@ import it.skrape.core.htmlDocument
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.matchers.*
 import it.skrape.matchers.ContentTypes.*
+import it.skrape.selects.DocElement
+import it.skrape.selects.eachHref
+import it.skrape.selects.eachText
 import it.skrape.selects.html5.*
+import it.skrape.selects.text
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -239,9 +243,9 @@ internal class DslTest : WireMockSetup() {
             extractIt<MyObject> {
                 it.message = statusMessage
                 htmlDocument {
-                    it.allParagraphs = p { findAll { eachText }}
+                    it.allParagraphs = p { findAll { eachText() }}
                     it.paragraph = findFirst("p").text
-                    it.allLinks = findAll("[href]").eachHref
+                    it.allLinks = findAll("[href]").eachHref()
                 }
             }
         }
@@ -268,9 +272,9 @@ internal class DslTest : WireMockSetup() {
                 it.httpStatusCode = statusCode
                 it.httpStatusMessage = statusMessage.toString()
                 htmlDocument {
-                    it.allParagraphs = p { findAll { eachText }}
+                    it.allParagraphs = p { findAll { eachText() }}
                     it.paragraph = p { findFirst { text }}
-                    it.allLinks = a { findAll { eachHref }
+                    it.allLinks = a { findAll { eachHref() }
                     }
                 }
             }
@@ -281,7 +285,7 @@ internal class DslTest : WireMockSetup() {
             that(extracted.httpStatusMessage).isEqualTo("OK")
             that(extracted.paragraph).isEqualTo("i'm a paragraph")
             that(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
-            that(extracted.allLinks!!).containsExactly("http://some.url", "http://some-other.url")
+            that(extracted.allLinks).containsExactly("http://some.url", "http://some-other.url")
         }
     }
 
@@ -332,9 +336,9 @@ internal class DslTest : WireMockSetup() {
                 htmlDocument {
                     MyObject(
                             message = "",
-                            allParagraphs = p { findAll { eachText }},
+                            allParagraphs = p { findAll { eachText() }},
                             paragraph = findFirst("p").text,
-                            allLinks = selection("[href]") { findAll { eachHref } }
+                            allLinks = selection("[href]") { findAll { eachHref() } }
                     )
                 }
             }
@@ -347,9 +351,9 @@ internal class DslTest : WireMockSetup() {
     @Test
     internal fun `can read and return html from file system with default charset (UTF-8) using the DSL`() {
         val doc = htmlDocument(File("src/test/resources/__files/example.html")) {
-            expectThat(title()).isEqualTo("i'm the title")
+            expectThat(titleText).isEqualTo("i'm the title")
         }
-        expectThat(doc.title()).isEqualTo("i'm the title")
+        expectThat(doc.titleText).isEqualTo("i'm the title")
     }
 
     @Test
@@ -369,7 +373,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can read and return html from String`() {
+    fun `can read and return html from String`() {
         htmlDocument("""
             <html>
                 <body>
@@ -393,10 +397,14 @@ internal class DslTest : WireMockSetup() {
                     text toBe "some p-element"
                     className toBe "foo"
                 }
+                findAll {
+                    size toBe 2
+                    expectThat(this.toString()).isEqualTo("[<p class=\"foo\">some p-element</p>, <p class=\"foo\">last p-element</p>]")
+                }
             }
             p {
                 findAll {
-                    text toContain "p-element"
+                    this.text() toContain "p-element"
                 }
                 findLast {
                     text toBe "last p-element"
@@ -408,14 +416,14 @@ internal class DslTest : WireMockSetup() {
     @Test
     internal fun `can read html from file system with default charset (UTF-8) using the DSL`() {
         htmlDocument(File("src/test/resources/__files/example.html")) {
-            expectThat(title()).isEqualTo("i'm the title")
+            expectThat(titleText).isEqualTo("i'm the title")
         }
     }
 
     @Test
     internal fun `can read html from file system using the DSL and non default charset`() {
         htmlDocument(File("src/test/resources/__files/example.html"), Charsets.ISO_8859_1) {
-            expectThat(title()).isEqualTo("i'm the title")
+            expectThat(titleText).isEqualTo("i'm the title")
         }
     }
 

@@ -21,7 +21,7 @@ internal class HttpFetcherTest : WireMockSetup() {
         // then
         expectThat(fetched.statusCode).isEqualTo(200)
         expectThat(fetched.contentType).isEqualTo("text/html;charset=utf-8")
-        expectThat(fetched.document.title()).isEqualTo("i'm the title")
+        expectThat(fetched.document.titleText).isEqualTo("i'm the title")
     }
 
     @Disabled("need to find a way to avoid SSLHandshakeException on JDK11")
@@ -39,7 +39,7 @@ internal class HttpFetcherTest : WireMockSetup() {
         // then
         expectThat(fetched.statusCode).isEqualTo(200)
         expectThat(fetched.contentType).isEqualTo("text/html;charset=utf-8")
-        expectThat(fetched.document.title()).isEqualTo("i'm the title")
+        expectThat(fetched.document.titleText).isEqualTo("i'm the title")
     }
 
     @Test
