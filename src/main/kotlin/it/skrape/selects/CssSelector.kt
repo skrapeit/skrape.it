@@ -75,8 +75,5 @@ typealias CssClassName = String
 
 infix fun CssClassName.and(value: String) = "$this.$value"
 
-infix fun Pair<String, String>.and(pair: Pair<String, String>): MutableList<Pair<String, String>> {
-    val collectedValues = mutableListOf(this)
-    collectedValues.add(pair)
-    return collectedValues
-}
+infix fun Pair<String, String>.and(pair: Pair<String, String>)=
+        mutableListOf(this).apply { add(pair) }
