@@ -24,7 +24,7 @@ internal class HttpFetcherTest : WireMockSetup() {
         expectThat(fetched.document.titleText).isEqualTo("i'm the title")
     }
 
-    @Disabled("need to find a way to avoid SSLHandshakeException on JDK11")
+    @Disabled("need to find a way to avoid SSLHandshakeException")
     @Test
     internal fun `can fetch https url and use HTTP verb GET by default`() {
         // given

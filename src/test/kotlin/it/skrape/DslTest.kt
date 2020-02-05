@@ -6,11 +6,8 @@ import it.skrape.core.htmlDocument
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.matchers.*
 import it.skrape.matchers.ContentTypes.*
-import it.skrape.selects.DocElement
-import it.skrape.selects.eachHref
-import it.skrape.selects.eachText
+import it.skrape.selects.*
 import it.skrape.selects.html5.*
-import it.skrape.selects.text
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -253,7 +250,7 @@ internal class DslTest : WireMockSetup() {
             that(extracted.message).isEqualTo("OK")
             that(extracted.paragraph).isEqualTo("i'm a paragraph")
             that(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
-            that(extracted.allLinks).containsExactly("http://some.url", "http://some-other.url")
+            that(extracted.allLinks).containsExactly("http://some.url", "http://some-other.url", "/relative-link")
         }
     }
 
@@ -285,7 +282,7 @@ internal class DslTest : WireMockSetup() {
             that(extracted.httpStatusMessage).isEqualTo("OK")
             that(extracted.paragraph).isEqualTo("i'm a paragraph")
             that(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
-            that(extracted.allLinks).containsExactly("http://some.url", "http://some-other.url")
+            that(extracted.allLinks).containsExactly("http://some.url", "http://some-other.url", "/relative-link")
         }
     }
 
@@ -345,7 +342,7 @@ internal class DslTest : WireMockSetup() {
         }
         expectThat(extracted.paragraph).isEqualTo("i'm a paragraph")
         expectThat(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
-        expectThat(extracted.allLinks).containsExactly("http://some.url", "http://some-other.url")
+        expectThat(extracted.allLinks).containsExactly("http://some.url", "http://some-other.url", "/relative-link")
     }
 
     @Test
@@ -460,8 +457,10 @@ internal class DslTest : WireMockSetup() {
         }
 
         wireMockServer.setupRedirect()
-        val body2 = fetcher.extract {
-            statusCode toBe 302
+        val body2 = fetcher.apply {
+            followRedirects = true
+        }.extract {
+            statusCode toBe 404
             responseBody
         }
 

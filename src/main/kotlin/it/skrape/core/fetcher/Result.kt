@@ -3,6 +3,7 @@ package it.skrape.core.fetcher
 import it.skrape.SkrapeItDsl
 import it.skrape.selects.Doc
 import it.skrape.core.Parser
+import it.skrape.core.htmlDocument
 
 /**
  * This object is representing the result of an request
@@ -16,13 +17,13 @@ import it.skrape.core.Parser
  */
 @SkrapeItDsl
 class Result(
+        val request: Request,
         val responseBody: ResponseBody,
-        val document: Doc = Parser(responseBody).parse(),
+        val document: Doc = htmlDocument(html = responseBody, baseUri = request.url),
         val statusCode: StatusCode,
         val statusMessage: StatusMessage,
         val contentType: ContentType,
-        val headers: Headers,
-        val request: Request
+        val headers: Headers
 ) {
     /**
      * Will return a certain response headers value

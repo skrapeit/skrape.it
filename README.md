@@ -174,9 +174,9 @@ class HtmlExtractionService {
                 it.httpStatusCode = statusCode
                 it.httpStatusMessage = statusMessage.toString()
                 htmlDocument {
-                    it.allParagraphs = p { findAll { eachText }}
-                    it.paragraph = p { findFirst { text }}
-                    it.allLinks = a { findAll { eachHref }}
+                    it.allParagraphs = p { findAll { eachText() }}
+                    it.paragraph = p { findFirst { text() }}
+                    it.allLinks = a { findAll { eachHref() }}
                 }
             }
         }
@@ -266,6 +266,13 @@ class ExampleTest {
 
         myPreConfiguredClient.expect { 
             statusCode toBe 200
+            // do more stuff
+        }
+
+        myPreConfiguredClient.apply {
+            followRedirects = false
+        }.expect { 
+            statusCode toBe 301
             // do more stuff
         }
     }
