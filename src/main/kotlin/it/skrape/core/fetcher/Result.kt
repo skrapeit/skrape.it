@@ -1,14 +1,10 @@
 package it.skrape.core.fetcher
 
 import it.skrape.SkrapeItDsl
-import it.skrape.selects.Doc
-import it.skrape.core.Parser
-import it.skrape.core.htmlDocument
 
 /**
  * This object is representing the result of an request
  * @param responseBody - the response responseBody
- * @param document - the already parsed page-source
  * @param statusCode - the http responses status code
  * @param statusMessage - the http responses status message
  * @param contentType - the http responses content type
@@ -19,7 +15,6 @@ import it.skrape.core.htmlDocument
 class Result(
         val request: Request,
         val responseBody: ResponseBody,
-        val document: Doc = htmlDocument(html = responseBody, baseUri = request.url),
         val statusCode: StatusCode,
         val statusMessage: StatusMessage,
         val contentType: ContentType,
@@ -43,8 +38,6 @@ class Result(
         header.apply(init)
         return header
     }
-
-    fun <T> htmlDocument(init: Doc.() -> T) = document.init()
 }
 
 typealias ResponseBody = String

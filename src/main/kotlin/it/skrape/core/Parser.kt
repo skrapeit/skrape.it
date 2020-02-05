@@ -3,6 +3,7 @@ package it.skrape.core
 import it.skrape.SkrapeItDsl
 import it.skrape.core.fetcher.BrowserFetcher
 import it.skrape.core.fetcher.Request
+import it.skrape.core.fetcher.Result
 import it.skrape.selects.Doc
 import org.jsoup.nodes.Document
 import java.io.File
@@ -18,7 +19,7 @@ internal class Parser(
 
     fun parse(): Doc {
         return if (jsExecution) {
-            BrowserFetcher(Request(url = html.toUriScheme())).fetch().document
+            BrowserFetcher(Request(url = html.toUriScheme())).fetch().htmlDocument { this }
         } else org.jsoup.parser.Parser.parse(html, baseUri).toDocWrapper()
     }
 
@@ -75,3 +76,8 @@ fun htmlDocument(
         jsExecution: Boolean = false,
         baseUri: String = ""
 ): Doc = htmlDocument(file.readText(charset), charset, jsExecution, baseUri)
+
+val Result.document: Doc
+    get() = htmlDocument { this }
+
+fun <T> Result.htmlDocument(init: Doc.() -> T) = htmlDocument(html = responseBody, baseUri = request.url).init()

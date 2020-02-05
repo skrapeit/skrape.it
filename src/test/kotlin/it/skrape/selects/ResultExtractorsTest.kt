@@ -2,6 +2,7 @@ package it.skrape.selects
 
 import it.skrape.core.fetcher.Request
 import it.skrape.WireMockSetup
+import it.skrape.core.htmlDocument
 import it.skrape.setupStub
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.expect

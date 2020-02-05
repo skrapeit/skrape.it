@@ -2,6 +2,8 @@ package it.skrape.core.fetcher
 
 import com.gargoylesoftware.htmlunit.util.NameValuePair
 import it.skrape.WireMockSetup
+import it.skrape.core.document
+import it.skrape.core.htmlDocument
 import it.skrape.setupRedirect
 import it.skrape.setupStub
 import it.skrape.exceptions.UnsupportedRequestOptionException
