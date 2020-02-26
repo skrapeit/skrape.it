@@ -3,7 +3,6 @@ package it.skrape.core.fetcher
 import it.skrape.*
 import it.skrape.core.document
 import org.junit.jupiter.api.Assertions.assertThrows
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
@@ -13,31 +12,25 @@ internal class HttpFetcherTest : WireMockSetup() {
 
     @Test
     internal fun `will fetch localhost 8080 with defaults if no params`() {
-        // given
         wireMockServer.setupStub()
 
-        // when
         val fetched = HttpFetcher(Request()).fetch()
 
-        // then
         expectThat(fetched.statusCode).isEqualTo(200)
         expectThat(fetched.contentType).isEqualTo("text/html;charset=utf-8")
         expectThat(fetched.document.titleText).isEqualTo("i'm the title")
     }
 
-    @Disabled("need to find a way to avoid SSLHandshakeException")
     @Test
     internal fun `can fetch https url and use HTTP verb GET by default`() {
-        // given
         wireMockServer.setupStub(path = "/example")
-        val options = Request().apply {
-            url = "https://localhost:8089/example"
-        }
+        val request = Request(
+                url = "https://localhost:8089/example",
+                sslRelaxed = true
+        )
 
-        // when
-        val fetched = HttpFetcher(options).fetch()
+        val fetched = HttpFetcher(request).fetch()
 
-        // then
         expectThat(fetched.statusCode).isEqualTo(200)
         expectThat(fetched.contentType).isEqualTo("text/html;charset=utf-8")
         expectThat(fetched.document.titleText).isEqualTo("i'm the title")
@@ -45,57 +38,39 @@ internal class HttpFetcherTest : WireMockSetup() {
 
     @Test
     internal fun `will not throw exception on non existing url`() {
-        // given
-        val options = Request().apply {
-            url = "http://localhost:8080/not-existing"
-        }
+        val request = Request(url = "http://localhost:8080/not-existing")
 
-        // when
-        val fetched = HttpFetcher(options).fetch()
+        val fetched = HttpFetcher(request).fetch()
 
-        // then
         expectThat(fetched.statusCode).isEqualTo(404)
     }
 
     @Test
     internal fun `will not follow redirects if configured`() {
-        // given
         wireMockServer.setupRedirect()
-        val options = Request().apply {
-            followRedirects = false
-        }
+        val request = Request(followRedirects = false)
 
-        // when
-        val fetched = HttpFetcher(options).fetch()
+        val fetched = HttpFetcher(request).fetch()
 
-        // then
         expectThat(fetched.statusCode).isEqualTo(302)
     }
 
     @Test
     internal fun `will follow redirect by default`() {
-        // given
         wireMockServer.setupRedirect()
 
-        // when
         val fetched = HttpFetcher(Request()).fetch()
 
-        // then
         expectThat(fetched.statusCode).isEqualTo(404)
     }
 
     @Test
     internal fun `can fetch url and use HTTP verb POST`() {
-        // given
         wireMockServer.setupPostStub()
-        val options = Request().apply {
-            method = Method.POST
-        }
+        val request = Request(method = Method.POST)
 
-        // when
-        val fetched = HttpFetcher(options).fetch()
+        val fetched = HttpFetcher(request).fetch()
 
-        // then
         expectThat(fetched.statusCode).isEqualTo(200)
         expectThat(fetched.contentType).isEqualTo("application/json;charset=utf-8")
         expectThat(fetched.responseBody).isEqualTo("""{"data":"some value"}""")
@@ -103,64 +78,44 @@ internal class HttpFetcherTest : WireMockSetup() {
 
     @Test
     internal fun `can fetch url and use HTTP verb PUT`() {
-        // given
         wireMockServer.setupPutStub()
-        val options = Request().apply {
-            method = Method.PUT
-        }
+        val request = Request(method = Method.PUT)
 
-        // when
-        val fetched = HttpFetcher(options).fetch()
+        val fetched = HttpFetcher(request).fetch()
 
-        // then
         expectThat(fetched.statusCode).isEqualTo(201)
         expectThat(fetched.responseBody).isEqualTo("i'm a PUT stub")
     }
 
     @Test
     internal fun `can fetch url and use HTTP verb DELETE`() {
-        // given
         wireMockServer.setupDeleteStub()
-        val options = Request().apply {
-            method = Method.DELETE
-        }
+        val request = Request(method = Method.DELETE)
 
-        // when
-        val fetched = HttpFetcher(options).fetch()
+        val fetched = HttpFetcher(request).fetch()
 
-        // then
         expectThat(fetched.statusCode).isEqualTo(201)
         expectThat(fetched.responseBody).isEqualTo("i'm a DELETE stub")
     }
 
     @Test
     internal fun `can fetch url and use HTTP verb PATCH`() {
-        // given
         wireMockServer.setupPatchStub()
-        val options = Request().apply {
-            method = Method.PATCH
-        }
+        val request = Request(method = Method.PATCH)
 
-        // when
-        val fetched = HttpFetcher(options).fetch()
+        val fetched = HttpFetcher(request).fetch()
 
-        // then
         expectThat(fetched.statusCode).isEqualTo(201)
         expectThat(fetched.responseBody).isEqualTo("i'm a PATCH stub")
     }
 
     @Test
     internal fun `can fetch url and use HTTP verb HEAD`() {
-        // given
         wireMockServer.setupHeadStub()
-        val options = Request().apply {
-            method = Method.HEAD
-        }
+        val request = Request(method = Method.HEAD)
 
-        // when
-        val fetched = HttpFetcher(options).fetch()
+        val fetched = HttpFetcher(request).fetch()
 
-        // then
         expectThat(fetched.statusCode).isEqualTo(201)
         expectThat(fetched.httpHeader("result")).isEqualTo("i'm a HEAD stub")
     }

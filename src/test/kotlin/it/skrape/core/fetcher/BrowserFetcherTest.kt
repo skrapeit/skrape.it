@@ -37,11 +37,12 @@ internal class BrowserFetcherTest : WireMockSetup() {
     internal fun `can fetch url and use HTTP verb GET by default`() {
         wireMockServer.setupStub(path = "/example")
 
-        val options = Request().apply {
-            url = "https://localhost:8089/example"
-        }
+        val request = Request(
+                url = "https://localhost:8089/example",
+                sslRelaxed = true
+        )
 
-        val fetched = BrowserFetcher(options).fetch()
+        val fetched = BrowserFetcher(request).fetch()
 
         expect {
             that(fetched.statusCode).isEqualTo(200)
@@ -51,11 +52,9 @@ internal class BrowserFetcherTest : WireMockSetup() {
 
     @Test
     internal fun `will not throw exception on non existing url`() {
-        val options = Request().apply {
-            url = "http://localhost:8080/not-existing"
-        }
+        val request = Request(url = "http://localhost:8080/not-existing")
 
-        val fetched = BrowserFetcher(options).fetch()
+        val fetched = BrowserFetcher(request).fetch()
 
         expectThat(fetched.statusCode).isEqualTo(404)
     }
@@ -63,8 +62,9 @@ internal class BrowserFetcherTest : WireMockSetup() {
     @Test
     internal fun `will not follow redirects if configured`() {
         wireMockServer.setupRedirect()
+        val request = Request(followRedirects = false)
 
-        val result = BrowserFetcher(Request(followRedirects = false)).fetch()
+        val result = BrowserFetcher(request).fetch()
 
         expectThat(result.statusCode).isEqualTo(302)
     }
@@ -104,8 +104,12 @@ internal class BrowserFetcherTest : WireMockSetup() {
     @Test
     internal fun `can parse js rendered elements from https page`() {
         wireMockServer.setupStub(fileName = "js.html")
+        val request = Request(
+                url = "https://localhost:8089",
+                sslRelaxed = true
+        )
 
-        val fetched = BrowserFetcher(Request(url = "https://localhost:8089")).fetch()
+        val fetched = BrowserFetcher(request).fetch()
 
         fetched.document.selection("div.dynamic") {
             findFirst {
@@ -159,22 +163,22 @@ internal class BrowserFetcherTest : WireMockSetup() {
     @Test
     internal fun `will extract headers to map`() {
 
-        val sut = listOf(
+        val htmlUnitHeaders = listOf(
                 NameValuePair("first-name", "first-value"),
                 NameValuePair("second-name", "second-value")
         )
-        val result = sut.toMap()
+        val result = htmlUnitHeaders.toMap()
         expectThat(result).isEqualTo(mapOf("first-name" to "first-value", "second-name" to "second-value"))
     }
 
     @Test
     internal fun `will create raw cookie syntax representation of map`() {
 
-        val sut = mapOf(
+        val cookiesAsMap = mapOf(
                 "first-name" to "first-value",
                 "second-name" to "second-value"
         )
-        val result = sut.asRawCookieSyntax()
+        val result = cookiesAsMap.asRawCookieSyntax()
         expectThat(result).isEqualTo("first-name=first-value;second-name=second-value;")
     }
 

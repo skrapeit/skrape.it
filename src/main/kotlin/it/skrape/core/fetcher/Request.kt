@@ -23,7 +23,7 @@ data class Request(
 
         /**
          * Defines the URL the request is made against.
-         * Defaults to "http://localhost:8080/"
+         * Defaults to "http://localhost:8080/".
          * If you set this parameter other url-specific parameters (protocol, host, port, path, queryParam)
          * will have no effect.
          */
@@ -34,7 +34,14 @@ data class Request(
         var cookies: Map<String, String> = emptyMap(),
         var timeout: Int = 5000,
         var followRedirects: Boolean = true,
-        var authentication: Authentication? = null
+        var authentication: Authentication? = null,
+
+        /**
+         * Will ignore SSL by trusting all certificates.
+         * This is only recommended if you have to make the client work with self-signed certificates.
+         * Defaults to false.
+         */
+        val sslRelaxed: Boolean = false
 ) {
     val asConfig
         get() = this

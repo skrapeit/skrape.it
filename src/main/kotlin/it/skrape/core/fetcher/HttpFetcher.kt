@@ -6,25 +6,19 @@ import io.github.rybalkinsd.kohttp.dsl.*
 import io.github.rybalkinsd.kohttp.dsl.context.HttpContext
 import io.github.rybalkinsd.kohttp.ext.url
 import it.skrape.core.fetcher.Method.*
+import okhttp3.OkHttpClient
+import okhttp3.Response
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 class HttpFetcher(private val request: Request) : Fetcher {
 
-    // create a new client using our custom options
-    private val client = defaultHttpClient.fork {
-        followRedirects = request.followRedirects
-        readTimeout = request.timeout.toLong()
-    }
-
     override fun fetch(): Result {
-        when (request.method) {
-            GET -> httpGet(client, getContext())
-            POST -> httpPost(client, getContext())
-            PUT -> httpPut(client, getContext())
-            DELETE -> httpDelete(client, getContext())
-            PATCH -> httpPatch(client, getContext())
-            HEAD -> httpHead(client, getContext())
-        }.use {
-            // assemble the result from the response data
+        configuredClient().use {
             return Result(
                     responseBody = it.body()?.string() ?: "",
                     statusCode = it.code(),
@@ -36,18 +30,56 @@ class HttpFetcher(private val request: Request) : Fetcher {
         }
     }
 
-    private fun getContext(): HttpContext.() -> Unit = {
-        url(request.url)
-        header {
-            request.headers
-            "User-Agent" to request.userAgent
-            cookie {
-                request.cookies
-            }
+    private fun configuredClient(): Response {
+        val client = defaultHttpClient
+                .withSslConfiguration()
+                .fork {
+                    followRedirects = request.followRedirects
+                    readTimeout = request.timeout.toLong()
+                }
 
-            if (request.authentication != null) {
-                "Authorization" to request.authentication!!.toHeaderValue()
+        val context: HttpContext.() -> Unit = {
+            url(request.url)
+            header {
+                request.headers
+                "User-Agent" to request.userAgent
+                cookie {
+                    request.cookies
+                }
+
+                if (request.authentication != null) {
+                    "Authorization" to request.authentication!!.toHeaderValue()
+                }
             }
         }
+
+        return when (request.method) {
+            GET -> httpGet(client, context)
+            POST -> httpPost(client, context)
+            PUT -> httpPut(client, context)
+            DELETE -> httpDelete(client, context)
+            PATCH -> httpPatch(client, context)
+            HEAD -> httpHead(client, context)
+        }
     }
+
+    private fun OkHttpClient.withSslConfiguration(): OkHttpClient = when {
+        request.sslRelaxed -> OkHttpClient.Builder()
+                .sslSocketFactory(insecureSocketFactory(), naiveTrustManager())
+                .hostnameVerifier(HostnameVerifier { _, _ -> true })
+                .build()
+        else -> this
+    }
+
+    private fun naiveTrustManager() = object : X509TrustManager {
+        override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+        override fun checkClientTrusted(certs: Array<X509Certificate>, authType: String) = Unit
+        override fun checkServerTrusted(certs: Array<X509Certificate>, authType: String) = Unit
+    }
+
+
+    private fun insecureSocketFactory() = SSLContext.getInstance("TLSv1.2").apply {
+        val trustAllCerts = arrayOf<TrustManager>(naiveTrustManager())
+        init(null, trustAllCerts, SecureRandom())
+    }.socketFactory
 }
