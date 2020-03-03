@@ -123,8 +123,8 @@ internal class BrowserFetcherTest : WireMockSetup() {
         wireMockServer.setupStub(fileName = "es6.html")
 
         val fetched = BrowserFetcher(Request()).fetch()
-        val paragraphsText = fetched.document.findAll("p").eachText()
-        val paragraphsText2 = fetched.htmlDocument { p { findAll { eachText() }} }
+        val paragraphsText = fetched.document.findAll("p").eachText
+        val paragraphsText2 = fetched.htmlDocument { p { findAll { eachText }} }
 
         expectThat(paragraphsText).contains("dynamically added")
         expectThat(paragraphsText2).contains("dynamically added")

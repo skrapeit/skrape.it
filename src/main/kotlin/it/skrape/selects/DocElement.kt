@@ -80,7 +80,7 @@ class DocElement(private val element: Element) {
     val cssSelector
         get() = element.cssSelector().orEmpty()
 
-    fun attribute(attributeKey: String): String = element.attr(attributeKey)
+    infix fun attribute(attributeKey: String): String = element.attr(attributeKey)
 
     fun hasAttribute(attributeKey: String): Boolean = element.hasAttr(attributeKey)
 
@@ -105,17 +105,19 @@ class DocElement(private val element: Element) {
     fun select(cssSelector: String) = element.select(cssSelector).map { DocElement(it) }
 }
 
-fun List<DocElement>.attribute(attributeKey: String): String =
+val List<DocElement>.text
+    get(): String = joinToString(separator = " ") { it.text }
+
+val List<DocElement>.eachText
+    get(): List<String> = map { it.text }
+
+infix fun List<DocElement>.attribute(attributeKey: String): String =
         filter { it.hasAttribute(attributeKey) }.joinToString { it.attribute(attributeKey) }
 
-fun List<DocElement>.text(): String = joinToString(separator = " ") { it.text }
+infix fun List<DocElement>.eachAttribute(attributeKey: String): List<String> = map { it attribute attributeKey }
 
-fun List<DocElement>.eachText(): List<String> = map { it.text }
+val List<DocElement>.eachHref
+    get(): List<String> = this eachAttribute "href"
 
-fun List<DocElement>.eachAttribute(attributeKey: String): List<String> = map { it.attribute(attributeKey) }
-
-fun List<DocElement>.eachHref(): List<String> = eachAttribute("href")
-
-fun List<DocElement>.eachHrefAsAbsoluteLink(): List<String> = eachAttribute("abs:href")
-
-
+val List<DocElement>.eachHrefAsAbsoluteLink
+    get(): List<String> = this eachAttribute "abs:href"

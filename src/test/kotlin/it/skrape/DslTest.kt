@@ -240,9 +240,9 @@ internal class DslTest : WireMockSetup() {
             extractIt<MyObject> {
                 it.message = statusMessage
                 htmlDocument {
-                    it.allParagraphs = p { findAll { eachText() }}
+                    it.allParagraphs = p { findAll { eachText }}
                     it.paragraph = findFirst("p").text
-                    it.allLinks = findAll("[href]").eachHref()
+                    it.allLinks = findAll("[href]").eachHref
                 }
             }
         }
@@ -269,9 +269,9 @@ internal class DslTest : WireMockSetup() {
                 it.httpStatusCode = statusCode
                 it.httpStatusMessage = statusMessage.toString()
                 htmlDocument {
-                    it.allParagraphs = p { findAll { eachText() }}
+                    it.allParagraphs = p { findAll { eachText }}
                     it.paragraph = p { findFirst { text }}
-                    it.allLinks = a { findAll { eachHref() }
+                    it.allLinks = a { findAll { eachHref }
                     }
                 }
             }
@@ -333,9 +333,9 @@ internal class DslTest : WireMockSetup() {
                 htmlDocument {
                     MyObject(
                             message = "",
-                            allParagraphs = p { findAll { eachText() }},
+                            allParagraphs = p { findAll { eachText }},
                             paragraph = findFirst("p").text,
-                            allLinks = selection("[href]") { findAll { eachHref() } }
+                            allLinks = selection("[href]") { findAll { eachHref } }
                     )
                 }
             }
@@ -401,7 +401,7 @@ internal class DslTest : WireMockSetup() {
             }
             p {
                 findAll {
-                    this.text() toContain "p-element"
+                    this.text toContain "p-element"
                 }
                 findLast {
                     text toBe "last p-element"
