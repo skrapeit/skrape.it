@@ -155,7 +155,7 @@ fun aValidHtml(bodyInclude: String) = """
     </html>
 """.trimIndent()
 
-fun aValidDocument(body: String = "") = htmlDocument(aValidHtml(body)) {}
+fun aValidDocument(bodyInclude: String = "") = htmlDocument(aValidHtml(bodyInclude)) {}
 
 fun aSelfClosingTag(tag: String) = "<$tag custom-attr='$tag-attr' />"
 

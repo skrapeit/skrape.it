@@ -2,7 +2,9 @@ package it.skrape.selects
 
 import it.skrape.aValidDocument
 import it.skrape.matchers.toBe
+import it.skrape.selects.html5.div
 import it.skrape.selects.html5.p
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
@@ -39,6 +41,16 @@ internal class ElementExtractorsKtTest {
             }
         }
         expectThat(firstText).isEqualTo("i'm a paragraph")
+    }
+
+    @Test
+    fun `can pick own element text only`() {
+        val firstText = document.div {
+            withClass = "with-children"
+            findFirst {
+                ownText toBe "i'm a parent div"
+            }
+        }
     }
 
     @Test

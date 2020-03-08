@@ -20,6 +20,17 @@ class DocElement(private val element: Element) {
     val text= element.text().orEmpty()
 
     /**
+     * Gets the text owned by this element only; does not get the combined text of all children.
+     * For example, given HTML {@code <p>Hello <b>there</b> now!</p>}, {@code p.ownText()} returns {@code "Hello now!"},
+     * whereas {@code text} returns {@code "Hello there now!"}.
+     * Note that the text within the {@code b} element is not returned, as it is not a direct child of the {@code p} element.
+     *
+     * @return unencoded text, or empty string if none.
+     * @see text
+     */
+    val ownText = element.ownText().orEmpty()
+
+    /**
      * Retrieves the element's inner HTML. E.g. on a {@code <div>} with one empty {@code <p>}, would return
      * {@code <p></p>}. (Whereas {@link #outerHtml()} would return {@code <div><p></p></div>}.)
      *
