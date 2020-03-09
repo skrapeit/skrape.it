@@ -15,7 +15,7 @@ internal class MediaSelectorsKtTest {
             findFirst {
                 expectThat(className).isEqualTo("area-class")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("area")
@@ -27,7 +27,7 @@ internal class MediaSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a audio")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("audio")
@@ -39,7 +39,7 @@ internal class MediaSelectorsKtTest {
             findFirst {
                 expectThat(attribute("custom-attr")).isEqualTo("img-attr")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("img")
@@ -51,7 +51,7 @@ internal class MediaSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a map")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("map")
@@ -63,7 +63,7 @@ internal class MediaSelectorsKtTest {
             findFirst {
                 expectThat(attribute("custom-attr")).isEqualTo("track-attr")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("track")
@@ -75,7 +75,7 @@ internal class MediaSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a video")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("video")

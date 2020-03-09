@@ -14,7 +14,7 @@ internal class DemarcatingEditsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a del")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("del")
@@ -26,7 +26,7 @@ internal class DemarcatingEditsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a ins")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("ins")

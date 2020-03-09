@@ -16,7 +16,7 @@ internal class TextContentSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a quote")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("blockquote")
@@ -28,7 +28,7 @@ internal class TextContentSelectorsKtTest {
             findAll {
                 toBePresentTimes(2)
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("dd")
@@ -40,7 +40,7 @@ internal class TextContentSelectorsKtTest {
             findAll {
                 toBePresentExactlyOnce
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("dir")
@@ -52,7 +52,7 @@ internal class TextContentSelectorsKtTest {
             findAll {
                 toBePresentExactlyOnce
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("dl")
@@ -64,7 +64,7 @@ internal class TextContentSelectorsKtTest {
             findAll {
                 toBePresentTimes(2)
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("dt")
@@ -76,7 +76,7 @@ internal class TextContentSelectorsKtTest {
             findAll {
                 toBePresentExactlyOnce
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("figcaption")
@@ -88,7 +88,7 @@ internal class TextContentSelectorsKtTest {
             findAll {
                 toBePresentExactlyOnce
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("figure")
@@ -100,7 +100,7 @@ internal class TextContentSelectorsKtTest {
             findAll {
                 toBePresentExactlyTwice
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("hr")
@@ -112,7 +112,7 @@ internal class TextContentSelectorsKtTest {
             findAll {
                 toBePresentTimes(11)
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("li")
@@ -124,7 +124,7 @@ internal class TextContentSelectorsKtTest {
             findAll {
                 toBePresentExactlyOnce
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("ol")
@@ -136,7 +136,7 @@ internal class TextContentSelectorsKtTest {
             findAll {
                 toBePresentExactlyOnce
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("ul")
@@ -148,7 +148,7 @@ internal class TextContentSelectorsKtTest {
             findLast {
                 expectThat(text).isEqualTo("i'm the last paragraph")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("p")
@@ -176,7 +176,7 @@ internal class TextContentSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a pre")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("pre")

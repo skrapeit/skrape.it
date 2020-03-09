@@ -13,7 +13,7 @@ internal class MainRootSelectorsKtTest {
             findFirst {
                 expectThat(attribute("lang")).isEqualTo("en")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("html")

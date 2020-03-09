@@ -17,7 +17,7 @@ internal class MetadataSelectorsKtTest {
             findFirst {
                 expectThat(attribute("custom-attr")).isEqualTo("base-attr")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("base")
@@ -30,7 +30,7 @@ internal class MetadataSelectorsKtTest {
                 expectThat(html).contains("<title>i'm the title</title>")
                 expectThat(outerHtml).contains("<title>i'm the title</title>")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("head")
@@ -43,7 +43,7 @@ internal class MetadataSelectorsKtTest {
             findAll {
                 expectThat(attribute("custom-attr")).isEqualTo("link-attr")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("link")
@@ -55,7 +55,7 @@ internal class MetadataSelectorsKtTest {
             findAll {
                 expectThat(attribute("custom-attr")).isEqualTo("meta-attr")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("meta")
@@ -67,7 +67,7 @@ internal class MetadataSelectorsKtTest {
             findFirst {
                 expectThat(toString()).contains(".top-bar{margin-top")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("style")
@@ -79,7 +79,7 @@ internal class MetadataSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm the title")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("title")

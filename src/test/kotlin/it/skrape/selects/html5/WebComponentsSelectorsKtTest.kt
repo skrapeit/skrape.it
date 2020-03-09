@@ -14,7 +14,7 @@ internal class WebComponentsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a content")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("content")
@@ -26,7 +26,7 @@ internal class WebComponentsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a shadow")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("shadow")
@@ -38,7 +38,7 @@ internal class WebComponentsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a slot")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("slot")
@@ -50,7 +50,7 @@ internal class WebComponentsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a template")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("template")

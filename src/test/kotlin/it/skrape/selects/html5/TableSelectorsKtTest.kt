@@ -15,7 +15,7 @@ internal class TableSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm the caption")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("caption")
@@ -27,7 +27,7 @@ internal class TableSelectorsKtTest {
             findAll {
                 toBePresentTimes(2)
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("col")
@@ -39,7 +39,7 @@ internal class TableSelectorsKtTest {
             findAll {
                 toBePresentExactlyOnce
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("colgroup")
@@ -51,7 +51,7 @@ internal class TableSelectorsKtTest {
             findAll {
                 toBePresentExactlyOnce
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("table")
@@ -63,7 +63,7 @@ internal class TableSelectorsKtTest {
             findAll {
                 toBePresentExactlyOnce
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("tbody")
@@ -75,7 +75,7 @@ internal class TableSelectorsKtTest {
             findAll {
                 toBePresentTimes(6)
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("td")
@@ -87,7 +87,7 @@ internal class TableSelectorsKtTest {
             findAll {
                 toBePresentExactlyOnce
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("tfoot")
@@ -99,7 +99,7 @@ internal class TableSelectorsKtTest {
             findAll {
                 toBePresentTimes(2)
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("th")
@@ -111,7 +111,7 @@ internal class TableSelectorsKtTest {
             findAll {
                 toBePresentExactlyOnce
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("thead")
@@ -123,7 +123,7 @@ internal class TableSelectorsKtTest {
             findAll {
                 toBePresentTimes(4)
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("tr")

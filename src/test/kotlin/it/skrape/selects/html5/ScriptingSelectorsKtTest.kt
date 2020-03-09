@@ -15,7 +15,7 @@ internal class ScriptingSelectorsKtTest {
             findAll {
                 expectThat(attribute("custom-attr")).isEqualTo("script-attr")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("script")
@@ -27,7 +27,7 @@ internal class ScriptingSelectorsKtTest {
             findFirst {
                 expectThat(attribute("custom-attr")).isEqualTo("canvas-attr")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("canvas")
@@ -39,7 +39,7 @@ internal class ScriptingSelectorsKtTest {
             findAll {
                 expectThat(attribute("custom-attr")).isEqualTo("noscript-attr")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("noscript")

@@ -15,7 +15,7 @@ internal class InteractiveSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a details")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("details")
@@ -27,7 +27,7 @@ internal class InteractiveSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a dialog")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("dialog")
@@ -39,7 +39,7 @@ internal class InteractiveSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a menu")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("menu")
@@ -51,7 +51,7 @@ internal class InteractiveSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a menuitem")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("menuitem")
@@ -63,7 +63,7 @@ internal class InteractiveSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a summary")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("summary")

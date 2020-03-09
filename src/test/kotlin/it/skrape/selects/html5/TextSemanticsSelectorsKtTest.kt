@@ -17,7 +17,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm an anchor")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("a")
@@ -29,7 +29,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm an abbr")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("abbr")
@@ -41,7 +41,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a bold text")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("b")
@@ -53,7 +53,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a bdi")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("bdi")
@@ -65,7 +65,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a bdo")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("bdo")
@@ -77,7 +77,7 @@ internal class TextSemanticsSelectorsKtTest {
             findAll {
                 toBePresentTimes(2)
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("br")
@@ -89,7 +89,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a cite")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("cite")
@@ -101,7 +101,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a code")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("code")
@@ -113,7 +113,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a data")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("data")
@@ -125,7 +125,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a dfn")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("dfn")
@@ -137,7 +137,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a em")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("em")
@@ -149,7 +149,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a i")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("i")
@@ -161,7 +161,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a kbd")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("kbd")
@@ -173,7 +173,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a mark")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("mark")
@@ -185,7 +185,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a q")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("q")
@@ -197,7 +197,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a rb")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("rb")
@@ -209,7 +209,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a rp")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("rp")
@@ -221,7 +221,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a rt")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("rt")
@@ -233,7 +233,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a rtc")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("rtc")
@@ -245,7 +245,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).contains("i'm a ruby")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("ruby")
@@ -257,7 +257,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a s")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("s")
@@ -269,7 +269,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a samp")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("samp")
@@ -281,7 +281,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a small")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("small")
@@ -293,7 +293,7 @@ internal class TextSemanticsSelectorsKtTest {
             findAll {
                 toBePresentTimes(6)
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("span")
@@ -305,7 +305,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a strong")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("strong")
@@ -317,7 +317,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a sub")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("sub")
@@ -329,7 +329,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a sup")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("sup")
@@ -341,7 +341,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a time")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("time")
@@ -353,7 +353,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a tt")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("tt")
@@ -365,7 +365,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a u")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("u")
@@ -377,7 +377,7 @@ internal class TextSemanticsSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a var")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("var")
@@ -389,7 +389,7 @@ internal class TextSemanticsSelectorsKtTest {
             findAll {
                 toBePresentExactlyOnce
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("wbr")

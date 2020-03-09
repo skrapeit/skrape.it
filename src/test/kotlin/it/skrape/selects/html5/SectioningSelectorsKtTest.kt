@@ -15,7 +15,7 @@ internal class SectioningSelectorsKtTest {
             findFirst {
                 // toBePresent()
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("body")
@@ -27,7 +27,7 @@ internal class SectioningSelectorsKtTest {
             findAll {
                 toBePresentTimes(4)
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("div")
@@ -39,7 +39,7 @@ internal class SectioningSelectorsKtTest {
             findAll {
                 toBePresentExactlyOnce
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("section")
@@ -51,7 +51,7 @@ internal class SectioningSelectorsKtTest {
             findAll {
                 toBePresentExactlyOnce
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("nav")
@@ -63,7 +63,7 @@ internal class SectioningSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm an article")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("article")
@@ -75,7 +75,7 @@ internal class SectioningSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm an aside")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("aside")
@@ -87,7 +87,7 @@ internal class SectioningSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm the headline")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("h1")
@@ -99,7 +99,7 @@ internal class SectioningSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a h2")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("h2")
@@ -111,7 +111,7 @@ internal class SectioningSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a h3")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("h3")
@@ -123,7 +123,7 @@ internal class SectioningSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a h4")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("h4")
@@ -135,7 +135,7 @@ internal class SectioningSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a h5")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("h5")
@@ -147,7 +147,7 @@ internal class SectioningSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a h6")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("h6")
@@ -159,7 +159,7 @@ internal class SectioningSelectorsKtTest {
             findAll {
                 toBePresentExactlyOnce
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("header")
@@ -171,7 +171,7 @@ internal class SectioningSelectorsKtTest {
             findAll {
                 toBePresentExactlyOnce
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("footer")
@@ -183,7 +183,7 @@ internal class SectioningSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm an address")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("address")
@@ -195,7 +195,7 @@ internal class SectioningSelectorsKtTest {
             findAll {
                 toBePresentExactlyOnce
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("main")

@@ -14,7 +14,7 @@ internal class EmbeddedContentSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a applet")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("applet")
@@ -26,7 +26,7 @@ internal class EmbeddedContentSelectorsKtTest {
             findFirst {
                 expectThat(attribute("src")).isEqualTo("helloworld.swf")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("embed")
@@ -38,7 +38,7 @@ internal class EmbeddedContentSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a iframe")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("iframe")
@@ -50,7 +50,7 @@ internal class EmbeddedContentSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a noembed")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("noembed")
@@ -62,7 +62,7 @@ internal class EmbeddedContentSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a object")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("object")
@@ -74,7 +74,7 @@ internal class EmbeddedContentSelectorsKtTest {
             findFirst {
                 expectThat(attribute("name")).isEqualTo("autoplay")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("param")
@@ -86,7 +86,7 @@ internal class EmbeddedContentSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a picture")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("picture")
@@ -98,7 +98,7 @@ internal class EmbeddedContentSelectorsKtTest {
             findFirst {
                 expectThat(attribute("src")).isEqualTo("horse.ogg")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("source")

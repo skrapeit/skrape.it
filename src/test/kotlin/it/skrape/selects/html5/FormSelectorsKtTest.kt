@@ -15,7 +15,7 @@ internal class FormSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a button")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("button")
@@ -27,7 +27,7 @@ internal class FormSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a datalist")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("datalist")
@@ -39,7 +39,7 @@ internal class FormSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a fieldset")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("fieldset")
@@ -51,7 +51,7 @@ internal class FormSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a form")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("form")
@@ -63,7 +63,7 @@ internal class FormSelectorsKtTest {
             findFirst {
                 expectThat(attribute("custom-attr")).isEqualTo("input-attr")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("input")
@@ -75,7 +75,7 @@ internal class FormSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a label")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("label")
@@ -87,7 +87,7 @@ internal class FormSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a legend")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("legend")
@@ -99,7 +99,7 @@ internal class FormSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a meter")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("meter")
@@ -111,7 +111,7 @@ internal class FormSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a optgroup")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("optgroup")
@@ -123,7 +123,7 @@ internal class FormSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a option")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("option")
@@ -135,7 +135,7 @@ internal class FormSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a output")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("output")
@@ -147,7 +147,7 @@ internal class FormSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a progress")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("progress")
@@ -159,7 +159,7 @@ internal class FormSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a isPresent")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("isPresent")
@@ -171,7 +171,7 @@ internal class FormSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a textarea")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("textarea")
