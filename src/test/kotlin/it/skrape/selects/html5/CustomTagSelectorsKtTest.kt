@@ -14,7 +14,7 @@ internal class CustomTagSelectorsKtTest {
             findFirst {
                 expectThat(text).isEqualTo("i'm a custom-tag")
             }
-            rawCssSelector
+            toCssSelector
         }
 
         expectThat(selector).isEqualTo("custom-tag")
@@ -22,28 +22,42 @@ internal class CustomTagSelectorsKtTest {
 
     @Test
     internal fun `can pick html5 custom selector via invoked string`() {
-        val selector = aValidDocument {
+        val selector = aValidDocument(aStandardTag("custom-tag")) {
            "custom-tag" {
                 findFirst {
                     expectThat(text).isEqualTo("i'm a custom-tag")
                 }
-                rawCssSelector
+               toCssSelector
             }
         }
         expectThat(selector).isEqualTo("custom-tag")
     }
 
     @Test
-    internal fun `can cascade custom selector from invoked string`() {
+    internal fun `can cascade custom tag selectors`() {
         val selector = aValidDocument {
-            "foo" {
+            customTag("div") {
                 withId = "schnitzel"
-                "bar" {
+                customTag("bar") {
                     withClass = "foobar"
-                    rawCssSelector
+                    toCssSelector
                 }
             }
         }
-        expectThat(selector).isEqualTo("foo#schnitzel bar.foobar")
+        expectThat(selector).isEqualTo("div#schnitzel bar.foobar")
+    }
+
+    @Test
+    internal fun `can cascade custom selector from invoked string`() {
+        val selector = aValidDocument {
+            "div" {
+                withId = "schnitzel"
+                "bar" {
+                    withClass = "foobar"
+                    toCssSelector
+                }
+            }
+        }
+        expectThat(selector).isEqualTo("div#schnitzel bar.foobar")
     }
 }

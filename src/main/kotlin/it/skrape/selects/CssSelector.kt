@@ -74,7 +74,7 @@ class CssSelector(
     private fun String.withoutSpaces() = replace("\\s".toRegex(), "")
 
     operator fun <T> String.invoke(init: CssSelector.() -> T) =
-            CssSelector(rawCssSelector).init()
+            CssSelector(rawCssSelector = "${this@CssSelector.toCssSelector} $this").init()
 }
 
 typealias CssClassName = String
