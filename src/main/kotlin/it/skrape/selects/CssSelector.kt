@@ -69,11 +69,13 @@ class CssSelector(
 
     private fun String.withoutSpaces() = replace("\\s".toRegex(), "")
 
+    operator fun <T> String.invoke(init: CssSelector.() -> T) =
+            CssSelector(rawCssSelector).init()
 }
 
 typealias CssClassName = String
 
 infix fun CssClassName.and(value: String) = "$this.$value"
 
-infix fun Pair<String, String>.and(pair: Pair<String, String>)=
+infix fun Pair<String, String>.and(pair: Pair<String, String>) =
         mutableListOf(this).apply { add(pair) }
