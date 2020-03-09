@@ -65,7 +65,7 @@ class Doc(val document: Document) {
 
     override fun toString() = document.toString()
 
-    operator fun String.invoke(init: CssSelector.() -> Unit) =
+    operator fun <T> String.invoke(init: CssSelector.() -> T) =
             this@Doc.selection(this, init)
 
     fun <T> selection(cssSelector: String, init: CssSelector.() -> T) =
