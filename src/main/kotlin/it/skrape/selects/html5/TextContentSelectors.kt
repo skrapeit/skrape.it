@@ -159,6 +159,9 @@ fun <T> Doc.ul(cssSelector: String = "", init: CssSelector.() -> T) =
 fun <T> Doc.p(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("p$cssSelector", init)
 
+fun <T> CssSelector.p(cssSelector: String = "", init: CssSelector.() -> T) =
+        CssSelector("$toCssSelector p$cssSelector").init()
+
 /**
  * Will define a <pre>-tags css query selector.
  * By default it will just be the specific tag-name.
