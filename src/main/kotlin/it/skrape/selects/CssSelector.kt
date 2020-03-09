@@ -17,39 +17,40 @@ class CssSelector(
 ) {
 
     fun <T> findFirst(init: DocElement.() -> T): T =
-            doc.findFirst(toCssSelector()).init()
+            doc.findFirst(toCssSelector).init()
 
     fun <T> findByIndex(index: Int, init: DocElement.() -> T): T =
             doc.findAll(toCssSelector())[index].init()
 
     fun <T> findSecond(init: DocElement.() -> T): T =
-            doc.findAll(toCssSelector())[1].init()
+            doc.findAll(toCssSelector)[1].init()
 
     fun <T> findThird(init: DocElement.() -> T): T =
-            doc.findAll(toCssSelector())[2].init()
+            doc.findAll(toCssSelector)[2].init()
 
     fun <T> findLast(init: DocElement.() -> T): T {
-        val all = doc.findAll(toCssSelector())
+        val all = doc.findAll(toCssSelector)
         return all[all.size - 1].init()
     }
 
     fun <T> findSecondLast(init: DocElement.() -> T): T {
-        val all = doc.findAll(toCssSelector())
+        val all = doc.findAll(toCssSelector)
         return all[all.size - 2].init()
     }
 
-    fun <T> findAll(init: List<DocElement>.() -> T) = doc.findAll(toCssSelector(), init)
+    fun <T> findAll(init: List<DocElement>.() -> T) = doc.findAll(toCssSelector, init)
 
-    fun toCssSelector(): String {
-        val calculatedSelector =
-                        withId.toIdSelector().orEmpty() +
-                        withClass.toClassesSelector().orEmpty() +
-                        withAttributeKey.toAttributeKeySelector().orEmpty() +
-                        withAttributeKeys.toCssAttributeKeysSelector().orEmpty() +
-                        withAttribute.toAttributeSelector().orEmpty() +
-                        withAttributes.toAttributesSelector().orEmpty()
-        return rawCssSelector + calculatedSelector.withoutSpaces()
-    }
+    val toCssSelector: String
+        get() {
+            val calculatedSelector =
+                    withId.toIdSelector().orEmpty() +
+                            withClass.toClassesSelector().orEmpty() +
+                            withAttributeKey.toAttributeKeySelector().orEmpty() +
+                            withAttributeKeys.toCssAttributeKeysSelector().orEmpty() +
+                            withAttribute.toAttributeSelector().orEmpty() +
+                            withAttributes.toAttributesSelector().orEmpty()
+            return rawCssSelector + calculatedSelector.withoutSpaces()
+        }
 
     private fun String?.toIdSelector() = this?.let { "#$it" }
 
