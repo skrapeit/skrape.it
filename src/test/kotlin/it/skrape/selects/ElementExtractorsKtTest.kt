@@ -11,7 +11,7 @@ import strikt.assertions.isEqualTo
 
 internal class ElementExtractorsKtTest {
 
-    private val document = aValidDocument()
+    private val document = aValidDocument() { this }
 
     @Test
     fun `can pick element from element`() {
@@ -51,6 +51,7 @@ internal class ElementExtractorsKtTest {
                 ownText toBe "i'm a parent div"
             }
         }
+        expectThat(firstText).isEqualTo("i'm a parent div")
     }
 
     @Test
@@ -67,6 +68,16 @@ internal class ElementExtractorsKtTest {
     fun `can pick elements by index`() {
         val secondText = document.p {
             findByIndex(1) {
+                text toBe "i'm a second paragraph"
+            }
+        }
+        expectThat(secondText).isEqualTo("i'm a second paragraph")
+    }
+
+    @Test
+    fun `can pick elements by index via invoke index`() {
+        val secondText = document.p {
+            1 {
                 text toBe "i'm a second paragraph"
             }
         }

@@ -155,6 +155,22 @@ internal class TextContentSelectorsKtTest {
     }
 
     @Test
+    fun `can cascade p-tag`() {
+        val selector = aValidDocument().p {
+            withClass = "first"
+            p {
+                withClass = "second"
+                p {
+                    withClass = "third"
+                    toCssSelector
+                }
+            }
+        }
+
+        expectThat(selector).isEqualTo("p.first p.second p.third")
+    }
+
+    @Test
     fun `can parse pre-tag`() {
         val selector = aValidDocument().pre {
             findFirst {

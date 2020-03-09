@@ -36,7 +36,6 @@ internal class Parser(
  * Read and parse HTML from a String.
  * @param html represents a html snippet
  */
-@SkrapeItDsl
 fun htmlDocument(
         html: String,
         charset: Charset = Charsets.UTF_8,
@@ -53,7 +52,6 @@ fun htmlDocument(
  * @param jsExecution defaults to false
  * @param baseUri defaults to empty String
  */
-@SkrapeItDsl
 fun htmlDocument(
         file: File,
         charset: Charset = Charsets.UTF_8,
@@ -62,7 +60,7 @@ fun htmlDocument(
         init: Doc.() -> Unit
 ): Doc = htmlDocument(file.readText(charset), charset, jsExecution, baseUri).also(init)
 
-
+@SkrapeItDsl
 fun htmlDocument(
         html: String,
         charset: Charset = Charsets.UTF_8,

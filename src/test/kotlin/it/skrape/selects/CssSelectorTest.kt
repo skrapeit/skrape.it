@@ -10,7 +10,7 @@ internal class CssSelectorTest {
     fun `can calculate selector from raw css selector param`() {
         val cssSelector = CssSelector(
                 rawCssSelector = "#foo.bar"
-        ).toCssSelector()
+        ).toCssSelector
         expectThat(cssSelector).isEqualTo("#foo.bar")
     }
 
@@ -18,7 +18,7 @@ internal class CssSelectorTest {
     fun `can calculate selector from raw css selector param with spaces`() {
         val cssSelector = CssSelector(
                 rawCssSelector = "div #foo.bar"
-        ).toCssSelector()
+        ).toCssSelector
         expectThat(cssSelector).isEqualTo("div #foo.bar")
     }
 
@@ -26,7 +26,7 @@ internal class CssSelectorTest {
     fun `can calculate class selector from element`() {
         val cssSelector = CssSelector(
                 withClass = "foo"
-        ).toCssSelector()
+        ).toCssSelector
         expectThat(cssSelector).isEqualTo(".foo")
     }
 
@@ -34,7 +34,7 @@ internal class CssSelectorTest {
     fun `can calculate list of classes selector from element`() {
         val cssSelector = CssSelector(
                 withClass = "foo" and "bar"
-        ).toCssSelector()
+        ).toCssSelector
         expectThat(cssSelector).isEqualTo(".foo.bar")
     }
 
@@ -45,7 +45,7 @@ internal class CssSelectorTest {
                 withAttribute = "   foooo " to "  bar   ",
                 withAttributes = "fizz" to "buzz" and Pair("skrape", "it"),
                 withAttributeKeys = listOf("key1", "key2")
-        ).toCssSelector()
+        ).toCssSelector
         expectThat(cssSelector).isEqualTo(".foobar.foo.bar['key1']['key2'][foooo='bar'][fizz='buzz'][skrape='it']")
     }
 
@@ -53,7 +53,7 @@ internal class CssSelectorTest {
     fun `can calculate id selector from element`() {
         val cssSelector = CssSelector(
                 withId = "foo"
-        ).toCssSelector()
+        ).toCssSelector
         expectThat(cssSelector).isEqualTo("#foo")
     }
 
@@ -61,7 +61,7 @@ internal class CssSelectorTest {
     fun `can calculate attributeKey selector from element`() {
         val cssSelector = CssSelector(
                 withAttributeKey = "foo"
-        ).toCssSelector()
+        ).toCssSelector
         expectThat(cssSelector).isEqualTo("[foo]")
     }
 
@@ -69,7 +69,7 @@ internal class CssSelectorTest {
     fun `can calculate attribute selector from element`() {
         val cssSelector = CssSelector(
                 withAttribute = "foo" to "bar"
-        ).toCssSelector()
+        ).toCssSelector
         expectThat(cssSelector).isEqualTo("[foo='bar']")
     }
 
@@ -78,7 +78,7 @@ internal class CssSelectorTest {
         val cssSelector = CssSelector(
                 withClass = "bar",
                 withId = "foo"
-        ).toCssSelector()
+        ).toCssSelector
         expectThat(cssSelector).isEqualTo("#foo.bar")
     }
 
@@ -87,7 +87,7 @@ internal class CssSelectorTest {
         val cssSelector = CssSelector(
                 withAttributeKey = "bar",
                 withId = "foo"
-        ).toCssSelector()
+        ).toCssSelector
         expectThat(cssSelector).isEqualTo("#foo[bar]")
     }
 
@@ -96,7 +96,7 @@ internal class CssSelectorTest {
         val cssSelector = CssSelector(
                 withAttribute = "foo" to "bar",
                 withId = "foobar"
-        ).toCssSelector()
+        ).toCssSelector
         expectThat(cssSelector).isEqualTo("#foobar[foo='bar']")
     }
 
@@ -105,7 +105,7 @@ internal class CssSelectorTest {
         val cssSelector = CssSelector(
                 withClass = "foobar",
                 withAttribute = "foo" to "bar"
-        ).toCssSelector()
+        ).toCssSelector
         expectThat(cssSelector).isEqualTo(".foobar[foo='bar']")
     }
 
@@ -114,7 +114,7 @@ internal class CssSelectorTest {
         val cssSelector = CssSelector(
                 withAttributeKey = "foobar",
                 withAttribute = "foo" to "bar"
-        ).toCssSelector()
+        ).toCssSelector
         expectThat(cssSelector).isEqualTo("[foobar][foo='bar']")
     }
 
@@ -124,7 +124,7 @@ internal class CssSelectorTest {
                 withId = "foobar",
                 withAttributeKey = "foo",
                 withClass = "bar"
-        ).toCssSelector()
+        ).toCssSelector
         expectThat(cssSelector).isEqualTo("#foobar.bar[foo]")
     }
 
@@ -134,7 +134,7 @@ internal class CssSelectorTest {
                 withId = "fb",
                 withAttributeKey = "foobar",
                 withAttribute = "foo" to "bar"
-        ).toCssSelector()
+        ).toCssSelector
         expectThat(cssSelector).isEqualTo("#fb[foobar][foo='bar']")
     }
 
@@ -144,7 +144,7 @@ internal class CssSelectorTest {
                 withId = "fb",
                 withClass = "foobar",
                 withAttribute = "foo" to "bar"
-        ).toCssSelector()
+        ).toCssSelector
         expectThat(cssSelector).isEqualTo("#fb.foobar[foo='bar']")
     }
 
@@ -153,7 +153,7 @@ internal class CssSelectorTest {
         val cssSelector = CssSelector(
                 withAttributeKey = "foo",
                 withClass = "bar"
-        ).toCssSelector()
+        ).toCssSelector
         expectThat(cssSelector).isEqualTo(".bar[foo]")
     }
 
@@ -165,7 +165,7 @@ internal class CssSelectorTest {
                 withId = "foo",
                 withAttributeKey = "foobar",
                 withAttribute = "fizz" to "buzz"
-        ).toCssSelector()
+        ).toCssSelector
         expectThat(cssSelector).isEqualTo("div span a#foo.bar[foobar][fizz='buzz']")
     }
 
@@ -174,7 +174,7 @@ internal class CssSelectorTest {
         val cssSelector = CssSelector(
                 withClass = "bar",
                 rawCssSelector = "foo"
-        ).toCssSelector()
+        ).toCssSelector
         expectThat(cssSelector).isEqualTo("foo.bar")
     }
 }
