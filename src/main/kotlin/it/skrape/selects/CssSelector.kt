@@ -20,7 +20,10 @@ class CssSelector(
             doc.findFirst(toCssSelector).init()
 
     fun <T> findByIndex(index: Int, init: DocElement.() -> T): T =
-            doc.findAll(toCssSelector())[index].init()
+            doc.findAll(toCssSelector)[index].init()
+
+    operator fun <T> Int.invoke(init: DocElement.() -> T) =
+            findByIndex(this, init)
 
     fun <T> findSecond(init: DocElement.() -> T): T =
             doc.findAll(toCssSelector)[1].init()
