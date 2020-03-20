@@ -9,7 +9,7 @@ assignees: skrapeit
 
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. 
-e.g. I'm always frustrated when [...] or I think it would be really awesome if scrape{it} would provide [...]
+e.g. I'm always frustrated when [...] or I think it would be really awesome if skrape{it} would provide [...]
 
 **Describe the solution you'd like**
 A clear and concise description of what you want to happen.
