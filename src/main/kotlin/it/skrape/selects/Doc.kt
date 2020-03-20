@@ -18,7 +18,7 @@ class Doc(val document: Document) {
      * @see #ownText()
      * @see #textNodes()
      */
-    val text = document.text().orEmpty()
+    val text by lazy { document.text().orEmpty() }
 
     /**
      * Get the (unencoded) text of all children of this element, including any newlines and spaces present in the
@@ -27,7 +27,7 @@ class Doc(val document: Document) {
      * @return unencoded, un-normalized text
      * @see text
      */
-    val wholeText = document.wholeText().orEmpty()
+    val wholeText by lazy { document.wholeText().orEmpty() }
 
     /**
      * Retrieves the element's inner HTML. E.g. on a {@code <div>} with one empty {@code <p>}, would return
@@ -35,7 +35,7 @@ class Doc(val document: Document) {
      * @return String of HTML.
      * @see outerHtml
      */
-    val html: String = document.html().orEmpty()
+    val html: String by lazy { document.html().orEmpty() }
 
     /**
      * Get the outer HTML of this node. For example, on a {@code p} element, may return {@code <p>Para</p>}.
@@ -43,7 +43,7 @@ class Doc(val document: Document) {
      * @see html
      * @see text
      */
-    val outerHtml: String = document.outerHtml().orEmpty()
+    val outerHtml: String by lazy { document.outerHtml().orEmpty() }
 
     infix fun findAll(cssSelector: String) = document.select(cssSelector)
             .map { DocElement(it) }

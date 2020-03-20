@@ -17,7 +17,7 @@ class DocElement(private val element: Element) {
      * @see #ownText()
      * @see #textNodes()
      */
-    val text= element.text().orEmpty()
+    val text by lazy { element.text().orEmpty() }
 
     /**
      * Gets the text owned by this element only; does not get the combined text of all children.
@@ -28,7 +28,7 @@ class DocElement(private val element: Element) {
      * @return unencoded text, or empty string if none.
      * @see text
      */
-    val ownText = element.ownText().orEmpty()
+    val ownText by lazy { element.ownText().orEmpty() }
 
     /**
      * Retrieves the element's inner HTML. E.g. on a {@code <div>} with one empty {@code <p>}, would return
@@ -38,7 +38,7 @@ class DocElement(private val element: Element) {
      * @see outerHtml
      * @see text
      */
-    val html= element.html().orEmpty()
+    val html by lazy { element.html().orEmpty() }
 
     /**
      * Get the outer HTML of this node. For example, on a {@code p} element, may return {@code <p>Para</p>}.
@@ -46,7 +46,10 @@ class DocElement(private val element: Element) {
      * @see html
      * @see text
      */
-    val outerHtml= element.outerHtml().orEmpty()
+    val outerHtml by lazy { element.outerHtml().orEmpty() }
+
+
+    val isPresent by lazy { element.allElements.size > 0 }
 
     /**
      * Will pick all occurrences of elements that are matching the CSS-Selector
@@ -106,12 +109,11 @@ class DocElement(private val element: Element) {
     /**
      * Will convert an invoked String to a CssSelector scope.
      */
-    operator fun String.invoke(init: CssSelector.() -> Unit) =
+    operator fun <T> String.invoke(init: CssSelector.() -> T) =
             this@DocElement.selection(this, init)
 
     override fun toString() = element.toString()
 
-    val isPresent= element.allElements.size > 0
 
     fun select(cssSelector: String) = element.select(cssSelector).map { DocElement(it) }
 }
