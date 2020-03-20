@@ -63,3 +63,9 @@ val DocElement.toBePresent
 
 val List<DocElement>.toBeNotPresent
     get() = expectThat(this.size).isEqualTo(0).let { this }
+
+val List<Any>.toBeEmpty
+    get() = expectThat(this.size).isEqualTo(0).let { this }
+
+val List<Any>.toBeNotEmpty
+    get() = expectThat(this.size).isGreaterThan(0).let { this }

@@ -163,4 +163,28 @@ internal class MatchersKtTest {
             elements.toBeNotPresent
         }
     }
+
+    @Test
+    internal fun `toBeEmpty can handle empty list`() {
+        emptyList<Any>().toBeEmpty
+    }
+
+    @Test
+    internal fun `toBeEmpty is throwing exception NON empty list`() {
+        Assertions.assertThrows(AssertionFailedError::class.java) {
+            listOf(1, 2, 3).toBeEmpty
+        }
+    }
+
+    @Test
+    internal fun `toBeNotEmpty can handle NON empty list`() {
+        listOf(1, 2, 3).toBeNotEmpty
+    }
+
+    @Test
+    internal fun `toBeNotEmpty is throwing exception empty list`() {
+        Assertions.assertThrows(AssertionFailedError::class.java) {
+            emptyList<Any>().toBeNotEmpty
+        }
+    }
 }
