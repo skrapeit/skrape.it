@@ -7,7 +7,7 @@ import org.jsoup.nodes.Element
 
 @Suppress("TooManyFunctions")
 @SkrapeItDsl
-class Doc(val document: Document) {
+class Doc(val document: Document, var relaxed: Boolean = false) {
 
     /**
      * Gets the combined text of this element and all its children. Whitespace is normalized and trimmed.
@@ -45,21 +45,18 @@ class Doc(val document: Document) {
      */
     val outerHtml: String by lazy { document.outerHtml().orEmpty() }
 
-    infix fun findAll(cssSelector: String) = document.select(cssSelector)
-            .map { DocElement(it) }
-            .takeIf { it.isNotEmpty() } ?: throw ElementNotFoundException(cssSelector)
+    infix fun findAll(cssSelector: String): List<DocElement> {
+        val selected = document.select(cssSelector)
+                .map { DocElement(it) }
+                .takeIf { it.isNotEmpty() }
+        return if (relaxed) selected.orEmpty() else selected ?: throw ElementNotFoundException(cssSelector)
+    }
 
     fun <T> findAll(cssSelector: String, init: List<DocElement>.() -> T) = findAll(cssSelector).init()
 
-    infix fun findFirst(cssSelector: String) =
-            findFirstOrNull(cssSelector) ?: throw ElementNotFoundException(cssSelector)
+    infix fun findFirst(cssSelector: String) = findAll(cssSelector).firstOrNull() ?: DocElement(Element(cssSelector))
 
     fun <T> findFirst(cssSelector: String, init: DocElement.() -> T) = findFirst(cssSelector).init()
-
-    fun findFirstOrNull(cssSelector: String): DocElement? {
-        val element: Element? = document.selectFirst(cssSelector)
-        return element?.let { DocElement(it) }
-    }
 
     val titleText = document.title().orEmpty()
 

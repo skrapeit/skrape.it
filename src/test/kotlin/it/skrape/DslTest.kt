@@ -301,6 +301,24 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
+    internal fun `will return empty list if element could not be found and Doc mode is relaxed`() {
+
+        skrape {
+            expect {
+                htmlDocument {
+                    relaxed = true
+                    findAll(".nonExistent") {
+                        toBeEmpty
+                    }
+                    findFirst(".nonExistent") {
+                        // not throwing Exception
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
     internal fun `will throw custom exception if element called by dsl could not be found`() {
 
         assertThrows(ElementNotFoundException::class.java) {

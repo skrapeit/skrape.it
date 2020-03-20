@@ -3,13 +3,12 @@ package it.skrape
 import it.skrape.core.fetcher.Mode
 import it.skrape.core.fetcher.basic
 import it.skrape.core.htmlDocument
-import it.skrape.matchers.toBe
-import it.skrape.matchers.toBePresentExactlyOnce
-import it.skrape.matchers.toContain
+import it.skrape.matchers.*
 import it.skrape.selects.and
 import it.skrape.selects.html5.a
 import it.skrape.selects.html5.customTag
 import it.skrape.selects.html5.div
+import it.skrape.selects.html5.span
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -154,6 +153,28 @@ class ExperimentalDslTest : WireMockSetup() {
                 findFirst {
                     println(attribute("href"))
                 }
+            }
+        }
+    }
+
+    @Test
+    fun `relaxed mode will not throw exception if element not exists`() {
+        htmlDocument("""<span class="xxx"">hello</span>""") {
+            relaxed = true
+            span {
+                withClass = "xxx"
+                findAll { toBeNotEmpty }
+                findFirst { text toBe "hello" }
+            }
+            span {
+                withClass = "yyy"
+                // in current behaviour it would throw an ElementNotFoundException when trying to find element without success
+                findAll { toBeEmpty }
+                findFirst { text toBe "" }
+            }
+            "some.crazy selectorThat[doesnt] exists" {
+                // in current behaviour it would throw an ElementNotFoundException when trying to find element without success
+                findAll { toBeEmpty }
             }
         }
     }
