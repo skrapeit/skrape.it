@@ -29,6 +29,9 @@ fun <T> Doc.caption(cssSelector: String = "", init: CssSelector.() -> T) =
 fun <T> Doc.col(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("col$cssSelector", init)
 
+fun <T> CssSelector.col(cssSelector: String = "", init: CssSelector.() -> T) =
+        CssSelector("$toCssSelector col$cssSelector", doc = this.doc).init()
+
 /**
  * Will define a <colgroup>-tags css query selector.
  * By default it will just be the specific tag-name.
@@ -41,6 +44,9 @@ fun <T> Doc.col(cssSelector: String = "", init: CssSelector.() -> T) =
  */
 fun <T> Doc.colgroup(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("colgroup$cssSelector", init)
+
+fun <T> CssSelector.colgroup(cssSelector: String = "", init: CssSelector.() -> T) =
+        CssSelector("$toCssSelector colgroup$cssSelector", doc = this.doc).init()
 
 /**
  * Will define a <table>-tags css query selector.
@@ -55,6 +61,9 @@ fun <T> Doc.colgroup(cssSelector: String = "", init: CssSelector.() -> T) =
 fun <T> Doc.table(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("table$cssSelector", init)
 
+fun <T> CssSelector.table(cssSelector: String = "", init: CssSelector.() -> T) =
+        CssSelector("$toCssSelector table$cssSelector", doc = this.doc).init()
+
 /**
  * Will define a <tbody>-tags css query selector.
  * By default it will just be the specific tag-name.
@@ -67,6 +76,9 @@ fun <T> Doc.table(cssSelector: String = "", init: CssSelector.() -> T) =
  */
 fun <T> Doc.tbody(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("tbody$cssSelector", init)
+
+fun <T> CssSelector.tbody(cssSelector: String = "", init: CssSelector.() -> T) =
+        CssSelector("$toCssSelector tbody$cssSelector", doc = this.doc).init()
 
 /**
  * Will define a <td>-tags css query selector.
@@ -81,6 +93,9 @@ fun <T> Doc.tbody(cssSelector: String = "", init: CssSelector.() -> T) =
 fun <T> Doc.td(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("td$cssSelector", init)
 
+fun <T> CssSelector.td(cssSelector: String = "", init: CssSelector.() -> T) =
+        CssSelector("$toCssSelector td$cssSelector", doc = this.doc).init()
+
 /**
  * Will define a <tfoot>-tags css query selector.
  * By default it will just be the specific tag-name.
@@ -93,6 +108,9 @@ fun <T> Doc.td(cssSelector: String = "", init: CssSelector.() -> T) =
  */
 fun <T> Doc.tfoot(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("tfoot$cssSelector", init)
+
+fun <T> CssSelector.tfoot(cssSelector: String = "", init: CssSelector.() -> T) =
+        CssSelector("$toCssSelector tfoot$cssSelector", doc = this.doc).init()
 
 /**
  * Will define a <th>-tags css query selector.
@@ -107,6 +125,9 @@ fun <T> Doc.tfoot(cssSelector: String = "", init: CssSelector.() -> T) =
 fun <T> Doc.th(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("th$cssSelector", init)
 
+fun <T> CssSelector.th(cssSelector: String = "", init: CssSelector.() -> T) =
+        CssSelector("$toCssSelector th$cssSelector", doc = this.doc).init()
+
 /**
  * Will define a <thead>-tags css query selector.
  * By default it will just be the specific tag-name.
@@ -120,6 +141,9 @@ fun <T> Doc.th(cssSelector: String = "", init: CssSelector.() -> T) =
 fun <T> Doc.thead(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("thead$cssSelector", init)
 
+fun <T> CssSelector.thead(cssSelector: String = "", init: CssSelector.() -> T) =
+        CssSelector("$toCssSelector thead$cssSelector", doc = this.doc).init()
+
 /**
  * Will define a <tr>-tags css query selector.
  * By default it will just be the specific tag-name.
@@ -132,3 +156,6 @@ fun <T> Doc.thead(cssSelector: String = "", init: CssSelector.() -> T) =
  */
 fun <T> Doc.tr(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("tr$cssSelector", init)
+
+fun <T> CssSelector.tr(cssSelector: String = "", init: CssSelector.() -> T) =
+        CssSelector("$toCssSelector tr$cssSelector", doc = this.doc).init()
