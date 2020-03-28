@@ -2,9 +2,7 @@ package it.skrape.selects
 
 import it.skrape.aValidDocument
 import it.skrape.matchers.toBe
-import it.skrape.selects.html5.div
-import it.skrape.selects.html5.p
-import org.junit.jupiter.api.Disabled
+import it.skrape.selects.html5.*
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
@@ -112,5 +110,68 @@ internal class ElementExtractorsKtTest {
             }
         }
         expectThat(secondLastText).isEqualTo("i'm a paragraph with word break")
+    }
+
+    @Test
+    fun `can pick element with cascading selector on table - foot`() {
+        val pickedElementText = document.table {
+            tfoot {
+                tr {
+                    td {
+                        findSecond {
+                            text toBe "second foot td"
+                        }
+                    }
+                }
+            }
+        }
+        expectThat(pickedElementText).isEqualTo("second foot td")
+    }
+
+    @Test
+    fun `can pick element with cascading selector on table - head`() {
+        val pickedElementText = document.table {
+            thead {
+                tr {
+                    th {
+                        findFirst {
+                            text toBe "first th"
+                        }
+                    }
+                }
+            }
+        }
+        expectThat(pickedElementText).isEqualTo("first th")
+    }
+
+    @Test
+    fun `can pick element with cascading selector on table - body`() {
+        val pickedElementText = document.table {
+            tbody {
+                tr {
+                    findSecond {
+                        findFirst("td") {
+                            text
+                        }
+                    }
+                }
+            }
+        }
+        expectThat(pickedElementText).isEqualTo("barfoo")
+    }
+
+    @Test
+    fun `can pick element with cascading selector on table - colgroup`() {
+        val pickedElementText = document.table {
+            colgroup {
+                col {
+                    withAttributeKey = "span"
+                    findFirst {
+                        attribute("span")
+                    }
+                }
+            }
+        }
+        expectThat(pickedElementText).isEqualTo("2")
     }
 }
