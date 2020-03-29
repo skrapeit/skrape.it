@@ -53,7 +53,6 @@ class DocElement(private val element: Element) {
 
     /**
      * Will pick all occurrences of elements that are matching the CSS-Selector
-     * and return it as Elements which is basically a List<Element>
      * @see <a href="https://www.w3schools.com/cssref/css_selectors.asp">Overview of CSS-Selectors for further information.</a>
      * @param cssSelector that represents an CSS-Selector
      * @return T
@@ -103,19 +102,13 @@ class DocElement(private val element: Element) {
      * @param cssSelector that represents an CSS-Selector that will be considered during calculation
      * @return T
      */
-    fun <T> selection(cssSelector: String, init: CssSelector.() -> T) =
-            CssSelector(rawCssSelector = cssSelector).init()
-
-    /**
-     * Will convert an invoked String to a CssSelector scope.
-     */
     operator fun <T> String.invoke(init: CssSelector.() -> T) =
-            this@DocElement.selection(this, init)
+            CssSelector(rawCssSelector = cssSelector).init()
 
     override fun toString() = element.toString()
 
-
-    fun select(cssSelector: String) = element.select(cssSelector).map { DocElement(it) }
+    @Deprecated("use 'findAll(cssSelector: String) instead'")
+    fun select(cssSelector: String) = this@DocElement.element.select(cssSelector).map { DocElement(it) }
 }
 
 val List<DocElement>.text
