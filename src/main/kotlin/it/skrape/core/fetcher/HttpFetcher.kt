@@ -21,14 +21,15 @@ class HttpFetcher(private val request: Request) : Fetcher {
         configuredClient().use {
             return Result(
                     responseBody = it.body()?.string() ?: "",
-                    statusCode = it.code(),
-                    statusMessage = it.message(),
+                    responseStatus = it.toStatus(),
                     contentType = it.header("Content-Type"),
                     headers = it.headers().names().associateBy({ item -> item }, { item -> it.header(item, "")!! }),
                     request = request
             )
         }
     }
+
+    private fun Response.toStatus() = Result.Status(code(), message())
 
     private fun configuredClient(): Response {
         val client = defaultHttpClient

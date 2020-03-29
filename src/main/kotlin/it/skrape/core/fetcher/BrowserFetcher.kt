@@ -27,8 +27,7 @@ class BrowserFetcher(private val request: Request) : Fetcher {
 
         val result = Result(
                 responseBody = document,
-                statusCode = httpResponse.statusCode,
-                statusMessage = httpResponse.statusMessage,
+                responseStatus = httpResponse.toStatus(),
                 contentType = httpResponse.contentType,
                 headers = headers,
                 request = request
@@ -77,6 +76,9 @@ class BrowserFetcher(private val request: Request) : Fetcher {
         val domain = URL(request.url).host
         return Cookie(domain, name, value)
     }
+
+    private fun WebResponse.toStatus() = Result.Status(statusCode, statusMessage)
+
 }
 
 fun Map<String, String>.asRawCookieSyntax(): String {

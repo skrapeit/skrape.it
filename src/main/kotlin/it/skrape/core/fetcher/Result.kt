@@ -14,11 +14,10 @@ import it.skrape.SkrapeItDsl
 @SkrapeItDsl
 class Result(
         val request: Request,
-        val responseBody: ResponseBody,
-        val statusCode: StatusCode,
-        val statusMessage: StatusMessage,
+        val responseBody: String,
+        val responseStatus: Status,
         val contentType: ContentType,
-        val headers: Headers
+        val headers: Map<String, String>
 ) {
     /**
      * Will return a certain response headers value
@@ -28,7 +27,7 @@ class Result(
      */
     infix fun httpHeader(name: String): String? = this.headers[name]
 
-    fun httpHeaders(init: Headers.() -> Unit): Map<String, String> {
+    fun httpHeaders(init: Map<String, String>.() -> Unit): Map<String, String> {
         headers.apply(init)
         return headers
     }
@@ -38,10 +37,16 @@ class Result(
         header.apply(init)
         return header
     }
+
+    fun <T> status(init: Status.() -> T) : T {
+        return responseStatus.init()
+    }
+
+    @SkrapeItDsl
+    data class Status(
+            val code: Int,
+            val message: String
+    )
 }
 
-typealias ResponseBody = String
-typealias StatusCode = Int
-typealias StatusMessage = String?
 typealias ContentType = String?
-typealias Headers = Map<String, String>

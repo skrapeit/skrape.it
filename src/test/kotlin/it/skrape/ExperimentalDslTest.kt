@@ -5,17 +5,20 @@ import it.skrape.core.fetcher.basic
 import it.skrape.core.htmlDocument
 import it.skrape.matchers.*
 import it.skrape.selects.and
-import it.skrape.selects.html5.a
 import it.skrape.selects.html5.customTag
 import it.skrape.selects.html5.div
 import it.skrape.selects.html5.span
 import org.intellij.lang.annotations.Language
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
+import kotlin.reflect.full.createInstance
 
 @Testcontainers
 class ExperimentalDslTest : WireMockSetup() {
@@ -105,7 +108,10 @@ class ExperimentalDslTest : WireMockSetup() {
             url = "${httpBinUrl()}/basic-auth/cr1z/secure"
 
             expect {
-                statusCode toBe 401
+                status {
+                    code toBe 401
+                    message toBe "UNAUTHORIZED"
+                }
             }
         }
     }
@@ -124,7 +130,9 @@ class ExperimentalDslTest : WireMockSetup() {
             }
 
             expect {
-                statusCode toBe 200
+                status {
+                    code toBe 200
+                }
                 responseBody toContain """authenticated": true"""
                 responseBody toContain """user": "cr1z"""
             }

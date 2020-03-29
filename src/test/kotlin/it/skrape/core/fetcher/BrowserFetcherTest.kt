@@ -28,7 +28,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
         val fetched = BrowserFetcher(Request()).fetch()
 
         expect {
-            that(fetched.statusCode).isEqualTo(200)
+            that(fetched.status { code }).isEqualTo(200)
             that(fetched.document.titleText).isEqualTo("i'm the title")
         }
     }
@@ -45,7 +45,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
         val fetched = BrowserFetcher(request).fetch()
 
         expect {
-            that(fetched.statusCode).isEqualTo(200)
+            that(fetched.status { code }).isEqualTo(200)
             that(fetched.document.titleText).isEqualTo("i'm the title")
         }
     }
@@ -56,7 +56,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
 
         val fetched = BrowserFetcher(request).fetch()
 
-        expectThat(fetched.statusCode).isEqualTo(404)
+        expectThat(fetched.status { code }).isEqualTo(404)
     }
 
     @Test
@@ -66,7 +66,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
 
         val result = BrowserFetcher(request).fetch()
 
-        expectThat(result.statusCode).isEqualTo(302)
+        expectThat(result.status { code }).isEqualTo(302)
     }
 
     @Test
@@ -75,7 +75,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
 
         val fetched = BrowserFetcher(Request()).fetch()
 
-        expectThat(fetched.statusCode).isEqualTo(404)
+        expectThat(fetched.status { code }).isEqualTo(404)
     }
 
     @Test

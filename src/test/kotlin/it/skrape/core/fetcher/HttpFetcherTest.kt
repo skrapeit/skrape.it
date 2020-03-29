@@ -16,7 +16,7 @@ internal class HttpFetcherTest : WireMockSetup() {
 
         val fetched = HttpFetcher(Request()).fetch()
 
-        expectThat(fetched.statusCode).isEqualTo(200)
+        expectThat(fetched.status { code }).isEqualTo(200)
         expectThat(fetched.contentType).isEqualTo("text/html;charset=utf-8")
         expectThat(fetched.document.titleText).isEqualTo("i'm the title")
     }
@@ -31,7 +31,7 @@ internal class HttpFetcherTest : WireMockSetup() {
 
         val fetched = HttpFetcher(request).fetch()
 
-        expectThat(fetched.statusCode).isEqualTo(200)
+        expectThat(fetched.status { code }).isEqualTo(200)
         expectThat(fetched.contentType).isEqualTo("text/html;charset=utf-8")
         expectThat(fetched.document.titleText).isEqualTo("i'm the title")
     }
@@ -42,7 +42,7 @@ internal class HttpFetcherTest : WireMockSetup() {
 
         val fetched = HttpFetcher(request).fetch()
 
-        expectThat(fetched.statusCode).isEqualTo(404)
+        expectThat(fetched.status { code }).isEqualTo(404)
     }
 
     @Test
@@ -52,7 +52,7 @@ internal class HttpFetcherTest : WireMockSetup() {
 
         val fetched = HttpFetcher(request).fetch()
 
-        expectThat(fetched.statusCode).isEqualTo(302)
+        expectThat(fetched.status { code }).isEqualTo(302)
     }
 
     @Test
@@ -61,7 +61,7 @@ internal class HttpFetcherTest : WireMockSetup() {
 
         val fetched = HttpFetcher(Request()).fetch()
 
-        expectThat(fetched.statusCode).isEqualTo(404)
+        expectThat(fetched.status { code }).isEqualTo(404)
     }
 
     @Test
@@ -71,7 +71,7 @@ internal class HttpFetcherTest : WireMockSetup() {
 
         val fetched = HttpFetcher(request).fetch()
 
-        expectThat(fetched.statusCode).isEqualTo(200)
+        expectThat(fetched.status { code }).isEqualTo(200)
         expectThat(fetched.contentType).isEqualTo("application/json;charset=utf-8")
         expectThat(fetched.responseBody).isEqualTo("""{"data":"some value"}""")
     }
@@ -83,7 +83,7 @@ internal class HttpFetcherTest : WireMockSetup() {
 
         val fetched = HttpFetcher(request).fetch()
 
-        expectThat(fetched.statusCode).isEqualTo(201)
+        expectThat(fetched.status { code }).isEqualTo(201)
         expectThat(fetched.responseBody).isEqualTo("i'm a PUT stub")
     }
 
@@ -94,7 +94,7 @@ internal class HttpFetcherTest : WireMockSetup() {
 
         val fetched = HttpFetcher(request).fetch()
 
-        expectThat(fetched.statusCode).isEqualTo(201)
+        expectThat(fetched.status { code }).isEqualTo(201)
         expectThat(fetched.responseBody).isEqualTo("i'm a DELETE stub")
     }
 
@@ -105,7 +105,7 @@ internal class HttpFetcherTest : WireMockSetup() {
 
         val fetched = HttpFetcher(request).fetch()
 
-        expectThat(fetched.statusCode).isEqualTo(201)
+        expectThat(fetched.status { code }).isEqualTo(201)
         expectThat(fetched.responseBody).isEqualTo("i'm a PATCH stub")
     }
 
@@ -116,7 +116,7 @@ internal class HttpFetcherTest : WireMockSetup() {
 
         val fetched = HttpFetcher(request).fetch()
 
-        expectThat(fetched.statusCode).isEqualTo(201)
+        expectThat(fetched.status { code }).isEqualTo(201)
         expectThat(fetched.httpHeader("result")).isEqualTo("i'm a HEAD stub")
     }
 

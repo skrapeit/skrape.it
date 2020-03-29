@@ -29,8 +29,10 @@ internal class DslTest : WireMockSetup() {
 
             expect {
 
-                statusCode toBe 200
-                statusMessage toBe "OK"
+                status {
+                    code toBe 200
+                    message toBe "OK"
+                }
 
                 contentType toBe TEXT_HTML_UTF8
 
@@ -91,7 +93,10 @@ internal class DslTest : WireMockSetup() {
             followRedirects = false
 
             expect {
-                statusCode toBe 302
+                status {
+                    code toBe 302
+                    message toBe "Found"
+                }
             }
         }
     }
@@ -152,7 +157,10 @@ internal class DslTest : WireMockSetup() {
 
         skrape {
             expect {
-                statusCode toBe 404
+                status {
+                    code toBe 404
+                    message toBe "Not Found"
+                }
             }
         }
     }
@@ -168,8 +176,18 @@ internal class DslTest : WireMockSetup() {
 
                 expectThat(request.method).isEqualTo(Method.POST)
 
-                statusCode toBe 200
-                statusMessage toBe "OK"
+                status {
+                    code toBe 200
+                    message toBe "OK"
+                }
+
+                responseStatus toBe HttpStatus.`2xx Successful`
+                responseStatus toBe HttpStatus.`200 OK`
+                responseStatus toBeNot HttpStatus.`1xx Informational response`
+                responseStatus toBeNot HttpStatus.`3xx Redirection`
+                responseStatus toBeNot HttpStatus.`4xx Client error`
+                responseStatus toBeNot HttpStatus.`5xx Server error`
+
                 contentType toBe APPLICATION_JSON_UTF8
                 contentType toBe "application/json;charset=utf-8"
             }
@@ -189,28 +207,16 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `dsl can fetch url and extract`() {
+    internal fun `dsl can fetch url and extract to inferred type`() {
         wireMockServer.setupStub()
 
         skrape {
             url = "http://localhost:8080/"
 
             val extracted = extract {
-                MyObject(statusMessage.toString(), "", emptyList())
-            }
-            expectThat(extracted.message).isEqualTo("OK")
-        }
-    }
-
-    @Test
-    internal fun `dsl can fetch url and infer type on extract`() {
-        wireMockServer.setupStub()
-
-        skrape {
-            url = "http://localhost:8080/"
-
-            val extracted = extract {
-                MyObject(statusMessage.toString(), "", emptyList())
+                status {
+                    MyObject(message, "", emptyList())
+                }
             }
             expectThat(extracted.message).isEqualTo("OK")
         }
@@ -224,7 +230,7 @@ internal class DslTest : WireMockSetup() {
             url = "http://localhost:8080/"
 
             extractIt<MyOtherObject> {
-                it.message = statusMessage
+                it.message = status { message }
             }
         }
         expectThat(extracted.message).isEqualTo("OK")
@@ -238,7 +244,7 @@ internal class DslTest : WireMockSetup() {
             url = "http://localhost:8080/"
 
             extractIt<MyObject> {
-                it.message = statusMessage
+                it.message = status { message }
                 htmlDocument {
                     it.allParagraphs = p { findAll { eachText }}
                     it.paragraph = findFirst("p").text
@@ -266,8 +272,8 @@ internal class DslTest : WireMockSetup() {
             url = "http://localhost:8080/"
 
             extractIt<MyDataClass> {
-                it.httpStatusCode = statusCode
-                it.httpStatusMessage = statusMessage.toString()
+                it.httpStatusCode = status { code }
+                it.httpStatusMessage = status { message }
                 htmlDocument {
                     it.allParagraphs = p { findAll { eachText }}
                     it.paragraph = p { findFirst { text }}
@@ -470,7 +476,10 @@ internal class DslTest : WireMockSetup() {
 
         wireMockServer.setupRedirect()
         val body1 = fetcher.extract {
-            statusCode toBe 302
+            status {
+                code toBe 302
+                message toBe "Found"
+            }
             responseBody
         }
 
@@ -478,7 +487,13 @@ internal class DslTest : WireMockSetup() {
         val body2 = fetcher.apply {
             followRedirects = true
         }.extract {
-            statusCode toBe 404
+            status {
+                code toBe 404
+                message toBe "Not Found"
+            }
+            responseStatus toBe HttpStatus.`4xx Client error`
+            responseStatus toBe HttpStatus.`404 Not Found`
+
             responseBody
         }
 
@@ -502,5 +517,5 @@ data class MyDataClass(
 )
 
 class MyOtherObject {
-    var message: String? = null
+    lateinit var message: String
 }
