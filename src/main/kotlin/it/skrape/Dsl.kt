@@ -3,13 +3,11 @@ package it.skrape
 import it.skrape.core.fetcher.Request
 import it.skrape.core.fetcher.Result
 import it.skrape.core.Scraper
-import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
 
 
 /**
- * Make http-request with given parameters or defaults.
- * @param mode defaults to HTTP and represents the scraping mode (either pure http request or rendering via browser)
+ * Create a http-request config with given parameters or defaults.
  * @return Result
  */
 @SkrapeItDsl
@@ -35,6 +33,7 @@ fun <T> Request.extract(extractor: Result.() -> T): T {
 
 /**
  * Read and parse html from a skrape{it} result.
+ * Attention: extract to class is only supported for classes where all parameters have default values
  * @return T
  */
 @SkrapeItDsl

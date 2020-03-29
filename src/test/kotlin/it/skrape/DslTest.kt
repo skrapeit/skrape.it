@@ -6,8 +6,10 @@ import it.skrape.core.htmlDocument
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.matchers.*
 import it.skrape.matchers.ContentTypes.*
-import it.skrape.selects.*
+import it.skrape.selects.eachHref
+import it.skrape.selects.eachText
 import it.skrape.selects.html5.*
+import it.skrape.selects.text
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -246,7 +248,7 @@ internal class DslTest : WireMockSetup() {
             extractIt<MyObject> {
                 it.message = status { message }
                 htmlDocument {
-                    it.allParagraphs = p { findAll { eachText }}
+                    it.allParagraphs = p { findAll { eachText } }
                     it.paragraph = findFirst("p").text
                     it.allLinks = findAll("[href]").eachHref
                 }
@@ -275,9 +277,10 @@ internal class DslTest : WireMockSetup() {
                 it.httpStatusCode = status { code }
                 it.httpStatusMessage = status { message }
                 htmlDocument {
-                    it.allParagraphs = p { findAll { eachText }}
-                    it.paragraph = p { findFirst { text }}
-                    it.allLinks = a { findAll { eachHref }
+                    it.allParagraphs = p { findAll { eachText } }
+                    it.paragraph = p { findFirst { text } }
+                    it.allLinks = a {
+                        findAll { eachHref }
                     }
                 }
             }
@@ -357,7 +360,7 @@ internal class DslTest : WireMockSetup() {
                 htmlDocument {
                     MyObject(
                             message = "",
-                            allParagraphs = p { findAll { eachText }},
+                            allParagraphs = p { findAll { eachText } },
                             paragraph = findFirst("p").text,
                             allLinks = selection("[href]") { findAll { eachHref } }
                     )
