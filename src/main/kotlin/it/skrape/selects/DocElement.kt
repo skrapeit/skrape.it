@@ -48,8 +48,19 @@ class DocElement(private val element: Element) {
      */
     val outerHtml by lazy { element.outerHtml().orEmpty() }
 
+    /**
+     * Find all elements under this element (including self, and children of children).
+     * @return List<DocElement>
+     */
+    val allElements by lazy { element.allElements.map { DocElement(it) } }
 
-    val isPresent by lazy { element.allElements.size > 0 }
+    val isPresent by lazy { allElements.isNotEmpty() }
+
+    /**
+     * Find all elements under this element (including self, and children of children).
+     * @return T
+     */
+    fun <T> findAll(init: List<DocElement>.() -> T): T = allElements.init()
 
     /**
      * Will pick all occurrences of elements that are matching the CSS-Selector

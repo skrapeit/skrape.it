@@ -75,6 +75,22 @@ internal class DocElementTest {
     }
 
     @Test
+    fun `can get all elements under this element including itself`() {
+        expectThat(aValidElement.allElements).hasSize(7)
+        expectThat(aValidElement.allElements[1].outerHtml).isEqualTo("""<h2 class="welcome">headline</h2>""")
+    }
+
+    @Test
+    fun `can find all elements within this element (including itself) and invoke them to a lambda`() {
+        val text = aValidElement.findAll {
+            expectThat(size).isEqualTo(7)
+            expectThat(get(1).outerHtml).isEqualTo("""<h2 class="welcome">headline</h2>""")
+            get(1).text
+        }
+        expectThat(text).isEqualTo("headline")
+    }
+
+    @Test
     fun `can find all elements by selector from within this element (including itself)`() {
         val selection = aValidElement.findAll(".welcome")
         expectThat(selection).hasSize(1)
