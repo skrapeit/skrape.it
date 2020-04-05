@@ -36,13 +36,13 @@ internal class Parser(
  * Read and parse HTML from a String.
  * @param html represents a html snippet
  */
-fun htmlDocument(
+fun <T> htmlDocument(
         html: String,
         charset: Charset = Charsets.UTF_8,
         jsExecution: Boolean = false,
         baseUri: String = "",
-        init: Doc.() -> Unit
-): Doc = htmlDocument(html, charset, jsExecution, baseUri).also(init)
+        init: Doc.() -> T
+): T = htmlDocument(html, charset, jsExecution, baseUri).init()
 
 
 /**
@@ -52,13 +52,13 @@ fun htmlDocument(
  * @param jsExecution defaults to false
  * @param baseUri defaults to empty String
  */
-fun htmlDocument(
+fun <T> htmlDocument(
         file: File,
         charset: Charset = Charsets.UTF_8,
         jsExecution: Boolean = false,
         baseUri: String = "",
-        init: Doc.() -> Unit
-): Doc = htmlDocument(file.readText(charset), charset, jsExecution, baseUri).also(init)
+        init: Doc.() -> T
+) :T = htmlDocument(file.readText(charset), charset, jsExecution, baseUri).init()
 
 @SkrapeItDsl
 fun htmlDocument(

@@ -376,6 +376,7 @@ internal class DslTest : WireMockSetup() {
     internal fun `can read and return html from file system with default charset (UTF-8) using the DSL`() {
         val doc = htmlDocument(File("src/test/resources/__files/example.html")) {
             expectThat(titleText).isEqualTo("i'm the title")
+            this
         }
         expectThat(doc.titleText).isEqualTo("i'm the title")
     }
@@ -388,6 +389,7 @@ internal class DslTest : WireMockSetup() {
                     text toBe "i'm the title"
                 }
             }
+            this
         }
         doc.title {
             findFirst {
