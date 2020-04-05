@@ -2,6 +2,8 @@ package it.skrape.selects
 
 import it.skrape.SkrapeItDsl
 import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
+import java.util.*
 
 @Suppress("TooManyFunctions")
 @SkrapeItDsl
@@ -16,29 +18,32 @@ class CssSelector(
         val doc: Doc = Doc(Document(""))
 ) {
 
-    fun <T> findFirst(init: DocElement.() -> T): T =
-            doc.findFirst(toCssSelector).init()
-
-    fun <T> findByIndex(index: Int, init: DocElement.() -> T): T =
-            doc.findAll(toCssSelector)[index].init()
+    fun <T> findByIndex(index: Int, init: DocElement.() -> T): T {
+        val all = findAll { this }
+        return if (all.isEmpty()) DocElement(Element("${UUID.randomUUID()}")).init() else all[index].init()
+    }
 
     operator fun <T> Int.invoke(init: DocElement.() -> T) =
             findByIndex(this, init)
 
+    fun <T> findFirst(init: DocElement.() -> T): T =
+            findByIndex(0, init)
+
+
     fun <T> findSecond(init: DocElement.() -> T): T =
-            doc.findAll(toCssSelector)[1].init()
+            findByIndex(1, init)
 
     fun <T> findThird(init: DocElement.() -> T): T =
-            doc.findAll(toCssSelector)[2].init()
+            findByIndex(2, init)
 
     fun <T> findLast(init: DocElement.() -> T): T {
-        val all = doc.findAll(toCssSelector)
-        return all[all.size - 1].init()
+        val index = findAll { this }.size - 1
+        return findByIndex(index, init)
     }
 
     fun <T> findSecondLast(init: DocElement.() -> T): T {
-        val all = doc.findAll(toCssSelector)
-        return all[all.size - 2].init()
+        val index = findAll { this }.size - 2
+        return findByIndex(index, init)
     }
 
     fun <T> findAll(init: List<DocElement>.() -> T) = doc.findAll(toCssSelector, init)
