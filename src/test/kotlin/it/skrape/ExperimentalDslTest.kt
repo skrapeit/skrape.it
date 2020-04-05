@@ -176,12 +176,12 @@ class ExperimentalDslTest : WireMockSetup() {
             }
             span {
                 withClass = "yyy"
-                // in current behaviour it would throw an ElementNotFoundException when trying to find element without success
+                // in none relaxed mode it would throw an ElementNotFoundException when trying to find element without success
                 findAll { toBeEmpty }
                 findFirst { text toBe "" }
             }
             "some.crazy selectorThat[doesnt] exists" {
-                // in current behaviour it would throw an ElementNotFoundException when trying to find element without success
+                // in none relaxed mode it would throw an ElementNotFoundException when trying to find element without success
                 findAll { toBeEmpty }
             }
         }

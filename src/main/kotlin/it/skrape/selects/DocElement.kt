@@ -61,7 +61,41 @@ class DocElement(private val element: Element) {
      */
     val allElements by lazy { element.allElements.map { DocElement(it) } }
 
+    /**
+     * Get all of the element's attributes.
+     * @return Map<String, String>> of attribute key value pairs
+     */
+    val attributes: Map<String, String> by lazy { element.attributes().map { it.key to it.value }.toMap() }
+
+    /**
+     * Get all attribute keys of the element.
+     * @return List<String>
+     */
+    val attributeKeys by lazy { attributes.map { it.key } }
+
+    /**
+     * Get all attribute values of the element.
+     * @return List<String>
+     */
+    val attributeValues by lazy { attributes.map { it.value } }
+
+    /**
+     * Get the element's attribute value of a given attribute key.
+     * @return String of attribute value or empty if non existing.
+     */
+    infix fun attribute(attributeKey: String): String = attributes[attributeKey].orEmpty()
+
+    fun hasAttribute(attributeKey: String): Boolean = attribute(attributeKey).isNotBlank()
+
+    /**
+     * Check if the element is present thereby it will return true if the given node can be found otherwise false.
+     * @return Boolean
+     */
     val isPresent by lazy { allElements.isNotEmpty() }
+
+    val className by lazy { element.className().orEmpty() }
+
+    val cssSelector by lazy { element.cssSelector().orEmpty() }
 
     /**
      * Find all elements under this element (including self, and children of children).
@@ -105,32 +139,25 @@ class DocElement(private val element: Element) {
      */
     infix fun findFirst(cssSelector: String): DocElement = findAll(cssSelector)[0]
 
-    val className
-        get() = element.className().orEmpty()
-
-    val cssSelector
-        get() = element.cssSelector().orEmpty()
-
-    infix fun attribute(attributeKey: String): String = element.attr(attributeKey)
-
-    fun hasAttribute(attributeKey: String): Boolean = element.hasAttr(attributeKey)
-
     /**
      * Will create a CssSelector scope to calculate a css selector
      * @param cssSelector that represents an CSS-Selector that will be considered during calculation
      * @return T
      */
     operator fun <T> String.invoke(init: CssSelector.() -> T) =
-            CssSelector(rawCssSelector = cssSelector).init()
+            CssSelector(rawCssSelector = "$cssSelector $this").init()
 
     override fun toString() = element.toString()
 
     @Deprecated("use 'findAll(cssSelector: String) instead'")
-    fun select(cssSelector: String) = this@DocElement.element.select(cssSelector).map { DocElement(it) }
+    fun select(cssSelector: String) = element.select(cssSelector).map { DocElement(it) }
 }
 
 val List<DocElement>.text
     get(): String = joinToString(separator = " ") { it.text }
+
+val List<DocElement>.html
+    get(): String = joinToString(separator = "\n") { it.outerHtml }
 
 val List<DocElement>.eachText
     get(): List<String> = map { it.text }
@@ -143,5 +170,12 @@ infix fun List<DocElement>.eachAttribute(attributeKey: String): List<String> = m
 val List<DocElement>.eachHref
     get(): List<String> = this eachAttribute "href"
 
+fun <T> List<DocElement>.forEachLink(init: (text: String, url: String) -> T) {
+    filter { it.hasAttribute("href") }
+            .forEach { init(it.text, it.attribute("href")) }
+}
+
 val List<DocElement>.eachHrefAsAbsoluteLink
     get(): List<String> = this eachAttribute "abs:href"
+
+// fun <T> List<DocElement>.findFirst(init: DocElement.() -> T): T = this[0].init()

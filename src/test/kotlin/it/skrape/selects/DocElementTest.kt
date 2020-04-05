@@ -2,6 +2,9 @@ package it.skrape.selects
 
 import io.mockk.every
 import io.mockk.mockk
+import it.skrape.aValidDocument
+import it.skrape.core.htmlDocument
+import it.skrape.selects.html5.div
 import org.intellij.lang.annotations.Language
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
@@ -25,6 +28,7 @@ internal class DocElementTest {
         prependText("divs text")
         addClass("clazz")
         attr("foo", "bar")
+        attr("fizz", "buzz")
         append(aValidMarkup)
     }
 
@@ -42,7 +46,7 @@ internal class DocElementTest {
     }
 
     @Test
-    fun `can get the elements own text - excluding text of children`() {
+    fun `can get the element's own text - excluding text of children`() {
         expectThat(aValidElement.ownText).isEqualTo("divs text")
     }
 
@@ -59,7 +63,7 @@ internal class DocElementTest {
     @Test
     fun `can get outer html of an element`() {
         expectThat(aValidElement.outerHtml).isEqualTo("""
-            <div class="clazz" foo="bar">
+            <div class="clazz" foo="bar" fizz="buzz">
              divs text 
              <h2 class="welcome">headline</h2> 
              <p class="fancy">paragraph <span>foo <b>bar</b></span> <span>fizz <b>buzz</b></span> </p>
@@ -157,12 +161,52 @@ internal class DocElementTest {
     }
 
     @Test
+    fun `can get all attributes of an element`() {
+        expectThat(aValidElement.attributes).isEqualTo(mapOf(
+                "class" to "clazz",
+                "foo" to "bar",
+                "fizz" to "buzz"
+        ))
+    }
+
+    @Test
+    fun `can get all attribute keys of an element`() {
+        expectThat(aValidElement.attributeKeys).containsExactly(
+                "class", "foo", "fizz"
+        )
+    }
+
+    @Test
+    fun `can get all attribute values of an element`() {
+        expectThat(aValidElement.attributeValues).containsExactly(
+                "clazz", "bar", "buzz"
+        )
+    }
+
+    @Test
     @Disabled("FIXME")
     fun `can invoke a css-selector as string to search children of given element`() {
-        val text = aValidElement.run {
-            ".welcome" {
-                // should return the matching DocElement
-                findFirst { text }
+        val markup = """
+            <div class="foo">xxx<span>yyy</span></div>
+            <div>zzz<h1>aaa</h1></div>
+            <div class="my-class"><h1 class="welcome">first headline</h1></div>
+            <div class="my-class"><h1 class="welcome">second headline</h1></div>
+        """.trimIndent()
+
+
+        val text = htmlDocument(markup) {
+            div {
+                withClass = "my-class"
+                findAll {
+                    expectThat(size).isEqualTo(2)
+                    print(html)
+                    "h1" {
+                        withClass = "welcome"
+                        // should return the matching DocElement
+
+                        findFirst { text }
+                    }
+                }
             }
         }
         expectThat(text).isEqualTo("headline")
@@ -171,7 +215,7 @@ internal class DocElementTest {
     @Test
     fun `string representation has certain format`() {
         expectThat(aValidElement.toString()).isEqualTo("""
-            <div class="clazz" foo="bar">
+            <div class="clazz" foo="bar" fizz="buzz">
              divs text 
              <h2 class="welcome">headline</h2> 
              <p class="fancy">paragraph <span>foo <b>bar</b></span> <span>fizz <b>buzz</b></span> </p>
@@ -185,5 +229,16 @@ internal class DocElementTest {
         val selection = aValidElement.select(".welcome")
         expectThat(selection).hasSize(1)
         expectThat(selection.text).isEqualTo("headline")
+    }
+
+    @Test
+    internal fun `can conveniently iterate over all href values`() {
+        aValidDocument {
+            "[href]" {
+                findAll {
+                    forEachLink { text, url -> print("$text - $url") }
+                }
+            }
+        }
     }
 }
