@@ -15,17 +15,17 @@ internal class DocTest {
             htmlDocument("<p>Hello <b> there </b> now! </p> $suffix")
 
     @Test
-    fun getText() {
+    fun `can get text`() {
         expectThat(aValidDocument().text).isEqualTo("Hello there now!")
     }
 
     @Test
-    fun getWholeText() {
+    fun `can get whole text`() {
         expectThat(aValidDocument().wholeText).isEqualTo("Hello  there  now!  ")
     }
 
     @Test
-    fun getHtml() {
+    fun `can get html`() {
         expectThat(aValidDocument().html).isEqualTo("""<html>
               | <head></head>
               | <body>
@@ -36,7 +36,7 @@ internal class DocTest {
     }
 
     @Test
-    fun getOuterHtml() {
+    fun `can get outer html`() {
         expectThat(aValidDocument().html).isEqualTo("""<html>
               | <head></head>
               | <body>
@@ -46,7 +46,7 @@ internal class DocTest {
     }
 
     @Test
-    fun getTitleText() {
+    fun `can get title text`() {
         expectThat(aValidDocument("<title>hallo</title>").titleText).isEqualTo("hallo")
     }
 
