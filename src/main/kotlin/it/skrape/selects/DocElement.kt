@@ -8,6 +8,13 @@ import org.jsoup.nodes.Element
 class DocElement(private val element: Element) {
 
     /**
+     * Get the name of the tag for this element. E.g. {@code div}.
+     *
+     * @return String of the tag's name
+     */
+    val tagName by lazy { element.tagName().orEmpty() }
+
+    /**
      * Gets the combined text of this element and all its children. Whitespace is normalized and trimmed.
      * <p>
      * For example, given HTML {@code <p>Hello <b>there</b> now! </p>}, {@code p.text()} returns {@code "Hello there now!"}

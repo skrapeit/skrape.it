@@ -31,7 +31,13 @@ internal class DocElementTest {
     val aValidElement = DocElement(anElement)
 
     @Test
-    fun `can get the elements text - including text of children`() {
+    fun `can get the element's tag name `() {
+        val tagName = htmlDocument(aValidMarkup).findFirst(".fancy") { tagName }
+        expectThat(tagName).isEqualTo("p")
+    }
+
+    @Test
+    fun `can get the element's text - including text of children`() {
         expectThat(aValidElement.text).isEqualTo("divs text headline paragraph foo bar fizz buzz")
     }
 
