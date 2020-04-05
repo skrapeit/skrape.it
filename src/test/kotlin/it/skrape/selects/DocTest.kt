@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 import strikt.api.expectThat
+import strikt.assertions.containsExactly
 import strikt.assertions.isEmpty
 import strikt.assertions.isEqualTo
 
@@ -48,6 +49,14 @@ internal class DocTest {
     @Test
     fun `can get title text`() {
         expectThat(aValidDocument("<title>hallo</title>").titleText).isEqualTo("hallo")
+    }
+
+    @Test
+    fun `can get all elements of the document`() {
+        val tags = aValidDocument("<title>hallo</title>").findAll {
+            map { it.tagName }
+        }
+        expectThat(tags).containsExactly("#root", "html", "head", "body", "p", "b", "title")
     }
 
     @Test

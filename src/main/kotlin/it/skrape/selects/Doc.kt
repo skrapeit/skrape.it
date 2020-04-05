@@ -45,6 +45,18 @@ class Doc(val document: Document, var relaxed: Boolean = false) {
      */
     val outerHtml: String by lazy { document.outerHtml().orEmpty() }
 
+    /**
+     * Find all elements in the document.
+     * @return List<DocElement>
+     */
+    val allElements by lazy { document.allElements.map { DocElement(it) } }
+
+    /**
+     * Find all elements in the document.
+     * @return T
+     */
+    fun <T> findAll(init: List<DocElement>.() -> T): T = allElements.init()
+
     infix fun findAll(cssSelector: String): List<DocElement> {
         val selected = document.select(cssSelector)
                 .map { DocElement(it) }
