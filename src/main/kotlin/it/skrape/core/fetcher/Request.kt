@@ -28,6 +28,7 @@ data class Request(
          * will have no effect.
          */
         var url: Url = UrlBuilder().toString(),
+        var proxy: ProxyBuilder? = null,
 
         var userAgent: String = "Mozilla/5.0 skrape.it",
         var headers: Map<String, String> = emptyMap(),
@@ -49,6 +50,8 @@ data class Request(
     fun urlBuilder(init: UrlBuilder.() -> Unit): String {
         return UrlBuilder().also(init).toString()
     }
+
+    fun proxyBuilder(init: ProxyBuilder.() -> Unit)= ProxyBuilder().also(init)
 }
 
 enum class Mode {

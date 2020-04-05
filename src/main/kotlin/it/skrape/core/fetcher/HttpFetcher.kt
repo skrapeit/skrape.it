@@ -1,5 +1,6 @@
 package it.skrape.core.fetcher
 
+import io.github.rybalkinsd.kohttp.client.client
 import io.github.rybalkinsd.kohttp.client.defaultHttpClient
 import io.github.rybalkinsd.kohttp.client.fork
 import io.github.rybalkinsd.kohttp.dsl.*
@@ -32,7 +33,12 @@ class HttpFetcher(private val request: Request) : Fetcher {
     private fun Response.toStatus() = Result.Status(code(), message())
 
     private fun configuredClient(): Response {
-        val client = defaultHttpClient
+        val configuredClient = client {
+            defaultHttpClient
+            proxy = request.proxy?.toProxy()
+        }
+
+        val client = configuredClient
                 .withSslConfiguration()
                 .fork {
                     followRedirects = request.followRedirects

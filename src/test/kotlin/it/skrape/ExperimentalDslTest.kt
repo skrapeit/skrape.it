@@ -1,6 +1,7 @@
 package it.skrape
 
 import it.skrape.core.fetcher.Mode
+import it.skrape.core.fetcher.UrlBuilder
 import it.skrape.core.fetcher.basic
 import it.skrape.core.htmlDocument
 import it.skrape.matchers.*
@@ -18,6 +19,7 @@ import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
+import java.net.Proxy
 import kotlin.reflect.full.createInstance
 
 @Testcontainers
@@ -184,6 +186,23 @@ class ExperimentalDslTest : WireMockSetup() {
                 // in none relaxed mode it would throw an ElementNotFoundException when trying to find element without success
                 findAll { toBeEmpty }
             }
+        }
+    }
+
+    @Disabled
+    @Test
+    fun `can  use proxy to fetch sites`() {
+        skrape {
+            url = "http://some.url"
+            proxy = proxyBuilder {
+                type = Proxy.Type.HTTP
+                host = "http://some.proxy"
+                port = 12345
+            }
+            extract {
+                // do something with the result
+            }
+
         }
     }
 }

@@ -6,6 +6,7 @@ import com.gargoylesoftware.htmlunit.util.Cookie
 import com.gargoylesoftware.htmlunit.util.NameValuePair
 import it.skrape.core.fetcher.Method.GET
 import it.skrape.exceptions.UnsupportedRequestOptionException
+import java.net.Proxy
 import java.net.URL
 
 class BrowserFetcher(private val request: Request) : Fetcher {
@@ -65,7 +66,19 @@ class BrowserFetcher(private val request: Request) : Fetcher {
             isPrintContentOnFailingStatusCode = false
             historySizeLimit = 0
             historyPageCacheLimit = 0
+            withProxySettings()
         }
+    }
+
+    private fun WebClientOptions.withProxySettings(): WebClientOptions {
+        if (request.proxy != null) {
+            this.proxyConfig = ProxyConfig(
+                    request.proxy!!.host,
+                    request.proxy!!.port,
+                    request.proxy!!.type == Proxy.Type.SOCKS
+            )
+        }
+        return this
     }
 
     private fun WebClient.createCookies() {
