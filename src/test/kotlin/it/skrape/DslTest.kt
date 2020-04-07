@@ -65,6 +65,18 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
+    fun `can call https with relaxed ssl option via DSL`() {
+        wireMockServer.setupStub(path = "/example")
+        skrape {
+            url = "https://localhost:8089/example"
+            sslRelaxed = true
+            expect {
+                status { code toBe 200 }
+            }
+        }
+    }
+
+    @Test
     internal fun `dsl can assert content-type in highly readable way`() {
         wireMockServer.setupStub(path = "/example")
 

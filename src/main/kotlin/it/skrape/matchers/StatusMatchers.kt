@@ -1,6 +1,5 @@
 package it.skrape.matchers
 
-import it.skrape.SkrapeItDsl
 import it.skrape.core.fetcher.Result
 
 @Suppress("EnumNaming", "MagicNumber")

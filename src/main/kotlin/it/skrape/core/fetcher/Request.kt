@@ -42,7 +42,7 @@ data class Request(
          * This is only recommended if you have to make the client work with self-signed certificates.
          * Defaults to false.
          */
-        val sslRelaxed: Boolean = false
+        var sslRelaxed: Boolean = false
 ) {
     val asConfig
         get() = this
