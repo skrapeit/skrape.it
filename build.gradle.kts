@@ -11,7 +11,7 @@ plugins {
     id("com.github.ben-manes.versions") version "0.28.0"
     id("com.adarshr.test-logger") version "2.0.0"
     id("io.gitlab.arturbosch.detekt") version "1.5.1"
-    // id("com.vanniktech.maven.publish") version "0.9.0"
+    id("com.vanniktech.maven.publish") version "0.9.0"
 }
 
 val isIdea = System.getProperty("idea.version") != null
