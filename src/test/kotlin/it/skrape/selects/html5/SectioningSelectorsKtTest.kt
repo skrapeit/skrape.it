@@ -1,10 +1,18 @@
 package it.skrape.selects.html5
 
+import it.skrape.a3TimesNestedTag
 import it.skrape.aValidDocument
+import it.skrape.core.htmlDocument
+import it.skrape.matchers.toBe
+import it.skrape.matchers.toBePresent
 import it.skrape.matchers.toBePresentExactlyOnce
 import it.skrape.matchers.toBePresentTimes
+import it.skrape.selects.CssSelector
+import it.skrape.selects.text
+import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
+import strikt.assertions.containsExactly
 import strikt.assertions.isEqualTo
 
 internal class SectioningSelectorsKtTest {
@@ -12,8 +20,8 @@ internal class SectioningSelectorsKtTest {
     @Test
     fun `can parse body-tag`() {
         val selector = aValidDocument().body {
-            findFirst {
-                // toBePresent()
+            findAll {
+                toBePresentExactlyOnce
             }
             toCssSelector
         }
@@ -23,181 +31,348 @@ internal class SectioningSelectorsKtTest {
 
     @Test
     fun `can parse div-tag`() {
-        val selector = aValidDocument().div {
-            findAll {
-                toBePresentTimes(4)
-            }
-            toCssSelector
-        }
 
-        expectThat(selector).isEqualTo("div")
+        htmlDocument(a3TimesNestedTag("div")) {
+            div {
+                findAll {
+                    // find text of all divs including it children (1 2 3 & 2 3 & 3)
+                    text toBe "1 2 3 2 3 3"
+                }
+                findFirst {
+                    text toBe "1 2 3"
+                }
+                div {
+                    findAll {
+                        text toBe "2 3 3"
+                    }
+                    findFirst {
+                        text toBe "2 3"
+                        div {
+                            findAll {
+                                text toBe "3"
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Test
     fun `can parse section-tag`() {
-        val selector = aValidDocument().section {
-            findAll {
-                toBePresentExactlyOnce
+        htmlDocument(a3TimesNestedTag("section")) {
+            section {
+                findAll {
+                    text toBe "1 2 3 2 3 3"
+                }
+                findFirst {
+                    text toBe "1 2 3"
+                }
+                section {
+                    findAll {
+                        text toBe "2 3 3"
+                    }
+                    findFirst {
+                        text toBe "2 3"
+                        section {
+                            findAll {
+                                text toBe "3"
+                            }
+                        }
+                    }
+                }
             }
-            toCssSelector
         }
-
-        expectThat(selector).isEqualTo("section")
     }
 
     @Test
     fun `can parse nav-tag`() {
-        val selector = aValidDocument().nav {
-            findAll {
-                toBePresentExactlyOnce
+        htmlDocument(a3TimesNestedTag("nav")) {
+            nav {
+                findAll {
+                    text toBe "1 2 3 2 3 3"
+                }
+                findFirst {
+                    text toBe "1 2 3"
+                }
+                nav {
+                    findAll {
+                        text toBe "2 3 3"
+                    }
+                    findFirst {
+                        text toBe "2 3"
+                        nav {
+                            findAll {
+                                text toBe "3"
+                            }
+                        }
+                    }
+                }
             }
-            toCssSelector
         }
-
-        expectThat(selector).isEqualTo("nav")
     }
 
     @Test
     fun `can parse article-tag`() {
-        val selector = aValidDocument().article {
-            findFirst {
-                expectThat(text).isEqualTo("i'm an article")
+        htmlDocument(a3TimesNestedTag("article")) {
+            article {
+                findAll {
+                    text toBe "1 2 3 2 3 3"
+                }
+                findFirst {
+                    text toBe "1 2 3"
+                }
+                article {
+                    findAll {
+                        text toBe "2 3 3"
+                    }
+                    findFirst {
+                        text toBe "2 3"
+                        article {
+                            findAll {
+                                text toBe "3"
+                            }
+                        }
+                    }
+                }
             }
-            toCssSelector
         }
-
-        expectThat(selector).isEqualTo("article")
     }
 
     @Test
     fun `can parse aside-tag`() {
-        val selector = aValidDocument().aside {
-            findFirst {
-                expectThat(text).isEqualTo("i'm an aside")
+        htmlDocument(a3TimesNestedTag("aside")) {
+            aside {
+                findAll {
+                    text toBe "1 2 3 2 3 3"
+                }
+                findFirst {
+                    text toBe "1 2 3"
+                }
+                aside {
+                    findAll {
+                        text toBe "2 3 3"
+                    }
+                    findFirst {
+                        text toBe "2 3"
+                        aside {
+                            findAll {
+                                text toBe "3"
+                            }
+                        }
+                    }
+                }
             }
-            toCssSelector
         }
-
-        expectThat(selector).isEqualTo("aside")
     }
 
     @Test
     fun `can parse h1-tag`() {
-        val selector = aValidDocument().h1 {
-            findFirst {
-                expectThat(text).isEqualTo("i'm the headline")
+        htmlDocument("<div><h1>hello</h1></div>") {
+            h1 {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    h1 { findFirst { text toBe "hello" } }
+                }
+                h1 {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("h1")
     }
 
     @Test
     fun `can parse h2-tag`() {
-        val selector = aValidDocument().h2 {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a h2")
+        htmlDocument("<div><h2>hello</h2></div>") {
+            h2 {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    h2 { findFirst { text toBe "hello" } }
+                }
+                h2 {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("h2")
     }
 
     @Test
     fun `can parse h3-tag`() {
-        val selector = aValidDocument().h3 {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a h3")
+        htmlDocument("<div><h3>hello</h3></div>") {
+            h3 {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    h3 { findFirst { text toBe "hello" } }
+                }
+                h3 {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("h3")
     }
 
     @Test
     fun `can parse h4-tag`() {
-        val selector = aValidDocument().h4 {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a h4")
+        htmlDocument("<div><h4>hello</h4></div>") {
+            h4 {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    h4 { findFirst { text toBe "hello" } }
+                }
+                h4 {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("h4")
     }
 
     @Test
     fun `can parse h5-tag`() {
-        val selector = aValidDocument().h5 {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a h5")
+        htmlDocument("<div><h5>hello</h5></div>") {
+            h5 {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    h5 { findFirst { text toBe "hello" } }
+                }
+                h5 {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("h5")
     }
 
     @Test
     fun `can parse h6-tag`() {
-        val selector = aValidDocument().h6 {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a h6")
+        htmlDocument("<div><h6>hello</h6></div>") {
+            h6 {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    h6 { findFirst { text toBe "hello" } }
+                }
+                h6 {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("h6")
     }
 
     @Test
     fun `can parse header-tag`() {
-        val selector = aValidDocument().header {
-            findAll {
-                toBePresentExactlyOnce
+        htmlDocument(a3TimesNestedTag("header")) {
+            header {
+                findAll {
+                    text toBe "1 2 3 2 3 3"
+                }
+                findFirst {
+                    text toBe "1 2 3"
+                }
+                header {
+                    findAll {
+                        text toBe "2 3 3"
+                    }
+                    findFirst {
+                        text toBe "2 3"
+                        header {
+                            findAll {
+                                text toBe "3"
+                            }
+                        }
+                    }
+                }
             }
-            toCssSelector
         }
-
-        expectThat(selector).isEqualTo("header")
     }
 
     @Test
     fun `can parse footer-tag`() {
-        val selector = aValidDocument().footer {
-            findAll {
-                toBePresentExactlyOnce
+        htmlDocument(a3TimesNestedTag("footer")) {
+            footer {
+                findAll {
+                    text toBe "1 2 3 2 3 3"
+                }
+                findFirst {
+                    text toBe "1 2 3"
+                }
+                footer {
+                    findAll {
+                        text toBe "2 3 3"
+                    }
+                    findFirst {
+                        text toBe "2 3"
+                        footer {
+                            findAll {
+                                text toBe "3"
+                            }
+                        }
+                    }
+                }
             }
-            toCssSelector
         }
-
-        expectThat(selector).isEqualTo("footer")
     }
 
     @Test
     fun `can parse address-tag`() {
-        val selector = aValidDocument().address {
-            findFirst {
-                expectThat(text).isEqualTo("i'm an address")
+        htmlDocument(a3TimesNestedTag("address")) {
+            address {
+                findAll {
+                    text toBe "1 2 3 2 3 3"
+                }
+                findFirst {
+                    text toBe "1 2 3"
+                }
+                address {
+                    findAll {
+                        text toBe "2 3 3"
+                    }
+                    findFirst {
+                        text toBe "2 3"
+                        address {
+                            findAll {
+                                text toBe "3"
+                            }
+                        }
+                    }
+                }
             }
-            toCssSelector
         }
-
-        expectThat(selector).isEqualTo("address")
     }
 
     @Test
     fun `can parse main-tag`() {
-        val selector = aValidDocument().main {
-            findAll {
-                toBePresentExactlyOnce
+        htmlDocument(a3TimesNestedTag("main")) {
+            main {
+                findAll {
+                    text toBe "1 2 3 2 3 3"
+                }
+                findFirst {
+                    text toBe "1 2 3"
+                }
+                main {
+                    findAll {
+                        text toBe "2 3 3"
+                    }
+                    findFirst {
+                        text toBe "2 3"
+                        main {
+                            findAll {
+                                text toBe "3"
+                            }
+                        }
+                    }
+                }
             }
-            toCssSelector
         }
-
-        expectThat(selector).isEqualTo("main")
     }
 }

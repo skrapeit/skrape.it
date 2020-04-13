@@ -1,397 +1,521 @@
 package it.skrape.selects.html5
 
-import it.skrape.aValidDocument
-import it.skrape.matchers.toBePresentExactlyOnce
-import it.skrape.matchers.toBePresentTimes
+import it.skrape.core.htmlDocument
+import it.skrape.matchers.toBe
+import it.skrape.selects.attribute
+import it.skrape.selects.text
 import org.junit.jupiter.api.Test
-import strikt.api.expectThat
-import strikt.assertions.contains
-import strikt.assertions.isEqualTo
 
 
 internal class TextSemanticsSelectorsKtTest {
 
     @Test
     fun `can parse a-tag`() {
-        val selector = aValidDocument().a {
-            findFirst {
-                expectThat(text).isEqualTo("i'm an anchor")
+        htmlDocument("<div><a>hello</a></div>") {
+            a {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    a { findFirst { text toBe "hello" } }
+                }
+                a {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("a")
     }
 
     @Test
     fun `can parse abbr-tag`() {
-        val selector = aValidDocument().abbr {
-            findFirst {
-                expectThat(text).isEqualTo("i'm an abbr")
+        htmlDocument("<div><abbr>hello</abbr></div>") {
+            abbr {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    abbr { findFirst { text toBe "hello" } }
+                }
+                abbr {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("abbr")
     }
 
     @Test
     fun `can parse b-tag`() {
-        val selector = aValidDocument().b {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a bold text")
+        htmlDocument("<div><b>hello</b></div>") {
+            b {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    b { findFirst { text toBe "hello" } }
+                }
+                b {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("b")
     }
 
     @Test
     fun `can parse bdi-tag`() {
-        val selector = aValidDocument().bdi {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a bdi")
+        htmlDocument("<div><bdi>hello</bdi></div>") {
+            bdi {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    bdi { findFirst { text toBe "hello" } }
+                }
+                bdi {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("bdi")
     }
 
     @Test
     fun `can parse bdo-tag`() {
-        val selector = aValidDocument().bdo {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a bdo")
+        htmlDocument("<div><bdo>hello</bdo></div>") {
+            bdo {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    bdo { findFirst { text toBe "hello" } }
+                }
+                bdo {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("bdo")
     }
 
     @Test
     fun `can parse br-tag`() {
-        val selector = aValidDocument().br {
-            findAll {
-                toBePresentTimes(2)
+        htmlDocument("<div><br class='foo'/></div>") {
+            br {
+                findAll { attribute("class") toBe "foo" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    br { findFirst {attribute("class") toBe "foo" } }
+                }
+                br {
+                    findFirst { attribute("class") toBe "foo" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("br")
     }
 
     @Test
     fun `can parse cite-tag`() {
-        val selector = aValidDocument().cite {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a cite")
+        htmlDocument("<div><cite>hello</cite></div>") {
+            cite {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    cite { findFirst { text toBe "hello" } }
+                }
+                cite {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("cite")
     }
 
     @Test
     fun `can parse code-tag`() {
-        val selector = aValidDocument().code {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a code")
+        htmlDocument("<div><code>hello</code></div>") {
+            code {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    code { findFirst { text toBe "hello" } }
+                }
+                code {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("code")
     }
 
     @Test
     fun `can parse data-tag`() {
-        val selector = aValidDocument().data {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a data")
+        htmlDocument("<div><data>hello</data></div>") {
+            data {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    data { findFirst { text toBe "hello" } }
+                }
+                data {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("data")
     }
 
     @Test
     fun `can parse dfn-tag`() {
-        val selector = aValidDocument().dfn {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a dfn")
+        htmlDocument("<div><dfn>hello</dfn></div>") {
+            dfn {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    dfn { findFirst { text toBe "hello" } }
+                }
+                dfn {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("dfn")
     }
 
     @Test
     fun `can parse em-tag`() {
-        val selector = aValidDocument().em {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a em")
+        htmlDocument("<div><em>hello</em></div>") {
+            em {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    em { findFirst { text toBe "hello" } }
+                }
+                em {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("em")
     }
 
     @Test
     fun `can parse i-tag`() {
-        val selector = aValidDocument().i {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a i")
+        htmlDocument("<div><i>hello</i></div>") {
+            i {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    i { findFirst { text toBe "hello" } }
+                }
+                i {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("i")
     }
 
     @Test
     fun `can parse kbd-tag`() {
-        val selector = aValidDocument().kbd {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a kbd")
+        htmlDocument("<div><kbd>hello</kbd></div>") {
+            kbd {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    kbd { findFirst { text toBe "hello" } }
+                }
+                kbd {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("kbd")
     }
 
     @Test
     fun `can parse mark-tag`() {
-        val selector = aValidDocument().mark {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a mark")
+        htmlDocument("<div><mark>hello</mark></div>") {
+            mark {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    mark { findFirst { text toBe "hello" } }
+                }
+                mark {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("mark")
     }
 
     @Test
     fun `can parse q-tag`() {
-        val selector = aValidDocument().q {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a q")
+        htmlDocument("<div><q>hello</q></div>") {
+            q {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    q { findFirst { text toBe "hello" } }
+                }
+                q {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("q")
     }
 
     @Test
     fun `can parse rb-tag`() {
-        val selector = aValidDocument().rb {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a rb")
+        htmlDocument("<div><rb>hello</rb></div>") {
+            rb {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
-        }
-
-        expectThat(selector).isEqualTo("rb")
-    }
-
-    @Test
-    fun `can parse rp-tag`() {
-        val selector = aValidDocument().rp {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a rp")
+            div {
+                findFirst {
+                    rb { findFirst { text toBe "hello" } }
+                }
+                rb {
+                    findFirst { text toBe "hello" }
+                }
             }
-            toCssSelector
         }
-
-        expectThat(selector).isEqualTo("rp")
-    }
-
-    @Test
-    fun `can parse rt-tag`() {
-        val selector = aValidDocument().rt {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a rt")
-            }
-            toCssSelector
-        }
-
-        expectThat(selector).isEqualTo("rt")
     }
 
     @Test
     fun `can parse rtc-tag`() {
-        val selector = aValidDocument().rtc {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a rtc")
+        htmlDocument("<div><rtc>hello</rtc></div>") {
+            rtc {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    rtc { findFirst { text toBe "hello" } }
+                }
+                rtc {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("rtc")
     }
 
     @Test
     fun `can parse ruby-tag`() {
-        val selector = aValidDocument().ruby {
-            findFirst {
-                expectThat(text).contains("i'm a ruby")
+        htmlDocument("<div><ruby>hello</ruby></div>") {
+            ruby {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    ruby { findFirst { text toBe "hello" } }
+                }
+                ruby {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("ruby")
     }
 
     @Test
     fun `can parse s-tag`() {
-        val selector = aValidDocument().s {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a s")
+        htmlDocument("<div><s>hello</s></div>") {
+            s {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    s { findFirst { text toBe "hello" } }
+                }
+                s {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("s")
     }
 
     @Test
     fun `can parse samp-tag`() {
-        val selector = aValidDocument().samp {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a samp")
+        htmlDocument("<div><samp>hello</samp></div>") {
+            samp {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    samp { findFirst { text toBe "hello" } }
+                }
+                samp {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("samp")
     }
 
     @Test
     fun `can parse small-tag`() {
-        val selector = aValidDocument().small {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a small")
+        htmlDocument("<div><small>hello</small></div>") {
+            small {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    small { findFirst { text toBe "hello" } }
+                }
+                small {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("small")
     }
 
     @Test
     fun `can parse span-tag`() {
-        val selector = aValidDocument().span {
-            findAll {
-                toBePresentTimes(6)
+        htmlDocument("<div><span>hello</span></div>") {
+            span {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    span { findFirst { text toBe "hello" } }
+                }
+                span {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("span")
     }
 
     @Test
     fun `can parse strong-tag`() {
-        val selector = aValidDocument().strong {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a strong")
+        htmlDocument("<div><strong>hello</strong></div>") {
+            strong {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    strong { findFirst { text toBe "hello" } }
+                }
+                strong {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("strong")
     }
 
     @Test
     fun `can parse sub-tag`() {
-        val selector = aValidDocument().sub {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a sub")
+        htmlDocument("<div><sub>hello</sub></div>") {
+            sub {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    sub { findFirst { text toBe "hello" } }
+                }
+                sub {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("sub")
     }
 
     @Test
     fun `can parse sup-tag`() {
-        val selector = aValidDocument().sup {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a sup")
+        htmlDocument("<div><sup>hello</sup></div>") {
+            sup {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    sup { findFirst { text toBe "hello" } }
+                }
+                sup {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("sup")
     }
 
     @Test
     fun `can parse time-tag`() {
-        val selector = aValidDocument().time {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a time")
+        htmlDocument("<div><time>hello</time></div>") {
+            time {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    time { findFirst { text toBe "hello" } }
+                }
+                time {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("time")
     }
 
     @Test
     fun `can parse tt-tag`() {
-        val selector = aValidDocument().tt {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a tt")
+        htmlDocument("<div><tt>hello</tt></div>") {
+            tt {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    tt { findFirst { text toBe "hello" } }
+                }
+                tt {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("tt")
     }
 
     @Test
     fun `can parse u-tag`() {
-        val selector = aValidDocument().u {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a u")
+        htmlDocument("<div><u>hello</u></div>") {
+            u {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    u { findFirst { text toBe "hello" } }
+                }
+                u {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("u")
     }
 
     @Test
     fun `can parse var-tag`() {
-        val selector = aValidDocument().`var` {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a var")
+        htmlDocument("<div><var>hello</var></div>") {
+            `var` {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    `var` { findFirst { text toBe "hello" } }
+                }
+                `var` {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("var")
     }
 
     @Test
     fun `can parse wbr-tag`() {
-        val selector = aValidDocument().wbr {
-            findAll {
-                toBePresentExactlyOnce
+        htmlDocument("<div><wbr class='foo'/></div>") {
+            wbr {
+                findAll { attribute("class") toBe "foo" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    wbr { findFirst {attribute("class") toBe "foo" } }
+                }
+                wbr {
+                    findFirst { attribute("class") toBe "foo" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("wbr")
     }
 }

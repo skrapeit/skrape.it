@@ -165,3 +165,5 @@ fun aSelfClosingTag(tag: String) = "<$tag custom-attr='$tag-attr' />"
 fun aStandardTag(tag: String) = """<$tag class="$tag-class">i'm a $tag</$tag>"""
 
 fun aValidTitle(text: String = "i'm the title") = "<title>$text</title>"
+
+fun a3TimesNestedTag(tag: String) = "<$tag>1<$tag>2<$tag>3</$tag></$tag></$tag>"

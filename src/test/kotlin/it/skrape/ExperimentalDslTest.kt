@@ -9,6 +9,7 @@ import it.skrape.selects.and
 import it.skrape.selects.html5.customTag
 import it.skrape.selects.html5.div
 import it.skrape.selects.html5.span
+import it.skrape.selects.text
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -142,7 +143,7 @@ class ExperimentalDslTest : WireMockSetup() {
     }
 
     @Test
-    fun `get invoke cascading css-selectors`() {
+    fun `can invoke a raw nested css-selector`() {
 
         @Language("HTML") val myMarkUp = """
             <div class="CollapsiblePanelTab" tabindex="0">Today's Interest (1)</div>
@@ -162,6 +163,43 @@ class ExperimentalDslTest : WireMockSetup() {
                 withAttributeKey = "href"
                 findFirst {
                     println(attribute("href"))
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `can nest selection via css selectors`() {
+
+        @Language("HTML") val myMarkUp = """
+            <div class="foo">
+                <div class="bar">
+                    <div>first nested div</div>
+                </div>
+            </div>
+            <div class="foo">
+                <div class="bar">
+                    <div>other nested div</div>
+                </div>
+            </div>
+            <div class="some-other"></div>
+        """.trimIndent()
+
+        htmlDocument(myMarkUp) {
+
+            div {
+                withClass = "foo"
+
+                div {
+                    withClass = "bar"
+
+                    findAll {
+                        text toBe "first nested div other nested div"
+                    }
+
+                    findFirst {
+                        text toBe "first nested div"
+                    }
                 }
             }
         }
