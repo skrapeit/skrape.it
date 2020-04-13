@@ -9,6 +9,7 @@ import org.jsoup.nodes.Document
 import java.io.File
 import java.nio.charset.Charset
 import java.util.*
+import org.jsoup.parser.Parser.parse as jSoupParser
 
 internal class Parser(
         var html: String,
@@ -20,7 +21,7 @@ internal class Parser(
     fun parse(): Doc {
         return if (jsExecution) {
             BrowserFetcher(Request(url = html.toUriScheme())).fetch().htmlDocument { this }
-        } else org.jsoup.parser.Parser.parse(html, baseUri).toDocWrapper()
+        } else jSoupParser(html, baseUri).toDocWrapper()
     }
 
     private fun Document.toDocWrapper() = Doc(this)
