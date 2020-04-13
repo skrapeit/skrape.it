@@ -1,6 +1,8 @@
 package it.skrape.selects
 
 import it.skrape.SkrapeItDsl
+import it.skrape.core.htmlDocument
+import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 
 @Suppress("TooManyFunctions")
@@ -148,6 +150,9 @@ class DocElement(private val element: Element) {
             CssSelector(rawCssSelector = "$cssSelector $this").init()
 
     override fun toString() = element.toString()
+
+    val toDoc: Doc
+        get() = htmlDocument(html)
 
     @Deprecated("use 'findAll(cssSelector: String) instead'")
     fun select(cssSelector: String) = element.select(cssSelector).map { DocElement(it) }
