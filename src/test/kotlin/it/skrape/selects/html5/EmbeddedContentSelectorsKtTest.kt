@@ -1,7 +1,11 @@
 package it.skrape.selects.html5
 
+import it.skrape.a3TimesNestedTag
 import it.skrape.aStandardTag
 import it.skrape.aValidDocument
+import it.skrape.core.htmlDocument
+import it.skrape.matchers.toBe
+import it.skrape.selects.text
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
@@ -10,97 +14,175 @@ internal class EmbeddedContentSelectorsKtTest {
 
     @Test
     fun `can parse applet-tag`() {
-        val selector = aValidDocument(aStandardTag("applet")).applet {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a applet")
+        htmlDocument(a3TimesNestedTag("applet")) {
+            applet {
+                findAll {
+                    text toBe "123 23 3"
+                }
+                findFirst {
+                    text toBe "123"
+                }
+                applet {
+                    findAll {
+                        text toBe "23 3"
+                    }
+                    findFirst {
+                        text toBe "23"
+                        applet {
+                            findAll {
+                                text toBe "3"
+                            }
+                        }
+                    }
+                }
             }
-            toCssSelector
         }
-
-        expectThat(selector).isEqualTo("applet")
     }
 
     @Test
     fun `can parse embed-tag`() {
-        val selector = aValidDocument("<embed src=\"helloworld.swf\">").embed {
-            findFirst {
-                expectThat(attribute("src")).isEqualTo("helloworld.swf")
+        htmlDocument("<div><embed src='helloworld.swf'></div>") {
+            embed {
+                findFirst {
+                    attribute("src") toBe "helloworld.swf"
+                }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    embed { findFirst { attribute("src") toBe "helloworld.swf" } }
+                }
+                embed {
+                    findFirst { attribute("src") toBe "helloworld.swf" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("embed")
     }
 
     @Test
     fun `can parse iframe-tag`() {
-        val selector = aValidDocument(aStandardTag("iframe")).iframe {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a iframe")
+        htmlDocument("<div><iframe>hello</iframe></div>") {
+            iframe {
+                findAll { text toBe "hello" }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    iframe { findFirst { text toBe "hello" } }
+                }
+                iframe {
+                    findFirst { text toBe "hello" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("iframe")
     }
 
     @Test
     fun `can parse noembed-tag`() {
-        val selector = aValidDocument(aStandardTag("noembed")).noembed {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a noembed")
+        htmlDocument("<div><noembed src='helloworld.swf'></div>") {
+            noembed {
+                findFirst {
+                    attribute("src") toBe "helloworld.swf"
+                }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    noembed { findFirst { attribute("src") toBe "helloworld.swf" } }
+                }
+                noembed {
+                    findFirst { attribute("src") toBe "helloworld.swf" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("noembed")
     }
 
     @Test
     fun `can parse object-tag`() {
-        val selector = aValidDocument(aStandardTag("object")).`object` {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a object")
+        htmlDocument(a3TimesNestedTag("object")) {
+            `object` {
+                findAll {
+                    text toBe "123 23 3"
+                }
+                findFirst {
+                    text toBe "123"
+                }
+                `object` {
+                    findAll {
+                        text toBe "23 3"
+                    }
+                    findFirst {
+                        text toBe "23"
+                        `object` {
+                            findAll {
+                                text toBe "3"
+                            }
+                        }
+                    }
+                }
             }
-            toCssSelector
         }
-
-        expectThat(selector).isEqualTo("object")
     }
 
     @Test
     fun `can parse param-tag`() {
-        val selector = aValidDocument("<param name=\"autoplay\" value=\"true\">").param {
-            findFirst {
-                expectThat(attribute("name")).isEqualTo("autoplay")
+        htmlDocument("<div><param name='autoplay' value='true'></div>") {
+            param {
+                findFirst {
+                    attribute("name") toBe "autoplay"
+                }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    param { findFirst { attribute("name") toBe "autoplay" } }
+                }
+                param {
+                    findFirst { attribute("name") toBe "autoplay" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("param")
     }
 
     @Test
     fun `can parse picture-tag`() {
-        val selector = aValidDocument(aStandardTag("picture")).picture {
-            findFirst {
-                expectThat(text).isEqualTo("i'm a picture")
+        htmlDocument(a3TimesNestedTag("picture")) {
+            picture {
+                findAll {
+                    text toBe "123 23 3"
+                }
+                findFirst {
+                    text toBe "123"
+                }
+                picture {
+                    findAll {
+                        text toBe "23 3"
+                    }
+                    findFirst {
+                        text toBe "23"
+                        picture {
+                            findAll {
+                                text toBe "3"
+                            }
+                        }
+                    }
+                }
             }
-            toCssSelector
         }
-
-        expectThat(selector).isEqualTo("picture")
     }
 
     @Test
     fun `can parse source-tag`() {
-        val selector = aValidDocument("<source src=\"horse.ogg\" type=\"audio/ogg\">").source {
-            findFirst {
-                expectThat(attribute("src")).isEqualTo("horse.ogg")
+        htmlDocument("<div><source src='horse.ogg' type='audio/ogg'></div>") {
+            source {
+                findFirst {
+                    attribute("src") toBe "horse.ogg"
+                }
             }
-            toCssSelector
+            div {
+                findFirst {
+                    source { findFirst { attribute("src") toBe "horse.ogg" } }
+                }
+                source {
+                    findFirst { attribute("src") toBe "horse.ogg" }
+                }
+            }
         }
-
-        expectThat(selector).isEqualTo("source")
     }
 }
