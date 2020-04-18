@@ -7,6 +7,8 @@ import java.util.*
 @Suppress("TooManyFunctions")
 @SkrapeItDsl
 abstract class CssSelectable {
+    abstract val toCssSelector: String
+
     internal abstract fun applySelector(rawCssSelector: String): List<DocElement>
 
     fun <T> selection(cssSelector: String, init: CssSelector.() -> T) =

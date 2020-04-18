@@ -66,8 +66,13 @@ class DocElement(override val element: Element) : DomTreeElement() {
 
     val cssSelector by lazy { element.cssSelector().orEmpty() }
 
+    override val toCssSelector: String
+        get() = cssSelector
+
+    val ownCssSelector by lazy { cssSelector.split("\\s+".toRegex()).lastOrNull().orEmpty() }
+
     override fun applyNonTrivialSelector(rawCssSelector: String): List<DocElement> {
-        val combinedSelector = "$cssSelector $rawCssSelector".trim()
+        val combinedSelector = "$ownCssSelector $rawCssSelector".trim()
         return element.allElements.select(combinedSelector).map { DocElement(it) }
     }
 
