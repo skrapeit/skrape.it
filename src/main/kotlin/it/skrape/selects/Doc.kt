@@ -22,6 +22,8 @@ class Doc(val document: Document, var relaxed: Boolean = false) : DomTreeElement
 
     val titleText by lazy { document.title().orEmpty() }
 
+    override val toCssSelector: String = ""
+
     /**
      * Find all elements in the document.
      * @return List<DocElement>

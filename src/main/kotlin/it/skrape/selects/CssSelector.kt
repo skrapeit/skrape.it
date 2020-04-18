@@ -15,12 +15,15 @@ class CssSelector(
         var withAttributes: List<Pair<String, String>>? = null,
         val doc: CssSelectable = Doc(Document(""))
 ) : CssSelectable() {
+    override val toCssSelector: String
+        get() = "${doc.toCssSelector} $ownCssSelector".trim()
+
     override fun applySelector(rawCssSelector: String): List<DocElement> {
-        val combinedSelector = "$toCssSelector $rawCssSelector".trim()
+        val combinedSelector = "$ownCssSelector $rawCssSelector".trim()
         return doc.applySelector(combinedSelector)
     }
 
-    val toCssSelector: String
+    val ownCssSelector: String
         get() {
             val calculatedSelector =
                     withId.toIdSelector().orEmpty() +
