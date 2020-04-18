@@ -24,12 +24,6 @@ class Doc(val document: Document, var relaxed: Boolean = false) : DomTreeElement
 
     override val toCssSelector: String = ""
 
-    /**
-     * Find all elements in the document.
-     * @return List<DocElement>
-     */
-    override val allElements by lazy { document.allElements.map { DocElement(it) } }
-
     override fun applyNonTrivialSelector(rawCssSelector: String): List<DocElement> {
         val selected = document.select(rawCssSelector)
                 .map { DocElement(it) }
