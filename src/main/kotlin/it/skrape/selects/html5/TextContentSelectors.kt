@@ -2,6 +2,7 @@ package it.skrape.selects.html5
 
 import it.skrape.selects.CssSelector
 import it.skrape.selects.Doc
+import it.skrape.selects.DomTreeElement
 
 /**
  * Will define a <blockquote>-tags css query selector.
@@ -156,7 +157,7 @@ fun <T> Doc.ul(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.p(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> DomTreeElement.p(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("p$cssSelector", init)
 
 fun <T> CssSelector.p(cssSelector: String = "", init: CssSelector.() -> T) =

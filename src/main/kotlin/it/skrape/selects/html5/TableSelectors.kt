@@ -2,6 +2,7 @@ package it.skrape.selects.html5
 
 import it.skrape.selects.CssSelector
 import it.skrape.selects.Doc
+import it.skrape.selects.DomTreeElement
 
 /**
  * Will define a <caption>-tags css query selector.
@@ -26,7 +27,7 @@ fun <T> Doc.caption(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.col(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> DomTreeElement.col(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("col$cssSelector", init)
 
 fun <T> CssSelector.col(cssSelector: String = "", init: CssSelector.() -> T) =
@@ -42,7 +43,7 @@ fun <T> CssSelector.col(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.colgroup(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> DomTreeElement.colgroup(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("colgroup$cssSelector", init)
 
 fun <T> CssSelector.colgroup(cssSelector: String = "", init: CssSelector.() -> T) =
@@ -58,7 +59,7 @@ fun <T> CssSelector.colgroup(cssSelector: String = "", init: CssSelector.() -> T
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.table(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> DomTreeElement.table(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("table$cssSelector", init)
 
 fun <T> CssSelector.table(cssSelector: String = "", init: CssSelector.() -> T) =
@@ -74,7 +75,7 @@ fun <T> CssSelector.table(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.tbody(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> DomTreeElement.tbody(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("tbody$cssSelector", init)
 
 fun <T> CssSelector.tbody(cssSelector: String = "", init: CssSelector.() -> T) =
@@ -90,7 +91,7 @@ fun <T> CssSelector.tbody(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.td(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> DomTreeElement.td(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("td$cssSelector", init)
 
 fun <T> CssSelector.td(cssSelector: String = "", init: CssSelector.() -> T) =
@@ -106,7 +107,7 @@ fun <T> CssSelector.td(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.tfoot(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> DomTreeElement.tfoot(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("tfoot$cssSelector", init)
 
 fun <T> CssSelector.tfoot(cssSelector: String = "", init: CssSelector.() -> T) =
@@ -122,7 +123,7 @@ fun <T> CssSelector.tfoot(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.th(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> DomTreeElement.th(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("th$cssSelector", init)
 
 fun <T> CssSelector.th(cssSelector: String = "", init: CssSelector.() -> T) =
@@ -138,7 +139,7 @@ fun <T> CssSelector.th(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.thead(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> DomTreeElement.thead(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("thead$cssSelector", init)
 
 fun <T> CssSelector.thead(cssSelector: String = "", init: CssSelector.() -> T) =
@@ -154,7 +155,7 @@ fun <T> CssSelector.thead(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.tr(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> DomTreeElement.tr(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("tr$cssSelector", init)
 
 fun <T> CssSelector.tr(cssSelector: String = "", init: CssSelector.() -> T) =
