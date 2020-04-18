@@ -15,7 +15,7 @@ class CssSelector(
         var withAttributeKeys: List<String>? = null,
         var withAttribute: Pair<String, String>? = null,
         var withAttributes: List<Pair<String, String>>? = null,
-        val doc: Doc = Doc(Document(""))
+        val doc: DomTreeElement = Doc(Document(""))
 ) {
 
     fun <T> findByIndex(index: Int, init: DocElement.() -> T): T {
@@ -28,7 +28,6 @@ class CssSelector(
 
     fun <T> findFirst(init: DocElement.() -> T): T =
             findByIndex(0, init)
-
 
     fun <T> findSecond(init: DocElement.() -> T): T =
             findByIndex(1, init)
