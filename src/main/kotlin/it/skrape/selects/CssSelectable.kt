@@ -16,7 +16,7 @@ abstract class CssSelectable {
 
     /**
      * Will create a CssSelector scope to calculate a css selector
-     * @param cssSelector that represents an CSS-Selector that will be considered during calculation
+     * @param init block for configuring the CSS-Selector that will be considered during calculation
      * @return T
      */
     operator fun <T> String.invoke(init: CssSelector.() -> T) =
@@ -74,7 +74,7 @@ abstract class CssSelectable {
      * @return T
      */
     fun <T> findAll(cssSelector: String = "", init: List<DocElement>.() -> T) =
-            this.findAll(cssSelector).init()
+            findAll(cssSelector).init()
 
     fun <T> findByIndex(index: Int, cssSelector: String = "", init: DocElement.() -> T) =
             findByIndex(index, cssSelector).init()

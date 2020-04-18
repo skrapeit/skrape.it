@@ -3,7 +3,6 @@ package it.skrape.selects
 import it.skrape.SkrapeItDsl
 import org.jsoup.nodes.Document
 
-@Suppress("TooManyFunctions")
 @SkrapeItDsl
 class CssSelector(
         var rawCssSelector: String = "",

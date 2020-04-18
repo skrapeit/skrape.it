@@ -25,9 +25,8 @@ class Doc(val document: Document, var relaxed: Boolean = false) : DomTreeElement
     override val toCssSelector: String = ""
 
     override fun applyNonTrivialSelector(rawCssSelector: String): List<DocElement> {
-        val selected = document.select(rawCssSelector)
-                .map { DocElement(it) }
-                .takeIf { it.isNotEmpty() }
+        val queried = document.allElements.select(rawCssSelector).map { DocElement(it) }
+        val selected = queried.takeIf { it.isNotEmpty() }
         return if (relaxed) selected.orEmpty() else selected ?: throw ElementNotFoundException(rawCssSelector)
     }
 
