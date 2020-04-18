@@ -7,7 +7,7 @@ import org.jsoup.nodes.Element
 
 @Suppress("TooManyFunctions")
 @SkrapeItDsl
-class Doc(val document: Document, var relaxed: Boolean = false): DomTreeElement() {
+class Doc(val document: Document, var relaxed: Boolean = false) : DomTreeElement() {
     override val element: Element
         get() = this.document
 
@@ -28,12 +28,14 @@ class Doc(val document: Document, var relaxed: Boolean = false): DomTreeElement(
      */
     override val allElements by lazy { document.allElements.map { DocElement(it) } }
 
-    override infix fun findAll(cssSelector: String): List<DocElement> {
-        val selected = document.select(cssSelector)
+    override fun applyNonTrivialSelector(rawCssSelector: String): List<DocElement> {
+        val selected = document.select(rawCssSelector)
                 .map { DocElement(it) }
                 .takeIf { it.isNotEmpty() }
-        return if (relaxed) selected.orEmpty() else selected ?: throw ElementNotFoundException(cssSelector)
+        return if (relaxed) selected.orEmpty() else selected ?: throw ElementNotFoundException(rawCssSelector)
     }
 
-    override infix fun findFirst(cssSelector: String) = findAll(cssSelector).firstOrNull() ?: DocElement(Element(cssSelector))
+    override fun makeDefault(cssSelector: String): DocElement {
+        return DocElement(Element(cssSelector))
+    }
 }

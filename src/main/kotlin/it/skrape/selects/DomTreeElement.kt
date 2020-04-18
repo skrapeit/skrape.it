@@ -2,7 +2,7 @@ package it.skrape.selects
 
 import org.jsoup.nodes.Element
 
-abstract class DomTreeElement {
+abstract class DomTreeElement : CssSelectable() {
     abstract val element: Element
 
     /**
@@ -35,45 +35,15 @@ abstract class DomTreeElement {
 
     abstract val allElements: List<DocElement>
 
-    /**
-     * Find all elements in the document.
-     * @return T
-     */
-    fun <T> findAll(init: List<DocElement>.() -> T): T = allElements.init()
+    abstract fun applyNonTrivialSelector(rawCssSelector: String): List<DocElement>
 
-    abstract fun findAll(cssSelector: String): List<DocElement>
+    override fun applySelector(rawCssSelector: String): List<DocElement> {
+        if (rawCssSelector.isEmpty()) {
+            return allElements
+        }
 
-    /**
-     * Will pick all occurrences of elements that are matching the CSS-Selector
-     * @see <a href="https://www.w3schools.com/cssref/css_selectors.asp">Overview of CSS-Selectors for further information.</a>
-     * @param cssSelector that represents an CSS-Selector
-     * @return T
-     */
-    fun <T> findAll(cssSelector: String, init: List<DocElement>.() -> T) = findAll(cssSelector).init()
-
-    abstract fun findFirst(cssSelector: String): DocElement
-
-    /**
-     * Will pick the first occurrence of an element that
-     * is matching the CSS-Selector from a parsed document and invoke it to a lambda function.
-     * @see <a href="https://www.w3schools.com/cssref/css_selectors.asp">Overview of CSS-Selectors for further information.</a>
-     * @param cssSelector that represents an CSS-Selector
-     * @return T
-     */
-    fun <T> findFirst(cssSelector: String, init: DocElement.() -> T): T = findFirst(cssSelector).init()
-
-    fun <T> selection(cssSelector: String, init: CssSelector.() -> T) =
-            CssSelector(rawCssSelector = cssSelector, doc = this).init()
-
-    protected open fun toRawCssSelector(): String = this.toString()
-
-    /**
-     * Will create a CssSelector scope to calculate a css selector
-     * @param cssSelector that represents an CSS-Selector that will be considered during calculation
-     * @return T
-     */
-    operator fun <T> String.invoke(init: CssSelector.() -> T) =
-            this@DomTreeElement.selection(this@DomTreeElement.toRawCssSelector(), init)
+        return applyNonTrivialSelector(rawCssSelector)
+    }
 
     override fun toString() = element.toString()
 }

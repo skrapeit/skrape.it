@@ -1,12 +1,11 @@
 package it.skrape.selects
 
 import it.skrape.SkrapeItDsl
-import it.skrape.core.htmlDocument
 import org.jsoup.nodes.Element
 
 @Suppress("TooManyFunctions")
 @SkrapeItDsl
-class DocElement(override val element: Element): DomTreeElement() {
+class DocElement(override val element: Element) : DomTreeElement() {
     /**
      * Get the name of the tag for this element. E.g. {@code div}.
      *
@@ -67,28 +66,12 @@ class DocElement(override val element: Element): DomTreeElement() {
 
     val cssSelector by lazy { element.cssSelector().orEmpty() }
 
-    /**
-     * Will pick all occurrences of elements that are matching the CSS-Selector and return it as List<DocElement>.
-     * @see <a href="https://www.w3schools.com/cssref/css_selectors.asp">Overview of CSS-Selectors for further information.</a>
-     * @param cssSelector that represents an CSS-Selector
-     * @return List<DocElement>
-     */
-    override infix fun findAll(cssSelector: String): List<DocElement> =
-            element.allElements.select(cssSelector).map { DocElement(it) }
+    override fun applyNonTrivialSelector(rawCssSelector: String): List<DocElement> {
+        val combinedSelector = "$cssSelector $rawCssSelector".trim()
+        return element.allElements.select(combinedSelector).map { DocElement(it) }
+    }
 
-    /**
-     * Will pick the first occurrence of an element that
-     * is matching the CSS-Selector from a parsed document.
-     * @see <a href="https://www.w3schools.com/cssref/css_selectors.asp">Overview of CSS-Selectors for further information.</a>
-     * @param cssSelector that represents an CSS-Selector
-     * @return DocElement
-     */
-    override infix fun findFirst(cssSelector: String): DocElement =
-            findAll(cssSelector)[0]
-
-    override fun toRawCssSelector() = "$cssSelector $this"
-
-    @Deprecated("use 'findAll(cssSelector: String) instead'")
+    @Deprecated("use 'findAll(cssSelector: String) instead'", ReplaceWith("findAll(cssSelector)"))
     fun select(cssSelector: String) = element.select(cssSelector).map { DocElement(it) }
 }
 
@@ -116,5 +99,3 @@ fun <T> List<DocElement>.forEachLink(init: (text: String, url: String) -> T) {
 
 val List<DocElement>.eachHrefAsAbsoluteLink
     get(): List<String> = this eachAttribute "abs:href"
-
-// fun <T> List<DocElement>.findFirst(init: DocElement.() -> T): T = this[0].init()
