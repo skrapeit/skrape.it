@@ -33,7 +33,11 @@ abstract class DomTreeElement : CssSelectable() {
      */
     val outerHtml: String by lazy { element.outerHtml().orEmpty() }
 
-    abstract val allElements: List<DocElement>
+    /**
+     * Find all elements in the document.
+     * @return List<DocElement>
+     */
+    val allElements by lazy { element.allElements.map { DocElement(it) } }
 
     abstract fun applyNonTrivialSelector(rawCssSelector: String): List<DocElement>
 

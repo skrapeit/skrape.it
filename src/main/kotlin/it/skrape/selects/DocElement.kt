@@ -25,12 +25,6 @@ class DocElement(override val element: Element) : DomTreeElement() {
     val ownText by lazy { element.ownText().orEmpty() }
 
     /**
-     * Find all elements under this element (including self, and children of children).
-     * @return List<DocElement>
-     */
-    override val allElements by lazy { element.allElements.map { DocElement(it) } }
-
-    /**
      * Get all of the element's attributes.
      * @return Map<String, String>> of attribute key value pairs
      */
@@ -69,11 +63,8 @@ class DocElement(override val element: Element) : DomTreeElement() {
     override val toCssSelector: String
         get() = cssSelector
 
-    val ownCssSelector by lazy { cssSelector.split("\\s+".toRegex()).lastOrNull().orEmpty() }
-
     override fun applyNonTrivialSelector(rawCssSelector: String): List<DocElement> {
-        val combinedSelector = "$ownCssSelector $rawCssSelector".trim()
-        return element.allElements.select(combinedSelector).map { DocElement(it) }
+        return element.children().select(rawCssSelector).map { DocElement(it) }
     }
 
     @Deprecated("use 'findAll(cssSelector: String) instead'", ReplaceWith("findAll(cssSelector)"))
