@@ -7,7 +7,9 @@ import org.jsoup.nodes.Element
 
 @Suppress("TooManyFunctions")
 @SkrapeItDsl
-class Doc(val document: Document, var relaxed: Boolean = false) {
+class Doc(val document: Document, var relaxed: Boolean = false): DomTreeElement() {
+    override val element: Element
+        get() = this.document
 
     /**
      * Gets the combined text of this element and all its children. Whitespace is normalized and trimmed.
