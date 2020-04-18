@@ -2,13 +2,11 @@ package it.skrape.selects
 
 import it.skrape.SkrapeItDsl
 import it.skrape.core.htmlDocument
-import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 
 @Suppress("TooManyFunctions")
 @SkrapeItDsl
-class DocElement(private val element: Element) {
-
+class DocElement(override val element: Element): DomTreeElement() {
     /**
      * Get the name of the tag for this element. E.g. {@code div}.
      *
