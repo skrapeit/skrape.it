@@ -1,9 +1,12 @@
 package it.skrape.selects
 
+import it.skrape.exceptions.ElementNotFoundException
 import org.jsoup.nodes.Element
 
 abstract class DomTreeElement : CssSelectable() {
     abstract val element: Element
+
+    abstract val relaxed: Boolean
 
     /**
      * Gets the combined text of this element and all its children. Whitespace is normalized and trimmed.
@@ -39,14 +42,23 @@ abstract class DomTreeElement : CssSelectable() {
      */
     val allElements by lazy { element.allElements.map { DocElement(it) } }
 
-    abstract fun applyNonTrivialSelector(rawCssSelector: String): List<DocElement>
+    open fun makeDefaultElement(cssSelector: String): DocElement {
+        return super.makeDefault(cssSelector)
+    }
+
+    override fun makeDefault(cssSelector: String): DocElement {
+        return if (relaxed) makeDefaultElement(cssSelector) else throw ElementNotFoundException(cssSelector)
+    }
 
     override fun applySelector(rawCssSelector: String): List<DocElement> {
         if (rawCssSelector.isEmpty()) {
             return allElements
         }
 
-        return applyNonTrivialSelector(rawCssSelector)
+        val queried = element.children().select(rawCssSelector).map { DocElement(it, relaxed) }
+        val selected = queried.takeIf { it.isNotEmpty() }
+
+        return if (relaxed) selected.orEmpty() else selected ?: throw ElementNotFoundException(rawCssSelector)
     }
 
     override fun toString() = element.toString()
