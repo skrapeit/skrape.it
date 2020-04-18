@@ -5,7 +5,9 @@ import org.jsoup.nodes.Element
 
 @Suppress("TooManyFunctions")
 @SkrapeItDsl
-class DocElement(override val element: Element) : DomTreeElement() {
+class DocElement internal constructor(override val element: Element, override val relaxed: Boolean) : DomTreeElement() {
+    constructor(element: Element) : this(element, false)
+
     /**
      * Get the name of the tag for this element. E.g. {@code div}.
      *
@@ -63,12 +65,8 @@ class DocElement(override val element: Element) : DomTreeElement() {
     override val toCssSelector: String
         get() = cssSelector
 
-    override fun applyNonTrivialSelector(rawCssSelector: String): List<DocElement> {
-        return element.children().select(rawCssSelector).map { DocElement(it) }
-    }
-
     @Deprecated("use 'findAll(cssSelector: String) instead'", ReplaceWith("findAll(cssSelector)"))
-    fun select(cssSelector: String) = element.select(cssSelector).map { DocElement(it) }
+    fun select(cssSelector: String) = element.select(cssSelector).map { DocElement(it, relaxed) }
 }
 
 val List<DocElement>.text
