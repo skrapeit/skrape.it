@@ -1,7 +1,7 @@
 package it.skrape.selects.html5
 
+import it.skrape.selects.CssSelectable
 import it.skrape.selects.CssSelector
-import it.skrape.selects.Doc
 
 /**
  * Will define a <area>-tags css query selector.
@@ -13,7 +13,7 @@ import it.skrape.selects.Doc
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.area(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.area(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("area$cssSelector", init)
 
 /**
@@ -26,7 +26,7 @@ fun <T> Doc.area(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.audio(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.audio(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("audio$cssSelector", init)
 
 /**
@@ -39,7 +39,7 @@ fun <T> Doc.audio(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.img(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.img(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("img$cssSelector", init)
 
 /**
@@ -52,7 +52,7 @@ fun <T> Doc.img(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.map(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.map(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("map$cssSelector", init)
 
 /**
@@ -65,7 +65,7 @@ fun <T> Doc.map(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.track(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.track(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("track$cssSelector", init)
 
 /**
@@ -78,5 +78,5 @@ fun <T> Doc.track(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.video(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.video(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("video$cssSelector", init)
