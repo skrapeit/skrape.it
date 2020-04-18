@@ -1,7 +1,7 @@
 package it.skrape.selects.html5
 
+import it.skrape.selects.CssSelectable
 import it.skrape.selects.CssSelector
-import it.skrape.selects.Doc
 
 /**
  * Will define a <content>-tags css query selector.
@@ -13,7 +13,7 @@ import it.skrape.selects.Doc
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.content(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.content(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("content$cssSelector", init)
 
 /**
@@ -26,7 +26,7 @@ fun <T> Doc.content(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.shadow(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.shadow(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("shadow$cssSelector", init)
 
 /**
@@ -39,7 +39,7 @@ fun <T> Doc.shadow(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.slot(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.slot(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("slot$cssSelector", init)
 
 /**
@@ -52,5 +52,5 @@ fun <T> Doc.slot(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.template(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.template(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("template$cssSelector", init)

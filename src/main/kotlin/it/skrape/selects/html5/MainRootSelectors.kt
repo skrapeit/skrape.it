@@ -1,7 +1,7 @@
 package it.skrape.selects.html5
 
+import it.skrape.selects.CssSelectable
 import it.skrape.selects.CssSelector
-import it.skrape.selects.Doc
 
 /**
  * Will define a <html>-tags css query selector.
@@ -13,5 +13,5 @@ import it.skrape.selects.Doc
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.html(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.html(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("html$cssSelector", init)

@@ -1,7 +1,7 @@
 package it.skrape.selects.html5
 
+import it.skrape.selects.CssSelectable
 import it.skrape.selects.CssSelector
-import it.skrape.selects.DomTreeElement
 
 /**
  * Will define a html5 custom tags css query selector.
@@ -13,8 +13,5 @@ import it.skrape.selects.DomTreeElement
  * @param cssSelector
  * @return T
  */
-fun <T> DomTreeElement.customTag(tag: String, cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.customTag(tag: String, cssSelector: String = "", init: CssSelector.() -> T) =
         selection("$tag$cssSelector", init)
-
-fun <T> CssSelector.customTag(tag: String, cssSelector: String = "", init: CssSelector.() -> T) =
-        doc.selection("$toCssSelector $tag$cssSelector", init)

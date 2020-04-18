@@ -1,8 +1,7 @@
 package it.skrape.selects.html5
 
+import it.skrape.selects.CssSelectable
 import it.skrape.selects.CssSelector
-import it.skrape.selects.Doc
-import it.skrape.selects.DomTreeElement
 
 /**
  * Will define a <blockquote>-tags css query selector.
@@ -14,7 +13,7 @@ import it.skrape.selects.DomTreeElement
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.blockquote(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.blockquote(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("blockquote$cssSelector", init)
 
 /**
@@ -27,7 +26,7 @@ fun <T> Doc.blockquote(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.dd(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.dd(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("dd$cssSelector", init)
 
 /**
@@ -40,7 +39,7 @@ fun <T> Doc.dd(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.dir(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.dir(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("dir$cssSelector", init)
 
 /**
@@ -53,7 +52,7 @@ fun <T> Doc.dir(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.dl(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.dl(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("dl$cssSelector", init)
 
 /**
@@ -66,7 +65,7 @@ fun <T> Doc.dl(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.dt(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.dt(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("dt$cssSelector", init)
 
 /**
@@ -79,7 +78,7 @@ fun <T> Doc.dt(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.figcaption(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.figcaption(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("figcaption$cssSelector", init)
 
 /**
@@ -92,7 +91,7 @@ fun <T> Doc.figcaption(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.figure(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.figure(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("figure$cssSelector", init)
 
 /**
@@ -105,7 +104,7 @@ fun <T> Doc.figure(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.hr(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.hr(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("hr$cssSelector", init)
 
 /**
@@ -118,7 +117,7 @@ fun <T> Doc.hr(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.li(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.li(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("li$cssSelector", init)
 
 /**
@@ -131,7 +130,7 @@ fun <T> Doc.li(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.ol(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.ol(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("ol$cssSelector", init)
 
 /**
@@ -144,7 +143,7 @@ fun <T> Doc.ol(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.ul(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.ul(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("ul$cssSelector", init)
 
 /**
@@ -157,11 +156,8 @@ fun <T> Doc.ul(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> DomTreeElement.p(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.p(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("p$cssSelector", init)
-
-fun <T> CssSelector.p(cssSelector: String = "", init: CssSelector.() -> T) =
-        CssSelector("$toCssSelector p$cssSelector").init()
 
 /**
  * Will define a <pre>-tags css query selector.
@@ -173,5 +169,5 @@ fun <T> CssSelector.p(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.pre(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.pre(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("pre$cssSelector", init)

@@ -1,7 +1,7 @@
 package it.skrape.selects.html5
 
+import it.skrape.selects.CssSelectable
 import it.skrape.selects.CssSelector
-import it.skrape.selects.Doc
 
 /**
  * Will define a <script>-tags css query selector.
@@ -13,7 +13,7 @@ import it.skrape.selects.Doc
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.script(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.script(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("script$cssSelector", init)
 
 /**
@@ -26,7 +26,7 @@ fun <T> Doc.script(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.canvas(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.canvas(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("canvas$cssSelector", init)
 
 /**
@@ -39,5 +39,5 @@ fun <T> Doc.canvas(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.noscript(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.noscript(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("noscript$cssSelector", init)

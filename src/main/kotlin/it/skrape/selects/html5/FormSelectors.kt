@@ -1,7 +1,7 @@
 package it.skrape.selects.html5
 
+import it.skrape.selects.CssSelectable
 import it.skrape.selects.CssSelector
-import it.skrape.selects.Doc
 
 /**
  * Will define a <button>-tags css query selector.
@@ -13,7 +13,7 @@ import it.skrape.selects.Doc
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.button(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.button(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("button$cssSelector", init)
 
 /**
@@ -26,7 +26,7 @@ fun <T> Doc.button(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.datalist(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.datalist(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("datalist$cssSelector", init)
 
 /**
@@ -39,7 +39,7 @@ fun <T> Doc.datalist(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.fieldset(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.fieldset(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("fieldset$cssSelector", init)
 
 /**
@@ -52,7 +52,7 @@ fun <T> Doc.fieldset(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.form(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.form(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("form$cssSelector", init)
 
 /**
@@ -65,7 +65,7 @@ fun <T> Doc.form(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.input(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.input(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("input$cssSelector", init)
 
 /**
@@ -78,7 +78,7 @@ fun <T> Doc.input(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.label(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.label(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("label$cssSelector", init)
 
 /**
@@ -91,7 +91,7 @@ fun <T> Doc.label(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.legend(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.legend(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("legend$cssSelector", init)
 
 /**
@@ -104,7 +104,7 @@ fun <T> Doc.legend(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.meter(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.meter(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("meter$cssSelector", init)
 
 /**
@@ -117,7 +117,7 @@ fun <T> Doc.meter(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.optgroup(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.optgroup(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("optgroup$cssSelector", init)
 
 /**
@@ -130,7 +130,7 @@ fun <T> Doc.optgroup(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.option(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.option(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("option$cssSelector", init)
 
 /**
@@ -143,7 +143,7 @@ fun <T> Doc.option(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.output(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.output(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("output$cssSelector", init)
 
 /**
@@ -156,7 +156,7 @@ fun <T> Doc.output(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.progress(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.progress(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("progress$cssSelector", init)
 
 /**
@@ -169,7 +169,7 @@ fun <T> Doc.progress(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.select(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.select(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("isPresent$cssSelector", init)
 
 /**
@@ -182,5 +182,5 @@ fun <T> Doc.select(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.textarea(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> CssSelectable.textarea(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("textarea$cssSelector", init)
