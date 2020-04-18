@@ -88,9 +88,6 @@ class DocElement(override val element: Element): DomTreeElement() {
 
     override fun toRawCssSelector() = "$cssSelector $this"
 
-    val toDoc: Doc
-        get() = htmlDocument(html)
-
     @Deprecated("use 'findAll(cssSelector: String) instead'")
     fun select(cssSelector: String) = element.select(cssSelector).map { DocElement(it) }
 }

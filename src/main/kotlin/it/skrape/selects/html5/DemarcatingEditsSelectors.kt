@@ -1,8 +1,7 @@
 package it.skrape.selects.html5
 
 import it.skrape.selects.CssSelector
-import it.skrape.selects.Doc
-import it.skrape.selects.DocElement
+import it.skrape.selects.DomTreeElement
 
 /**
  * Will define a <del>-tags css query selector.
@@ -14,14 +13,11 @@ import it.skrape.selects.DocElement
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.del(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> DomTreeElement.del(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("del$cssSelector", init)
 
 fun <T> CssSelector.del(cssSelector: String = "", init: CssSelector.() -> T) =
         doc.selection("$toCssSelector del$cssSelector", init)
-
-fun <T> DocElement.del(cssSelector: String = "", init: CssSelector.() -> T) =
-        toDoc.selection("del$cssSelector", init)
 
 /**
  * Will define a <ins>-tags css query selector.
@@ -33,11 +29,8 @@ fun <T> DocElement.del(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> Doc.ins(cssSelector: String = "", init: CssSelector.() -> T) =
+fun <T> DomTreeElement.ins(cssSelector: String = "", init: CssSelector.() -> T) =
         selection("ins$cssSelector", init)
 
 fun <T> CssSelector.ins(cssSelector: String = "", init: CssSelector.() -> T) =
         doc.selection("$toCssSelector ins$cssSelector", init)
-
-fun <T> DocElement.ins(cssSelector: String = "", init: CssSelector.() -> T) =
-        toDoc.selection("ins$cssSelector", init)
