@@ -156,6 +156,20 @@ fun aValidHtml(bodyInclude: String) = """
     </html>
 """.trimIndent()
 
+@Language("HTML")
+val aValidMarkupWithLinks = """
+    <div> 
+        foo
+        <a href='http://foo.bar'>foobar</a>
+        <a href='http://fizz.buzz'>fizzbuzz</a>
+        <a href='http://schnitzel.de'>schnitzel</a>
+        <div>
+            <a href='http://nested.link'>nested link</a>
+        </div>
+        <a>no href</a>
+    </div>
+""".trimIndent()
+
 fun <T> aValidDocument(bodyInclude: String = "", init: Doc.() -> T) = htmlDocument(aValidHtml(bodyInclude)).init()
 
 fun aValidDocument(bodyInclude: String = "") = htmlDocument(aValidHtml(bodyInclude))

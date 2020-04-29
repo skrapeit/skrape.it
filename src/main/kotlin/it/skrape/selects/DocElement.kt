@@ -86,6 +86,11 @@ infix fun List<DocElement>.eachAttribute(attributeKey: String): List<String> = m
 val List<DocElement>.eachHref
     get(): List<String> = this eachAttribute "href"
 
+val List<DocElement>.eachLink
+    get(): Map<String, String> =
+            filter { it.hasAttribute("href") }
+            .associate { it.text to it.attribute("href") }
+
 fun <T> List<DocElement>.forEachLink(init: (text: String, url: String) -> T) {
     filter { it.hasAttribute("href") }
             .forEach { init(it.text, it.attribute("href")) }

@@ -3,7 +3,9 @@ package it.skrape.selects
 import io.mockk.every
 import io.mockk.mockk
 import it.skrape.aValidDocument
+import it.skrape.aValidMarkupWithLinks
 import it.skrape.core.htmlDocument
+import it.skrape.selects.html5.a
 import it.skrape.selects.html5.div
 import org.intellij.lang.annotations.Language
 import org.jsoup.nodes.Element
@@ -13,7 +15,7 @@ import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.*
 
-internal class DocElementTest {
+internal class DocElementKtTest {
 
     @Language("HTML")
     private val aValidMarkup = """
@@ -232,7 +234,7 @@ internal class DocElementTest {
     }
 
     @Test
-    internal fun `can conveniently iterate over all href values`() {
+    fun `can conveniently iterate over all href values`() {
         aValidDocument {
             "[href]" {
                 findAll {
@@ -240,5 +242,79 @@ internal class DocElementTest {
                 }
             }
         }
+    }
+
+    @Test
+    fun `can conveniently get all links as map of text and href from list of DocElement`() {
+
+        val links = aValidDocument(aValidMarkupWithLinks) {
+            a {
+                findAll {
+                    eachLink
+                }
+            }
+        }
+
+        expectThat(links).isEqualTo(mapOf(
+                "foobar" to "http://foo.bar",
+                "fizzbuzz" to "http://fizz.buzz",
+                "schnitzel" to "http://schnitzel.de",
+                "nested link" to "http://nested.link",
+                "i'm an anchor" to "http://some.link"
+        ))
+    }
+
+    @Test
+    @Disabled("TODO: make eachLink also filter child notes")
+    fun `can conveniently get all links as map of text and href from list of DocElement and its children`() {
+
+        val links = aValidDocument(aValidMarkupWithLinks) {
+            div {
+                findAll {
+                    println(toString())
+                    eachLink
+                }
+            }
+        }
+
+        expectThat(links).isEqualTo(mapOf(
+                "foobar" to "http://foo.bar",
+                "fizzbuzz" to "http://fizz.buzz",
+                "schnitzel" to "http://schnitzel.de",
+                "nested link" to "http://nested.link",
+                "i'm an anchor" to "http://some.link"
+        ))
+
+    }
+
+    @Test
+    fun `can conveniently get all links as map of text and href from DocElement`() {
+        val links = aValidDocument(aValidMarkupWithLinks) {
+            a {
+                findFirst {
+                    eachLink
+                }
+            }
+        }
+
+        expectThat(links).isEqualTo(mapOf("foobar" to "http://foo.bar"))
+
+    }
+
+    @Test
+    fun `can conveniently get all links as map of text and href from Doc`() {
+        val links = aValidDocument(aValidMarkupWithLinks) {
+            eachLink
+        }
+
+        expectThat(links).isEqualTo(mapOf(
+                "" to "https://some.url/icon",
+                "foobar" to "http://foo.bar",
+                "fizzbuzz" to "http://fizz.buzz",
+                "schnitzel" to "http://schnitzel.de",
+                "nested link" to "http://nested.link",
+                "i'm an anchor" to "http://some.link"
+        ))
+
     }
 }

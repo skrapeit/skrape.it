@@ -42,6 +42,11 @@ abstract class DomTreeElement : CssSelectable() {
      */
     val allElements by lazy { element.allElements.map { DocElement(it) } }
 
+    val eachLink
+        get(): Map<String, String> =
+            allElements.filter { it.hasAttribute("href") }
+                    .associate { it.text to it.attribute("href") }
+
     open fun makeDefaultElement(cssSelector: String): DocElement {
         return super.makeDefault(cssSelector)
     }
