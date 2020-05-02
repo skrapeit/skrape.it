@@ -3,9 +3,9 @@ package it.skrape.matchers
 import io.mockk.every
 import io.mockk.mockk
 import it.skrape.selects.DocElement
+import org.jsoup.nodes.Element
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.opentest4j.AssertionFailedError
 
 
 internal class MatchersKtTest {
@@ -28,7 +28,7 @@ internal class MatchersKtTest {
 
     @Test
     internal fun `toBe can handle expected is null`() {
-        Assertions.assertThrows(AssertionFailedError::class.java) {
+        Assertions.assertThrows(AssertionError::class.java) {
             "null" toBe null
             "null" `to be` null
         }
@@ -36,7 +36,7 @@ internal class MatchersKtTest {
 
     @Test
     internal fun `toBe can handle actual is null`() {
-        Assertions.assertThrows(AssertionFailedError::class.java) {
+        Assertions.assertThrows(AssertionError::class.java) {
             aNullableString toBe "foo"
             aNullableString `to be` "foo"
         }
@@ -111,27 +111,36 @@ internal class MatchersKtTest {
     @Test
     internal fun `toBePresent is throwing exception if no ELEMENTS matches`() {
         val elements = mockk<List<DocElement>> { every { size } returns 0 }
-        Assertions.assertThrows(AssertionFailedError::class.java) {
+        Assertions.assertThrows(AssertionError::class.java) {
             elements.toBePresent
         }
     }
 
     @Test
     internal fun `toBePresent can handle multiple occurrence of an ELEMENT`() {
-        val element = mockk<DocElement> { every { isPresent } returns true }
+        val element = mockk<DocElement> {
+            every { isPresent } returns true
+            every { cssSelector } returns ".foo"
+        }
         element.toBePresent
     }
 
     @Test
     internal fun `toBePresent can handle single occurrence of an ELEMENT`() {
-        val element = mockk<DocElement> { every { isPresent } returns true }
+        val element = mockk<DocElement> {
+            every { isPresent } returns true
+            every { cssSelector } returns ".foo"
+        }
         element.toBePresent
     }
 
     @Test
     internal fun `toBePresent is throwing exception if no ELEMENT matches`() {
-        val element = mockk<DocElement> { every { isPresent } returns false }
-        Assertions.assertThrows(AssertionFailedError::class.java) {
+        val element = mockk<DocElement> {
+            every { isPresent } returns false
+            every { cssSelector } returns ".foo"
+        }
+        Assertions.assertThrows(AssertionError::class.java) {
             element.toBePresent
         }
     }
@@ -151,7 +160,7 @@ internal class MatchersKtTest {
     @Test
     internal fun `toBeNotPresent is throwing exception on single occurrence of matching ELEMENTS`() {
         val elements = mockk<List<DocElement>> { every { size } returns 1 }
-        Assertions.assertThrows(AssertionFailedError::class.java) {
+        Assertions.assertThrows(AssertionError::class.java) {
             elements.toBeNotPresent
         }
     }
@@ -159,7 +168,7 @@ internal class MatchersKtTest {
     @Test
     internal fun `toBeNotPresent is throwing exception on multiple presents of matching ELEMENTS`() {
         val elements = mockk<List<DocElement>> { every { size } returns 2 }
-        Assertions.assertThrows(AssertionFailedError::class.java) {
+        Assertions.assertThrows(AssertionError::class.java) {
             elements.toBeNotPresent
         }
     }
@@ -171,7 +180,7 @@ internal class MatchersKtTest {
 
     @Test
     internal fun `toBeEmpty is throwing exception NON empty list`() {
-        Assertions.assertThrows(AssertionFailedError::class.java) {
+        Assertions.assertThrows(AssertionError::class.java) {
             listOf(1, 2, 3).toBeEmpty
         }
     }
@@ -183,7 +192,7 @@ internal class MatchersKtTest {
 
     @Test
     internal fun `toBeNotEmpty is throwing exception empty list`() {
-        Assertions.assertThrows(AssertionFailedError::class.java) {
+        Assertions.assertThrows(AssertionError::class.java) {
             emptyList<Any>().toBeNotEmpty
         }
     }
