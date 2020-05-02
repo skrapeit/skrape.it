@@ -38,6 +38,7 @@ infix fun ContentType.toBe(expected: ContentTypes): ContentType {
     return this
 }
 
+@JvmName("to_be")
 infix fun ContentType.`to be`(expected: ContentTypes) = this toBe expected
 
 infix fun ContentType.toBeNot(expected: ContentTypes): ContentType {
@@ -47,6 +48,7 @@ infix fun ContentType.toBeNot(expected: ContentTypes): ContentType {
     return this
 }
 
+@JvmName("to_be_not")
 infix fun ContentType.`to be not`(expected: ContentTypes) = this toBeNot expected
 
 infix fun ContentType.toContain(expected: ContentTypes): ContentType {
@@ -56,6 +58,7 @@ infix fun ContentType.toContain(expected: ContentTypes): ContentType {
     return this
 }
 
+@JvmName("to_contain")
 infix fun ContentType.`to contain`(expected: ContentTypes) = this toContain expected
 
 private fun ContentType.raw() = (this as String)

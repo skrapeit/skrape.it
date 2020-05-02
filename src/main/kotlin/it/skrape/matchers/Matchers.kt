@@ -9,6 +9,7 @@ infix fun Int.toBe(expected: Int): Int {
     return this
 }
 
+@JvmName("to_be")
 infix fun Int.`to be`(expected: Int): Int = this toBe expected
 
 infix fun String?.toBe(expected: String?): String? {
@@ -16,6 +17,7 @@ infix fun String?.toBe(expected: String?): String? {
     return this
 }
 
+@JvmName("to_be")
 infix fun String?.`to be`(expected: String?): String? = this toBe expected
 
 infix fun String?.toBeNot(expected: String?): String? {
@@ -23,6 +25,7 @@ infix fun String?.toBeNot(expected: String?): String? {
     return this
 }
 
+@JvmName("to_be_not")
 infix fun String?.`to be not`(expected: String?): String? = this toBeNot expected
 
 infix fun String?.toContain(expected: String): String? {
@@ -30,6 +33,7 @@ infix fun String?.toContain(expected: String): String? {
     return this
 }
 
+@JvmName("to_contain")
 infix fun String?.`to contain`(expected: String): String? = this toContain expected
 
 infix fun String?.toNotContain(expected: String): String? {
@@ -37,6 +41,7 @@ infix fun String?.toNotContain(expected: String): String? {
     return this
 }
 
+@JvmName("to_not_contain")
 infix fun String?.`to not contain`(expected: String): String? = this toNotContain expected
 
 infix fun List<Any>.toContain(expected: String): List<Any> {
@@ -44,6 +49,7 @@ infix fun List<Any>.toContain(expected: String): List<Any> {
     return this
 }
 
+@JvmName("to_contain")
 infix fun List<Any>.`to contain`(expected: String): List<Any> = this.toContain(expected)
 
 val List<DocElement>.toBePresent
