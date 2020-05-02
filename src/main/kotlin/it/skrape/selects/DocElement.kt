@@ -58,6 +58,8 @@ class DocElement internal constructor(override val element: Element, override va
      */
     val isPresent by lazy { allElements.isNotEmpty() }
 
+    val isNotPresent by lazy { !isPresent }
+
     val className by lazy { element.className().orEmpty() }
 
     val cssSelector by lazy { element.cssSelector().orEmpty() }
@@ -74,6 +76,12 @@ val List<DocElement>.text
 
 val List<DocElement>.html
     get(): String = joinToString(separator = "\n") { it.outerHtml }
+
+val List<DocElement>.isPresent
+    get(): Boolean = size > 0
+
+val List<DocElement>.isNotPresent
+    get(): Boolean = !isPresent
 
 val List<DocElement>.eachText
     get(): List<String> = map { it.text }
