@@ -218,7 +218,6 @@ internal class DocElementKtTest {
     }
 
     @Test
-    @Disabled("FIXME")
     fun `can invoke a css-selector as string to search children of given element`() {
         val markup = """
             <div class="foo">xxx<span>yyy</span></div>
@@ -233,17 +232,14 @@ internal class DocElementKtTest {
                 withClass = "my-class"
                 findAll {
                     expectThat(size).isEqualTo(2)
-                    print(html)
                     "h1" {
                         withClass = "welcome"
-                        // should return the matching DocElement
-
                         findFirst { text }
                     }
                 }
             }
         }
-        expectThat(text).isEqualTo("headline")
+        expectThat(text).isEqualTo("first headline")
     }
 
     @Test

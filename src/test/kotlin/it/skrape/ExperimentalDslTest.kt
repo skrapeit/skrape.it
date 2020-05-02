@@ -89,7 +89,6 @@ class ExperimentalDslTest : WireMockSetup() {
     }
 
     @Test
-    @Disabled("due to trouble with our docs page")
     fun `can scrape our docs page`() {
         skrape {
             url = "https://docs.skrape.it/docs/"
