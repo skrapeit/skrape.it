@@ -75,15 +75,47 @@ internal class DocElementKtTest {
     }
 
     @Test
-    fun `will return true if element is present`() {
+    fun `'isPresent' will return true if element is present`() {
         expectThat(aValidElement.isPresent).isTrue()
     }
 
     @Test
-    fun `will return false if element is not present`() {
+    fun `'isPresent' will return false if element is not present`() {
         val element = mockk<Element> { every { allElements } returns Elements() }
         val docElement = DocElement(element)
         expectThat(docElement.isPresent).isFalse()
+    }
+
+    @Test
+    fun `'isNotPresent' will return false if element is present`() {
+        expectThat(aValidElement.isNotPresent).isFalse()
+    }
+
+    @Test
+    fun `'isNotPresent' will return true if element is not present`() {
+        val element = mockk<Element> { every { allElements } returns Elements() }
+        val docElement = DocElement(element)
+        expectThat(docElement.isNotPresent).isTrue()
+    }
+
+    @Test
+    fun `'isPresent' will return true if list of elements are present`() {
+        expectThat(aValidElement.allElements.isPresent).isTrue()
+    }
+
+    @Test
+    fun `'isPresent' will return false if list of elements are not present`() {
+        expectThat(emptyList<DocElement>().isPresent).isFalse()
+    }
+
+    @Test
+    fun `'isNotPresent' will return false if list of elements are present`() {
+        expectThat(aValidElement.allElements.isNotPresent).isFalse()
+    }
+
+    @Test
+    fun `'isNotPresent' will return true if list of elements are not present`() {
+        expectThat(emptyList<DocElement>().isNotPresent).isTrue()
     }
 
     @Test
