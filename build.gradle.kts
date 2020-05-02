@@ -40,13 +40,13 @@ dependencies {
     val logbackVersion = "1.2.3"
 
     implementation("org.jsoup:jsoup:$jsoupVersion")
-    implementation("io.strikt:strikt-core:$striktVersion")
     implementation("net.sourceforge.htmlunit:htmlunit:$htmlUnitVersion")
     implementation("io.github.rybalkinsd:kohttp:$kohttpVersion")
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     compileOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+    testImplementation("io.strikt:strikt-core:$striktVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("io.mockk:mockk-dsl-jvm:$mockkVersion")
     testImplementation("com.github.tomakehurst:wiremock-jre8:$wireMockVersion")

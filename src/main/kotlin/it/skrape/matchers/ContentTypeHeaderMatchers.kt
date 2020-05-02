@@ -2,10 +2,6 @@ package it.skrape.matchers
 
 import it.skrape.SkrapeItDsl
 import it.skrape.core.fetcher.ContentType
-import strikt.api.expectThat
-import strikt.assertions.contains
-import strikt.assertions.isEqualTo
-import strikt.assertions.isNotEqualTo
 
 @SkrapeItDsl
 enum class ContentTypes(val value: String) {
@@ -31,32 +27,20 @@ enum class ContentTypes(val value: String) {
     IMAGE_SVG("image/svg");
 }
 
-infix fun ContentType.toBe(expected: ContentTypes): ContentType {
-    expectThat(this.raw())
-            .describedAs("content-type")
-            .isEqualTo(expected.value)
-    return this
-}
+infix fun ContentType.toBe(expected: ContentTypes) =
+        generalAssertion(raw() == expected.value, expected).let { this }
 
 @JvmName("to_be")
 infix fun ContentType.`to be`(expected: ContentTypes) = this toBe expected
 
-infix fun ContentType.toBeNot(expected: ContentTypes): ContentType {
-    expectThat(this.raw())
-            .describedAs("content-type")
-            .isNotEqualTo(expected.value)
-    return this
-}
+infix fun ContentType.toBeNot(expected: ContentTypes) =
+        generalAssertion(raw() != expected.value, expected).let { this }
 
 @JvmName("to_be_not")
 infix fun ContentType.`to be not`(expected: ContentTypes) = this toBeNot expected
 
-infix fun ContentType.toContain(expected: ContentTypes): ContentType {
-    expectThat(this.raw())
-            .describedAs("content-type")
-            .contains(expected.value)
-    return this
-}
+infix fun ContentType.toContain(expected: ContentTypes) =
+        generalAssertion(raw().contains(expected.value), expected).let { this }
 
 @JvmName("to_contain")
 infix fun ContentType.`to contain`(expected: ContentTypes) = this toContain expected
