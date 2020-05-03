@@ -195,12 +195,12 @@ internal class DslTest : WireMockSetup() {
                     message toBe "OK"
                 }
 
-                responseStatus toBe HttpStatus.`2xx Successful`
-                responseStatus toBe HttpStatus.`200 OK`
-                responseStatus toBeNot HttpStatus.`1xx Informational response`
-                responseStatus toBeNot HttpStatus.`3xx Redirection`
-                responseStatus toBeNot HttpStatus.`4xx Client error`
-                responseStatus toBeNot HttpStatus.`5xx Server error`
+                responseStatus toBe HttpStatus.`2xx_Successful`
+                responseStatus toBe HttpStatus.`200_OK`
+                responseStatus toBeNot HttpStatus.`1xx_Informational_response`
+                responseStatus toBeNot HttpStatus.`3xx_Redirection`
+                responseStatus toBeNot HttpStatus.`4xx_Client_error`
+                responseStatus toBeNot HttpStatus.`5xx_Server_error`
 
                 contentType toBe APPLICATION_JSON_UTF8
                 contentType toBe "application/json;charset=utf-8"
@@ -508,8 +508,8 @@ internal class DslTest : WireMockSetup() {
                 code toBe 404
                 message toBe "Not Found"
             }
-            responseStatus toBe HttpStatus.`4xx Client error`
-            responseStatus toBe HttpStatus.`404 Not Found`
+            responseStatus toBe HttpStatus.`4xx_Client_error`
+            responseStatus toBe HttpStatus.`404_Not_Found`
 
             responseBody
         }
