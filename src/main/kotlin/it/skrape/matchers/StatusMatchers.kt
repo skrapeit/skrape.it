@@ -1,8 +1,10 @@
+@file:Suppress("FunctionName", "EnumEntryName")
+
 package it.skrape.matchers
 
 import it.skrape.core.fetcher.Result
 
-@Suppress("EnumNaming", "MagicNumber", "")
+@Suppress("EnumNaming", "MagicNumber", "unused")
 enum class HttpStatus(val code: Int, val message: String) {
     `1xx_Informational_response`(1, "Informational response"),
     `100_Continue`(100, "Continue"),
