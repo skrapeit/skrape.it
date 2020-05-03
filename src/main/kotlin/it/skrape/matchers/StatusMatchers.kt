@@ -54,7 +54,7 @@ enum class HttpStatus(val code: Int, val message: String) {
     `415_Unsupported_Media_Type`(415, "Unsupported Media Type"),
     `416_Range_Not_Satisfiable`(416, "Range Not Satisfiable"),
     `417_Expectation_Failed`(417, "Expectation Failed"),
-    `418_I'm_a_teapot`(418, "I'm a teapot"),
+    `418_I_am_a_teapot`(418, "I'm a teapot"),
     `421_Misdirected_Request`(421, "Misdirected Request"),
     `422_Unprocessable_Entity`(422, "Unprocessable Entity"),
     `423_Locked`(423, "Locked"),
