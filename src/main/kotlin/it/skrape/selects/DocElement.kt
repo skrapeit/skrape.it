@@ -87,22 +87,41 @@ val List<DocElement>.eachText
     get(): List<String> = map { it.text }
 
 infix fun List<DocElement>.attribute(attributeKey: String): String =
-        filter { it.hasAttribute(attributeKey) }.joinToString { it.attribute(attributeKey) }
+        filter { it.hasAttribute(attributeKey) }
+                .joinToString { it.attribute(attributeKey) }
 
-infix fun List<DocElement>.eachAttribute(attributeKey: String): List<String> = map { it attribute attributeKey }
+infix fun List<DocElement>.eachAttribute(attributeKey: String): List<String> =
+        map { it attribute attributeKey }
+                .filter { it.isNotEmpty() }
 
 val List<DocElement>.eachHref
-    get(): List<String> = this eachAttribute "href"
+    get(): List<String> = eachAttribute("href")
+            .filter { it.isNotEmpty() }
+
+val List<DocElement>.eachSrc
+    get(): List<String> = eachAttribute("src")
+            .filter { it.isNotEmpty() }
 
 val List<DocElement>.eachLink
     get(): Map<String, String> =
-            filter { it.hasAttribute("href") }
-            .associate { it.text to it.attribute("href") }
+        filter { it.hasAttribute("href") }
+                .associate { it.text to it.attribute("href") }
+
+val List<DocElement>.eachImage
+    get(): Map<String, String> =
+        filter { it.tagName == "img" }
+                .filter { it.hasAttribute("src") }
+                .associate { it.attribute("alt") to it.attribute("src") }
+
 
 fun <T> List<DocElement>.forEachLink(init: (text: String, url: String) -> T) {
     filter { it.hasAttribute("href") }
             .forEach { init(it.text, it.attribute("href")) }
 }
 
-val List<DocElement>.eachHrefAsAbsoluteLink
-    get(): List<String> = this eachAttribute "abs:href"
+fun <T> List<DocElement>.forEachImage(init: (altText: String, url: String) -> T) {
+    filter { it.tagName == "img" }
+            .filter { it.hasAttribute("src") }
+            .forEach { init(it.attribute("alt"), it.attribute("src")) }
+}
+

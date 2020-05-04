@@ -4,9 +4,9 @@ import io.mockk.every
 import io.mockk.mockk
 import it.skrape.aValidDocument
 import it.skrape.aValidMarkupWithLinks
+import it.skrape.aValidMarkupWithPictures
 import it.skrape.core.htmlDocument
-import it.skrape.selects.html5.a
-import it.skrape.selects.html5.div
+import it.skrape.selects.html5.*
 import org.intellij.lang.annotations.Language
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
@@ -285,8 +285,8 @@ internal class DocElementKtTest {
 
         expectThat(links).isEqualTo(mapOf(
                 "foobar" to "http://foo.bar",
-                "fizzbuzz" to "http://fizz.buzz",
-                "schnitzel" to "http://schnitzel.de",
+                "relative link" to "/relative",
+                "modal" to "#modal",
                 "nested link" to "http://nested.link",
                 "i'm an anchor" to "http://some.link"
         ))
@@ -338,10 +338,162 @@ internal class DocElementKtTest {
         expectThat(links).isEqualTo(mapOf(
                 "" to "https://some.url/icon",
                 "foobar" to "http://foo.bar",
-                "fizzbuzz" to "http://fizz.buzz",
-                "schnitzel" to "http://schnitzel.de",
+                "relative link" to "/relative",
+                "modal" to "#modal",
                 "nested link" to "http://nested.link",
                 "i'm an anchor" to "http://some.link"
+        ))
+
+    }
+
+    @Test
+    fun `can conveniently iterate over all images values`() {
+        aValidDocument(aValidMarkupWithPictures) {
+            img {
+                findAll {
+                    forEachImage { altText, url ->
+                        print("$altText - $url")
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `can conveniently get all values of href attributes`() {
+        aValidDocument(aValidMarkupWithLinks) {
+            expectThat(eachHref).containsExactly(
+                    "https://some.url/icon",
+                    "http://foo.bar",
+                    "/relative",
+                    "#modal",
+                    "http://nested.link",
+                    "http://some.link"
+            )
+            a {
+                findAll {
+                    expectThat(eachHref).containsExactly(
+                            "http://foo.bar",
+                            "/relative",
+                            "#modal",
+                            "http://nested.link",
+                            "http://some.link"
+                    )
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `can conveniently get all values of src attributes`() {
+        aValidDocument(aValidMarkupWithPictures) {
+            expectThat(eachSrc).containsExactly(
+                    "https://some.url/some-script.js",
+                    "http://foo.bar",
+                    "http://fizz.buzz",
+                    "http://schnitzel.de",
+                    "http://nested.image"
+            )
+            img {
+                findAll {
+                    expectThat(eachSrc).containsExactly(
+                            "http://foo.bar",
+                            "http://fizz.buzz",
+                            "http://schnitzel.de",
+                            "http://nested.image"
+                    )
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `can conveniently get all custom attributes`() {
+        aValidDocument(aValidMarkupWithPictures) {
+            expectThat(eachAttribute("rel")).containsExactly(
+                    "shortcut icon"
+            )
+            link {
+                findAll {
+                    expectThat(eachAttribute("rel")).containsExactly(
+                            "shortcut icon"
+                    )
+                }
+            }
+            div {
+                findAll {
+                    expectThat(eachAttribute("rel")).isEmpty()
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `can conveniently get all images as map of alt-text and src from list of DocElement`() {
+
+        val pictures = aValidDocument(aValidMarkupWithPictures) {
+            img {
+                findAll {
+                    eachImage
+                }
+            }
+        }
+
+        expectThat(pictures).isEqualTo(mapOf(
+                "foobar" to "http://foo.bar",
+                "" to "http://fizz.buzz",
+                "yummi" to "http://schnitzel.de",
+                "nested" to "http://nested.image"
+        ))
+    }
+
+    @Test
+    @Disabled("TODO: make eachImage also filter child notes")
+    fun `can conveniently get all images as map of alt-text and src from list of DocElement and its children`() {
+
+        val pictures = aValidDocument(aValidMarkupWithPictures) {
+            div {
+                findAll {
+                    println(toString())
+                    eachImage
+                }
+            }
+        }
+
+        expectThat(pictures).isEqualTo(mapOf(
+                "foobar" to "http://foo.bar",
+                "" to "http://fizz.buzz",
+                "yummi" to "http://schnitzel.de",
+                "nested" to "http://nested.image"
+        ))
+
+    }
+
+    @Test
+    fun `can conveniently get all images as map of alt-text and src from DocElement`() {
+        val pictures = aValidDocument(aValidMarkupWithPictures) {
+            img {
+                findFirst {
+                    eachImage
+                }
+            }
+        }
+
+        expectThat(pictures).isEqualTo(mapOf("foobar" to "http://foo.bar"))
+
+    }
+
+    @Test
+    fun `can conveniently get all pictures as map of alt-text and src from Doc`() {
+        val pictures = aValidDocument(aValidMarkupWithPictures) {
+            eachImage
+        }
+
+        expectThat(pictures).isEqualTo(mapOf(
+                "foobar" to "http://foo.bar",
+                "" to "http://fizz.buzz",
+                "yummi" to "http://schnitzel.de",
+                "nested" to "http://nested.image"
         ))
 
     }

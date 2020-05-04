@@ -161,12 +161,26 @@ val aValidMarkupWithLinks = """
     <div> 
         foo
         <a href='http://foo.bar'>foobar</a>
-        <a href='http://fizz.buzz'>fizzbuzz</a>
-        <a href='http://schnitzel.de'>schnitzel</a>
+        <a href='/relative'>relative link</a>
+        <a href='#modal'>modal</a>
         <div>
             <a href='http://nested.link'>nested link</a>
         </div>
         <a>no href</a>
+    </div>
+""".trimIndent()
+
+@Language("HTML")
+val aValidMarkupWithPictures = """
+    <div> 
+        foo
+        <img src='http://foo.bar' alt='foobar'/>
+        <img src='http://fizz.buzz'/>
+        <img src='http://schnitzel.de' alt='yummi'>useless text</img>
+        <div>
+            <img src='http://nested.image' alt='nested' /img>
+        </div>
+        <img>no src - no alt</img>
     </div>
 """.trimIndent()
 

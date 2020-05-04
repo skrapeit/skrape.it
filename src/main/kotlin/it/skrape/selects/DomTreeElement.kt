@@ -42,10 +42,24 @@ abstract class DomTreeElement : CssSelectable() {
      */
     val allElements by lazy { element.allElements.map { DocElement(it) } }
 
+    fun eachAttribute(attributeKey: String): List<String> =
+            allElements.map { it attribute attributeKey }
+                    .filter { it.isNotEmpty() }
+
+    val eachHref by lazy { eachAttribute("href").filter { it.isNotEmpty() } }
+
+    val eachSrc by lazy { eachAttribute("src").filter { it.isNotEmpty() } }
+
     val eachLink
         get(): Map<String, String> =
             allElements.filter { it.hasAttribute("href") }
                     .associate { it.text to it.attribute("href") }
+
+    val eachImage: Map<String, String>
+        get(): Map<String, String> =
+            allElements.filter { it.tagName == "img" }
+                    .filter { it.hasAttribute("src") }
+                    .associate { it.attribute("alt") to it.attribute("src") }
 
     open fun makeDefaultElement(cssSelector: String): DocElement {
         return super.makeDefault(cssSelector)
