@@ -25,7 +25,7 @@ object HttpFetcher : Fetcher<Request> {
                     responseStatus = it.toStatus(),
                     contentType = it.header("Content-Type"),
                     headers = it.headers().names().associateBy({ item -> item }, { item -> it.header(item, "")!! }),
-                    request = request
+                    baseUri = request.url
             )
         }
     }

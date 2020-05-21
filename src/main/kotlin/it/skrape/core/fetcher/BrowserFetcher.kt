@@ -31,7 +31,7 @@ object BrowserFetcher : Fetcher<Request> {
                 responseStatus = httpResponse.toStatus(),
                 contentType = httpResponse.contentType,
                 headers = headers,
-                request = request
+                baseUri = request.url
         )
 
         client.javaScriptEngine.shutdown()
