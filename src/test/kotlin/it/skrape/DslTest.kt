@@ -1,7 +1,8 @@
 package it.skrape
 
+import it.skrape.core.fetcher.BrowserFetcher
+import it.skrape.core.fetcher.HttpFetcher
 import it.skrape.core.fetcher.Method
-import it.skrape.core.fetcher.Mode
 import it.skrape.core.htmlDocument
 import it.skrape.exceptions.ElementNotFoundException
 import it.skrape.matchers.*
@@ -26,8 +27,10 @@ internal class DslTest : WireMockSetup() {
     internal fun `dsl can skrape by url`() {
         wireMockServer.setupStub(path = "/example")
 
-        skrape {
-            url = "http://localhost:8080/example"
+        skrape(HttpFetcher) {
+            request {
+                url = "http://localhost:8080/example"
+            }
 
             expect {
 
@@ -67,9 +70,13 @@ internal class DslTest : WireMockSetup() {
     @Test
     fun `can call https with relaxed ssl option via DSL`() {
         wireMockServer.setupStub(path = "/example")
-        skrape {
-            url = "https://localhost:8089/example"
-            sslRelaxed = true
+
+        skrape(HttpFetcher) {
+            request {
+                url = "https://localhost:8089/example"
+                sslRelaxed = true
+            }
+
             expect {
                 status { code toBe 200 }
             }
@@ -80,8 +87,10 @@ internal class DslTest : WireMockSetup() {
     internal fun `dsl can assert content-type in highly readable way`() {
         wireMockServer.setupStub(path = "/example")
 
-        skrape {
-            url = "http://localhost:8080/example"
+        skrape(HttpFetcher) {
+            request {
+                url = "http://localhost:8080/example"
+            }
 
             expect {
                 contentType `to contain` TEXT_HTML
@@ -103,8 +112,10 @@ internal class DslTest : WireMockSetup() {
     internal fun `dsl will not follow redirects if configured`() {
         wireMockServer.setupRedirect()
 
-        skrape {
-            followRedirects = false
+        skrape(HttpFetcher) {
+            request {
+                followRedirects = false
+            }
 
             expect {
                 status {
@@ -119,7 +130,7 @@ internal class DslTest : WireMockSetup() {
     internal fun `dsl can check certain header`() {
         wireMockServer.setupStub()
 
-        skrape {
+        skrape(HttpFetcher) {
             expect {
                 val header = httpHeader("Content-Type") {
                     expectThat(this).isEqualTo("text/html;charset=utf-8")
@@ -138,7 +149,7 @@ internal class DslTest : WireMockSetup() {
     internal fun `dsl can check headers`() {
         wireMockServer.setupStub()
 
-        skrape {
+        skrape(HttpFetcher) {
             expect {
                 val headers = httpHeaders {
                     expectThat(this).hasEntry("Content-Type", "text/html;charset=utf-8")
@@ -152,7 +163,7 @@ internal class DslTest : WireMockSetup() {
     internal fun `dsl can get body`() {
         wireMockServer.setupStub()
 
-        skrape {
+        skrape(HttpFetcher) {
             expect {
                 htmlDocument {
                     body {
@@ -169,7 +180,7 @@ internal class DslTest : WireMockSetup() {
     internal fun `dsl will follow redirect by default`() {
         wireMockServer.setupRedirect()
 
-        skrape {
+        skrape(HttpFetcher) {
             expect {
                 status {
                     code toBe 404
@@ -183,8 +194,10 @@ internal class DslTest : WireMockSetup() {
     internal fun `dsl can fetch url and use HTTP verb POST`() {
         wireMockServer.setupPostStub()
 
-        skrape {
-            method = Method.POST
+        skrape(HttpFetcher) {
+            request {
+                method = Method.POST
+            }
 
             expect {
 
@@ -213,8 +226,11 @@ internal class DslTest : WireMockSetup() {
         wireMockServer.setupStub(delay = 3000)
 
         assertThrows(SocketTimeoutException::class.java) {
-            skrape {
-                timeout = 2000
+            skrape(HttpFetcher) {
+                request {
+                    timeout = 2000
+                }
+
                 expect {}
             }
         }
@@ -224,8 +240,10 @@ internal class DslTest : WireMockSetup() {
     internal fun `dsl can fetch url and extract to inferred type`() {
         wireMockServer.setupStub()
 
-        skrape {
-            url = "http://localhost:8080/"
+        skrape(HttpFetcher) {
+            request {
+                url = "http://localhost:8080/"
+            }
 
             val extracted = extract {
                 status {
@@ -240,8 +258,10 @@ internal class DslTest : WireMockSetup() {
     internal fun `dsl can fetch url and extract using it`() {
         wireMockServer.setupStub()
 
-        val extracted = skrape {
-            url = "http://localhost:8080/"
+        val extracted = skrape(HttpFetcher) {
+            request {
+                url = "http://localhost:8080/"
+            }
 
             extractIt<MyOtherObject> {
                 it.message = status { message }
@@ -254,8 +274,10 @@ internal class DslTest : WireMockSetup() {
     internal fun `dsl can fetch url and extract using it in DSL-ish fashion`() {
         wireMockServer.setupStub()
 
-        val extracted = skrape {
-            url = "http://localhost:8080/"
+        val extracted = skrape(HttpFetcher) {
+            request {
+                url = "http://localhost:8080/"
+            }
 
             extractIt<MyObject> {
                 it.message = status { message }
@@ -282,8 +304,10 @@ internal class DslTest : WireMockSetup() {
     internal fun `dsl can fetch url and extract to data class`() {
         wireMockServer.setupStub()
 
-        val extracted = skrape {
-            url = "http://localhost:8080/"
+        val extracted = skrape(HttpFetcher) {
+            request {
+                url = "http://localhost:8080/"
+            }
 
             extractIt<MyDataClass> {
                 it.httpStatusCode = status { code }
@@ -311,7 +335,7 @@ internal class DslTest : WireMockSetup() {
     internal fun `will throw custom exception if element could not be found via lambda`() {
 
         assertThrows(ElementNotFoundException::class.java) {
-            skrape {
+            skrape(HttpFetcher) {
                 expect {
                     htmlDocument {
                         findFirst(".nonExistent") {}
@@ -324,7 +348,7 @@ internal class DslTest : WireMockSetup() {
     @Test
     internal fun `will return empty list if element could not be found and Doc mode is relaxed`() {
 
-        skrape {
+        skrape(HttpFetcher) {
             expect {
                 htmlDocument {
                     relaxed = true
@@ -343,7 +367,7 @@ internal class DslTest : WireMockSetup() {
     internal fun `will throw custom exception if element called by dsl could not be found`() {
 
         assertThrows(ElementNotFoundException::class.java) {
-            skrape {
+            skrape(HttpFetcher) {
                 expect {
                     htmlDocument {
                         div {
@@ -365,8 +389,10 @@ internal class DslTest : WireMockSetup() {
     internal fun `dsl can fetch url and extract from skrape`() {
         wireMockServer.setupStub()
 
-        val extracted = skrape {
-            url = "http://localhost:8080/"
+        val extracted = skrape(HttpFetcher) {
+            request {
+                url = "http://localhost:8080/"
+            }
 
             extract {
                 htmlDocument {
@@ -469,8 +495,7 @@ internal class DslTest : WireMockSetup() {
     internal fun `can scrape js rendered page`() {
         wireMockServer.setupStub(fileName = "js.html")
 
-        skrape {
-            mode = Mode.DOM
+        skrape(BrowserFetcher) {
             expect {
                 htmlDocument {
                     div(".dynamic") {
@@ -486,9 +511,12 @@ internal class DslTest : WireMockSetup() {
     @Test
     internal fun `can preconfigure client`() {
 
-        val fetcher = skrape {
-            followRedirects = false
-            asConfig
+        val fetcher = skrape(HttpFetcher) {
+            request {
+                followRedirects = false
+            }
+
+            preConfigured
         }
 
         wireMockServer.setupRedirect()
@@ -502,7 +530,9 @@ internal class DslTest : WireMockSetup() {
 
         wireMockServer.setupRedirect()
         val body2 = fetcher.apply {
-            followRedirects = true
+            request {
+                followRedirects = true
+            }
         }.extract {
             status {
                 code toBe 404

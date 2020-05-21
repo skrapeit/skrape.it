@@ -1,5 +1,6 @@
 package it.skrape.core
 
+import it.skrape.core.fetcher.HttpFetcher
 import it.skrape.core.fetcher.UrlBuilder
 import it.skrape.skrape
 import org.junit.jupiter.api.Test
@@ -10,17 +11,20 @@ internal class RequestTest {
 
     @Test
     fun `can build url via dsl`() {
-        val client = skrape {
-            url = urlBuilder {
-                protocol = UrlBuilder.Protocol.HTTPS
-                port = 12345
-                path = "/foo"
-                queryParam = mapOf("foo" to "bar", "fizz" to "buzz")
-                host = "foo.com"
+        val client = skrape(HttpFetcher) {
+            request {
+                url = urlBuilder {
+                    protocol = UrlBuilder.Protocol.HTTPS
+                    port = 12345
+                    path = "/foo"
+                    queryParam = mapOf("foo" to "bar", "fizz" to "buzz")
+                    host = "foo.com"
+                }
             }
-            this
+
+            preConfigured
         }
 
-        expectThat(client.url).isEqualTo("https://foo.com:12345/foo?foo=bar&fizz=buzz")
+        expectThat(client.preparedRequest.url).isEqualTo("https://foo.com:12345/foo?foo=bar&fizz=buzz")
     }
 }
