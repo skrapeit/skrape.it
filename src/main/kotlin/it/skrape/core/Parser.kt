@@ -20,7 +20,8 @@ internal class Parser(
 
     fun parse(): Doc {
         return if (jsExecution) {
-            BrowserFetcher(Request(url = html.toUriScheme())).fetch().htmlDocument { this }
+            val mockRequest = Request(url = html.toUriScheme())
+            BrowserFetcher.fetch(mockRequest).htmlDocument { this }
         } else jSoupParser(html, baseUri).toDocWrapper()
     }
 

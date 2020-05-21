@@ -9,14 +9,12 @@ import it.skrape.exceptions.UnsupportedRequestOptionException
 import java.net.Proxy
 import java.net.URL
 
-class BrowserFetcher(private val request: Request) : Fetcher {
-
-    override fun fetch(): Result {
-
+object BrowserFetcher : Fetcher {
+    override fun fetch(request: Request): Result {
         if (request.method != GET)
             throw UnsupportedRequestOptionException("Browser mode only supports the http verb GET")
 
-        val client = WebClient(BrowserVersion.BEST_SUPPORTED).withOptions()
+        val client = WebClient(BrowserVersion.BEST_SUPPORTED).withOptions(request)
 
         val page: Page = client.getPage(request.url)
         val httpResponse = page.webResponse
@@ -41,10 +39,10 @@ class BrowserFetcher(private val request: Request) : Fetcher {
         return result
     }
 
-    private fun WebClient.withOptions() = apply {
+    private fun WebClient.withOptions(request: Request) = apply {
         cssErrorHandler = SilentCssErrorHandler()
         ajaxController = NicelyResynchronizingAjaxController()
-        createCookies()
+        createCookies(request)
         addRequestHeader("User-Agent", request.userAgent)
         if (request.authentication != null) {
             addRequestHeader("Authorization",request.authentication!!.toHeaderValue())
@@ -66,11 +64,11 @@ class BrowserFetcher(private val request: Request) : Fetcher {
             isPrintContentOnFailingStatusCode = false
             historySizeLimit = 0
             historyPageCacheLimit = 0
-            withProxySettings()
+            withProxySettings(request)
         }
     }
 
-    private fun WebClientOptions.withProxySettings(): WebClientOptions {
+    private fun WebClientOptions.withProxySettings(request: Request): WebClientOptions {
         if (request.proxy != null) {
             this.proxyConfig = ProxyConfig(
                     request.proxy!!.host,
@@ -81,12 +79,12 @@ class BrowserFetcher(private val request: Request) : Fetcher {
         return this
     }
 
-    private fun WebClient.createCookies() {
-        request.cookies.forEach { cookieManager.addCookie(createCookie(it.key, it.value)) }
+    private fun WebClient.createCookies(request: Request) {
+        request.cookies.forEach { cookieManager.addCookie(createCookie(request.url, it.key, it.value)) }
     }
 
-    private fun createCookie(name: String, value: String): Cookie {
-        val domain = URL(request.url).host
+    private fun createCookie(url: String, name: String, value: String): Cookie {
+        val domain = URL(url).host
         return Cookie(domain, name, value)
     }
 
