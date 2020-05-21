@@ -1,8 +1,8 @@
 package it.skrape
 
-import it.skrape.core.fetcher.Request
 import it.skrape.core.fetcher.Result
 import it.skrape.core.Scraper
+import it.skrape.core.fetcher.Fetcher
 import kotlin.reflect.full.createInstance
 
 
@@ -11,25 +11,22 @@ import kotlin.reflect.full.createInstance
  * @return Result
  */
 @SkrapeItDsl
-fun <T> skrape(init: Request.() -> T): T = Scraper().request.init()
+fun <R, T> skrape(client: Fetcher<R>, init: Scraper<R>.() -> T) =
+        Scraper(client).init()
 
 /**
  * Read and parse html from a skrape{it} result.
  */
 @SkrapeItDsl
-fun Request.expect(init: Result.() -> Unit) {
-    Scraper(request = this).scrape().also(init)
-}
+fun Scraper<*>.expect(init: Result.() -> Unit) = extract(init)
 
 /**
  * Read and parse html from a skrape{it} result.
  * @return T
  */
 @SkrapeItDsl
-fun <T> Request.extract(extractor: Result.() -> T): T {
-    val result = Scraper(request = this).scrape()
-    return result.extractor()
-}
+fun <T> Scraper<*>.extract(extractor: Result.() -> T) =
+        scrape().extractor()
 
 /**
  * Read and parse html from a skrape{it} result.
@@ -37,10 +34,9 @@ fun <T> Request.extract(extractor: Result.() -> T): T {
  * @return T
  */
 @SkrapeItDsl
-inline fun <reified T : Any> Request.extractIt(extractor: Result.(T) -> Unit): T {
+inline fun <reified T : Any> Scraper<*>.extractIt(crossinline extractor: Result.(T) -> Unit): T {
     val instance = T::class.createInstance()
-    Scraper(request = this).scrape().apply { extractor(instance) }
-    return instance
+    return extract { instance.also { extractor(it) } }
 }
 
 @DslMarker

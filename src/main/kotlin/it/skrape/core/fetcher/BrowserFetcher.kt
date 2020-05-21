@@ -9,7 +9,9 @@ import it.skrape.exceptions.UnsupportedRequestOptionException
 import java.net.Proxy
 import java.net.URL
 
-object BrowserFetcher : Fetcher {
+object BrowserFetcher : Fetcher<Request> {
+    override val requestBuilder get() = Request()
+
     override fun fetch(request: Request): Result {
         if (request.method != GET)
             throw UnsupportedRequestOptionException("Browser mode only supports the http verb GET")

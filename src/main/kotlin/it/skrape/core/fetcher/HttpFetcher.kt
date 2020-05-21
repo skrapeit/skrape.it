@@ -15,7 +15,9 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
-object HttpFetcher : Fetcher {
+object HttpFetcher : Fetcher<Request> {
+    override val requestBuilder get() = Request()
+
     override fun fetch(request: Request): Result {
         configuredClient(request).use {
             return Result(
