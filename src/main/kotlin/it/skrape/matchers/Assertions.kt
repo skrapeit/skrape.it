@@ -3,8 +3,7 @@ package it.skrape.matchers
 import it.skrape.core.fetcher.Result
 
 fun Result.Status.statusAssertion(value: Boolean, status: Result.Status): Result.Status {
-    generalAssertion(value, status)
-    return this
+    return this.also { generalAssertion(value, status) }
 }
 
 fun Any?.generalAssertion(value: Boolean, expected: Any?, message: String = "is equal to") {
