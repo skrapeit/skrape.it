@@ -45,7 +45,7 @@ object BrowserFetcher : Fetcher {
         createCookies(request)
         addRequestHeader("User-Agent", request.userAgent)
         if (request.authentication != null) {
-            addRequestHeader("Authorization",request.authentication!!.toHeaderValue())
+            addRequestHeader("Authorization", request.authentication!!.toHeaderValue())
         }
         request.headers.forEach {
             addRequestHeader(it.key, it.value)
@@ -92,11 +92,8 @@ object BrowserFetcher : Fetcher {
 
 }
 
-fun Map<String, String>.asRawCookieSyntax(): String {
-    var result = ""
-    forEach { result += "${it.key}=${it.value};" }
-    return result
-}
+fun Map<String, String>.asRawCookieSyntax() =
+        entries.joinToString(";", postfix = ";") { "${it.key}=${it.value}" }
 
 fun List<NameValuePair>.toMap(): Map<String, String> =
-        associateByTo(mutableMapOf<String, String>(), { it.name }, { it.value })
+        associateBy({ it.name }, { it.value })
