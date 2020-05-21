@@ -28,19 +28,19 @@ enum class ContentTypes(val value: String) {
 }
 
 infix fun ContentType.toBe(expected: ContentTypes) =
-        generalAssertion(raw() == expected.value, expected).let { this }
+        this.apply { generalAssertion(raw() == expected.value, expected) }
 
 @JvmName("to_be")
 infix fun ContentType.`to be`(expected: ContentTypes) = this toBe expected
 
 infix fun ContentType.toBeNot(expected: ContentTypes) =
-        generalAssertion(raw() != expected.value, expected).let { this }
+        this.apply { generalAssertion(raw() != expected.value, expected) }
 
 @JvmName("to_be_not")
 infix fun ContentType.`to be not`(expected: ContentTypes) = this toBeNot expected
 
 infix fun ContentType.toContain(expected: ContentTypes) =
-        generalAssertion(raw().contains(expected.value), expected).let { this }
+        this.apply { generalAssertion(raw().contains(expected.value), expected) }
 
 @JvmName("to_contain")
 infix fun ContentType.`to contain`(expected: ContentTypes) = this toContain expected
