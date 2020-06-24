@@ -279,6 +279,15 @@ class ExampleTest {
 }
 ```
 
+## Get in touch
+If you need help, have questions on how to use skrape{it} or want to discuss features or bugs please raise issues on [GitHub](https://github.com/skrapeit/skrape.it/issues).
+If you want to discuss or ask more generel things or possible implementations as well as feature ideas you can join the [#skrape-it channel on the Kotlin Slack](https://kotlinlang.slack.com/archives/CSPDWD4R4).
+
+* Issues: You can discuss and raise issues on [GitHub](https://github.com/skrapeit/skrape.it/issues).
+* Slack: Join the [#skrape-it](https://kotlinlang.slack.com/archives/CSPDWD4R4) channel on the Kotlin Slack.
+* Twitter: Follow [@skrape_it](https://twitter.com/skrape_it) on Twitter for updates and release notifications.
+* Stasckoverflow: post or search issues on [Stackoverflow](https://stackoverflow.com/search?q=skrape)
+
 ## Sponsoring
 Skrape{it} is and always will be **free and open-source**. However your sponsorship of this project is greatly appreciated and will fund the caffeine and pizzas that fuel its development. 
 To sponsor Skrape{it}, just click this button → [![Donate](https://img.shields.io/badge/-donate-blue.svg?logo=paypal)](https://www.paypal.me/skrapeit)
