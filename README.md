@@ -292,9 +292,9 @@ If you want to discuss or ask more generel things or possible implementations as
 
 ## :sparkling_heart: Support the project
 Skrape{it} is and always will be **free and open-source**. I try to reply to everyone needing help using these projects. Obviously,
-the development, maintenance takes time. Supporting this project is greatly appreciated and will fund the caffeine and pizzas that fuel its development. 
+the development, maintenance takes time.
 
-However, if you are using this project and be happy with it or just want to encourage me to continue creating stuff, there are few ways you can do it :-
+However, if you are using this project and be happy with it or just want to encourage me to continue creating stuff or fund the caffeine and pizzas that fuel its development, there are few ways you can do it :-
 - Starring and sharing the project :rocket:
 - Giving proper credit when you use skrape{it}, tell your friends and others about it :smiley:
 - Sponsor Skrape{it} with a one-time donations via PayPal by just click this button → [![Donate](https://img.shields.io/badge/-donate-blue.svg?logo=paypal)](https://www.paypal.me/skrapeit) or use the GitHub sponsors programm to support on a monthly basis :sparkling_heart:
