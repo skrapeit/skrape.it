@@ -5,10 +5,12 @@
 [![License](https://img.shields.io/github/license/skrapeit/skrape.it.svg)](https://github.com/skrapeit/skrape.it/blob/master/LICENSE)
 
 [![master build status](https://github.com/skrapeit/skrape.it/workflows/master%20build/badge.svg)](https://github.com/skrapeit/skrape.it/actions?query=workflow%3A"master+build")
+![last commit](https://img.shields.io/github/last-commit/skrapeit/skrape.it)
 [![Codecov](https://img.shields.io/codecov/c/github/skrapeit/skrape.it.svg)](https://codecov.io/gh/skrapeit/skrape.it)
 [![JDK](https://img.shields.io/badge/jdk-8-green.svg)](#)
 
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/skrapeit/skrape.it/issues)
+[![GitHub contributors](https://img.shields.io/github/contributors/skrapeit/skrape.it)](https://github.com/skrapeit/skrape.it/graphs/contributors)
 [![Donate](https://img.shields.io/badge/-donate-blue.svg?logo=paypal)](https://www.paypal.me/skrapeit)
 [![Awesome Kotlin Badge](https://kotlin.link/awesome-kotlin.svg)](https://kotlin.link/?q=Testing)
 
@@ -288,6 +290,11 @@ If you want to discuss or ask more generel things or possible implementations as
 * Twitter: Follow [@skrape_it](https://twitter.com/skrape_it) on Twitter for updates and release notifications.
 * Stasckoverflow: post or search issues on [Stackoverflow](https://stackoverflow.com/search?q=skrape)
 
-## Sponsoring
-Skrape{it} is and always will be **free and open-source**. However your sponsorship of this project is greatly appreciated and will fund the caffeine and pizzas that fuel its development. 
-To sponsor Skrape{it}, just click this button → [![Donate](https://img.shields.io/badge/-donate-blue.svg?logo=paypal)](https://www.paypal.me/skrapeit)
+## :sparkling_heart: Support the project
+Skrape{it} is and always will be **free and open-source**. I try to reply to everyone needing help using these projects. Obviously,
+the development, maintenance takes time. Supporting this project is greatly appreciated and will fund the caffeine and pizzas that fuel its development. 
+
+However, if you are using this project and be happy with it or just want to encourage me to continue creating stuff, there are few ways you can do it :-
+- Starring and sharing the project :rocket:
+- Giving proper credit when you use skrape{it}, tell your friends and others about it :smiley:
+- Sponsor Skrape{it} with a one-time donations via PayPal by just click this button → [![Donate](https://img.shields.io/badge/-donate-blue.svg?logo=paypal)](https://www.paypal.me/skrapeit) or use the GitHub sponsors programm to support on a monthly basis :sparkling_heart:
