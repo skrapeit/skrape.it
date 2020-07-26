@@ -25,7 +25,8 @@ class HttpFetcher(private val request: Request) : Fetcher {
                     responseStatus = it.toStatus(),
                     contentType = it.header("Content-Type"),
                     headers = it.headers().names().associateBy({ item -> item }, { item -> it.header(item, "")!! }),
-                    request = request
+                    request = request,
+                    cookies = it.headers("Set-Cookie").map { item -> item.toCookie(request.url.urlOrigin()) }
             )
         }
     }
