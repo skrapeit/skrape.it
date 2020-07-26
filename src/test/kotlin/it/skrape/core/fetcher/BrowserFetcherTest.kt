@@ -10,6 +10,7 @@ import it.skrape.exceptions.UnsupportedRequestOptionException
 import it.skrape.selects.eachText
 import it.skrape.selects.html5.h1
 import it.skrape.selects.html5.p
+import it.skrape.setupCookiesStub
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import strikt.api.expect
@@ -76,6 +77,20 @@ internal class BrowserFetcherTest : WireMockSetup() {
         val fetched = BrowserFetcher.fetch(Request())
 
         expectThat(fetched.status { code }).isEqualTo(404)
+    }
+
+    @Test
+    internal fun `can fetch cookies`(){
+        wireMockServer.setupCookiesStub(path = "/cookies")
+
+        val request = Request(url = "https://localhost:8089/cookies", sslRelaxed = true)
+        val fetched = BrowserFetcher(request).fetch()
+
+        expectThat(fetched.cookies).isEqualTo(listOf(
+            Cookie("basic", "value", Expires.Session, null, Domain("localhost", false)),
+            Cookie("advanced", "advancedValue", Expires.Session, null, Domain("localhost", true), "/cookies", SameSite.STRICT, true, httpOnly = true),
+            Cookie("expireTest", "value", Expires.Date("Wed, 21 Oct 2015 07:28:00 GMT"), 2592000, Domain("localhost", false))
+        ))
     }
 
     @Test

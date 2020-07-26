@@ -25,6 +25,7 @@ object HttpFetcher : Fetcher<Request> {
                     responseStatus = it.toStatus(),
                     contentType = it.header("Content-Type"),
                     headers = it.headers().names().associateBy({ item -> item }, { item -> it.header(item, "")!! }),
+                    cookies = it.headers("Set-Cookie").map { item -> item.toCookie(request.url.urlOrigin()) },
                     baseUri = request.url
             )
         }

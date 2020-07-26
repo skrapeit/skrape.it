@@ -8,6 +8,7 @@ import it.skrape.SkrapeItDsl
  * @param responseStatus - the http responses status code and message
  * @param contentType - the http responses content type
  * @param headers - the http responses headers
+ * @param cookies - the http response's cookies
  */
 @SkrapeItDsl
 class Result(
@@ -15,7 +16,8 @@ class Result(
         val responseStatus: Status,
         val contentType: ContentType,
         val headers: Map<String, String>,
-        val baseUri: String = ""
+        val baseUri: String = "",
+        val cookies: List<Cookie>
 ) {
     /**
      * Will return a certain response headers value
