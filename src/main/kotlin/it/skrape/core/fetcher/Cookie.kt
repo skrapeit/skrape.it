@@ -2,13 +2,20 @@ package it.skrape.core.fetcher
 
 /**
  * Object representing a web cookie
+ * @param name The name of the cookie
+ * @param value The value of the cookie
+ * @param expires The maximum lifetime of the cookie as an HTTP-date timestamp. Defaults to [Expires.Session] if attribute is not specified in cookie, otherwise [Expires.Date].
+ * @param maxAge Number of seconds until the cookie expires. A zero or negative number will expire the cookie immediately. Takes precedence over [expires]
+ * @param domain The domain that the cookie is associated with. Can apply either to only the base domain or to all subdomains based on [Domain.includesSubdomains]
+ * @param path The path that the cookie is associated with
+ * @param sameSite The [SameSite] value of the cookie
+ * @param secure If true, the cookie is only sent to the server when a request is made using https, otherwise is available in all requests
+ * @param httpOnly If true, the cookie is not accessible to javascript and can only be sent in an http request
  */
 data class Cookie(
     val name: String,
     val value: String,
-    /**The maximum lifetime of the cookie as an HTTP-date timestamp. Defaults to [Expires.Session] if attribute is not specified in cookie, otherwise [Expires.Date].*/
     val expires: Expires,
-    /**Number of seconds until the cookie expires. A zero or negative number will expire the cookie immediately. Takes precedence over [expires].*/
     val maxAge: Int?,
     val domain: Domain,
     val path: String = "/",
@@ -40,7 +47,12 @@ private fun List<String>.getDomain(origin: String): Domain {
 }
 
 enum class SameSite {
-    STRICT, LAX, NONE
+    /** Cookie is sent only to requests originating from the site that set it */
+    STRICT,
+    /** Cookie is withheld on cross-site requests (i.e. images), but sent on url navigation from external site. Default if no SameSite is specified */
+    LAX,
+    /** Cookie is send on both cross-site and same-site requests */
+    NONE
 }
 
 fun String?.toSameSite(): SameSite {
