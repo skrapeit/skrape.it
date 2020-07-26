@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import org.apache.http.impl.conn.Wire
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import java.util.*
@@ -72,6 +73,14 @@ fun WireMockServer.setupHeadStub(): StubMapping =
                 .willReturn(aResponse()
                         .withStatus(201)
                         .withHeader("result","i'm a HEAD stub")))
+
+fun WireMockServer.setupCookiesStub(path: String = "/"): StubMapping =
+    stubFor(get(urlEqualTo(path))
+            .willReturn(aResponse()
+                    .withHeader("Set-Cookie", "basic=value")
+                    .withHeader("Set-Cookie", "advanced=advancedValue; Domain=localhost; Path=$path; Secure; HttpOnly; SameSite=Strict")
+                    .withHeader("Set-Cookie", "expireTest=value; Expires=Wed, 21 Oct 2015 07:28:00 GMT; Max-Age=2592000")
+                    .withStatus(200)))
 
 fun WireMockServer.setupBasicAuthStub(
         username: String,

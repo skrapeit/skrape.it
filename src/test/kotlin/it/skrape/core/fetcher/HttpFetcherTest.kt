@@ -64,6 +64,18 @@ internal class HttpFetcherTest : WireMockSetup() {
         expectThat(fetched.status { code }).isEqualTo(404)
     }
 
+    @Test internal fun `can fetch cookies`(){
+        wireMockServer.setupCookiesStub(path = "/cookies")
+        val request = Request(url = "https://localhost:8089/cookies", sslRelaxed = true)
+        val fetched = HttpFetcher(request).fetch()
+
+        expectThat(fetched.cookies).isEqualTo(listOf(
+            Cookie("basic", "value", Expires.Session, null, Domain("localhost", false)),
+            Cookie("advanced", "advancedValue", Expires.Session, null, Domain("localhost", true), "/cookies", SameSite.STRICT, true, httpOnly = true),
+            Cookie("expireTest", "value", Expires.Date("Wed, 21 Oct 2015 07:28:00 GMT"), 2592000, Domain("localhost", false))
+        ))
+    }
+
     @Test
     internal fun `can fetch url and use HTTP verb POST`() {
         wireMockServer.setupPostStub()
