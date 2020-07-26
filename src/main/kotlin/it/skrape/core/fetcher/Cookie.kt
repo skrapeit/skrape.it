@@ -24,6 +24,24 @@ data class Cookie(
     val httpOnly: Boolean = false
 )
 
+/** Enum to represent different SameSite policies
+ *  @property STRICT Policy where cookie is sent only to requests originating from the site that set it
+ *  @property LAX Policy where cookie is withheld on cross-site requests (i.e. images), but sent on url navigation from external site. Default if no SameSite is specified
+ *  @property NONE Policy where cookie is sent on both cross-site and same-site requests
+ */
+enum class SameSite {
+    STRICT,
+    LAX,
+    NONE
+}
+
+sealed class Expires {
+    object Session : Expires()
+    data class Date(val date: String) : Expires()
+}
+
+data class Domain(val domain: String, val includesSubdomains: Boolean)
+
 fun String.toCookie(origin: String): Cookie {
     val attributes = this.split(";").map { it.trim() }
     val (name, value) = attributes[0].split("=")
@@ -31,7 +49,10 @@ fun String.toCookie(origin: String): Cookie {
     val path = attributes.getAttribute("path") ?: "/"
     val expires = attributes.getAttribute("expires").toExpires()
     val maxAge = attributes.getAttribute("max-age")?.toInt()
-    val domain = attributes.getDomain(origin)
+    val domain = when(val domainUrl = attributes.getAttribute("domain")){
+        null -> Domain(origin, false)
+        else -> Domain(domainUrl, true)
+    }
     val sameSite = attributes.getAttribute("samesite").toSameSite()
     val secure = attributes.any { it.toLowerCase() == "secure" }
     val httpOnly = attributes.any { it.toLowerCase() == "httponly" }
@@ -41,32 +62,13 @@ fun String.toCookie(origin: String): Cookie {
 private fun List<String>.getAttribute(attributeName: String) =
     this.find { it.startsWith("${attributeName}=", ignoreCase = true) }?.takeLastWhile { it != '=' }
 
-private fun List<String>.getDomain(origin: String): Domain {
-    val domain = getAttribute("domain") ?: return Domain(origin, false)
-    return Domain(domain, true)
-}
-
-enum class SameSite {
-    /** Cookie is sent only to requests originating from the site that set it */
-    STRICT,
-    /** Cookie is withheld on cross-site requests (i.e. images), but sent on url navigation from external site. Default if no SameSite is specified */
-    LAX,
-    /** Cookie is send on both cross-site and same-site requests */
-    NONE
-}
-
-fun String?.toSameSite(): SameSite {
+private fun String?.toSameSite(): SameSite {
     return when (this?.toLowerCase()) {
         "strict" -> SameSite.STRICT
         "lax" -> SameSite.LAX
         "none" -> SameSite.NONE
         else -> SameSite.LAX
     }
-}
-
-sealed class Expires {
-    object Session : Expires()
-    data class Date(val date: String) : Expires()
 }
 
 private fun String?.toExpires(): Expires {
@@ -78,5 +80,3 @@ private fun String?.toExpires(): Expires {
 
 /** Remove http:// or https://, any subdirectories, and port if those exist */
 internal fun String.urlOrigin() = this.substringAfter("://").substringBefore("/").substringBefore(":")
-
-data class Domain(val domain: String, val includesSubdomains: Boolean)
