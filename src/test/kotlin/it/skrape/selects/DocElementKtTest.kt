@@ -20,7 +20,6 @@ import org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT
 import strikt.api.expectThat
 import strikt.assertions.*
 
-@Execution(CONCURRENT)
 internal class DocElementKtTest {
 
     @Language("HTML")

@@ -10,7 +10,6 @@ import org.junit.jupiter.api.parallel.Execution
 import org.junit.jupiter.api.parallel.ExecutionMode
 import org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT
 
-@Execution(CONCURRENT)
 internal class MatchersKtTest {
 
     private val anInt = 200

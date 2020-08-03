@@ -9,7 +9,6 @@ import org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-@Execution(CONCURRENT)
 internal class ElementExtractorsKtTest {
 
     private val document = aValidDocument() { this }

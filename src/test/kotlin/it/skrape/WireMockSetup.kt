@@ -6,8 +6,11 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.parallel.Execution
+import org.junit.jupiter.api.parallel.ExecutionMode
 import java.util.*
 
+@Execution(ExecutionMode.SAME_THREAD)
 open class WireMockSetup {
     private val options = options()
             .port(8080)

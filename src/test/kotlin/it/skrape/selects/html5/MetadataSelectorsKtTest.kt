@@ -11,7 +11,6 @@ import strikt.api.expectThat
 import strikt.assertions.contains
 import strikt.assertions.isEqualTo
 
-@Execution(CONCURRENT)
 internal class MetadataSelectorsKtTest {
 
     @Test
