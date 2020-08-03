@@ -4,9 +4,12 @@ import it.skrape.aValidDocument
 import it.skrape.matchers.toBe
 import it.skrape.selects.html5.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.parallel.Execution
+import org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
+@Execution(CONCURRENT)
 internal class ElementExtractorsKtTest {
 
     private val document = aValidDocument() { this }

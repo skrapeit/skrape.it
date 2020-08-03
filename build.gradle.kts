@@ -85,6 +85,9 @@ tasks {
         testLogging {
             events("passed", "skipped", "failed")
         }
+        systemProperties = mapOf(
+                "junit.jupiter.execution.parallel.enabled" to true
+        )
         finalizedBy(jacocoTestReport)
     }
 
@@ -94,7 +97,7 @@ tasks {
 
         rejectVersionIf {
             val isFlaggedAsNonStable = listOf("alpha", "beta", "RC", "rc", "dev").any { candidate.version.contains(it) }.not()
-            val isSemanticVersion =  "^[0-9,.v-]+(-r)?$".toRegex().matches(candidate.version)
+            val isSemanticVersion = "^[0-9,.v-]+(-r)?$".toRegex().matches(candidate.version)
             (isFlaggedAsNonStable || isSemanticVersion).not()
         }
     }

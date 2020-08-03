@@ -1,15 +1,14 @@
 package it.skrape.selects.html5
 
 import it.skrape.a3TimesNestedTag
-import it.skrape.aStandardTag
-import it.skrape.aValidDocument
 import it.skrape.core.htmlDocument
 import it.skrape.matchers.toBe
 import it.skrape.selects.text
 import org.junit.jupiter.api.Test
-import strikt.api.expectThat
-import strikt.assertions.isEqualTo
+import org.junit.jupiter.api.parallel.Execution
+import org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT
 
+@Execution(CONCURRENT)
 internal class EmbeddedContentSelectorsKtTest {
 
     @Test

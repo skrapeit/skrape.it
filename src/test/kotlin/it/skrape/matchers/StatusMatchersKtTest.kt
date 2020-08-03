@@ -2,13 +2,16 @@ package it.skrape.matchers
 
 import it.skrape.core.fetcher.Result
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.parallel.Execution
+import org.junit.jupiter.api.parallel.ExecutionMode
+import org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.EnumSource.Mode.MATCH_ANY
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-
+@Execution(CONCURRENT)
 class StatusMatchersKtTest {
 
     @ParameterizedTest(name = "can match http status {0}")
