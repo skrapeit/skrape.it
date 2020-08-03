@@ -1,7 +1,6 @@
 package it.skrape
 
 import it.skrape.core.fetcher.Mode
-import it.skrape.core.fetcher.UrlBuilder
 import it.skrape.core.fetcher.basic
 import it.skrape.core.htmlDocument
 import it.skrape.matchers.*
@@ -13,17 +12,17 @@ import it.skrape.selects.text
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.parallel.Execution
+import org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
-import strikt.api.expectThat
-import strikt.assertions.isEqualTo
 import java.net.Proxy
-import kotlin.reflect.full.createInstance
 
 @Testcontainers
+@Execution(CONCURRENT)
 class ExperimentalDslTest : WireMockSetup() {
 
     @Container
@@ -89,11 +88,24 @@ class ExperimentalDslTest : WireMockSetup() {
     }
 
     @Test
-    fun `can scrape our docs page`() {
+    fun `can scrape our docs page with JS-rendering`() {
         skrape {
             url = "https://docs.skrape.it/docs/"
             mode = Mode.DOM
 
+            extract {
+                htmlDocument {
+                    toString() toContain "A Story of Deserializing HTML / XML."
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `can scrape our docs page without JS-rendering`() {
+        skrape {
+            url = "https://docs.skrape.it/docs/"
+            mode = Mode.SOURCE
             extract {
                 htmlDocument {
                     toString() toContain "A Story of Deserializing HTML / XML."
@@ -229,7 +241,7 @@ class ExperimentalDslTest : WireMockSetup() {
 
     @Disabled
     @Test
-    fun `can  use proxy to fetch sites`() {
+    fun `can use proxy to fetch sites`() {
         skrape {
             url = "http://some.url"
             proxy = proxyBuilder {
