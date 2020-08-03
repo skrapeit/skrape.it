@@ -45,6 +45,9 @@ class Result(
         return responseStatus.init()
     }
 
+    fun cookies(init: List<Cookie>.() -> Unit): List<Cookie> =
+            cookies.apply(init)
+
     @SkrapeItDsl
     data class Status(
             val code: Int,
