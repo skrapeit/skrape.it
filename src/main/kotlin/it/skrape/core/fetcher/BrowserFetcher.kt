@@ -32,7 +32,9 @@ object BrowserFetcher : Fetcher<Request> {
                 contentType = httpResponse.contentType,
                 headers = headers,
                 baseUri = request.url,
-                cookies = httpResponse.responseHeaders.filter { it.name == "Set-Cookie" }.map { it.value.toCookie(request.url.urlOrigin()) }
+                cookies = httpResponse.responseHeaders
+                        .filter { it.name == "Set-Cookie" }
+                        .map { it.value.toCookie(request.url.urlOrigin()) }
         )
 
         client.javaScriptEngine.shutdown()

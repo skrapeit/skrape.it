@@ -256,7 +256,7 @@ internal class DocElementKtTest {
 
     @Test
     fun `can select all elements by selector from within this element`() {
-        val selection = aValidElement.select(".welcome")
+        val selection = aValidElement.findAll(".welcome")
         expectThat(selection).hasSize(1)
         expectThat(selection.text).isEqualTo("headline")
     }

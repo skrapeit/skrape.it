@@ -10,6 +10,7 @@ import it.skrape.SkrapeItDsl
  * @param headers - the http responses headers
  * @param cookies - the http response's cookies
  */
+@Suppress("LongParameterList")
 @SkrapeItDsl
 class Result(
         val responseBody: String,
@@ -38,7 +39,7 @@ class Result(
         return header
     }
 
-    fun <T> status(init: Status.() -> T) : T {
+    fun <T> status(init: Status.() -> T): T {
         return responseStatus.init()
     }
 
