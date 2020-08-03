@@ -2,12 +2,15 @@ package it.skrape.core
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.parallel.Execution
+import org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT
 import strikt.api.expect
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import java.io.File
 import java.io.FileNotFoundException
 
+@Execution(CONCURRENT)
 class ParserTest {
 
     @Test
