@@ -7,11 +7,11 @@ plugins {
     kotlin("jvm") version "1.3.72"
     jacoco
     id("org.jetbrains.dokka") version "0.10.1"
-    id("se.patrikerdes.use-latest-versions") version "0.2.13"
-    id("com.github.ben-manes.versions") version "0.28.0"
-    id("com.adarshr.test-logger") version "2.0.0"
-    id("io.gitlab.arturbosch.detekt") version "1.9.1"
-    id("com.vanniktech.maven.publish") version "0.11.1"
+    id("se.patrikerdes.use-latest-versions") version "0.2.14"
+    id("com.github.ben-manes.versions") version "0.29.0"
+    id("com.adarshr.test-logger") version "2.1.0"
+    id("io.gitlab.arturbosch.detekt") version "1.10.0"
+    id("com.vanniktech.maven.publish") version "0.12.0"
 }
 
 val isIdea = System.getProperty("idea.version") != null
@@ -28,13 +28,13 @@ repositories {
 dependencies {
     val kotlinVersion = "1.3.72"
     val jsoupVersion = "1.13.1"
-    val htmlUnitVersion = "2.40.0"
+    val htmlUnitVersion = "2.42.0"
     val striktVersion = "0.26.1"
-    val kohttpVersion = "0.11.1"
+    val kohttpVersion = "0.12.0"
 
-    val junitVersion = "5.6.0"
-    val testContainersVersion = "1.14.2"
-    val wireMockVersion = "2.26.3"
+    val junitVersion = "5.6.2"
+    val testContainersVersion = "1.14.3"
+    val wireMockVersion = "2.27.1"
     val mockkVersion = "1.10.0"
     val log4jOverSlf4jVersion = "1.7.30"
     val logbackVersion = "1.2.3"
@@ -96,7 +96,7 @@ tasks {
         gradleReleaseChannel = "current"
 
         rejectVersionIf {
-            val isFlaggedAsNonStable = listOf("alpha", "beta", "RC", "rc").any { candidate.version.contains(it) }.not()
+            val isFlaggedAsNonStable = listOf("alpha", "beta", "RC", "rc", "dev").any { candidate.version.contains(it) }.not()
             val isSemanticVersion =  "^[0-9,.v-]+(-r)?$".toRegex().matches(candidate.version)
             (isFlaggedAsNonStable || isSemanticVersion).not()
         }
