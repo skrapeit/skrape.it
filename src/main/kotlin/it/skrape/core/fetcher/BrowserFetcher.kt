@@ -32,7 +32,9 @@ class BrowserFetcher(private val request: Request) : Fetcher {
                 contentType = httpResponse.contentType,
                 headers = headers,
                 request = request,
-                cookies = httpResponse.responseHeaders.filter { it.name == "Set-Cookie" }.map { it.value.toCookie(request.url.urlOrigin()) }
+                cookies = httpResponse.responseHeaders
+                        .filter { it.name == "Set-Cookie" }
+                        .map { it.value.toCookie(request.url.urlOrigin()) }
         )
 
         client.javaScriptEngine.shutdown()
