@@ -10,7 +10,6 @@ import strikt.assertions.isEqualTo
 import java.io.File
 import java.io.FileNotFoundException
 
-@Execution(CONCURRENT)
 class ParserTest {
 
     @Test

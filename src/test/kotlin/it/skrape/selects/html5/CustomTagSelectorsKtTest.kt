@@ -11,7 +11,6 @@ import strikt.api.expectThat
 import strikt.assertions.containsExactly
 import strikt.assertions.isEqualTo
 
-@Execution(CONCURRENT)
 internal class CustomTagSelectorsKtTest {
 
     @Test

@@ -11,7 +11,6 @@ import strikt.assertions.containsExactly
 import strikt.assertions.isEmpty
 import strikt.assertions.isEqualTo
 
-@Execution(CONCURRENT)
 internal class DocTest {
 
     private fun aValidDocument(suffix: String = "") =

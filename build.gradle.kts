@@ -17,7 +17,7 @@ plugins {
 val isIdea = System.getProperty("idea.version") != null
 
 testlogger {
-    setTheme(if (isIdea) "plain" else "mocha")
+    setTheme(if (isIdea) "plain" else "mocha-parallel")
     slowThreshold = 1000
 }
 
@@ -86,7 +86,9 @@ tasks {
             events("passed", "skipped", "failed")
         }
         systemProperties = mapOf(
-                "junit.jupiter.execution.parallel.enabled" to true
+                "junit.jupiter.execution.parallel.enabled" to true,
+                "junit.jupiter.execution.parallel.mode.default" to "concurrent",
+                "junit.jupiter.execution.parallel.mode.classes.default" to "concurrent"
         )
         finalizedBy(jacocoTestReport)
     }

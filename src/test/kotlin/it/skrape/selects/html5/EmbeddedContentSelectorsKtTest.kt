@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.parallel.Execution
 import org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT
 
-@Execution(CONCURRENT)
 internal class EmbeddedContentSelectorsKtTest {
 
     @Test
