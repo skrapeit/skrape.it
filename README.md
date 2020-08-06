@@ -87,7 +87,7 @@ But be careful, these are non official releases and may be unstable as well as b
 
 ```kotlin
 repositories {
-    maven { url "https://jitpack.io" }
+    maven { url = uri("https://jitpack.io") }
 }
 dependencies {
     implementation("com.github.skrapeit:skrape.it:master-SNAPSHOT")
