@@ -91,9 +91,6 @@ infix fun Result.Status.toBe(expected: HttpStatus): Result.Status {
     return statusAssertion(this == expected.toStatus(), expected.toStatus())
 }
 
-@JvmName("to_be")
-infix fun Result.Status.`to be`(expected: HttpStatus) = this toBe expected
-
 infix fun Result.Status.toBeNot(expected: HttpStatus): Result.Status {
     @Suppress("MagicNumber")
     if (expected.code <= 5) {
@@ -101,6 +98,3 @@ infix fun Result.Status.toBeNot(expected: HttpStatus): Result.Status {
     }
     return statusAssertion(this != expected.toStatus(), expected.toStatus())
 }
-
-@JvmName("to_be_not")
-infix fun Result.Status.`to be not`(expected: HttpStatus) = this toBeNot expected

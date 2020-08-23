@@ -17,9 +17,9 @@ class StatusMatchersKtTest {
             names = ["^((?!xx).)*\$"]
     )
     fun `can match exact http status`(httpStatus: HttpStatus) {
-        val returnedContentTypeValue = Result.Status(httpStatus.code, httpStatus.message) `to be` httpStatus
-        returnedContentTypeValue.copy(code = 999) `to be not` httpStatus
-        returnedContentTypeValue.copy(message = "xxx") `to be not` httpStatus
+        val returnedContentTypeValue = Result.Status(httpStatus.code, httpStatus.message) toBe httpStatus
+        returnedContentTypeValue.copy(code = 999) toBeNot httpStatus
+        returnedContentTypeValue.copy(message = "xxx") toBeNot httpStatus
         expectThat(returnedContentTypeValue).isEqualTo(httpStatus.toStatus())
     }
 
@@ -31,7 +31,7 @@ class StatusMatchersKtTest {
     )
     fun `will throw exception for none matching status codes`(httpStatus: HttpStatus) {
         Assertions.assertThrows(AssertionError::class.java) {
-            Result.Status(httpStatus.code + 1, httpStatus.message) `to be` httpStatus
+            Result.Status(httpStatus.code + 1, httpStatus.message) toBe httpStatus
         }
     }
 
@@ -43,7 +43,7 @@ class StatusMatchersKtTest {
     )
     fun `will throw exception for none matching status message`(httpStatus: HttpStatus) {
         Assertions.assertThrows(AssertionError::class.java) {
-            Result.Status(httpStatus.code, httpStatus.message + "foo") `to be` httpStatus
+            Result.Status(httpStatus.code, httpStatus.message + "foo") toBe httpStatus
         }
     }
 

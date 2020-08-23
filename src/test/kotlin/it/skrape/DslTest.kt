@@ -84,15 +84,15 @@ internal class DslTest : WireMockSetup() {
             url = "http://localhost:8080/example"
 
             expect {
-                contentType `to contain` TEXT_HTML
-                contentType `to be` TEXT_HTML_UTF8
-                contentType `to be not` APPLICATION_XHTML
-                contentType `to be not` APPLICATION_GZIP
-                contentType `to be not` APPLICATION_JSON
-                contentType `to be not` APPLICATION_TAR
-                contentType `to be not` APPLICATION_XML
-                contentType `to be not` APPLICATION_XUL
-                contentType `to be not` APPLICATION_ZIP
+                contentType toContain TEXT_HTML
+                contentType toBe TEXT_HTML_UTF8
+                contentType toBeNot APPLICATION_XHTML
+                contentType toBeNot APPLICATION_GZIP
+                contentType toBeNot APPLICATION_JSON
+                contentType toBeNot APPLICATION_TAR
+                contentType toBeNot APPLICATION_XML
+                contentType toBeNot APPLICATION_XUL
+                contentType toBeNot APPLICATION_ZIP
 
                 expectThat(contentType).isEqualTo("text/html;charset=utf-8")
             }
