@@ -1,11 +1,11 @@
 package it.skrape.core
 
+import it.skrape.selects.eachText
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.parallel.Execution
-import org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT
 import strikt.api.expect
 import strikt.api.expectThat
+import strikt.assertions.containsExactly
 import strikt.assertions.isEqualTo
 import java.io.File
 import java.io.FileNotFoundException
@@ -83,6 +83,23 @@ class ParserTest {
             expect {
                 that(titleText).isEqualTo("i'm the title")
                 that(findFirst("p").text).isEqualTo("dynamically added")
+            }
+        }
+
+    }
+
+    @Test
+    fun `can parse XML`() {
+        val xmlAsString = getMarkupFromFile("example.xml")
+
+        htmlDocument(xmlAsString) {
+            "plants" {
+                withAttribute = "category" to "flowers"
+                "plant" {
+                    findAll {
+                        expectThat(eachText).containsExactly("rose", "tulip")
+                    }
+                }
             }
         }
 
