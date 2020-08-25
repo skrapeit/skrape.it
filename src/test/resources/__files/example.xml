@@ -1,0 +1,17 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE garden [
+        <!ELEMENT garden (plants)*>
+        <!ELEMENT plants (#PCDATA)>
+        <!ATTLIST plants category CDATA #REQUIRED>
+        ]>
+
+<garden>
+    <plants category = "flowers">
+        <plant>rose</plant>
+        <plant>tulip</plant>
+    </plants>
+    <plants category = "shrubs" />
+    <plants category = "trees">
+        <plant>oak</plant>
+    </plants>
+</garden>
