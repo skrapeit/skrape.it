@@ -182,4 +182,10 @@ internal class MatchersKtTest {
             emptyList<Any>().toBeNotEmpty
         }
     }
+
+    @Test
+    internal fun `isNumeric returns true if a string contains a number`() {
+        val elements = mutableListOf(DocElement(org.jsoup.nodes.Element("$11%/")))
+        elements.isNumeric
+    }
 }
