@@ -64,6 +64,9 @@ val List<DocElement>.toBeNotPresent
         )
     }
 
+val List<DocElement>.isNumeric
+    get() = this.forEach { it.text.matches("-?\\d+(\\.\\d+)?".toRegex()) }
+
 val List<Any>.toBeEmpty
     get() = this.apply { generalAssertion(size == 0, "list", "is empty") }
 
