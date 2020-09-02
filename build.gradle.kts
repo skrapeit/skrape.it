@@ -4,7 +4,7 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 
 plugins {
-    kotlin("jvm") version "1.3.72"
+    kotlin("jvm") version "1.4.0"
     jacoco
     id("org.jetbrains.dokka") version "0.10.1"
     id("se.patrikerdes.use-latest-versions") version "0.2.14"
@@ -26,7 +26,7 @@ repositories {
 }
 
 dependencies {
-    val kotlinVersion = "1.3.72"
+    val kotlinVersion = "1.4.0"
     val jsoupVersion = "1.13.1"
     val htmlUnitVersion = "2.42.0"
     val striktVersion = "0.26.1"
@@ -42,8 +42,7 @@ dependencies {
     implementation("org.jsoup:jsoup:$jsoupVersion")
     implementation("net.sourceforge.htmlunit:htmlunit:$htmlUnitVersion")
     implementation("io.github.rybalkinsd:kohttp:$kohttpVersion")
-    compileOnly("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
-    compileOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
     testImplementation("io.strikt:strikt-core:$striktVersion")
