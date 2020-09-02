@@ -71,6 +71,22 @@ tasks {
         options.encoding = "UTF-8"
     }
 
+    compileKotlin {
+        kotlinOptions.apply {
+            jvmTarget = "1.8"
+            apiVersion = "1.3"
+            languageVersion = "1.3"
+        }
+    }
+
+    compileTestKotlin {
+        kotlinOptions.apply {
+            jvmTarget = "1.8"
+            apiVersion = "1.3"
+            languageVersion = "1.3"
+        }
+    }
+
     jacocoTestReport {
         reports {
             xml.isEnabled = true
