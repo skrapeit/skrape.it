@@ -114,6 +114,27 @@ subprojects {
     }
 }
 
+jacoco {
+    toolVersion = "0.8.5"
+}
+
+tasks {
+    val jacocoTestReport by getting(JacocoReport::class) {
+        dependsOn(subprojects.map { it.tasks.withType<Test>() })
+        dependsOn(subprojects.map { it.tasks.withType<JacocoReport>() })
+        additionalSourceDirs.setFrom(subprojects.map { it.the<SourceSetContainer>()["main"].allSource.srcDirs })
+        sourceDirectories.setFrom(subprojects.map { it.the<SourceSetContainer>()["main"].allSource.srcDirs })
+        classDirectories.setFrom(subprojects.map { it.the<SourceSetContainer>()["main"].output })
+        executionData.setFrom(project.fileTree(".") { include("**/build/jacoco/test.exec") })
+        reports {
+            xml.isEnabled = true
+            html.isEnabled = true
+            csv.isEnabled = false
+            html.destination = file("${buildDir}/reports/jacoco/html")
+        }
+    }
+}
+
 dependencies {
     implementation(project(":core"))
 }

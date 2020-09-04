@@ -31,9 +31,3 @@ dependencies {
     testImplementation("io.ktor:ktor-client-core:$ktorVersion")
     testImplementation("io.ktor:ktor-client-apache:$ktorVersion")
 }
-
-tasks {
-    test {
-        finalizedBy(jacocoTestReport)
-    }
-}
