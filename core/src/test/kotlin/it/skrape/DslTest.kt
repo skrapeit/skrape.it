@@ -297,7 +297,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     /**
-     * TODO: fix Class should have a single no-arg constructor: class it.skrape.MyDataClass
+     * TODO: fix Class should have a single no-arg constructor: class MyDataClass
      * for classes or data classes that have none default values
      */
     @Test

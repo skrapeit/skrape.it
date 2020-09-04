@@ -7,8 +7,6 @@ import it.skrape.matchers.toBe
 import it.skrape.matchers.toBePresentExactlyOnce
 import it.skrape.selects.text
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.parallel.Execution
-import org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 

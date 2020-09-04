@@ -5,8 +5,6 @@ import it.skrape.aStandardTag
 import it.skrape.aValidDocument
 import it.skrape.selects.attribute
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.parallel.Execution
-import org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT
 import strikt.api.expectThat
 import strikt.assertions.contains
 import strikt.assertions.isEqualTo
