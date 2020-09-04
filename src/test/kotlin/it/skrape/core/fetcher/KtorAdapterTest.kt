@@ -1,20 +1,17 @@
 package it.skrape.core.fetcher
 
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.apache.Apache
-import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.request
-import io.ktor.client.request.url
-import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.readText
-import io.ktor.client.statement.request
-import io.ktor.http.contentType
-import io.ktor.util.toMap
+import io.ktor.client.*
+import io.ktor.client.engine.apache.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
+import io.ktor.util.*
 import it.skrape.WireMockSetup
 import it.skrape.core.htmlDocument
 import it.skrape.expect
 import it.skrape.matchers.ContentTypes
 import it.skrape.matchers.toBe
+import it.skrape.matchers.toBeEmpty
 import it.skrape.matchers.toBePresentTimes
 import it.skrape.selects.html5.p
 import it.skrape.selects.html5.title
@@ -34,7 +31,8 @@ internal class KtorAdapterTest : WireMockSetup() {
                         Result.Status(fullResponse.status.value, fullResponse.status.description),
                         fullResponse.contentType()?.toString(),
                         fullResponse.headers.toMap().mapValues { it.value.firstOrNull().orEmpty() },
-                        fullResponse.request.url.toString()
+                        fullResponse.request.url.toString(),
+                        fullResponse.setCookie() as List<Cookie>
                 )
             }
         }
@@ -62,6 +60,10 @@ internal class KtorAdapterTest : WireMockSetup() {
                 }
 
                 contentType toBe ContentTypes.TEXT_HTML_UTF8
+
+                cookies {
+                    toBeEmpty
+                }
 
                 htmlDocument {
 

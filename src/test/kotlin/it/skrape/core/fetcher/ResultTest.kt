@@ -1,15 +1,12 @@
 package it.skrape.core.fetcher
 
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.parallel.Execution
-import org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
 class ResultTest {
 
     private val aValidResult = Result(
-            request = Request(),
             headers = mapOf("X-Foo" to "bar"),
             responseBody = "",
             responseStatus = Result.Status(0, ""),

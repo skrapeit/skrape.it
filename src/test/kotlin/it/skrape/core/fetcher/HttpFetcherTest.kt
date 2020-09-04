@@ -64,10 +64,11 @@ internal class HttpFetcherTest : WireMockSetup() {
         expectThat(fetched.status { code }).isEqualTo(404)
     }
 
-    @Test internal fun `can fetch cookies`(){
+    @Test
+    internal fun `can fetch cookies`(){
         wireMockServer.setupCookiesStub(path = "/cookies")
         val request = Request(url = "https://localhost:8089/cookies", sslRelaxed = true)
-        val fetched = HttpFetcher(request).fetch()
+        val fetched = HttpFetcher.fetch(request)
 
         expectThat(fetched.cookies).isEqualTo(listOf(
             Cookie("basic", "value", Expires.Session, null, Domain("localhost", false)),

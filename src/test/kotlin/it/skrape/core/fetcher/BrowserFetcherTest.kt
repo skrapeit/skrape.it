@@ -4,14 +4,14 @@ import com.gargoylesoftware.htmlunit.util.NameValuePair
 import it.skrape.WireMockSetup
 import it.skrape.core.document
 import it.skrape.core.htmlDocument
-import it.skrape.setupRedirect
-import it.skrape.setupStub
 import it.skrape.exceptions.UnsupportedRequestOptionException
 import it.skrape.selects.eachText
 import it.skrape.selects.html5.h1
 import it.skrape.selects.html5.p
 import it.skrape.setupCookiesStub
-import org.junit.jupiter.api.Assertions.*
+import it.skrape.setupRedirect
+import it.skrape.setupStub
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import strikt.api.expect
 import strikt.api.expectThat
@@ -84,7 +84,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
         wireMockServer.setupCookiesStub(path = "/cookies")
 
         val request = Request(url = "https://localhost:8089/cookies", sslRelaxed = true)
-        val fetched = BrowserFetcher(request).fetch()
+        val fetched = BrowserFetcher.fetch(request)
 
         expectThat(fetched.cookies).isEqualTo(listOf(
             Cookie("basic", "value", Expires.Session, null, Domain("localhost", false)),
