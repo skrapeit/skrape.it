@@ -20,14 +20,15 @@ internal class Parser(
 
     fun parse(): Doc {
         return if (jsExecution) {
-            BrowserFetcher(Request(url = html.toUriScheme())).fetch().htmlDocument { this }
+            val mockRequest = Request(url = html.toUriScheme())
+            BrowserFetcher.fetch(mockRequest).htmlDocument { this }
         } else jSoupParser(html, baseUri).toDocWrapper()
     }
 
     private fun Document.toDocWrapper() = Doc(this)
 
     private fun String.toUriScheme(): String {
-        val dataUriMimeType = "data:text/html;charset=utf-8;"
+        val dataUriMimeType = "data:text/html;charset=${charset.name()};"
         val base64encoded = Base64.getEncoder().encodeToString(toByteArray())
         return "${dataUriMimeType}base64,$base64encoded"
     }
@@ -79,4 +80,4 @@ fun htmlDocument(
 val Result.document: Doc
     get() = htmlDocument { this }
 
-fun <T> Result.htmlDocument(init: Doc.() -> T) = htmlDocument(html = responseBody, baseUri = request.url).init()
+fun <T> Result.htmlDocument(init: Doc.() -> T) = htmlDocument(html = responseBody, baseUri = baseUri).init()

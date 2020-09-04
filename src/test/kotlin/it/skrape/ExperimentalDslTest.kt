@@ -1,7 +1,6 @@
 package it.skrape
 
-import it.skrape.core.fetcher.Mode
-import it.skrape.core.fetcher.basic
+import it.skrape.core.fetcher.*
 import it.skrape.core.htmlDocument
 import it.skrape.matchers.*
 import it.skrape.selects.and
@@ -33,8 +32,10 @@ class ExperimentalDslTest : WireMockSetup() {
     fun `can use latest features`() {
         wireMockServer.setupStub(path = "/example")
 
-        val myText = skrape {
-            url = "http://localhost:8080/example"
+        val myText = skrape(HttpFetcher) {
+            request {
+                url = "http://localhost:8080/example"
+            }
 
             extract {
                 htmlDocument {
@@ -86,9 +87,10 @@ class ExperimentalDslTest : WireMockSetup() {
 
     @Test
     fun `can scrape our docs page with JS-rendering`() {
-        skrape {
-            url = "https://docs.skrape.it/docs/"
-            mode = Mode.DOM
+        skrape(BrowserFetcher) {
+            request {
+                url = "https://docs.skrape.it/docs/"
+            }
 
             extract {
                 htmlDocument {
@@ -100,9 +102,10 @@ class ExperimentalDslTest : WireMockSetup() {
 
     @Test
     fun `can scrape our docs page without JS-rendering`() {
-        skrape {
-            url = "https://docs.skrape.it/docs/"
-            mode = Mode.SOURCE
+        skrape(HttpFetcher) {
+            request {
+                url = "https://docs.skrape.it/docs/"
+            }
             extract {
                 htmlDocument {
                     toString() toContain "A Story of Deserializing HTML / XML."
@@ -112,12 +115,13 @@ class ExperimentalDslTest : WireMockSetup() {
     }
 
     @ParameterizedTest(name = "can NOT scrape basic auth protected websites without credentials in {0}-mode")
-    @EnumSource(Mode::class)
-    fun `can NOT scrape basic auth protected websites without credentials`(fetcherMode: Mode) {
+    @EnumSource(FetchersTestEnum::class)
+    fun `can NOT scrape basic auth protected websites without credentials`(fetcherMode: FetchersTestEnum) {
 
-        skrape {
-            mode = fetcherMode
-            url = "${httpBinUrl()}/basic-auth/cr1z/secure"
+        skrape(fetcherMode.fetcher) {
+            request {
+                url = "${httpBinUrl()}/basic-auth/cr1z/secure"
+            }
 
             expect {
                 status {
@@ -129,16 +133,17 @@ class ExperimentalDslTest : WireMockSetup() {
     }
 
     @ParameterizedTest(name = "can scrape basic auth protected websites in {0}-mode")
-    @EnumSource(Mode::class)
-    fun `can scrape basic auth protected websites`(fetcherMode: Mode) {
+    @EnumSource(FetchersTestEnum::class)
+    fun `can scrape basic auth protected websites`(fetcherMode: FetchersTestEnum) {
 
-        skrape {
-            mode = fetcherMode
-            url = "${httpBinUrl()}/basic-auth/cr1z/secure"
+        skrape(fetcherMode.fetcher) {
+            request {
+                url = "${httpBinUrl()}/basic-auth/cr1z/secure"
 
-            authentication = basic {
-                username = "cr1z"
-                password = "secure"
+                authentication = basic {
+                    username = "cr1z"
+                    password = "secure"
+                }
             }
 
             expect {
@@ -153,7 +158,6 @@ class ExperimentalDslTest : WireMockSetup() {
 
     @Test
     fun `can invoke a raw nested css-selector`() {
-
         @Language("HTML") val myMarkUp = """
             <div class="CollapsiblePanelTab" tabindex="0">Today's Interest (1)</div>
                 <div class="CollapsiblePanelContent">
@@ -179,7 +183,6 @@ class ExperimentalDslTest : WireMockSetup() {
 
     @Test
     fun `can nest selection via css selectors`() {
-
         @Language("HTML") val myMarkUp = """
             <div class="foo">
                 <div class="bar">
@@ -239,12 +242,15 @@ class ExperimentalDslTest : WireMockSetup() {
     @Disabled
     @Test
     fun `can use proxy to fetch sites`() {
-        skrape {
-            url = "http://some.url"
-            proxy = proxyBuilder {
-                type = Proxy.Type.HTTP
-                host = "http://some.proxy"
-                port = 12345
+        skrape(HttpFetcher) {
+            request {
+                url = "http://some.url"
+
+                proxy = proxyBuilder {
+                    type = Proxy.Type.HTTP
+                    host = "http://some.proxy"
+                    port = 12345
+                }
             }
             extract {
                 // do something with the result
@@ -255,3 +261,8 @@ class ExperimentalDslTest : WireMockSetup() {
 }
 
 class KGenericContainer(imageName: String) : GenericContainer<KGenericContainer>(imageName)
+
+@Suppress("unused")
+enum class FetchersTestEnum(val fetcher: Fetcher<Request>) {
+    HTTP(HttpFetcher), BROWSER(BrowserFetcher)
+}

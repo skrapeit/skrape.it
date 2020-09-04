@@ -1,7 +1,8 @@
 package it.skrape.selects
 
-import it.skrape.core.fetcher.Request
 import it.skrape.WireMockSetup
+import it.skrape.core.Scraper
+import it.skrape.core.fetcher.HttpFetcher
 import it.skrape.core.htmlDocument
 import it.skrape.setupStub
 import it.skrape.exceptions.ElementNotFoundException
@@ -20,7 +21,7 @@ internal class ResultExtractorsTest : WireMockSetup() {
     internal fun `will throw custom exception if element could not be found via element function`() {
 
         Assertions.assertThrows(ElementNotFoundException::class.java) {
-            Request().expect {
+            Scraper(HttpFetcher).expect {
                 htmlDocument {
                     findAll(".nonExistent")
                 }
@@ -34,7 +35,7 @@ internal class ResultExtractorsTest : WireMockSetup() {
 
         val expectedValue = "i'm a paragraph"
 
-        skrape {
+        skrape(HttpFetcher) {
             extract {
                 htmlDocument {
                     p {
@@ -51,7 +52,7 @@ internal class ResultExtractorsTest : WireMockSetup() {
     internal fun `can pick certain header select functions`() {
         wireMockServer.setupStub()
 
-        skrape {
+        skrape(HttpFetcher) {
             expect {
                 httpHeader("Content-Type") toBe "text/html;charset=utf-8"
                 httpHeader("Content-Type") toContain "html"

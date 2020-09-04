@@ -1,25 +1,16 @@
 package it.skrape.core.fetcher
 
 import it.skrape.SkrapeItDsl
-import it.skrape.core.fetcher.Method.GET
-import it.skrape.core.fetcher.Mode.SOURCE
 
 @SkrapeItDsl
 data class Request(
-
-        /**
-         * Defines the request-mode.
-         * Defaults to SOURCE.
-         * @see Mode for all possible values.
-         */
-        var mode: Mode = SOURCE,
 
         /**
          * Defines the http verb of the request.
          * Defaults to GET.
          * @see Method for all possible values.
          */
-        var method: Method = GET,
+        var method: Method = Method.GET,
 
         /**
          * Defines the URL the request is made against.
@@ -44,27 +35,11 @@ data class Request(
          */
         var sslRelaxed: Boolean = false
 ) {
-    val asConfig
-        get() = this
-
     fun urlBuilder(init: UrlBuilder.() -> Unit): String {
         return UrlBuilder().also(init).toString()
     }
 
     fun proxyBuilder(init: ProxyBuilder.() -> Unit)= ProxyBuilder().also(init)
-}
-
-enum class Mode {
-    /**
-     * Use SOURCE to get server-side rendered responses.
-     * If SOURCE-mode is active skrape{it} will behave like normal http-client.
-     */
-    SOURCE,
-    /**
-     * Use DOM to get client-side rendered responses.
-     * If DOM-mode is active skrape{it} will use a browser engine to transform the response body to a rendered document.
-     */
-    DOM
 }
 
 enum class Method {

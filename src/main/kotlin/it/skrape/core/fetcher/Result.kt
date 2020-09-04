@@ -5,21 +5,19 @@ import it.skrape.SkrapeItDsl
 /**
  * This object is representing the result of an request
  * @param responseBody - the response responseBody
- * @param statusCode - the http responses status code
- * @param statusMessage - the http responses status message
+ * @param responseStatus - the http responses status code and message
  * @param contentType - the http responses content type
  * @param headers - the http responses headers
- * @param request - the initial request
  * @param cookies - the http response's cookies
  */
 @Suppress("LongParameterList")
 @SkrapeItDsl
 class Result(
-        val request: Request,
         val responseBody: String,
         val responseStatus: Status,
         val contentType: ContentType,
         val headers: Map<String, String>,
+        val baseUri: String = "",
         val cookies: List<Cookie>
 ) {
     /**

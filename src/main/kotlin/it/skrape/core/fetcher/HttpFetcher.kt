@@ -11,36 +11,36 @@ import okhttp3.OkHttpClient
 import okhttp3.Response
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
-import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
-class HttpFetcher(private val request: Request) : Fetcher {
+object HttpFetcher : Fetcher<Request> {
+    override val requestBuilder get() = Request()
 
-    override fun fetch(): Result {
-        configuredClient().use {
+    override fun fetch(request: Request): Result {
+        configuredClient(request).use {
             return Result(
                     responseBody = it.body()?.string() ?: "",
                     responseStatus = it.toStatus(),
                     contentType = it.header("Content-Type"),
                     headers = it.headers().names().associateBy({ item -> item }, { item -> it.header(item, "")!! }),
-                    request = request,
-                    cookies = it.headers("Set-Cookie").map { item -> item.toCookie(request.url.urlOrigin()) }
+                    cookies = it.headers("Set-Cookie").map { item -> item.toCookie(request.url.urlOrigin()) },
+                    baseUri = request.url
             )
         }
     }
 
     private fun Response.toStatus() = Result.Status(code(), message())
 
-    private fun configuredClient(): Response {
+    private fun configuredClient(request: Request): Response {
         val configuredClient = client {
             defaultHttpClient
             proxy = request.proxy?.toProxy()
         }
 
         val client = configuredClient
-                .withSslConfiguration()
+                .withSslConfiguration(request)
                 .fork {
                     followRedirects = request.followRedirects
                     readTimeout = request.timeout.toLong()
@@ -71,10 +71,10 @@ class HttpFetcher(private val request: Request) : Fetcher {
         }
     }
 
-    private fun OkHttpClient.withSslConfiguration(): OkHttpClient = when {
+    private fun OkHttpClient.withSslConfiguration(request: Request): OkHttpClient = when {
         request.sslRelaxed -> OkHttpClient.Builder()
                 .sslSocketFactory(insecureSocketFactory(), naiveTrustManager())
-                .hostnameVerifier(HostnameVerifier { _, _ -> true })
+                .hostnameVerifier { _, _ -> true }
                 .build()
         else -> this
     }
@@ -84,7 +84,6 @@ class HttpFetcher(private val request: Request) : Fetcher {
         override fun checkClientTrusted(certs: Array<X509Certificate>, authType: String) = Unit
         override fun checkServerTrusted(certs: Array<X509Certificate>, authType: String) = Unit
     }
-
 
     private fun insecureSocketFactory() = SSLContext.getInstance("TLSv1.2").apply {
         val trustAllCerts = arrayOf<TrustManager>(naiveTrustManager())

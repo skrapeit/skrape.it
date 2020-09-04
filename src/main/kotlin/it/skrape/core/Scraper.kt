@@ -1,16 +1,19 @@
 package it.skrape.core
 
+import it.skrape.SkrapeItDsl
 import it.skrape.core.fetcher.*
-import java.lang.System.setProperty
 
+class Scraper<R>(val client: Fetcher<R>, internal val preparedRequest: R) {
+    constructor(client: Fetcher<R>) : this(client, client.requestBuilder)
 
-class Scraper(val request: Request = Request()) {
+    @SkrapeItDsl
+    fun request(init: R.() -> Unit) =
+            this.preparedRequest.run(init)
 
-    fun scrape(): Result {
+    fun scrape() =
+            client.fetch(preparedRequest)
 
-        return when (request.mode) {
-            Mode.DOM -> BrowserFetcher(request).fetch()
-            Mode.SOURCE -> HttpFetcher(request).fetch()
-        }
-    }
+    @SkrapeItDsl
+    val preConfigured
+        get() = this
 }

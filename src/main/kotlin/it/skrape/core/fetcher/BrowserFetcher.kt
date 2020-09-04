@@ -9,14 +9,14 @@ import it.skrape.exceptions.UnsupportedRequestOptionException
 import java.net.Proxy
 import java.net.URL
 
-class BrowserFetcher(private val request: Request) : Fetcher {
+object BrowserFetcher : Fetcher<Request> {
+    override val requestBuilder get() = Request()
 
-    override fun fetch(): Result {
-
+    override fun fetch(request: Request): Result {
         if (request.method != GET)
             throw UnsupportedRequestOptionException("Browser mode only supports the http verb GET")
 
-        val client = WebClient(BrowserVersion.BEST_SUPPORTED).withOptions()
+        val client = WebClient(BrowserVersion.BEST_SUPPORTED).withOptions(request)
 
         val page: Page = client.getPage(request.url)
         val httpResponse = page.webResponse
@@ -31,7 +31,7 @@ class BrowserFetcher(private val request: Request) : Fetcher {
                 responseStatus = httpResponse.toStatus(),
                 contentType = httpResponse.contentType,
                 headers = headers,
-                request = request,
+                baseUri = request.url,
                 cookies = httpResponse.responseHeaders
                         .filter { it.name == "Set-Cookie" }
                         .map { it.value.toCookie(request.url.urlOrigin()) }
@@ -44,13 +44,13 @@ class BrowserFetcher(private val request: Request) : Fetcher {
         return result
     }
 
-    private fun WebClient.withOptions() = apply {
+    private fun WebClient.withOptions(request: Request) = apply {
         cssErrorHandler = SilentCssErrorHandler()
         ajaxController = NicelyResynchronizingAjaxController()
-        createCookies()
+        createCookies(request)
         addRequestHeader("User-Agent", request.userAgent)
         if (request.authentication != null) {
-            addRequestHeader("Authorization",request.authentication!!.toHeaderValue())
+            addRequestHeader("Authorization", request.authentication!!.toHeaderValue())
         }
         request.headers.forEach {
             addRequestHeader(it.key, it.value)
@@ -69,11 +69,11 @@ class BrowserFetcher(private val request: Request) : Fetcher {
             isPrintContentOnFailingStatusCode = false
             historySizeLimit = 0
             historyPageCacheLimit = 0
-            withProxySettings()
+            withProxySettings(request)
         }
     }
 
-    private fun WebClientOptions.withProxySettings(): WebClientOptions {
+    private fun WebClientOptions.withProxySettings(request: Request): WebClientOptions {
         if (request.proxy != null) {
             this.proxyConfig = ProxyConfig(
                     request.proxy!!.host,
@@ -84,12 +84,12 @@ class BrowserFetcher(private val request: Request) : Fetcher {
         return this
     }
 
-    private fun WebClient.createCookies() {
-        request.cookies.forEach { cookieManager.addCookie(createCookie(it.key, it.value)) }
+    private fun WebClient.createCookies(request: Request) {
+        request.cookies.forEach { cookieManager.addCookie(createCookie(request.url, it.key, it.value)) }
     }
 
-    private fun createCookie(name: String, value: String): Cookie {
-        val domain = URL(request.url).host
+    private fun createCookie(url: String, name: String, value: String): Cookie {
+        val domain = URL(url).host
         return Cookie(domain, name, value)
     }
 
@@ -97,11 +97,8 @@ class BrowserFetcher(private val request: Request) : Fetcher {
 
 }
 
-fun Map<String, String>.asRawCookieSyntax(): String {
-    var result = ""
-    forEach { result += "${it.key}=${it.value};" }
-    return result
-}
+fun Map<String, String>.asRawCookieSyntax() =
+        entries.joinToString(";", postfix = ";") { "${it.key}=${it.value}" }
 
 fun List<NameValuePair>.toMap(): Map<String, String> =
-        associateByTo(mutableMapOf<String, String>(), { it.name }, { it.value })
+        associateBy({ it.name }, { it.value })

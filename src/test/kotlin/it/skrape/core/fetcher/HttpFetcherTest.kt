@@ -14,7 +14,7 @@ internal class HttpFetcherTest : WireMockSetup() {
     internal fun `will fetch localhost 8080 with defaults if no params`() {
         wireMockServer.setupStub()
 
-        val fetched = HttpFetcher(Request()).fetch()
+        val fetched = HttpFetcher.fetch(Request())
 
         expectThat(fetched.status { code }).isEqualTo(200)
         expectThat(fetched.contentType).isEqualTo("text/html;charset=utf-8")
@@ -29,7 +29,7 @@ internal class HttpFetcherTest : WireMockSetup() {
                 sslRelaxed = true
         )
 
-        val fetched = HttpFetcher(request).fetch()
+        val fetched = HttpFetcher.fetch(request)
 
         expectThat(fetched.status { code }).isEqualTo(200)
         expectThat(fetched.contentType).isEqualTo("text/html;charset=utf-8")
@@ -40,7 +40,7 @@ internal class HttpFetcherTest : WireMockSetup() {
     internal fun `will not throw exception on non existing url`() {
         val request = Request(url = "http://localhost:8080/not-existing")
 
-        val fetched = HttpFetcher(request).fetch()
+        val fetched = HttpFetcher.fetch(request)
 
         expectThat(fetched.status { code }).isEqualTo(404)
     }
@@ -50,7 +50,7 @@ internal class HttpFetcherTest : WireMockSetup() {
         wireMockServer.setupRedirect()
         val request = Request(followRedirects = false)
 
-        val fetched = HttpFetcher(request).fetch()
+        val fetched = HttpFetcher.fetch(request)
 
         expectThat(fetched.status { code }).isEqualTo(302)
     }
@@ -59,15 +59,16 @@ internal class HttpFetcherTest : WireMockSetup() {
     internal fun `will follow redirect by default`() {
         wireMockServer.setupRedirect()
 
-        val fetched = HttpFetcher(Request()).fetch()
+        val fetched = HttpFetcher.fetch(Request())
 
         expectThat(fetched.status { code }).isEqualTo(404)
     }
 
-    @Test internal fun `can fetch cookies`(){
+    @Test
+    internal fun `can fetch cookies`(){
         wireMockServer.setupCookiesStub(path = "/cookies")
         val request = Request(url = "https://localhost:8089/cookies", sslRelaxed = true)
-        val fetched = HttpFetcher(request).fetch()
+        val fetched = HttpFetcher.fetch(request)
 
         expectThat(fetched.cookies).isEqualTo(listOf(
             Cookie("basic", "value", Expires.Session, null, Domain("localhost", false)),
@@ -81,7 +82,7 @@ internal class HttpFetcherTest : WireMockSetup() {
         wireMockServer.setupPostStub()
         val request = Request(method = Method.POST)
 
-        val fetched = HttpFetcher(request).fetch()
+        val fetched = HttpFetcher.fetch(request)
 
         expectThat(fetched.status { code }).isEqualTo(200)
         expectThat(fetched.contentType).isEqualTo("application/json;charset=utf-8")
@@ -93,7 +94,7 @@ internal class HttpFetcherTest : WireMockSetup() {
         wireMockServer.setupPutStub()
         val request = Request(method = Method.PUT)
 
-        val fetched = HttpFetcher(request).fetch()
+        val fetched = HttpFetcher.fetch(request)
 
         expectThat(fetched.status { code }).isEqualTo(201)
         expectThat(fetched.responseBody).isEqualTo("i'm a PUT stub")
@@ -104,7 +105,7 @@ internal class HttpFetcherTest : WireMockSetup() {
         wireMockServer.setupDeleteStub()
         val request = Request(method = Method.DELETE)
 
-        val fetched = HttpFetcher(request).fetch()
+        val fetched = HttpFetcher.fetch(request)
 
         expectThat(fetched.status { code }).isEqualTo(201)
         expectThat(fetched.responseBody).isEqualTo("i'm a DELETE stub")
@@ -115,7 +116,7 @@ internal class HttpFetcherTest : WireMockSetup() {
         wireMockServer.setupPatchStub()
         val request = Request(method = Method.PATCH)
 
-        val fetched = HttpFetcher(request).fetch()
+        val fetched = HttpFetcher.fetch(request)
 
         expectThat(fetched.status { code }).isEqualTo(201)
         expectThat(fetched.responseBody).isEqualTo("i'm a PATCH stub")
@@ -126,7 +127,7 @@ internal class HttpFetcherTest : WireMockSetup() {
         wireMockServer.setupHeadStub()
         val request = Request(method = Method.HEAD)
 
-        val fetched = HttpFetcher(request).fetch()
+        val fetched = HttpFetcher.fetch(request)
 
         expectThat(fetched.status { code }).isEqualTo(201)
         expectThat(fetched.httpHeader("result")).isEqualTo("i'm a HEAD stub")
@@ -138,7 +139,7 @@ internal class HttpFetcherTest : WireMockSetup() {
 
         assertThrows(SocketTimeoutException::class.java
         ) {
-            HttpFetcher(Request()).fetch()
+            HttpFetcher.fetch(Request())
         }
     }
 }
