@@ -1,7 +1,7 @@
 package it.skrape.core
 
 import it.skrape.SkrapeItDsl
-import it.skrape.core.fetcher.*
+import it.skrape.core.fetcher.Fetcher
 
 class Scraper<R>(val client: Fetcher<R>, internal val preparedRequest: R) {
     constructor(client: Fetcher<R>) : this(client, client.requestBuilder)

@@ -169,8 +169,10 @@ data class MyDataClass(
 class HtmlExtractionService {
 
     fun extract() {
-        val extracted = skrape {
-            url = "http://localhost:8080/"
+        val extracted = skrape(HttpFetcher) {
+            request {
+                url = "http://localhost:8080/"
+            }           
 
             extractIt<MyDataClass> {
                 it.httpStatusCode = statusCode
@@ -193,16 +195,26 @@ class HtmlExtractionService {
 ```kotlin
 @Test
 fun `dsl can skrape by url`() {
-    skrape {
-        url = "http://localhost:8080/example"
+    skrape(HttpFetcher) {
+        request {
+            url = "http://localhost:8080/example"
+        }       
         expect {
             htmlDocument {
-                // all offical html and html5 elements are supported by the DSL
+                // all official html and html5 elements are supported by the DSL
                 div {
                     withClass = "foo" and "bar" and "fizz" and "buzz"
 
                     findFirst {
                         text toBe "div with class foo"
+
+                        // it's possible to search for elements from former search results
+                        // e.g. search all matching span elements within the above div with class foo etc...
+                        span {
+                            findAll {
+                                // do something
+                            }                       
+                        }                   
                     }
 
                     findAll {
@@ -239,42 +251,57 @@ fun `dsl can skrape by url`() {
 }
 ```
 
+### Scrape a client side rendered page:
+```kotlin
+fun getDocumentByUrl(urlToScrape: String) = skrape(BrowserFetcher) { // <--- pass Browser fetcher to include rendered JS
+    request { url = urlToScrape }
+    extract { htmlDocument { this } }
+}
+
+
+fun main() {
+    // do stuff with the document
+    println(getDocumentByUrl("https://docs.skrape.it").eachLink)
+}
+```
+
 ### Configure HTTP-Client:
 ```kotlin
 class ExampleTest {
-    val myPreConfiguredClient = skrape {
+    val myPreConfiguredClient = skrape(HttpFetcher) {
         // url can be a plain url as string or build by #urlBuilder
-        url = urlBuilder {
-            protocol = Protocol.HTTPS
-            host = "skrape.it"
-            port = 12345
-            path = "/foo"
-            queryParams = mapOf("foo" to "bar")
+        request {
+            url = urlBuilder {
+                protocol = UrlBuilder.Protocol.HTTPS
+                host = "skrape.it"
+                port = 12345
+                path = "/foo"
+                queryParam = mapOf("foo" to "bar")
+            }
+            timeout = 5000 // optional -> defaults to 5000ms
+            followRedirects = true // optional -> defaults to true
+            userAgent = "some custom user agent" // optional -> defaults to "Mozilla/5.0 skrape.it"
+            cookies = mapOf("some-cookie-name" to "some-value") // optional
+            headers = mapOf("some-custom-header" to "some-value") // optional
         }
-        
-        mode = DOM // optional -> defaults to SOURCE (plain http request) - DOM will also render JS
-        method = GET // optional -> defaults to GET
-        timeout = 5000 // optional -> defaults to 5000ms
-        followRedirects = true // optional -> defaults to true
-        userAgent = "some custom user agent" // optional -> defaults to "Mozilla/5.0 skrape.it"
-        cookies = mapOf("some-cookie-name" to "some-value") // optional
-        headers = mapOf("some-custom-header" to "some-value") // optional
-        
-        asConfig // <--- returns the configured request object
+        preConfigured
     }
-
+    
     @Test
     fun `can use preconfigured client`() {
-
-        myPreConfiguredClient.expect { 
-            statusCode toBe 200
+    
+        myPreConfiguredClient.expect {
+            status { code toBe 200 }
             // do more stuff
         }
-
+    
+        // slightly modify preconfigured client
         myPreConfiguredClient.apply {
-            followRedirects = false
-        }.expect { 
-            statusCode toBe 301
+            request {
+                followRedirects = false
+            }
+        }.expect {
+            status { code toBe 301 }
             // do more stuff
         }
     }

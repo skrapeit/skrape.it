@@ -1,8 +1,8 @@
 package it.skrape
 
-import it.skrape.core.fetcher.Result
 import it.skrape.core.Scraper
 import it.skrape.core.fetcher.Fetcher
+import it.skrape.core.fetcher.Result
 import kotlin.reflect.full.createInstance
 
 
