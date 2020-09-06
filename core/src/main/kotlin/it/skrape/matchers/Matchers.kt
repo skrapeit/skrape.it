@@ -19,6 +19,30 @@ infix fun String?.toContain(expected: String) =
 infix fun String?.toNotContain(expected: String) =
         this.apply { generalAssertion(!"$this".contains(expected), expected) }
 
+val String?.isNumeric
+    get() = this?.apply {
+        generalAssertion(
+            this.matches("^-?\\d+(\\.\\d+)?$".toRegex()), "'$this'", "is an integer or a decimal")
+    }?: throw AssertionError("expect text to be a numeric but it was 'null'")
+
+val String?.isInteger
+    get() = this?.apply {
+        generalAssertion(
+            this.matches("^-?\\d+?\$".toRegex()), "'$this'", "is an integer")
+    } ?: throw AssertionError("expect text to be an integer but it was 'null'")
+
+val String?.isDecimal
+    get() = this?.apply {
+        generalAssertion(
+            this.matches("^\\d+\\.\\d+\$".toRegex()), "'$this'", "is a decimal")
+    } ?: throw AssertionError("expect text to be a decimal but it was 'null'")
+
+val String?.containsNumeric
+    get() = this?.apply {
+        generalAssertion(
+            this.matches(".*-?\\d+(\\.\\d+)?.*".toRegex()), "'$this'", "contains an integer or a decimal")
+    }?: throw AssertionError("expect text to contain a numeric but it was 'null'")
+
 infix fun List<Any>.toContain(expected: String) =
         this.apply { generalAssertion(this.contains(expected), expected) }
 
@@ -63,9 +87,6 @@ val List<DocElement>.toBeNotPresent
                 "is not present"
         )
     }
-
-val List<DocElement>.isNumeric
-    get() = this.forEach { it.text.matches("-?\\d+(\\.\\d+)?".toRegex()) }
 
 val List<Any>.toBeEmpty
     get() = this.apply { generalAssertion(size == 0, "list", "is empty") }
