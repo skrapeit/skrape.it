@@ -128,10 +128,14 @@ tasks {
         executionData.setFrom(project.fileTree(".") { include("**/build/jacoco/test.exec") })
         reports {
             xml.isEnabled = true
-            html.isEnabled = true
+            html.isEnabled = false
             csv.isEnabled = false
             html.destination = file("${buildDir}/reports/jacoco/html")
         }
+    }
+
+    build {
+        finalizedBy(jacocoTestReport)
     }
 }
 
