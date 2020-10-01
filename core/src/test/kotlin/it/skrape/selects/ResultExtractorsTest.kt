@@ -15,10 +15,10 @@ import it.skrape.skrape
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-internal class ResultExtractorsTest : WireMockSetup() {
+class ResultExtractorsTest : WireMockSetup() {
 
     @Test
-    internal fun `will throw custom exception if element could not be found via element function`() {
+    fun `will throw custom exception if element could not be found via element function`() {
 
         Assertions.assertThrows(ElementNotFoundException::class.java) {
             Scraper(HttpFetcher).expect {
@@ -30,7 +30,7 @@ internal class ResultExtractorsTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can pick elements via select functions`() {
+    fun `can pick elements via select functions`() {
         wireMockServer.setupStub()
 
         val expectedValue = "i'm a paragraph"
@@ -49,7 +49,7 @@ internal class ResultExtractorsTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can pick certain header select functions`() {
+    fun `can pick certain header select functions`() {
         wireMockServer.setupStub()
 
         skrape(HttpFetcher) {

@@ -21,10 +21,10 @@ import java.io.File
 import java.net.SocketTimeoutException
 
 @Testcontainers
-internal class DslTest : WireMockSetup() {
+class DslTest : WireMockSetup() {
 
     @Test
-    internal fun `dsl can skrape by url`() {
+    fun `dsl can skrape by url`() {
         wireMockServer.setupStub(path = "/example")
 
         skrape(HttpFetcher) {
@@ -84,7 +84,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `dsl can assert content-type in highly readable way`() {
+    fun `dsl can assert content-type in highly readable way`() {
         wireMockServer.setupStub(path = "/example")
 
         skrape(HttpFetcher) {
@@ -109,7 +109,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `dsl will not follow redirects if configured`() {
+    fun `dsl will not follow redirects if configured`() {
         wireMockServer.setupRedirect()
 
         skrape(HttpFetcher) {
@@ -127,7 +127,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `dsl can check certain header`() {
+    fun `dsl can check certain header`() {
         wireMockServer.setupStub()
 
         skrape(HttpFetcher) {
@@ -146,7 +146,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `dsl can check headers`() {
+    fun `dsl can check headers`() {
         wireMockServer.setupStub()
 
         skrape(HttpFetcher) {
@@ -160,7 +160,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `dsl can get body`() {
+    fun `dsl can get body`() {
         wireMockServer.setupStub()
 
         skrape(HttpFetcher) {
@@ -177,7 +177,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `dsl will follow redirect by default`() {
+    fun `dsl will follow redirect by default`() {
         wireMockServer.setupRedirect()
 
         skrape(HttpFetcher) {
@@ -191,7 +191,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `dsl can fetch url and use HTTP verb POST`() {
+    fun `dsl can fetch url and use HTTP verb POST`() {
         wireMockServer.setupPostStub()
 
         skrape(HttpFetcher) {
@@ -222,7 +222,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `dsl will throw exception on timeout`() {
+    fun `dsl will throw exception on timeout`() {
         wireMockServer.setupStub(delay = 3000)
 
         assertThrows(SocketTimeoutException::class.java) {
@@ -237,7 +237,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `dsl can fetch url and extract to inferred type`() {
+    fun `dsl can fetch url and extract to inferred type`() {
         wireMockServer.setupStub()
 
         skrape(HttpFetcher) {
@@ -255,7 +255,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `dsl can fetch url and extract using it`() {
+    fun `dsl can fetch url and extract using it`() {
         wireMockServer.setupStub()
 
         val extracted = skrape(HttpFetcher) {
@@ -271,7 +271,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `dsl can fetch url and extract using it in DSL-ish fashion`() {
+    fun `dsl can fetch url and extract using it in DSL-ish fashion`() {
         wireMockServer.setupStub()
 
         val extracted = skrape(HttpFetcher) {
@@ -301,7 +301,7 @@ internal class DslTest : WireMockSetup() {
      * for classes or data classes that have none default values
      */
     @Test
-    internal fun `dsl can fetch url and extract to data class`() {
+    fun `dsl can fetch url and extract to data class`() {
         wireMockServer.setupStub()
 
         val extracted = skrape(HttpFetcher) {
@@ -332,7 +332,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `will throw custom exception if element could not be found via lambda`() {
+    fun `will throw custom exception if element could not be found via lambda`() {
 
         assertThrows(ElementNotFoundException::class.java) {
             skrape(HttpFetcher) {
@@ -346,7 +346,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `will return empty list if element could not be found and Doc mode is relaxed`() {
+    fun `will return empty list if element could not be found and Doc mode is relaxed`() {
 
         skrape(HttpFetcher) {
             expect {
@@ -364,7 +364,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `will throw custom exception if element called by dsl could not be found`() {
+    fun `will throw custom exception if element called by dsl could not be found`() {
 
         assertThrows(ElementNotFoundException::class.java) {
             skrape(HttpFetcher) {
@@ -386,7 +386,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `dsl can fetch url and extract from skrape`() {
+    fun `dsl can fetch url and extract from skrape`() {
         wireMockServer.setupStub()
 
         val extracted = skrape(HttpFetcher) {
@@ -411,7 +411,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can read and return html from file system with default charset (UTF-8) using the DSL`() {
+    fun `can read and return html from file system with default charset (UTF-8) using the DSL`() {
         val doc = htmlDocument(File("src/test/resources/__files/example.html")) {
             expectThat(titleText).isEqualTo("i'm the title")
             this
@@ -420,7 +420,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can read and return html from file system using the DSL and non default charset`() {
+    fun `can read and return html from file system using the DSL and non default charset`() {
         val doc = htmlDocument(File("src/test/resources/__files/example.html"), Charsets.ISO_8859_1) {
             title {
                 findFirst {
@@ -478,21 +478,21 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can read html from file system with default charset (UTF-8) using the DSL`() {
+    fun `can read html from file system with default charset (UTF-8) using the DSL`() {
         htmlDocument(File("src/test/resources/__files/example.html")) {
             expectThat(titleText).isEqualTo("i'm the title")
         }
     }
 
     @Test
-    internal fun `can read html from file system using the DSL and non default charset`() {
+    fun `can read html from file system using the DSL and non default charset`() {
         htmlDocument(File("src/test/resources/__files/example.html"), Charsets.ISO_8859_1) {
             expectThat(titleText).isEqualTo("i'm the title")
         }
     }
 
     @Test
-    internal fun `can scrape js rendered page`() {
+    fun `can scrape js rendered page`() {
         wireMockServer.setupStub(fileName = "js.html")
 
         skrape(BrowserFetcher) {
@@ -509,7 +509,7 @@ internal class DslTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can preconfigure client`() {
+    fun `can preconfigure client`() {
 
         val fetcher = skrape(HttpFetcher) {
             request {

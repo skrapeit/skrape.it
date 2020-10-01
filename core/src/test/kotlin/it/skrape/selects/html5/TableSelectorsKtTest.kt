@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-internal class TableSelectorsKtTest {
+class TableSelectorsKtTest {
 
     @Test
     fun `can parse caption-tag`() {

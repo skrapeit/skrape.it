@@ -9,7 +9,7 @@ import strikt.assertions.containsExactly
 import strikt.assertions.isEmpty
 import strikt.assertions.isEqualTo
 
-internal class DocTest {
+class DocTest {
 
     private fun aValidDocument(suffix: String = "") =
             htmlDocument("<p>Hello <b> there </b> now! </p> $suffix")

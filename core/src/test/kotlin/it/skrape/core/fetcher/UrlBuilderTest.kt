@@ -6,7 +6,7 @@ import org.junit.jupiter.params.provider.EnumSource
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-internal class UrlBuilderTest {
+class UrlBuilderTest {
 
     @Test
     fun `can build valid url by default`() {

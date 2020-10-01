@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-internal class SectioningSelectorsKtTest {
+class SectioningSelectorsKtTest {
 
     @Test
     fun `can parse body-tag`() {

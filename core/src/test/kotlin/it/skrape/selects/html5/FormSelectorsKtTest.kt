@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-internal class FormSelectorsKtTest {
+class FormSelectorsKtTest {
 
     @Test
     fun `can parse button-tag`() {

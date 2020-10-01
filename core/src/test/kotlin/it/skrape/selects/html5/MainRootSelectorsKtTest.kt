@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-internal class MainRootSelectorsKtTest {
+class MainRootSelectorsKtTest {
 
     @Test
-    internal fun `can pick html-tag`() {
+    fun `can pick html-tag`() {
         val selector = aValidDocument().html("") {
             findFirst {
                 expectThat(attribute("lang")).isEqualTo("en")

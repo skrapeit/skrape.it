@@ -6,7 +6,7 @@ import it.skrape.matchers.toBe
 import it.skrape.selects.text
 import org.junit.jupiter.api.Test
 
-internal class DemarcatingEditsSelectorsKtTest {
+class DemarcatingEditsSelectorsKtTest {
 
     @Test
     fun `can parse del-tag`() {

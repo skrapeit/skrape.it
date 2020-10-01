@@ -5,7 +5,7 @@ import org.junit.jupiter.params.provider.EnumSource
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-internal class ContentTypeHeaderMatchersKtTest {
+class ContentTypeHeaderMatchersKtTest {
 
     @ParameterizedTest(name = "can match content type {0}")
     @EnumSource(ContentTypes::class)

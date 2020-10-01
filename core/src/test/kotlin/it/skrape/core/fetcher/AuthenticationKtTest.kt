@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-internal class AuthenticationKtTest {
+class AuthenticationKtTest {
 
     @Test
     fun `can create Authorization header for Basic-Auth via DSL`() {

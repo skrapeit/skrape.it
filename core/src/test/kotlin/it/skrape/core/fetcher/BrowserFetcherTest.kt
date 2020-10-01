@@ -20,10 +20,10 @@ import strikt.assertions.isEqualTo
 import java.net.SocketTimeoutException
 import java.util.*
 
-internal class BrowserFetcherTest : WireMockSetup() {
+class BrowserFetcherTest : WireMockSetup() {
 
     @Test
-    internal fun `will fetch localhost 8080 with defaults if no params`() {
+    fun `will fetch localhost 8080 with defaults if no params`() {
         wireMockServer.setupStub()
 
         val fetched = BrowserFetcher.fetch(Request())
@@ -35,7 +35,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can fetch url and use HTTP verb GET by default`() {
+    fun `can fetch url and use HTTP verb GET by default`() {
         wireMockServer.setupStub(path = "/example")
 
         val request = Request(
@@ -52,7 +52,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `will not throw exception on non existing url`() {
+    fun `will not throw exception on non existing url`() {
         val request = Request(url = "http://localhost:8080/not-existing")
 
         val fetched = BrowserFetcher.fetch(request)
@@ -61,7 +61,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `will not follow redirects if configured`() {
+    fun `will not follow redirects if configured`() {
         wireMockServer.setupRedirect()
         val request = Request(followRedirects = false)
 
@@ -71,7 +71,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `will follow redirect by default`() {
+    fun `will follow redirect by default`() {
         wireMockServer.setupRedirect()
 
         val fetched = BrowserFetcher.fetch(Request())
@@ -80,7 +80,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can fetch cookies`(){
+    fun `can fetch cookies`(){
         wireMockServer.setupCookiesStub(path = "/cookies")
 
         val request = Request(url = "https://localhost:8089/cookies", sslRelaxed = true)
@@ -94,7 +94,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `will throw exception on HTTP verb POST`() {
+    fun `will throw exception on HTTP verb POST`() {
         val request = Request(method = Method.POST)
 
         assertThrows(UnsupportedRequestOptionException::class.java) {
@@ -103,7 +103,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can parse js rendered elements`() {
+    fun `can parse js rendered elements`() {
         wireMockServer.setupStub(fileName = "js.html")
 
         val fetched = BrowserFetcher.fetch(Request())
@@ -116,7 +116,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can parse js rendered elements from https page`() {
+    fun `can parse js rendered elements from https page`() {
         wireMockServer.setupStub(fileName = "js.html")
         val request = Request(
                 url = "https://localhost:8089",
@@ -133,7 +133,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can parse es6 rendered elements from https page`() {
+    fun `can parse es6 rendered elements from https page`() {
         wireMockServer.setupStub(fileName = "es6.html")
 
         val fetched = BrowserFetcher.fetch(Request())
@@ -145,7 +145,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can handle uri scheme`() {
+    fun `can handle uri scheme`() {
         val aValideHtml = "<html><h1>headline</h1></html>"
         val base64encoded = Base64.getEncoder().encodeToString(aValideHtml.toByteArray())
         val uriScheme = "data:text/html;charset=utf-8;base64,$base64encoded"
@@ -158,7 +158,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `will not throw if response body is not html`() {
+    fun `will not throw if response body is not html`() {
         wireMockServer.setupStub(fileName = "data.json", contentType = "application/json; charset=UTF-8")
 
         val response = BrowserFetcher.fetch(Request())
@@ -166,7 +166,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `will throw exception on timeout`() {
+    fun `will throw exception on timeout`() {
         wireMockServer.setupStub(delay = 6000)
 
         assertThrows(SocketTimeoutException::class.java) {
@@ -175,7 +175,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `will extract headers to map`() {
+    fun `will extract headers to map`() {
 
         val htmlUnitHeaders = listOf(
                 NameValuePair("first-name", "first-value"),
@@ -186,7 +186,7 @@ internal class BrowserFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `will create raw cookie syntax representation of map`() {
+    fun `will create raw cookie syntax representation of map`() {
 
         val cookiesAsMap = mapOf(
                 "first-name" to "first-value",

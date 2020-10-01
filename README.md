@@ -126,7 +126,7 @@ dependencies {
 ### Parse and verify HTML from String
 ```kotlin
 @Test
-internal fun `can read and return html from String`() {
+fun `can read and return html from String`() {
     htmlDocument("""
         <html>
             <body>

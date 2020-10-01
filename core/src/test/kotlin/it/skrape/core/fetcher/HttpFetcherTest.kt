@@ -8,10 +8,10 @@ import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import java.net.SocketTimeoutException
 
-internal class HttpFetcherTest : WireMockSetup() {
+class HttpFetcherTest : WireMockSetup() {
 
     @Test
-    internal fun `will fetch localhost 8080 with defaults if no params`() {
+    fun `will fetch localhost 8080 with defaults if no params`() {
         wireMockServer.setupStub()
 
         val fetched = HttpFetcher.fetch(Request())
@@ -22,7 +22,7 @@ internal class HttpFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can fetch https url and use HTTP verb GET by default`() {
+    fun `can fetch https url and use HTTP verb GET by default`() {
         wireMockServer.setupStub(path = "/example")
         val request = Request(
                 url = "https://localhost:8089/example",
@@ -37,7 +37,7 @@ internal class HttpFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `will not throw exception on non existing url`() {
+    fun `will not throw exception on non existing url`() {
         val request = Request(url = "http://localhost:8080/not-existing")
 
         val fetched = HttpFetcher.fetch(request)
@@ -46,7 +46,7 @@ internal class HttpFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `will not follow redirects if configured`() {
+    fun `will not follow redirects if configured`() {
         wireMockServer.setupRedirect()
         val request = Request(followRedirects = false)
 
@@ -56,7 +56,7 @@ internal class HttpFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `will follow redirect by default`() {
+    fun `will follow redirect by default`() {
         wireMockServer.setupRedirect()
 
         val fetched = HttpFetcher.fetch(Request())
@@ -65,7 +65,7 @@ internal class HttpFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can fetch cookies`(){
+    fun `can fetch cookies`(){
         wireMockServer.setupCookiesStub(path = "/cookies")
         val request = Request(url = "https://localhost:8089/cookies", sslRelaxed = true)
         val fetched = HttpFetcher.fetch(request)
@@ -78,7 +78,7 @@ internal class HttpFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can fetch url and use HTTP verb POST`() {
+    fun `can fetch url and use HTTP verb POST`() {
         wireMockServer.setupPostStub()
         val request = Request(method = Method.POST)
 
@@ -90,7 +90,7 @@ internal class HttpFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can fetch url and use HTTP verb PUT`() {
+    fun `can fetch url and use HTTP verb PUT`() {
         wireMockServer.setupPutStub()
         val request = Request(method = Method.PUT)
 
@@ -101,7 +101,7 @@ internal class HttpFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can fetch url and use HTTP verb DELETE`() {
+    fun `can fetch url and use HTTP verb DELETE`() {
         wireMockServer.setupDeleteStub()
         val request = Request(method = Method.DELETE)
 
@@ -112,7 +112,7 @@ internal class HttpFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can fetch url and use HTTP verb PATCH`() {
+    fun `can fetch url and use HTTP verb PATCH`() {
         wireMockServer.setupPatchStub()
         val request = Request(method = Method.PATCH)
 
@@ -123,7 +123,7 @@ internal class HttpFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can fetch url and use HTTP verb HEAD`() {
+    fun `can fetch url and use HTTP verb HEAD`() {
         wireMockServer.setupHeadStub()
         val request = Request(method = Method.HEAD)
 
@@ -134,7 +134,7 @@ internal class HttpFetcherTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `will throw exception on timeout`() {
+    fun `will throw exception on timeout`() {
         wireMockServer.setupStub(delay = 6000)
 
         assertThrows(SocketTimeoutException::class.java
