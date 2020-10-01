@@ -49,7 +49,9 @@ object HttpFetcher : Fetcher<Request> {
         val context: HttpContext.() -> Unit = {
             url(request.url)
             header {
-                request.headers
+                request.headers.forEach { k, v ->
+                    k to v
+                }
                 "User-Agent" to request.userAgent
                 cookie {
                     request.cookies
