@@ -216,6 +216,7 @@ fun `dsl can skrape by url`() {
                         text toBe "div with class foo"
 
                         // it's possible to search for elements from former search results
+                        // ⚠️ this is only available in jitpack version for now!
                         // e.g. search all matching span elements within the above div with class foo etc...
                         span {
                             findAll {
