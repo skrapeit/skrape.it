@@ -6,7 +6,7 @@ import it.skrape.selects.attribute
 import it.skrape.selects.text
 import org.junit.jupiter.api.Test
 
-internal class TextSemanticsSelectorsKtTest {
+class TextSemanticsSelectorsKtTest {
 
     @Test
     fun `can parse a-tag`() {

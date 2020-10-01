@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-internal class InteractiveSelectorsKtTest {
+class InteractiveSelectorsKtTest {
 
     @Test
     fun `can parse details-tag`() {

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-internal class CssSelectorTest {
+class CssSelectorTest {
 
     @Test
     fun `can calculate selector from raw css selector param`() {

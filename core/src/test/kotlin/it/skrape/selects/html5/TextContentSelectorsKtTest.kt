@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-internal class TextContentSelectorsKtTest {
+class TextContentSelectorsKtTest {
 
     @Test
     fun `can parse blockquote-tag`() {

@@ -20,7 +20,7 @@ import it.skrape.skrape
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
-internal class KtorAdapterTest : WireMockSetup() {
+class KtorAdapterTest : WireMockSetup() {
     class KtorBlockingFetcher(val ktorClient: HttpClient) : Fetcher<HttpRequestBuilder> {
         override fun fetch(request: HttpRequestBuilder): Result {
             return runBlocking {
@@ -44,7 +44,7 @@ internal class KtorAdapterTest : WireMockSetup() {
     val KTOR_CLIENT = HttpClient(Apache)
 
     @Test
-    internal fun `dsl can skrape by url`() {
+    fun `dsl can skrape by url`() {
         wireMockServer.setupStub(path = "/example")
 
         skrape(KtorBlockingFetcher(KTOR_CLIENT)) {

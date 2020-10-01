@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-internal class WebComponentsSelectorsKtTest {
+class WebComponentsSelectorsKtTest {
 
     @Test
     fun `can parse content-tag`() {

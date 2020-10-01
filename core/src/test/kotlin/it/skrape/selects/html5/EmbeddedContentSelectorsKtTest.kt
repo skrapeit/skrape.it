@@ -6,7 +6,7 @@ import it.skrape.matchers.toBe
 import it.skrape.selects.text
 import org.junit.jupiter.api.Test
 
-internal class EmbeddedContentSelectorsKtTest {
+class EmbeddedContentSelectorsKtTest {
 
     @Test
     fun `can parse applet-tag`() {

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-internal class ScriptingSelectorsKtTest {
+class ScriptingSelectorsKtTest {
 
     @Test
     fun `can parse script-tag`() {

@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-internal class ScraperTest : WireMockSetup() {
+class ScraperTest : WireMockSetup() {
 
     @Test
-    internal fun `can scrape directly with default options`() {
+    fun `can scrape directly with default options`() {
         wireMockServer.setupStub(contentType = "test/type")
         val result = Scraper(HttpFetcher).scrape()
 
@@ -20,7 +20,7 @@ internal class ScraperTest : WireMockSetup() {
     }
 
     @Test
-    internal fun `can scrape html via custom http request`() {
+    fun `can scrape html via custom http request`() {
         wireMockServer.setupStub(path = "/example")
         val result = Scraper(HttpFetcher, Request(url = "http://localhost:8080/example")).scrape()
 

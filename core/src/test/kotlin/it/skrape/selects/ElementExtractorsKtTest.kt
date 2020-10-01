@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-internal class ElementExtractorsKtTest {
+class ElementExtractorsKtTest {
 
     private val document = aValidDocument() { this }
 

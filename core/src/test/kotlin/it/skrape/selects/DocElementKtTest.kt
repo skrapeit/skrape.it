@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.*
 
-internal class DocElementKtTest {
+class DocElementKtTest {
 
     @Language("HTML")
     private val aValidMarkup = """

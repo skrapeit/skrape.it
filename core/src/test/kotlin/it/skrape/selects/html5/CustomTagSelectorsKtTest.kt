@@ -9,10 +9,10 @@ import strikt.api.expectThat
 import strikt.assertions.containsExactly
 import strikt.assertions.isEqualTo
 
-internal class CustomTagSelectorsKtTest {
+class CustomTagSelectorsKtTest {
 
     @Test
-    internal fun `can pick html5 custom-tag`() {
+    fun `can pick html5 custom-tag`() {
         val selector = aValidDocument(aStandardTag("custom-tag")) {
             customTag("header") {
                 findFirst {
@@ -36,7 +36,7 @@ internal class CustomTagSelectorsKtTest {
     }
 
     @Test
-    internal fun `can pick html5 custom selector via invoked string`() {
+    fun `can pick html5 custom selector via invoked string`() {
         val selector = aValidDocument(aStandardTag("custom-tag")) {
             "custom-tag" {
                 findFirst {
@@ -49,7 +49,7 @@ internal class CustomTagSelectorsKtTest {
     }
 
     @Test
-    internal fun `can cascade custom tag selectors`() {
+    fun `can cascade custom tag selectors`() {
         val selector = aValidDocument {
             customTag("div") {
                 withId = "schnitzel"

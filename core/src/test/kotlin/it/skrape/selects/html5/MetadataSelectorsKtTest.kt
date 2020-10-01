@@ -9,7 +9,7 @@ import strikt.api.expectThat
 import strikt.assertions.contains
 import strikt.assertions.isEqualTo
 
-internal class MetadataSelectorsKtTest {
+class MetadataSelectorsKtTest {
 
     @Test
     fun `can parse base-tag`() {
