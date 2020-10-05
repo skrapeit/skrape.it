@@ -10,12 +10,12 @@ pluginManagement {
     }
     plugins {
         kotlin("jvm") version kotlin_version
+        id("org.jetbrains.dokka") version kotlin_version
         id("com.adarshr.test-logger") version "2.1.0"
-        id("com.github.ben-manes.versions") version "0.29.0"
         jacoco
-        id("org.jetbrains.dokka") version "0.10.1"
-        id("se.patrikerdes.use-latest-versions") version "0.2.14"
-        id("io.gitlab.arturbosch.detekt") version "1.10.0"
-        id("com.vanniktech.maven.publish") version "0.12.0"
+        id("com.github.ben-manes.versions") version "0.33.0"
+        id("se.patrikerdes.use-latest-versions") version "0.2.15"
+        id("io.gitlab.arturbosch.detekt") version "1.14.1"
+        id("com.vanniktech.maven.publish") version "0.13.0"
     }
 }

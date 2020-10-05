@@ -16,7 +16,7 @@
 ## Release
 ### push release to maven centrals staging repository:
 
-	./gradlew clean uploadArchives
+	./gradlew clean :core:uploadArchives
 	
 ### auto close and release artifact on maven centrals nexus:
 

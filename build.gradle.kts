@@ -53,9 +53,9 @@ allprojects {
 subprojects {
 
     dependencies {
-        val junitVersion = "5.6.2"
-        val striktVersion = "0.26.1"
-        val mockkVersion = "1.10.0"
+        val junitVersion = "5.7.0"
+        val striktVersion = "0.28.0"
+        val mockkVersion = "1.10.2"
         testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
         testImplementation("io.strikt:strikt-core:$striktVersion")
         testImplementation("io.mockk:mockk:$mockkVersion")
