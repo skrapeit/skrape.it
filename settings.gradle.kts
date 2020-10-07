@@ -1,7 +1,7 @@
 @file:Suppress("LocalVariableName")
 
 rootProject.name = "skrape-it"
-include("core", "examples")
+include("core", "examples", "ktor-extension")
 
 pluginManagement {
     val kotlin_version: String by settings
