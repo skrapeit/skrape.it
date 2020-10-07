@@ -1,5 +1,5 @@
-<a href="https://docs.skrape.it/docs/"><img width="150px" height="150px" align="right" src="skrape.png"/><a/>
-<a href="https://ktor.io/"><img width="200px" align="right" src="ktor.png"/><a/>
+<a href="https://docs.skrape.it/docs/"><img width="150px" height="150px" align="right" src="../skrape.png"/><a/>
+<a href="https://ktor.io/"><img width="200px" align="right" src="assets/ktor.png"/><a/>
 
 [![Documentation](https://img.shields.io/badge/skrape%7Bit%7D-docs-blue.svg)](https://docs.skrape.it)
 [![maven central](https://img.shields.io/maven-central/v/it.skrape/skrapeit-ktor.svg?color=0)](https://search.maven.org/search?q=g:it.skrape%20AND%20a:skrapeit-ktor&skrapeit-ktor=gav)
