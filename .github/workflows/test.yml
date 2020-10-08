@@ -1,8 +1,6 @@
-name: Build + Coverage
+name: Unit Test
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -27,9 +25,4 @@ jobs:
           java-version: ${{ matrix.java-versions }}
 
       - name: Build with Gradle
-        run: ./gradlew build
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1.0.3
-        with:
-          token: ${{secrets.CODECOV_TOKEN}}
+        run: ./gradlew build test
