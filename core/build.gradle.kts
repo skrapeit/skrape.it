@@ -12,7 +12,7 @@ dependencies {
     val jsoupVersion = "1.13.1"
     val htmlUnitVersion = "2.44.0"
     val kohttpVersion = "0.12.0"
-    val testContainersVersion = "1.14.3"
+    val testContainersVersion = "1.15.0-rc2"
     val wireMockVersion = "2.27.2"
     val log4jOverSlf4jVersion = "1.7.30"
     val logbackVersion = "1.2.3"
