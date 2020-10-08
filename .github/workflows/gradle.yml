@@ -15,11 +15,11 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - uses: actions/cache@v1
-        name: Gradle wrapper cache
+      - name: Gradle Wraper Cache
+        uses: actions/cache@v1
         with:
-          path: .gradle
-          key: ${{ runner.os }}-gradle-wrapper
+          path: ~/.gradle/wrapper/
+          key: ${{ runner.OS }}-gradle-wraper-cache
 
       - name: Set up JDK
         uses: actions/setup-java@v1
@@ -31,5 +31,6 @@ jobs:
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.0.3
+        if: matrix.java-versions == '1.8'
         with:
           token: ${{secrets.CODECOV_TOKEN}}
