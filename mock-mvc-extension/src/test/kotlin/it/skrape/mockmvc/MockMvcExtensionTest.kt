@@ -1,9 +1,8 @@
 package it.skrape.mockmvc
 
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
+import io.mockk.every
+import io.mockk.mockk
 import it.skrape.matchers.toBe
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.test.web.servlet.MvcResult
@@ -13,16 +12,16 @@ class MockMvcExtensionTest {
 
     private val aValidHtmlString = "<html><head><title>i'm the title</title></head></html>"
 
-    private val httpServletResponse = mock<MockHttpServletResponse> {
-        on { contentAsString } doReturn aValidHtmlString
+    private val httpServletResponse = mockk<MockHttpServletResponse> {
+        every { contentAsString } returns aValidHtmlString
     }
 
-    private val mvcResult = mock<MvcResult> {
-        on { response } doReturn httpServletResponse
+    private val mvcResult = mockk<MvcResult> {
+        every { response } returns httpServletResponse
     }
 
-    private val resultActions = mock<ResultActions> {
-        on { andReturn() } doReturn mvcResult
+    private val resultActions = mockk<ResultActions> {
+        every { andReturn() } returns mvcResult
     }
 
     @Test
@@ -31,5 +30,4 @@ class MockMvcExtensionTest {
             titleText toBe "i'm the title"
         }
     }
-
 }

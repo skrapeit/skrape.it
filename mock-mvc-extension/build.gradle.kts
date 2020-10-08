@@ -15,6 +15,4 @@ dependencies {
     implementation("org.springframework:spring-test:5.2.9.RELEASE")
 
     implementation("javax.servlet:javax.servlet-api:4.0.1")
-
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 }
