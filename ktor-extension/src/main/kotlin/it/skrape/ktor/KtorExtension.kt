@@ -1,4 +1,4 @@
-package io.skrape.ktor
+package it.skrape.ktor
 
 import io.ktor.server.testing.*
 import it.skrape.core.htmlDocument

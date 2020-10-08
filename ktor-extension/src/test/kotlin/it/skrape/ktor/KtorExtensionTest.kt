@@ -1,8 +1,8 @@
-package io.skrape.ktor
+package it.skrape.ktor
 
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
 import io.ktor.server.testing.*
+import io.mockk.every
+import io.mockk.mockk
 import it.skrape.matchers.toBe
 import it.skrape.matchers.toBeEmpty
 import it.skrape.matchers.toBePresent
@@ -33,8 +33,8 @@ internal class KtorExtensionTest {
 
     @Test
     fun `can parse and check a TestApplicationResponse's content`() {
-        val response = mock<TestApplicationResponse> {
-            on { content } doReturn aValidHtmlString
+        val response = mockk<TestApplicationResponse> {
+            every { content } returns aValidHtmlString
         }
 
         response.expectHtml {
@@ -60,8 +60,8 @@ internal class KtorExtensionTest {
 
     @Test
     fun `can store a parsed TestApplicationResponse's content`() {
-        val response = mock<TestApplicationResponse> {
-            on { content } doReturn aValidHtmlString
+        val response = mockk<TestApplicationResponse> {
+            every { content } returns aValidHtmlString
         }
 
         val doc = response.expectHtml {}
@@ -75,12 +75,11 @@ internal class KtorExtensionTest {
 
     @Test
     fun `can handle null response`() {
-        val response = mock<TestApplicationResponse> {
-            on { content } doReturn null
+        val response = mockk<TestApplicationResponse> {
+            every { content } returns null
         }
         Assertions.assertThrows(IllegalArgumentException::class.java) {
             response.expectHtml {}
         }
     }
-
 }
