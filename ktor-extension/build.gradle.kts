@@ -10,16 +10,16 @@ plugins {
 
 dependencies {
     val ktorVersion = "1.4.1"
-    val testContainersVersion = "1.14.3"
-    val striktVersion = "0.28.0"
 
-    implementation(project(":core"))
-    implementation("io.ktor:ktor-server-test-host:$ktorVersion")
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("io.ktor:ktor-freemarker:$ktorVersion")
-    implementation("io.ktor:ktor-locations:$ktorVersion")
+    provided(project(":core"))
+    provided("io.ktor:ktor-server-test-host:$ktorVersion")
+    provided("io.ktor:ktor-server-netty:$ktorVersion")
+    provided("io.ktor:ktor-freemarker:$ktorVersion")
+    provided("io.ktor:ktor-locations:$ktorVersion")
+}
 
-    testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
-    testImplementation("io.strikt:strikt-core:$striktVersion")
-
+fun DependencyHandlerScope.provided(dependencyNotation: Any) {
+    compileOnly(dependencyNotation)
+    testCompileOnly(dependencyNotation)
+    runtimeOnly(dependencyNotation)
 }
