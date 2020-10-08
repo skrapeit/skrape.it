@@ -11,7 +11,8 @@ import it.skrape.selects.html5.h1
 import it.skrape.selects.html5.li
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 
 internal class KtorExtensionTest {
 
@@ -66,7 +67,7 @@ internal class KtorExtensionTest {
 
         val doc = response.expectHtml {}
 
-        assertEquals("i'm the title", doc.titleText)
+        expectThat(doc.titleText).isEqualTo("i'm the title")
 
         doc.h1 {
             findFirst { text toBe "headline" }
