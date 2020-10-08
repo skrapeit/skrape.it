@@ -16,5 +16,5 @@ dependencies {
 
     implementation("javax.servlet:javax.servlet-api:4.0.1")
 
-    testImplementation("io.mockk:mockk:1.10.0")
+    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 }
