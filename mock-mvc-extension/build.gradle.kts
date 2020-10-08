@@ -8,11 +8,17 @@ plugins {
     id("org.jetbrains.dokka")
 }
 
+val springVersion = "5.2.9.RELEASE"
+
 dependencies {
-    implementation(project(":core"))
+    provided(project(":core"))
+    provided("org.springframework:spring-webmvc:$springVersion")
+    provided("org.springframework:spring-test:$springVersion")
+    provided("javax.servlet:javax.servlet-api:4.0.1")
+}
 
-    implementation("org.springframework:spring-webmvc:5.2.9.RELEASE")
-    implementation("org.springframework:spring-test:5.2.9.RELEASE")
-
-    implementation("javax.servlet:javax.servlet-api:4.0.1")
+fun DependencyHandlerScope.provided(dependencyNotation: Any) {
+    compileOnly(dependencyNotation)
+    testCompileOnly(dependencyNotation)
+    runtimeOnly(dependencyNotation)
 }
