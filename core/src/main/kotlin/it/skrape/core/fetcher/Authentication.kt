@@ -4,26 +4,26 @@ import it.skrape.SkrapeItDsl
 import java.util.*
 
 @SkrapeItDsl
-interface Authentication {
-    fun toHeaderValue(): String
-    fun String.base64Encoded() = Base64.getEncoder().encodeToString(toByteArray()).orEmpty()
+public interface Authentication {
+    public fun toHeaderValue(): String
+    public fun String.base64Encoded(): String = Base64.getEncoder().encodeToString(toByteArray()).orEmpty()
 }
 
 @SkrapeItDsl
-class BasicAuth(
-        var username: String = "",
-        var password: String = ""
+public class BasicAuth(
+    public var username: String = "",
+    public var password: String = ""
 ): Authentication {
     override fun toHeaderValue(): String = "Basic ${"$username:$password".base64Encoded()}"
 }
 
 @SkrapeItDsl
-class OAuth2(
-        var clientId: String = "",
-        var clientSecret: String = ""
+public class OAuth2(
+    public var clientId: String = "",
+    public var clientSecret: String = ""
 ): Authentication {
     override fun toHeaderValue(): String = "Bearer TODO"
 }
 
-fun basic(init: BasicAuth.() -> Unit) = BasicAuth().also(init) as Authentication
-fun oauth2(init: OAuth2.() -> Unit) = OAuth2().also(init) as Authentication
+public fun basic(init: BasicAuth.() -> Unit): Authentication = BasicAuth().also(init)
+public fun oauth2(init: OAuth2.() -> Unit): Authentication = OAuth2().also(init)

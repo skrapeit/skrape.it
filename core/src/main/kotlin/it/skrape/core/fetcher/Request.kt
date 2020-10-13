@@ -3,7 +3,7 @@ package it.skrape.core.fetcher
 import it.skrape.SkrapeItDsl
 
 @SkrapeItDsl
-data class Request(
+public data class Request(
 
         /**
          * Defines the http verb of the request.
@@ -35,14 +35,14 @@ data class Request(
          */
         var sslRelaxed: Boolean = false
 ) {
-    fun urlBuilder(init: UrlBuilder.() -> Unit): String {
+    public fun urlBuilder(init: UrlBuilder.() -> Unit): String {
         return UrlBuilder().also(init).toString()
     }
 
-    fun proxyBuilder(init: ProxyBuilder.() -> Unit)= ProxyBuilder().also(init)
+    public fun proxyBuilder(init: ProxyBuilder.() -> Unit): ProxyBuilder = ProxyBuilder().also(init)
 }
 
-enum class Method {
+public enum class Method {
     GET,
     POST,
     PUT,

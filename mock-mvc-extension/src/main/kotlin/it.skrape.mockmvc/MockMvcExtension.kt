@@ -9,7 +9,7 @@ import org.springframework.test.web.servlet.ResultActions
  * Thereby it will give you the possibility to check HTML or XML from within a MockMvc Test.
  * @return this ResultActions to support MockMvc's fluent api.
  */
-fun ResultActions.andExpectHtml(
+public fun ResultActions.andExpectHtml(
     relaxed: Boolean = true,
     init: Doc.() -> Unit
 ): ResultActions {

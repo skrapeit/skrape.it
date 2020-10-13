@@ -4,7 +4,7 @@ import it.skrape.SkrapeItDsl
 import it.skrape.core.fetcher.ContentType
 
 @SkrapeItDsl
-enum class ContentTypes(val value: String) {
+public enum class ContentTypes(public val value: String) {
     APPLICATION_GZIP("application/gzip"),
     APPLICATION_JSON("application/json"),
     APPLICATION_JSON_UTF8("application/json;charset=utf-8"),
@@ -27,13 +27,13 @@ enum class ContentTypes(val value: String) {
     IMAGE_SVG("image/svg");
 }
 
-infix fun ContentType.toBe(expected: ContentTypes) =
+public infix fun ContentType.toBe(expected: ContentTypes): ContentType /* = kotlin.String? */ =
         this.apply { generalAssertion(raw() == expected.value, expected) }
 
-infix fun ContentType.toBeNot(expected: ContentTypes) =
+public infix fun ContentType.toBeNot(expected: ContentTypes): ContentType /* = kotlin.String? */ =
         this.apply { generalAssertion(raw() != expected.value, expected) }
 
-infix fun ContentType.toContain(expected: ContentTypes) =
+public infix fun ContentType.toContain(expected: ContentTypes): ContentType /* = kotlin.String? */ =
         this.apply { generalAssertion(raw().contains(expected.value), expected) }
 
 private fun ContentType.raw() = (this as String)

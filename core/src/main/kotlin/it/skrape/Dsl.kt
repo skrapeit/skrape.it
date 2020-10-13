@@ -11,21 +11,21 @@ import kotlin.reflect.full.createInstance
  * @return Result
  */
 @SkrapeItDsl
-fun <R, T> skrape(client: Fetcher<R>, init: Scraper<R>.() -> T) =
+public fun <R, T> skrape(client: Fetcher<R>, init: Scraper<R>.() -> T): T =
         Scraper(client).init()
 
 /**
  * Read and parse html from a skrape{it} result.
  */
 @SkrapeItDsl
-fun Scraper<*>.expect(init: Result.() -> Unit) = extract(init)
+public fun Scraper<*>.expect(init: Result.() -> Unit) { extract(init) }
 
 /**
  * Read and parse html from a skrape{it} result.
  * @return T
  */
 @SkrapeItDsl
-fun <T> Scraper<*>.extract(extractor: Result.() -> T) =
+public fun <T> Scraper<*>.extract(extractor: Result.() -> T): T =
         scrape().extractor()
 
 /**
@@ -34,10 +34,10 @@ fun <T> Scraper<*>.extract(extractor: Result.() -> T) =
  * @return T
  */
 @SkrapeItDsl
-inline fun <reified T : Any> Scraper<*>.extractIt(crossinline extractor: Result.(T) -> Unit): T {
+public inline fun <reified T : Any> Scraper<*>.extractIt(crossinline extractor: Result.(T) -> Unit): T {
     val instance = T::class.createInstance()
     return extract { instance.also { extractor(it) } }
 }
 
 @DslMarker
-annotation class SkrapeItDsl
+public annotation class SkrapeItDsl

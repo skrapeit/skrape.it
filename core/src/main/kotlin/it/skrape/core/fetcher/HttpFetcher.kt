@@ -15,8 +15,8 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
-object HttpFetcher : Fetcher<Request> {
-    override val requestBuilder get() = Request()
+public object HttpFetcher : Fetcher<Request> {
+    override val requestBuilder: Request get() = Request()
 
     override fun fetch(request: Request): Result {
         configuredClient(request).use {
@@ -49,7 +49,7 @@ object HttpFetcher : Fetcher<Request> {
         val context: HttpContext.() -> Unit = {
             url(request.url)
             header {
-                request.headers.forEach { k, v ->
+                request.headers.forEach { (k, v) ->
                     k to v
                 }
                 "User-Agent" to request.userAgent

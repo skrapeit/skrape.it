@@ -12,7 +12,7 @@ package it.skrape.core.fetcher
  * @param secure If true, the cookie is only sent to the server when a request is made using https, otherwise is available in all requests
  * @param httpOnly If true, the cookie is not accessible to javascript and can only be sent in an http request
  */
-data class Cookie(
+public data class Cookie(
     val name: String,
     val value: String,
     val expires: Expires,
@@ -29,20 +29,20 @@ data class Cookie(
  *  @property LAX Policy where cookie is withheld on cross-site requests (i.e. images), but sent on url navigation from external site. Default if no SameSite is specified
  *  @property NONE Policy where cookie is sent on both cross-site and same-site requests
  */
-enum class SameSite {
+public enum class SameSite {
     STRICT,
     LAX,
     NONE
 }
 
-sealed class Expires {
-    object Session : Expires()
-    data class Date(val date: String) : Expires()
+public sealed class Expires {
+    public object Session : Expires()
+    public data class Date(val date: String) : Expires()
 }
 
-data class Domain(val domain: String, val includesSubdomains: Boolean)
+public data class Domain(val domain: String, val includesSubdomains: Boolean)
 
-fun String.toCookie(origin: String): Cookie {
+public fun String.toCookie(origin: String): Cookie {
     val attributes = this.split(";").map { it.trim() }
     val (name, value) = attributes[0].split("=")
 

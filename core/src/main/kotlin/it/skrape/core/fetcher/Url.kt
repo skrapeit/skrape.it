@@ -1,9 +1,10 @@
 package it.skrape.core.fetcher
 
 import it.skrape.SkrapeItDsl
+import it.skrape.core.fetcher.UrlBuilder.Protocol
 
 @SkrapeItDsl
-data class UrlBuilder(
+public data class UrlBuilder(
         /**
          * Defines the protocol of the URL the request is made against.
          * Defaults to HTTP.
@@ -40,7 +41,7 @@ data class UrlBuilder(
                 }
             } else ""
 
-    enum class Protocol(val value: String) {
+    public enum class Protocol(public val value: String) {
         HTTP("http://"),
         HTTPS("https://"),
         FTP("ftp://"),
@@ -48,4 +49,4 @@ data class UrlBuilder(
     }
 }
 
-typealias Url = String
+public typealias Url = String
