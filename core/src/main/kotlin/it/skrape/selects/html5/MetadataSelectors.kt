@@ -13,7 +13,7 @@ import it.skrape.selects.CssSelector
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.base(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.base(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("base$cssSelector", init)
 
 /**
@@ -26,7 +26,7 @@ fun <T> CssSelectable.base(cssSelector: String = "", init: CssSelector.() -> T) 
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.head(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.head(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("head$cssSelector", init)
 
 /**
@@ -39,7 +39,7 @@ fun <T> CssSelectable.head(cssSelector: String = "", init: CssSelector.() -> T) 
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.link(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.link(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("link$cssSelector", init)
 
 /**
@@ -52,7 +52,7 @@ fun <T> CssSelectable.link(cssSelector: String = "", init: CssSelector.() -> T) 
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.meta(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.meta(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("meta$cssSelector", init)
 
 /**
@@ -65,7 +65,7 @@ fun <T> CssSelectable.meta(cssSelector: String = "", init: CssSelector.() -> T) 
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.style(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.style(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("style$cssSelector", init)
 
 /**
@@ -78,5 +78,5 @@ fun <T> CssSelectable.style(cssSelector: String = "", init: CssSelector.() -> T)
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.title(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.title(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("title$cssSelector", init)

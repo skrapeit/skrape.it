@@ -3,10 +3,10 @@ package it.skrape.selects
 import it.skrape.exceptions.ElementNotFoundException
 import org.jsoup.nodes.Element
 
-abstract class DomTreeElement : CssSelectable() {
-    abstract val element: Element
+public abstract class DomTreeElement : CssSelectable() {
+    public abstract val element: Element
 
-    abstract val relaxed: Boolean
+    public abstract val relaxed: Boolean
 
     /**
      * Gets the combined text of this element and all its children. Whitespace is normalized and trimmed.
@@ -18,7 +18,7 @@ abstract class DomTreeElement : CssSelectable() {
      * @see #ownText()
      * @see #textNodes()
      */
-    val text by lazy { element.text().orEmpty() }
+    public val text: String by lazy { element.text().orEmpty() }
 
     /**
      * Retrieves the element's inner HTML. E.g. on a {@code <div>} with one empty {@code <p>}, would return
@@ -26,7 +26,7 @@ abstract class DomTreeElement : CssSelectable() {
      * @return String of HTML.
      * @see outerHtml
      */
-    val html: String by lazy { element.html().orEmpty() }
+    public val html: String by lazy { element.html().orEmpty() }
 
     /**
      * Get the outer HTML of this node. For example, on a {@code p} element, may return {@code <p>Para</p>}.
@@ -34,34 +34,34 @@ abstract class DomTreeElement : CssSelectable() {
      * @see html
      * @see text
      */
-    val outerHtml: String by lazy { element.outerHtml().orEmpty() }
+    public val outerHtml: String by lazy { element.outerHtml().orEmpty() }
 
     /**
      * Find all elements in the document.
      * @return List<DocElement>
      */
-    val allElements by lazy { element.allElements.map { DocElement(it) } }
+    public val allElements: List<DocElement> by lazy { element.allElements.map { DocElement(it) } }
 
-    fun eachAttribute(attributeKey: String): List<String> =
+    public fun eachAttribute(attributeKey: String): List<String> =
             allElements.map { it attribute attributeKey }
                     .filter { it.isNotEmpty() }
 
-    val eachHref by lazy { eachAttribute("href").filter { it.isNotEmpty() } }
+    public val eachHref: List<String> by lazy { eachAttribute("href").filter { it.isNotEmpty() } }
 
-    val eachSrc by lazy { eachAttribute("src").filter { it.isNotEmpty() } }
+    public val eachSrc: List<String> by lazy { eachAttribute("src").filter { it.isNotEmpty() } }
 
-    val eachLink
+    public val eachLink: Map<String, String>
         get(): Map<String, String> =
             allElements.filter { it.hasAttribute("href") }
                     .associate { it.text to it.attribute("href") }
 
-    val eachImage: Map<String, String>
+    public val eachImage: Map<String, String>
         get(): Map<String, String> =
             allElements.filter { it.tagName == "img" }
                     .filter { it.hasAttribute("src") }
                     .associate { it.attribute("alt") to it.attribute("src") }
 
-    open fun makeDefaultElement(cssSelector: String): DocElement {
+    public open fun makeDefaultElement(cssSelector: String): DocElement {
         return super.makeDefault(cssSelector)
     }
 
@@ -80,5 +80,5 @@ abstract class DomTreeElement : CssSelectable() {
         return if (relaxed) selected.orEmpty() else selected ?: throw ElementNotFoundException(rawCssSelector)
     }
 
-    override fun toString() = element.toString()
+    override fun toString(): String = element.toString()
 }

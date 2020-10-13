@@ -13,7 +13,7 @@ import it.skrape.selects.CssSelector
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.script(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.script(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("script$cssSelector", init)
 
 /**
@@ -26,7 +26,7 @@ fun <T> CssSelectable.script(cssSelector: String = "", init: CssSelector.() -> T
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.canvas(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.canvas(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("canvas$cssSelector", init)
 
 /**
@@ -39,5 +39,5 @@ fun <T> CssSelectable.canvas(cssSelector: String = "", init: CssSelector.() -> T
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.noscript(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.noscript(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("noscript$cssSelector", init)

@@ -13,7 +13,7 @@ import it.skrape.selects.CssSelector
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.del(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.del(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("del$cssSelector", init)
 
 /**
@@ -26,5 +26,5 @@ fun <T> CssSelectable.del(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.ins(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.ins(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("ins$cssSelector", init)

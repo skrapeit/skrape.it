@@ -13,7 +13,7 @@ import it.skrape.selects.CssSelector
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.area(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.area(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("area$cssSelector", init)
 
 /**
@@ -26,7 +26,7 @@ fun <T> CssSelectable.area(cssSelector: String = "", init: CssSelector.() -> T) 
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.audio(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.audio(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("audio$cssSelector", init)
 
 /**
@@ -39,7 +39,7 @@ fun <T> CssSelectable.audio(cssSelector: String = "", init: CssSelector.() -> T)
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.img(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.img(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("img$cssSelector", init)
 
 /**
@@ -52,7 +52,7 @@ fun <T> CssSelectable.img(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.map(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.map(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("map$cssSelector", init)
 
 /**
@@ -65,7 +65,7 @@ fun <T> CssSelectable.map(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.track(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.track(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("track$cssSelector", init)
 
 /**
@@ -78,5 +78,5 @@ fun <T> CssSelectable.track(cssSelector: String = "", init: CssSelector.() -> T)
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.video(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.video(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("video$cssSelector", init)

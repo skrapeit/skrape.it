@@ -13,7 +13,7 @@ import it.skrape.selects.CssSelector
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.content(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.content(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("content$cssSelector", init)
 
 /**
@@ -26,7 +26,7 @@ fun <T> CssSelectable.content(cssSelector: String = "", init: CssSelector.() -> 
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.shadow(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.shadow(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("shadow$cssSelector", init)
 
 /**
@@ -39,7 +39,7 @@ fun <T> CssSelectable.shadow(cssSelector: String = "", init: CssSelector.() -> T
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.slot(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.slot(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("slot$cssSelector", init)
 
 /**
@@ -52,5 +52,5 @@ fun <T> CssSelectable.slot(cssSelector: String = "", init: CssSelector.() -> T) 
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.template(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.template(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("template$cssSelector", init)

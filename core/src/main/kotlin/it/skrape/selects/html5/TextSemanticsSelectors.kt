@@ -15,7 +15,7 @@ import it.skrape.selects.CssSelector
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.a(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.a(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("a$cssSelector", init)
 
 /**
@@ -28,7 +28,7 @@ fun <T> CssSelectable.a(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.abbr(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.abbr(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("abbr$cssSelector", init)
 
 /**
@@ -41,7 +41,7 @@ fun <T> CssSelectable.abbr(cssSelector: String = "", init: CssSelector.() -> T) 
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.b(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.b(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("b$cssSelector", init)
 
 /**
@@ -54,7 +54,7 @@ fun <T> CssSelectable.b(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.bdi(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.bdi(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("bdi$cssSelector", init)
 
 /**
@@ -67,7 +67,7 @@ fun <T> CssSelectable.bdi(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.bdo(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.bdo(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("bdo$cssSelector", init)
 
 /**
@@ -80,7 +80,7 @@ fun <T> CssSelectable.bdo(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.br(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.br(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("br$cssSelector", init)
 
 /**
@@ -93,7 +93,7 @@ fun <T> CssSelectable.br(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.cite(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.cite(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("cite$cssSelector", init)
 
 /**
@@ -106,7 +106,7 @@ fun <T> CssSelectable.cite(cssSelector: String = "", init: CssSelector.() -> T) 
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.code(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.code(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("code$cssSelector", init)
 
 /**
@@ -119,7 +119,7 @@ fun <T> CssSelectable.code(cssSelector: String = "", init: CssSelector.() -> T) 
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.data(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.data(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("data$cssSelector", init)
 
 /**
@@ -132,7 +132,7 @@ fun <T> CssSelectable.data(cssSelector: String = "", init: CssSelector.() -> T) 
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.dfn(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.dfn(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("dfn$cssSelector", init)
 
 /**
@@ -145,7 +145,7 @@ fun <T> CssSelectable.dfn(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.em(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.em(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("em$cssSelector", init)
 
 /**
@@ -158,7 +158,7 @@ fun <T> CssSelectable.em(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.i(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.i(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("i$cssSelector", init)
 
 /**
@@ -171,7 +171,7 @@ fun <T> CssSelectable.i(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.kbd(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.kbd(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("kbd$cssSelector", init)
 
 /**
@@ -184,7 +184,7 @@ fun <T> CssSelectable.kbd(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.mark(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.mark(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("mark$cssSelector", init)
 
 /**
@@ -197,7 +197,7 @@ fun <T> CssSelectable.mark(cssSelector: String = "", init: CssSelector.() -> T) 
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.q(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.q(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("q$cssSelector", init)
 
 /**
@@ -210,7 +210,7 @@ fun <T> CssSelectable.q(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.rb(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.rb(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("rb$cssSelector", init)
 
 /**
@@ -223,7 +223,7 @@ fun <T> CssSelectable.rb(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.rtc(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.rtc(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("rtc$cssSelector", init)
 
 /**
@@ -236,7 +236,7 @@ fun <T> CssSelectable.rtc(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.ruby(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.ruby(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("ruby$cssSelector", init)
 
 /**
@@ -249,7 +249,7 @@ fun <T> CssSelectable.ruby(cssSelector: String = "", init: CssSelector.() -> T) 
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.s(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.s(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("s$cssSelector", init)
 
 /**
@@ -262,7 +262,7 @@ fun <T> CssSelectable.s(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.samp(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.samp(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("samp$cssSelector", init)
 
 /**
@@ -275,7 +275,7 @@ fun <T> CssSelectable.samp(cssSelector: String = "", init: CssSelector.() -> T) 
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.small(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.small(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("small$cssSelector", init)
 
 /**
@@ -288,7 +288,7 @@ fun <T> CssSelectable.small(cssSelector: String = "", init: CssSelector.() -> T)
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.span(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.span(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("span$cssSelector", init)
 
 /**
@@ -301,7 +301,7 @@ fun <T> CssSelectable.span(cssSelector: String = "", init: CssSelector.() -> T) 
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.strong(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.strong(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("strong$cssSelector", init)
 
 /**
@@ -314,7 +314,7 @@ fun <T> CssSelectable.strong(cssSelector: String = "", init: CssSelector.() -> T
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.sub(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.sub(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("sub$cssSelector", init)
 
 /**
@@ -327,7 +327,7 @@ fun <T> CssSelectable.sub(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.sup(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.sup(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("sup$cssSelector", init)
 
 /**
@@ -340,7 +340,7 @@ fun <T> CssSelectable.sup(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.time(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.time(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("time$cssSelector", init)
 
 /**
@@ -353,7 +353,7 @@ fun <T> CssSelectable.time(cssSelector: String = "", init: CssSelector.() -> T) 
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.tt(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.tt(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("tt$cssSelector", init)
 
 /**
@@ -366,7 +366,7 @@ fun <T> CssSelectable.tt(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.u(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.u(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("u$cssSelector", init)
 
 /**
@@ -379,7 +379,7 @@ fun <T> CssSelectable.u(cssSelector: String = "", init: CssSelector.() -> T) =
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.`var`(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.`var`(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("var$cssSelector", init)
 
 /**
@@ -392,5 +392,5 @@ fun <T> CssSelectable.`var`(cssSelector: String = "", init: CssSelector.() -> T)
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.wbr(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.wbr(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("wbr$cssSelector", init)

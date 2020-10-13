@@ -5,15 +5,18 @@ import org.jsoup.nodes.Element
 
 @Suppress("TooManyFunctions")
 @SkrapeItDsl
-class DocElement internal constructor(override val element: Element, override val relaxed: Boolean) : DomTreeElement() {
-    constructor(element: Element) : this(element, false)
+public class DocElement internal constructor(
+    override val element: Element,
+    override val relaxed: Boolean
+) : DomTreeElement() {
+    public constructor(element: Element) : this(element, false)
 
     /**
      * Get the name of the tag for this element. E.g. {@code div}.
      *
      * @return String of the tag's name
      */
-    val tagName by lazy { element.tagName().orEmpty() }
+    public val tagName: String by lazy { element.tagName().orEmpty() }
 
     /**
      * Gets the text owned by this element only; does not get the combined text of all children.
@@ -24,102 +27,106 @@ class DocElement internal constructor(override val element: Element, override va
      * @return unencoded text, or empty string if none.
      * @see text
      */
-    val ownText by lazy { element.ownText().orEmpty() }
+    public val ownText: String by lazy { element.ownText().orEmpty() }
 
     /**
      * Get all of the element's attributes.
      * @return Map<String, String>> of attribute key value pairs
      */
-    val attributes: Map<String, String> by lazy { element.attributes().map { it.key to it.value }.toMap() }
+    public val attributes: Map<String, String> by lazy { element.attributes().map { it.key to it.value }.toMap() }
 
     /**
      * Get all attribute keys of the element.
      * @return List<String>
      */
-    val attributeKeys by lazy { attributes.map { it.key } }
+    public val attributeKeys: List<String> by lazy { attributes.map { it.key } }
 
     /**
      * Get all attribute values of the element.
      * @return List<String>
      */
-    val attributeValues by lazy { attributes.map { it.value } }
+    public val attributeValues: List<String> by lazy { attributes.map { it.value } }
 
     /**
      * Get the element's attribute value of a given attribute key.
      * @return String of attribute value or empty if non existing.
      */
-    infix fun attribute(attributeKey: String): String = attributes[attributeKey].orEmpty()
+    public infix fun attribute(attributeKey: String): String = attributes[attributeKey].orEmpty()
 
-    fun hasAttribute(attributeKey: String): Boolean = attribute(attributeKey).isNotBlank()
+    public fun hasAttribute(attributeKey: String): Boolean = attribute(attributeKey).isNotBlank()
 
     /**
      * Check if the element is present thereby it will return true if the given node can be found otherwise false.
      * @return Boolean
      */
-    val isPresent by lazy { allElements.isNotEmpty() }
+    public val isPresent: Boolean by lazy { allElements.isNotEmpty() }
 
-    val isNotPresent by lazy { !isPresent }
+    public val isNotPresent: Boolean by lazy { !isPresent }
 
-    val className by lazy { element.className().orEmpty() }
+    public val className: String by lazy { element.className().orEmpty() }
 
-    val cssSelector by lazy { element.cssSelector().orEmpty() }
+    public val cssSelector: String by lazy { element.cssSelector().orEmpty() }
 
     override val toCssSelector: String
         get() = cssSelector
 
-    @Deprecated("use 'findAll(cssSelector: String) instead'", ReplaceWith("findAll(cssSelector)"))
-    fun select(cssSelector: String) = element.select(cssSelector).map { DocElement(it, relaxed) }
+    @Deprecated(
+        "use 'findAll(cssSelector: String) instead'",
+        ReplaceWith("findAll(cssSelector)")
+    )
+    public fun select(cssSelector: String): List<DocElement> =
+        element.select(cssSelector).map { DocElement(it, relaxed) }
 }
 
-val List<DocElement>.text
+public val List<DocElement>.text: String
     get(): String = joinToString(separator = " ") { it.text }
 
-val List<DocElement>.html
+public val List<DocElement>.html: String
     get(): String = joinToString(separator = "\n") { it.outerHtml }
 
-val List<DocElement>.isPresent
+public val List<DocElement>.isPresent: Boolean
     get(): Boolean = size > 0
 
-val List<DocElement>.isNotPresent
+public val List<DocElement>.isNotPresent: Boolean
     get(): Boolean = !isPresent
 
-val List<DocElement>.eachText
+public val List<DocElement>.eachText: List<String>
     get(): List<String> = map { it.text }
 
-infix fun List<DocElement>.attribute(attributeKey: String): String =
+public infix fun List<DocElement>.attribute(attributeKey: String): String =
         filter { it.hasAttribute(attributeKey) }
                 .joinToString { it.attribute(attributeKey) }
 
-infix fun List<DocElement>.eachAttribute(attributeKey: String): List<String> =
+public infix fun List<DocElement>.eachAttribute(attributeKey: String): List<String> =
         map { it attribute attributeKey }
                 .filter { it.isNotEmpty() }
 
-val List<DocElement>.eachHref
+public val List<DocElement>.eachHref: List<String>
     get(): List<String> = eachAttribute("href")
             .filter { it.isNotEmpty() }
 
-val List<DocElement>.eachSrc
+public val List<DocElement>.eachSrc: List<String>
     get(): List<String> = eachAttribute("src")
             .filter { it.isNotEmpty() }
 
-val List<DocElement>.eachLink
+public val List<DocElement>.eachLink: Map<String, String>
     get(): Map<String, String> =
         filter { it.hasAttribute("href") }
                 .associate { it.text to it.attribute("href") }
 
-val List<DocElement>.eachImage
+public val List<DocElement>.eachImage: Map<String, String>
     get(): Map<String, String> =
         filter { it.tagName == "img" }
                 .filter { it.hasAttribute("src") }
                 .associate { it.attribute("alt") to it.attribute("src") }
 
 
-fun <T> List<DocElement>.forEachLink(init: (text: String, url: String) -> T) {
+public fun <T> List<DocElement>.forEachLink(init: (text: String, url: String) -> T) {
     filter { it.hasAttribute("href") }
             .forEach { init(it.text, it.attribute("href")) }
 }
 
-fun <T> List<DocElement>.forEachImage(init: (altText: String, url: String) -> T) {
+public fun <T> List<DocElement>.forEachImage(init: (altText: String, url: String) -> T) {
     filter { it.tagName == "img" }
             .filter { it.hasAttribute("src") }
             .forEach { init(it.attribute("alt"), it.attribute("src")) }

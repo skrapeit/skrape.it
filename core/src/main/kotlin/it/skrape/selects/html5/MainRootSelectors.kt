@@ -13,5 +13,5 @@ import it.skrape.selects.CssSelector
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.html(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.html(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("html$cssSelector", init)

@@ -6,12 +6,12 @@ import java.util.*
 
 @Suppress("TooManyFunctions")
 @SkrapeItDsl
-abstract class CssSelectable {
-    abstract val toCssSelector: String
+public abstract class CssSelectable {
+    public abstract val toCssSelector: String
 
     internal abstract fun applySelector(rawCssSelector: String): List<DocElement>
 
-    fun <T> selection(cssSelector: String, init: CssSelector.() -> T) =
+    public fun <T> selection(cssSelector: String, init: CssSelector.() -> T): T =
             CssSelector(rawCssSelector = cssSelector, doc = this).init()
 
     /**
@@ -19,10 +19,10 @@ abstract class CssSelectable {
      * @param init block for configuring the CSS-Selector that will be considered during calculation
      * @return T
      */
-    operator fun <T> String.invoke(init: CssSelector.() -> T) =
+    public operator fun <T> String.invoke(init: CssSelector.() -> T): T =
             this@CssSelectable.selection(this, init)
 
-    open fun makeDefault(cssSelector: String): DocElement {
+    public open fun makeDefault(cssSelector: String): DocElement {
         return DocElement(Element("${UUID.randomUUID()}"))
     }
 
@@ -32,13 +32,13 @@ abstract class CssSelectable {
      * @param cssSelector that represents an CSS-Selector
      * @return T
      */
-    infix fun findAll(cssSelector: String): List<DocElement> =
+    public infix fun findAll(cssSelector: String): List<DocElement> =
             this.applySelector(cssSelector)
 
-    fun findByIndex(index: Int, cssSelector: String = ""): DocElement =
+    public fun findByIndex(index: Int, cssSelector: String = ""): DocElement =
             findAll(cssSelector).getOrElse(index) { makeDefault(cssSelector) }
 
-    operator fun Int.invoke(cssSelector: String = ""): DocElement =
+    public operator fun Int.invoke(cssSelector: String = ""): DocElement =
             findByIndex(this, cssSelector)
 
     /**
@@ -48,21 +48,21 @@ abstract class CssSelectable {
      * @param cssSelector that represents an CSS-Selector
      * @return T
      */
-    infix fun findFirst(cssSelector: String): DocElement =
+    public infix fun findFirst(cssSelector: String): DocElement =
             findByIndex(0, cssSelector)
 
-    fun findSecond(cssSelector: String = ""): DocElement =
+    public fun findSecond(cssSelector: String = ""): DocElement =
             findByIndex(1, cssSelector)
 
-    fun findThird(cssSelector: String = ""): DocElement =
+    public fun findThird(cssSelector: String = ""): DocElement =
             findByIndex(2, cssSelector)
 
-    fun findLast(cssSelector: String = ""): DocElement {
+    public fun findLast(cssSelector: String = ""): DocElement {
         val index = findAll(cssSelector).lastIndex
         return findByIndex(index, cssSelector)
     }
 
-    fun findSecondLast(cssSelector: String = ""): DocElement {
+    public fun findSecondLast(cssSelector: String = ""): DocElement {
         val index = findAll(cssSelector).lastIndex - 1
         return findByIndex(index, cssSelector)
     }
@@ -73,13 +73,13 @@ abstract class CssSelectable {
      * @param cssSelector that represents an CSS-Selector
      * @return T
      */
-    fun <T> findAll(cssSelector: String = "", init: List<DocElement>.() -> T) =
+    public fun <T> findAll(cssSelector: String = "", init: List<DocElement>.() -> T): T =
             findAll(cssSelector).init()
 
-    fun <T> findByIndex(index: Int, cssSelector: String = "", init: DocElement.() -> T) =
+    public fun <T> findByIndex(index: Int, cssSelector: String = "", init: DocElement.() -> T): T =
             findByIndex(index, cssSelector).init()
 
-    operator fun <T> Int.invoke(cssSelector: String = "", init: DocElement.() -> T) =
+    public operator fun <T> Int.invoke(cssSelector: String = "", init: DocElement.() -> T): T =
             this(cssSelector).init()
 
     /**
@@ -89,18 +89,18 @@ abstract class CssSelectable {
      * @param cssSelector that represents an CSS-Selector
      * @return T
      */
-    fun <T> findFirst(cssSelector: String = "", init: DocElement.() -> T) =
+    public fun <T> findFirst(cssSelector: String = "", init: DocElement.() -> T): T =
             findFirst(cssSelector).init()
 
-    fun <T> findSecond(cssSelector: String = "", init: DocElement.() -> T) =
+    public fun <T> findSecond(cssSelector: String = "", init: DocElement.() -> T): T =
             findSecond(cssSelector).init()
 
-    fun <T> findThird(cssSelector: String = "", init: DocElement.() -> T) =
+    public fun <T> findThird(cssSelector: String = "", init: DocElement.() -> T): T =
             findThird(cssSelector).init()
 
-    fun <T> findLast(cssSelector: String = "", init: DocElement.() -> T) =
+    public fun <T> findLast(cssSelector: String = "", init: DocElement.() -> T): T =
             findLast(cssSelector).init()
 
-    fun <T> findSecondLast(cssSelector: String = "", init: DocElement.() -> T) =
+    public fun <T> findSecondLast(cssSelector: String = "", init: DocElement.() -> T): T =
             findSecondLast(cssSelector).init()
 }

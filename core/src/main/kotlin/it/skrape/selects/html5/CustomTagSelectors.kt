@@ -13,5 +13,5 @@ import it.skrape.selects.CssSelector
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.customTag(tag: String, cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.customTag(tag: String, cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("$tag$cssSelector", init)
