@@ -5,7 +5,7 @@ package it.skrape.matchers
 import it.skrape.core.fetcher.Result
 
 @Suppress("EnumNaming", "MagicNumber", "unused")
-enum class HttpStatus(val code: Int, val message: String) {
+public enum class HttpStatus(public val code: Int, public val message: String) {
     `1xx_Informational_response`(1, "Informational response"),
     `100_Continue`(100, "Continue"),
     `101_Switching_Protocols`(101, "Switching_Protocols"),
@@ -80,10 +80,10 @@ enum class HttpStatus(val code: Int, val message: String) {
     `510_Gone`(510, "Gone"),
     `511_Network_Authentication_Required`(511, "Network Authentication Required");
 
-    fun toStatus() = Result.Status(code, message)
+    public fun toStatus(): Result.Status = Result.Status(code, message)
 }
 
-infix fun Result.Status.toBe(expected: HttpStatus): Result.Status {
+public infix fun Result.Status.toBe(expected: HttpStatus): Result.Status {
     @Suppress("MagicNumber")
     if (expected.code <= 5) {
         return statusAssertion(this.code.toString().startsWith(expected.code.toString()), expected.toStatus())
@@ -91,7 +91,7 @@ infix fun Result.Status.toBe(expected: HttpStatus): Result.Status {
     return statusAssertion(this == expected.toStatus(), expected.toStatus())
 }
 
-infix fun Result.Status.toBeNot(expected: HttpStatus): Result.Status {
+public infix fun Result.Status.toBeNot(expected: HttpStatus): Result.Status {
     @Suppress("MagicNumber")
     if (expected.code <= 5) {
         return statusAssertion(!this.code.toString().startsWith(expected.code.toString()), expected.toStatus())

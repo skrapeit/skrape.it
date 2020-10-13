@@ -6,7 +6,7 @@ import org.jsoup.nodes.Element
 
 @Suppress("TooManyFunctions")
 @SkrapeItDsl
-class Doc(val document: Document, override var relaxed: Boolean = false) : DomTreeElement() {
+public class Doc(public val document: Document, override var relaxed: Boolean = false) : DomTreeElement() {
     override val element: Element
         get() = this.document
 
@@ -17,9 +17,9 @@ class Doc(val document: Document, override var relaxed: Boolean = false) : DomTr
      * @return unencoded, un-normalized text
      * @see text
      */
-    val wholeText by lazy { document.wholeText().orEmpty() }
+    public val wholeText: String by lazy { document.wholeText().orEmpty() }
 
-    val titleText by lazy { document.title().orEmpty() }
+    public val titleText: String by lazy { document.title().orEmpty() }
 
     override val toCssSelector: String = ""
 

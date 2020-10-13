@@ -13,7 +13,7 @@ import it.skrape.selects.CssSelector
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.details(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.details(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("details$cssSelector", init)
 
 /**
@@ -26,7 +26,7 @@ fun <T> CssSelectable.details(cssSelector: String = "", init: CssSelector.() -> 
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.dialog(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.dialog(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("dialog$cssSelector", init)
 
 /**
@@ -39,7 +39,7 @@ fun <T> CssSelectable.dialog(cssSelector: String = "", init: CssSelector.() -> T
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.menu(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.menu(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("menu$cssSelector", init)
 
 /**
@@ -52,7 +52,7 @@ fun <T> CssSelectable.menu(cssSelector: String = "", init: CssSelector.() -> T) 
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.menuitem(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.menuitem(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("menuitem$cssSelector", init)
 
 /**
@@ -65,5 +65,5 @@ fun <T> CssSelectable.menuitem(cssSelector: String = "", init: CssSelector.() ->
  * @param cssSelector
  * @return T
  */
-fun <T> CssSelectable.summary(cssSelector: String = "", init: CssSelector.() -> T) =
+public fun <T> CssSelectable.summary(cssSelector: String = "", init: CssSelector.() -> T): T =
         selection("summary$cssSelector", init)

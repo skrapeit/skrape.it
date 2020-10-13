@@ -5,15 +5,15 @@ import org.jsoup.nodes.Document
 
 @Suppress("LongParameterList")
 @SkrapeItDsl
-class CssSelector(
-        var rawCssSelector: String = "",
-        var withClass: CssClassName? = null,
-        var withId: String? = null,
-        var withAttributeKey: String? = null,
-        var withAttributeKeys: List<String>? = null,
-        var withAttribute: Pair<String, String>? = null,
-        var withAttributes: List<Pair<String, String>>? = null,
-        val doc: CssSelectable = Doc(Document(""))
+public class CssSelector(
+    public var rawCssSelector: String = "",
+    public var withClass: CssClassName? = null,
+    public var withId: String? = null,
+    public var withAttributeKey: String? = null,
+    public var withAttributeKeys: List<String>? = null,
+    public var withAttribute: Pair<String, String>? = null,
+    public var withAttributes: List<Pair<String, String>>? = null,
+    public val doc: CssSelectable = Doc(Document(""))
 ) : CssSelectable() {
     override val toCssSelector: String
         get() = "${doc.toCssSelector} $ownCssSelector".trim()
@@ -23,7 +23,7 @@ class CssSelector(
         return doc.applySelector(combinedSelector)
     }
 
-    val ownCssSelector: String
+    private val ownCssSelector: String
         get() {
             val calculatedSelector =
                     withId.toIdSelector().orEmpty() +
@@ -54,9 +54,9 @@ class CssSelector(
     private fun String.withoutSpaces() = replace("\\s".toRegex(), "")
 }
 
-typealias CssClassName = String
+public typealias CssClassName = String
 
-infix fun CssClassName.and(value: String) = "$this.$value"
+public infix fun CssClassName.and(value: String): String = "$this.$value"
 
-infix fun Pair<String, String>.and(pair: Pair<String, String>) =
+public infix fun Pair<String, String>.and(pair: Pair<String, String>): MutableList<Pair<String, String>> =
         mutableListOf(this).apply { add(pair) }
