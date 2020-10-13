@@ -4,6 +4,7 @@ import com.adarshr.gradle.testlogger.TestLoggerExtension
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension.Companion.DEFAULT_SRC_DIR_KOTLIN
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -50,7 +51,7 @@ allprojects {
     }
 
     kotlin {
-        explicitApi = org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode.Warning
+        explicitApi = ExplicitApiMode.Strict
     }
 }
 
