@@ -1,7 +1,7 @@
 package it.skrape.core.fetcher
 
-interface Fetcher<T> {
-    fun fetch(request: T): Result
+public interface Fetcher<T> {
+    public fun fetch(request: T): Result
 
-    val requestBuilder: T
+    public val requestBuilder: T
 }

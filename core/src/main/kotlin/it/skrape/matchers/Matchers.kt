@@ -4,49 +4,49 @@ import it.skrape.selects.DocElement
 import it.skrape.selects.isNotPresent
 import it.skrape.selects.isPresent
 
-infix fun Int.toBe(expected: Int) =
+public infix fun Int.toBe(expected: Int): Int =
         this.apply { generalAssertion(this == expected, expected) }
 
-infix fun String?.toBe(expected: String?) =
+public infix fun String?.toBe(expected: String?): String? =
         this.apply { generalAssertion(this == expected, expected) }
 
-infix fun String?.toBeNot(expected: String?) =
+public infix fun String?.toBeNot(expected: String?): String? =
         this.apply { generalAssertion(this != expected, expected) }
 
-infix fun String?.toContain(expected: String) =
+public infix fun String?.toContain(expected: String): String? =
         this.apply { generalAssertion("$this".contains(expected), expected) }
 
-infix fun String?.toNotContain(expected: String) =
+public infix fun String?.toNotContain(expected: String): String? =
         this.apply { generalAssertion(!"$this".contains(expected), expected) }
 
-val String?.isNumeric
+public val String?.isNumeric: String
     get() = this?.apply {
         generalAssertion(
             this.matches("^-?\\d+(\\.\\d+)?$".toRegex()), "'$this'", "is an integer or a decimal")
     }?: throw AssertionError("expect text to be a numeric but it was 'null'")
 
-val String?.isInteger
+public val String?.isInteger: String
     get() = this?.apply {
         generalAssertion(
             this.matches("^-?\\d+?\$".toRegex()), "'$this'", "is an integer")
     } ?: throw AssertionError("expect text to be an integer but it was 'null'")
 
-val String?.isDecimal
+public val String?.isDecimal: String
     get() = this?.apply {
         generalAssertion(
             this.matches("^\\d+\\.\\d+\$".toRegex()), "'$this'", "is a decimal")
     } ?: throw AssertionError("expect text to be a decimal but it was 'null'")
 
-val String?.containsNumeric
+public val String?.containsNumeric: String
     get() = this?.apply {
         generalAssertion(
             this.matches(".*-?\\d+(\\.\\d+)?.*".toRegex()), "'$this'", "contains an integer or a decimal")
     }?: throw AssertionError("expect text to contain a numeric but it was 'null'")
 
-infix fun List<Any>.toContain(expected: String) =
+public infix fun List<Any>.toContain(expected: String): List<Any> =
         this.apply { generalAssertion(this.contains(expected), expected) }
 
-val List<DocElement>.toBePresent
+public val List<DocElement>.toBePresent: List<DocElement>
     get() = this.apply {
         generalAssertion(
                 isPresent,
@@ -55,7 +55,7 @@ val List<DocElement>.toBePresent
         )
     }
 
-infix fun List<DocElement>.toBePresentTimes(amount: Int) =
+public infix fun List<DocElement>.toBePresentTimes(amount: Int): List<DocElement> =
         this.apply {
             generalAssertion(
                     size == amount,
@@ -64,13 +64,13 @@ infix fun List<DocElement>.toBePresentTimes(amount: Int) =
             )
         }
 
-val List<DocElement>.toBePresentExactlyOnce
+public val List<DocElement>.toBePresentExactlyOnce: List<DocElement>
     get() = this toBePresentTimes 1
 
-val List<DocElement>.toBePresentExactlyTwice
+public val List<DocElement>.toBePresentExactlyTwice: List<DocElement>
     get() = this toBePresentTimes 2
 
-val DocElement.toBePresent
+public val DocElement.toBePresent: DocElement
     get() = this.apply {
         generalAssertion(
                 isPresent,
@@ -79,7 +79,7 @@ val DocElement.toBePresent
         )
     }
 
-val List<DocElement>.toBeNotPresent
+public val List<DocElement>.toBeNotPresent: List<DocElement>
     get() = this.apply {
         generalAssertion(
                 isNotPresent,
@@ -88,8 +88,8 @@ val List<DocElement>.toBeNotPresent
         )
     }
 
-val List<Any>.toBeEmpty
+public val List<Any>.toBeEmpty: List<Any>
     get() = this.apply { generalAssertion(size == 0, "list", "is empty") }
 
-val List<Any>.toBeNotEmpty
+public val List<Any>.toBeNotEmpty: List<Any>
     get() = this.apply { generalAssertion(size > 0, "list", "is none empty") }

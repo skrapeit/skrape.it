@@ -8,7 +8,7 @@ import it.skrape.selects.Doc
  * Will convert a TestApplicationResponse body to a parsed Document.
  * Thereby it will give you the possibility to check HTML or XML from within a Ktor-test.
  */
-fun TestApplicationResponse.expectHtml(
+public fun TestApplicationResponse.expectHtml(
     relaxed: Boolean = true,
     init: Doc.() -> Unit
 ): Doc {
@@ -19,7 +19,7 @@ fun TestApplicationResponse.expectHtml(
 /**
  * Helper function to run the `expectHtml` function with the TestApplicationCall response
  */
-fun TestApplicationCall.expectHtml(
+public fun TestApplicationCall.expectHtml(
     relaxed: Boolean = true,
     init: Doc.() -> Unit
 ): Doc = response.expectHtml(relaxed, init)

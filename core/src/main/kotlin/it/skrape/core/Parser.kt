@@ -38,7 +38,7 @@ internal class Parser(
  * Read and parse HTML from a String.
  * @param html represents a html snippet
  */
-fun <T> htmlDocument(
+public fun <T> htmlDocument(
         html: String,
         charset: Charset = Charsets.UTF_8,
         jsExecution: Boolean = false,
@@ -54,7 +54,7 @@ fun <T> htmlDocument(
  * @param jsExecution defaults to false
  * @param baseUri defaults to empty String
  */
-fun <T> htmlDocument(
+public fun <T> htmlDocument(
         file: File,
         charset: Charset = Charsets.UTF_8,
         jsExecution: Boolean = false,
@@ -63,21 +63,21 @@ fun <T> htmlDocument(
 ) :T = htmlDocument(file.readText(charset), charset, jsExecution, baseUri).init()
 
 @SkrapeItDsl
-fun htmlDocument(
+public fun htmlDocument(
         html: String,
         charset: Charset = Charsets.UTF_8,
         jsExecution: Boolean = false,
         baseUri: String = ""
 ): Doc = Parser(html, charset, jsExecution, baseUri).parse()
 
-fun htmlDocument(
+public fun htmlDocument(
         file: File,
         charset: Charset = Charsets.UTF_8,
         jsExecution: Boolean = false,
         baseUri: String = ""
 ): Doc = htmlDocument(file.readText(charset), charset, jsExecution, baseUri)
 
-val Result.document: Doc
+public val Result.document: Doc
     get() = htmlDocument { this }
 
-fun <T> Result.htmlDocument(init: Doc.() -> T) = htmlDocument(html = responseBody, baseUri = baseUri).init()
+public fun <T> Result.htmlDocument(init: Doc.() -> T): T = htmlDocument(html = responseBody, baseUri = baseUri).init()

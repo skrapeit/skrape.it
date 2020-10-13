@@ -9,8 +9,8 @@ import it.skrape.exceptions.UnsupportedRequestOptionException
 import java.net.Proxy
 import java.net.URL
 
-object BrowserFetcher : Fetcher<Request> {
-    override val requestBuilder get() = Request()
+public object BrowserFetcher : Fetcher<Request> {
+    override val requestBuilder: Request get() = Request()
 
     override fun fetch(request: Request): Result {
         if (request.method != GET)
@@ -97,8 +97,8 @@ object BrowserFetcher : Fetcher<Request> {
 
 }
 
-fun Map<String, String>.asRawCookieSyntax() =
+public fun Map<String, String>.asRawCookieSyntax(): String =
         entries.joinToString(";", postfix = ";") { "${it.key}=${it.value}" }
 
-fun List<NameValuePair>.toMap(): Map<String, String> =
+public fun List<NameValuePair>.toMap(): Map<String, String> =
         associateBy({ it.name }, { it.value })

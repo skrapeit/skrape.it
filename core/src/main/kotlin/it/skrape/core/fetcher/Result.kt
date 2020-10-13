@@ -12,13 +12,13 @@ import it.skrape.SkrapeItDsl
  */
 @Suppress("LongParameterList")
 @SkrapeItDsl
-class Result(
-        val responseBody: String,
-        val responseStatus: Status,
-        val contentType: ContentType,
-        val headers: Map<String, String>,
-        val baseUri: String = "",
-        val cookies: List<Cookie>
+public class Result(
+    public val responseBody: String,
+    public val responseStatus: Status,
+    public val contentType: ContentType,
+    public val headers: Map<String, String>,
+    public val baseUri: String = "",
+    public val cookies: List<Cookie>
 ) {
     /**
      * Will return a certain response headers value
@@ -26,31 +26,31 @@ class Result(
      * @param name that represents the
      * @return String with value of a certain response header or null
      */
-    infix fun httpHeader(name: String): String? = this.headers[name]
+    public infix fun httpHeader(name: String): String? = this.headers[name]
 
-    fun httpHeaders(init: Map<String, String>.() -> Unit): Map<String, String> {
+    public fun httpHeaders(init: Map<String, String>.() -> Unit): Map<String, String> {
         headers.apply(init)
         return headers
     }
 
-    fun httpHeader(name: String, init: String?.() -> Unit): String? {
+    public fun httpHeader(name: String, init: String?.() -> Unit): String? {
         val header = headers[name]
         header.apply(init)
         return header
     }
 
-    fun <T> status(init: Status.() -> T): T {
+    public fun <T> status(init: Status.() -> T): T {
         return responseStatus.init()
     }
 
-    fun cookies(init: List<Cookie>.() -> Unit): List<Cookie> =
+    public fun cookies(init: List<Cookie>.() -> Unit): List<Cookie> =
             cookies.apply(init)
 
     @SkrapeItDsl
-    data class Status(
+    public data class Status(
             val code: Int,
             val message: String
     )
 }
 
-typealias ContentType = String?
+public typealias ContentType = String?
