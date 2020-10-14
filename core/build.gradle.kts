@@ -19,7 +19,9 @@ dependencies {
     val ktorVersion = "1.4.1"
 
     implementation("org.jsoup:jsoup:$jsoupVersion")
-    implementation("net.sourceforge.htmlunit:htmlunit:$htmlUnitVersion")
+    implementation("net.sourceforge.htmlunit:htmlunit:$htmlUnitVersion") {
+        exclude("org.eclipse.jetty.websocket") // avoid android crash; see #93
+    }
     implementation("io.github.rybalkinsd:kohttp:$kohttpVersion")
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
 
