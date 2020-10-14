@@ -1,9 +1,8 @@
 @file:Suppress("UNUSED_VARIABLE")
 
-import com.adarshr.gradle.testlogger.TestLoggerExtension
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension.Companion.DEFAULT_SRC_DIR_KOTLIN
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -29,21 +28,17 @@ allprojects {
 
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "com.vanniktech.maven.publish")
+    apply(plugin = "com.github.ben-manes.versions")
     apply(plugin = "se.patrikerdes.use-latest-versions")
     apply(plugin = "io.gitlab.arturbosch.detekt")
     apply(plugin = "com.adarshr.test-logger")
 
-    configure<TestLoggerExtension> {
+    testlogger {
         setTheme("mocha-parallel")
         slowThreshold = 1000
     }
 
-    configure<JavaPluginExtension> {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    configure<DetektExtension> {
+    detekt {
         toolVersion = "1.9.1"
         autoCorrect = true
         input = files(DEFAULT_SRC_DIR_KOTLIN)
@@ -52,6 +47,12 @@ allprojects {
 
     kotlin {
         explicitApi = ExplicitApiMode.Strict
+    }
+
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(8))
+        }
     }
 }
 
@@ -91,7 +92,7 @@ subprojects {
             dependsOn(detekt)
             useJUnitPlatform()
             testLogging {
-                events("passed", "skipped", "failed")
+                events(TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED)
             }
             systemProperties = mapOf(
                     "junit.jupiter.execution.parallel.enabled" to true,
