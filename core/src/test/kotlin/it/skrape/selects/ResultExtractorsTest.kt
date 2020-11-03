@@ -1,26 +1,22 @@
 package it.skrape.selects
 
-import it.skrape.WireMockSetup
+import it.skrape.*
 import it.skrape.core.Scraper
 import it.skrape.core.fetcher.HttpFetcher
 import it.skrape.core.htmlDocument
-import it.skrape.setupStub
 import it.skrape.exceptions.ElementNotFoundException
-import it.skrape.expect
-import it.skrape.extract
 import it.skrape.matchers.toBe
 import it.skrape.matchers.toContain
 import it.skrape.selects.html5.p
-import it.skrape.skrape
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import strikt.api.expectThrows
 
 class ResultExtractorsTest : WireMockSetup() {
 
     @Test
     fun `will throw custom exception if element could not be found via element function`() {
 
-        Assertions.assertThrows(ElementNotFoundException::class.java) {
+        expectThrows<ElementNotFoundException> {
             Scraper(HttpFetcher).expect {
                 htmlDocument {
                     findAll(".nonExistent")

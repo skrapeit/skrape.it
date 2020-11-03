@@ -1,10 +1,10 @@
 package it.skrape.core
 
 import it.skrape.selects.eachText
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import strikt.api.expect
 import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.containsExactly
 import strikt.assertions.isEqualTo
 import java.io.File
@@ -138,14 +138,14 @@ class ParserTest {
 
     @Test
     fun `will throw exception if file not found`() {
-        Assertions.assertThrows(FileNotFoundException::class.java) {
+        expectThrows<FileNotFoundException> {
             htmlDocument(File("invalid"))
         }
     }
 
     @Test
     fun `will throw exception if file not found and invoke document lambda`() {
-        Assertions.assertThrows(FileNotFoundException::class.java) {
+        expectThrows<FileNotFoundException> {
             htmlDocument(File("invalid")) {}
         }
     }

@@ -9,9 +9,9 @@ import it.skrape.matchers.toBePresent
 import it.skrape.selects.html5.body
 import it.skrape.selects.html5.h1
 import it.skrape.selects.html5.li
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.isEqualTo
 
 internal class KtorExtensionTest {
@@ -79,7 +79,7 @@ internal class KtorExtensionTest {
         val response = mockk<TestApplicationResponse> {
             every { content } returns null
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        expectThrows<IllegalArgumentException> {
             response.expectHtml {}
         }
     }

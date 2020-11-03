@@ -11,10 +11,10 @@ import it.skrape.selects.html5.p
 import it.skrape.setupCookiesStub
 import it.skrape.setupRedirect
 import it.skrape.setupStub
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import strikt.api.expect
 import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.contains
 import strikt.assertions.isEqualTo
 import java.net.SocketTimeoutException
@@ -97,7 +97,7 @@ class BrowserFetcherTest : WireMockSetup() {
     fun `will throw exception on HTTP verb POST`() {
         val request = Request(method = Method.POST)
 
-        assertThrows(UnsupportedRequestOptionException::class.java) {
+        expectThrows<UnsupportedRequestOptionException> {
             BrowserFetcher.fetch(request)
         }
     }
@@ -169,7 +169,7 @@ class BrowserFetcherTest : WireMockSetup() {
     fun `will throw exception on timeout`() {
         wireMockServer.setupStub(delay = 6000)
 
-        assertThrows(SocketTimeoutException::class.java) {
+        expectThrows<SocketTimeoutException> {
             BrowserFetcher.fetch(Request())
         }
     }

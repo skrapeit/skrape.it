@@ -2,9 +2,9 @@ package it.skrape.core.fetcher
 
 import it.skrape.*
 import it.skrape.core.document
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.isEqualTo
 import java.net.SocketTimeoutException
 
@@ -137,8 +137,7 @@ class HttpFetcherTest : WireMockSetup() {
     fun `will throw exception on timeout`() {
         wireMockServer.setupStub(delay = 6000)
 
-        assertThrows(SocketTimeoutException::class.java
-        ) {
+        expectThrows<SocketTimeoutException> {
             HttpFetcher.fetch(Request())
         }
     }

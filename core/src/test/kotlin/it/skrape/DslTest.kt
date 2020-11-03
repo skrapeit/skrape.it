@@ -11,11 +11,11 @@ import it.skrape.selects.eachHref
 import it.skrape.selects.eachText
 import it.skrape.selects.html5.*
 import it.skrape.selects.text
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import org.testcontainers.junit.jupiter.Testcontainers
 import strikt.api.expect
 import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.*
 import java.io.File
 import java.net.SocketTimeoutException
@@ -225,7 +225,7 @@ class DslTest : WireMockSetup() {
     fun `dsl will throw exception on timeout`() {
         wireMockServer.setupStub(delay = 3000)
 
-        assertThrows(SocketTimeoutException::class.java) {
+        expectThrows<SocketTimeoutException> {
             skrape(HttpFetcher) {
                 request {
                     timeout = 2000
@@ -334,7 +334,7 @@ class DslTest : WireMockSetup() {
     @Test
     fun `will throw custom exception if element could not be found via lambda`() {
 
-        assertThrows(ElementNotFoundException::class.java) {
+        expectThrows<ElementNotFoundException> {
             skrape(HttpFetcher) {
                 expect {
                     htmlDocument {
@@ -366,7 +366,7 @@ class DslTest : WireMockSetup() {
     @Test
     fun `will throw custom exception if element called by dsl could not be found`() {
 
-        assertThrows(ElementNotFoundException::class.java) {
+        expectThrows<ElementNotFoundException> {
             skrape(HttpFetcher) {
                 expect {
                     htmlDocument {

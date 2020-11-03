@@ -1,11 +1,11 @@
 package it.skrape.matchers
 
 import it.skrape.core.fetcher.Result
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.EnumSource.Mode.MATCH_ANY
 import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.isEqualTo
 
 class StatusMatchersKtTest {
@@ -30,7 +30,7 @@ class StatusMatchersKtTest {
             names = ["^((?!xx).)*\$"]
     )
     fun `will throw exception for none matching status codes`(httpStatus: HttpStatus) {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             Result.Status(httpStatus.code + 1, httpStatus.message) toBe httpStatus
         }
     }
@@ -42,7 +42,7 @@ class StatusMatchersKtTest {
             names = ["^((?!xx).)*\$"]
     )
     fun `will throw exception for none matching status message`(httpStatus: HttpStatus) {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             Result.Status(httpStatus.code, httpStatus.message + "foo") toBe httpStatus
         }
     }

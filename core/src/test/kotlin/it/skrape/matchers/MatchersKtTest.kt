@@ -3,8 +3,8 @@ package it.skrape.matchers
 import io.mockk.every
 import io.mockk.mockk
 import it.skrape.selects.DocElement
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import strikt.api.expectThrows
 
 class MatchersKtTest {
 
@@ -24,14 +24,14 @@ class MatchersKtTest {
 
     @Test
     fun `toBe can handle expected is null`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             "null" toBe null
         }
     }
 
     @Test
     fun `toBe can handle actual is null`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             aNullableString toBe "foo"
         }
     }
@@ -53,7 +53,7 @@ class MatchersKtTest {
 
     @Test
     fun `toContain is throwing exception on assertion failure`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             aString toContain "foo"
         }
     }
@@ -65,7 +65,7 @@ class MatchersKtTest {
 
     @Test
     fun `toNotContain is throwing exception on assertion failure`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             aString toNotContain "es"
         }
     }
@@ -77,7 +77,7 @@ class MatchersKtTest {
 
     @Test
     fun `toContain on lists is throwing exception on assertion failure`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             listOf("foo", "bar") toContain "schnitzel"
         }
     }
@@ -97,7 +97,7 @@ class MatchersKtTest {
     @Test
     fun `toBePresent is throwing exception if no ELEMENTS matches`() {
         val elements = mockk<List<DocElement>> { every { size } returns 0 }
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             elements.toBePresent
         }
     }
@@ -126,7 +126,7 @@ class MatchersKtTest {
             every { isPresent } returns false
             every { cssSelector } returns ".foo"
         }
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             element.toBePresent
         }
     }
@@ -146,7 +146,7 @@ class MatchersKtTest {
     @Test
     fun `toBeNotPresent is throwing exception on single occurrence of matching ELEMENTS`() {
         val elements = mockk<List<DocElement>> { every { size } returns 1 }
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             elements.toBeNotPresent
         }
     }
@@ -154,7 +154,7 @@ class MatchersKtTest {
     @Test
     fun `toBeNotPresent is throwing exception on multiple presents of matching ELEMENTS`() {
         val elements = mockk<List<DocElement>> { every { size } returns 2 }
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             elements.toBeNotPresent
         }
     }
@@ -166,7 +166,7 @@ class MatchersKtTest {
 
     @Test
     fun `toBeEmpty is throwing exception NON empty list`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             listOf(1, 2, 3).toBeEmpty
         }
     }
@@ -178,14 +178,14 @@ class MatchersKtTest {
 
     @Test
     fun `toBeNotEmpty is throwing exception empty list`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             emptyList<Any>().toBeNotEmpty
         }
     }
 
     @Test
     fun `isNumeric will throw assertion if a string is null`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             null.isNumeric
         }
     }
@@ -202,21 +202,21 @@ class MatchersKtTest {
 
     @Test
     fun `isNumeric will throw assertion if a string contains an integer`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             "$-foo11%bar/".isNumeric
         }
     }
 
     @Test
     fun `isNumeric will throw assertion if a string contains a decimal`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             "$-foo11.5%bar/".isNumeric
         }
     }
 
     @Test
     fun `isInteger will throw assertion if a string is null`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             null.isInteger
         }
     }
@@ -228,35 +228,35 @@ class MatchersKtTest {
 
     @Test
     fun `isInteger will throw assertion if a string is a decimal`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             "34211.535456".isInteger
         }
     }
 
     @Test
     fun `isInteger will throw assertion if a string contains an integer`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             "$-foo11%bar/".isInteger
         }
     }
 
     @Test
     fun `isInteger will throw assertion if a string contains a decimal`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             "$-foo11.5%bar/".isInteger
         }
     }
 
     @Test
     fun `isDecimal will throw assertion if a string is null`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             null.isDecimal
         }
     }
 
     @Test
     fun `isDecimal will throw assertion if a string is an integer`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             "42".isDecimal
         }
     }
@@ -268,21 +268,21 @@ class MatchersKtTest {
 
     @Test
     fun `isDecimal will throw assertion if a string contains an integer`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             "$-foo11%bar/".isDecimal
         }
     }
 
     @Test
     fun `isDecimal will throw assertion if a string contains a decimal`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             "$-foo11.5%bar/".isDecimal
         }
     }
 
     @Test
     fun `containsNumeric will throw assertion if a string is null`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             null.containsNumeric
         }
     }
@@ -309,7 +309,7 @@ class MatchersKtTest {
 
     @Test
     fun `containsNumeric will throw assertion if a string not contains a number`() {
-        Assertions.assertThrows(AssertionError::class.java) {
+        expectThrows<AssertionError> {
             "$-foo%bar/".containsNumeric
         }
     }

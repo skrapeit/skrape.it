@@ -2,9 +2,9 @@ package it.skrape.selects
 
 import it.skrape.core.htmlDocument
 import it.skrape.exceptions.ElementNotFoundException
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.containsExactly
 import strikt.assertions.isEmpty
 import strikt.assertions.isEqualTo
@@ -61,7 +61,7 @@ class DocTest {
     @Test
     fun `throw exception if elements could not be found by default`() {
         val doc = Doc(aValidDocument().document)
-        Assertions.assertThrows(ElementNotFoundException::class.java) {
+        expectThrows<ElementNotFoundException> {
             doc findAll ".non-existent"
         }
     }
@@ -69,7 +69,7 @@ class DocTest {
     @Test
     fun `throw exception if element could not be found by default`() {
         val doc = Doc(aValidDocument().document)
-        Assertions.assertThrows(ElementNotFoundException::class.java) {
+        expectThrows<ElementNotFoundException> {
             doc findFirst ".non-existent"
         }
     }

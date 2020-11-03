@@ -3,9 +3,9 @@ package it.skrape.selects.html5
 import it.skrape.aStandardTag
 import it.skrape.aValidDocument
 import it.skrape.exceptions.ElementNotFoundException
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.containsExactly
 import strikt.assertions.isEqualTo
 
@@ -64,7 +64,7 @@ class CustomTagSelectorsKtTest {
 
     @Test
     fun `can cascade custom selector from invoked string`() {
-        val error = Assertions.assertThrows(ElementNotFoundException::class.java) {
+        expectThrows<ElementNotFoundException> {
             aValidDocument {
                 "div" {
                     withId = "schnitzel"
@@ -78,8 +78,7 @@ class CustomTagSelectorsKtTest {
                     }
                 }
             }
-        }
-        expectThat(error.message).isEqualTo("""Could not find element "div#schnitzel bar.foobar foo[xxx]"""")
+        }.get { message }.isEqualTo("""Could not find element "div#schnitzel bar.foobar foo[xxx]"""")
     }
 
     @Test
