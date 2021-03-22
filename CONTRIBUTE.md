@@ -25,3 +25,7 @@
 ### install project into local maven repository
 
 	./gradlew clean publishToMavenLocal
+
+### update gradle wrapper
+
+    ./gradlew wrapper --gradle-version 6.8.3
