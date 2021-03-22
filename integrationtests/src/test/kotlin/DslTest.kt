@@ -542,8 +542,6 @@ class DslTest {
                 url = "${wiremock.httpUrl}/"
                 followRedirects = false
             }
-
-            preConfigured
         }
 
         wiremock.setupRedirect()
@@ -586,7 +584,6 @@ class DslTest {
                     host = "foo.com"
                 }
             }
-            preConfigured
         }
 
         expectThat(client.preparedRequest.url).isEqualTo("https://foo.com:12345/foo?foo=bar&fizz=buzz")

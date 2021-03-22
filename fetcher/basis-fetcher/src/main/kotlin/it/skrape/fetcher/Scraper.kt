@@ -7,15 +7,13 @@ public class Scraper<R>(public val client: Fetcher<R>, public val preparedReques
     public constructor(client: Fetcher<R>) : this(client, client.requestBuilder)
 
     @SkrapeItDsl
-    public fun request(init: R.() -> Unit): Unit =
-            this.preparedRequest.run(init)
+    public fun request(init: R.() -> Unit): Scraper<R> {
+        this.preparedRequest.run(init)
+        return this
+    }
 
     public fun scrape(): Result =
             client.fetch(preparedRequest)
-
-    @SkrapeItDsl
-    public val preConfigured: Scraper<R>
-        get() = this
 }
 
 /**
