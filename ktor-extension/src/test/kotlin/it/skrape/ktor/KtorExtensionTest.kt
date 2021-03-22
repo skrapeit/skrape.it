@@ -3,16 +3,15 @@ package it.skrape.ktor
 import io.ktor.server.testing.*
 import io.mockk.every
 import io.mockk.mockk
-import it.skrape.matchers.toBe
-import it.skrape.matchers.toBeEmpty
-import it.skrape.matchers.toBePresent
 import it.skrape.selects.html5.body
 import it.skrape.selects.html5.h1
 import it.skrape.selects.html5.li
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.api.expectThrows
+import strikt.assertions.isEmpty
 import strikt.assertions.isEqualTo
+import strikt.assertions.isNotEmpty
 
 internal class KtorExtensionTest {
 
@@ -39,22 +38,28 @@ internal class KtorExtensionTest {
         }
 
         response.expectHtml {
-            titleText toBe "i'm the title"
+            expectThat(titleText).isEqualTo("i'm the title")
 
             body {
-                findAll { toBePresent }
+                findAll { expectThat(this).isNotEmpty() }
             }
 
             h1 {
-                findFirst { text toBe "headline" }
+                findFirst {
+                    expectThat(text).isEqualTo("headline")
+                }
             }
 
             li {
-                findAll { size toBe 3 }
+                findAll {
+                    expectThat(size).isEqualTo(3)
+                }
             }
 
             ".not-existing" {
-                findAll { toBeEmpty }
+                findAll {
+                    expectThat(this).isEmpty()
+                }
             }
         }
     }
@@ -70,7 +75,9 @@ internal class KtorExtensionTest {
         expectThat(doc.titleText).isEqualTo("i'm the title")
 
         doc.h1 {
-            findFirst { text toBe "headline" }
+            findFirst {
+                expectThat(text).isEqualTo("headline")
+            }
         }
     }
 

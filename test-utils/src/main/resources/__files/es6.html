@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>i'm the title</title>
+    </head>
+    <body>
+        i'm the body
+        <h1>i'm the headline</h1>
+        <p>i'm a paragraph</p>
+        <p>i'm a second paragraph</p>
+    </body>
+    <script>
+        const getNodesOf = (selector) => document.querySelectorAll(selector);
+        getNodesOf("p").forEach(p => p.innerHTML = "<span>dynamically added</span>")
+    </script>
+</html>

@@ -2,10 +2,17 @@
 
 rootProject.name = "skrape-it"
 include(
-    "core",
-    "examples",
+    "assertions",
+    "dsl",
+    "examples:scraping",
+    "fetcher:basis-fetcher",
+    "fetcher:http-fetcher",
+    "fetcher:browser-fetcher",
+    "html-parser",
+    "integrationtests",
     "ktor-extension",
-    "mock-mvc-extension"
+    "mock-mvc-extension",
+    "test-utils"
 )
 
 pluginManagement {
