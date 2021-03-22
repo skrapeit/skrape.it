@@ -10,29 +10,25 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 
 public fun main() {
-    val hits = KotlinWeekly().search()
-    hits.forEach {
+    KotlinWeekly().search("ktor").forEach {
         println(it)
     }
 }
 
 public class KotlinWeekly {
 
-    public fun search(): List<String> {
+    public fun search(partialHref: String): List<String> {
         var allLinks = listOf<String>()
         runBlocking {
             @Suppress("MagicNumber")
-            val deferred = (220..223).map { issueNumber ->
+            val deferred = (223..242).map { issueNumber ->
                 async {
                     scrape(issueNumber)
                 }
             }
-
-
             allLinks = deferred.awaitAll().flatten()
         }
-
-        return allLinks
+        return allLinks.filter { it.contains(partialHref) }
     }
 
     private fun scrape(issueNumber: Int) =
