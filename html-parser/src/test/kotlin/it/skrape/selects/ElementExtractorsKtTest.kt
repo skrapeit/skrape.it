@@ -1,6 +1,6 @@
 package it.skrape.selects
 
-import it.skrape.aValidDocument
+import aValidDocument
 import it.skrape.selects.html5.*
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat

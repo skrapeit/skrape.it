@@ -1,7 +1,7 @@
 package it.skrape.selects.html5
 
-import it.skrape.aSelfClosingTag
-import it.skrape.aValidDocument
+import aSelfClosingTag
+import aValidDocument
 import it.skrape.selects.attribute
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat

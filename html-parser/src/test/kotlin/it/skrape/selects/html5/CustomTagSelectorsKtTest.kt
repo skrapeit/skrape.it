@@ -1,7 +1,7 @@
 package it.skrape.selects.html5
 
-import it.skrape.aStandardTag
-import it.skrape.aValidDocument
+import aStandardTag
+import aValidDocument
 import it.skrape.selects.ElementNotFoundException
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat

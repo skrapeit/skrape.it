@@ -18,4 +18,6 @@ dependencies {
     implementation("org.jsoup:jsoup:$jsoupVersion")
 
     "jsExecutionImplementation"(project(path = ":fetcher:browser-fetcher", configuration = "default"))
+
+    testImplementation(project(path = ":test-utils", configuration = "default"))
 }

@@ -1,7 +1,7 @@
 package it.skrape.selects.html5
 
-import it.skrape.aStandardTag
-import it.skrape.aValidDocument
+import aStandardTag
+import aValidDocument
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo

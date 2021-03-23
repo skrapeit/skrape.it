@@ -2,9 +2,9 @@ package it.skrape.selects
 
 import io.mockk.every
 import io.mockk.mockk
-import it.skrape.aValidDocument
-import it.skrape.aValidMarkupWithLinks
-import it.skrape.aValidMarkupWithPictures
+import aValidDocument
+import aValidMarkupWithLinks
+import aValidMarkupWithPictures
 import it.skrape.core.htmlDocument
 import it.skrape.selects.html5.a
 import it.skrape.selects.html5.div

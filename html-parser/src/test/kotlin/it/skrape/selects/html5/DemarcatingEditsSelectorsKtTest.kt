@@ -1,6 +1,6 @@
 package it.skrape.selects.html5
 
-import it.skrape.a3TimesNestedTag
+import a3TimesNestedTag
 import it.skrape.core.htmlDocument
 import it.skrape.selects.text
 import org.junit.jupiter.api.Test
