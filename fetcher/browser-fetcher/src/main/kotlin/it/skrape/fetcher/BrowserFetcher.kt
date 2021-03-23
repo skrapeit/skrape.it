@@ -43,6 +43,9 @@ public object BrowserFetcher : Fetcher<Request> {
         return result
     }
 
+    public fun render(html: String): String =
+        WebClient(BrowserVersion.BEST_SUPPORTED).loadHtmlCodeIntoCurrentWindow(html).asXml()
+
     private fun WebClient.withOptions(request: Request) = apply {
         cssErrorHandler = SilentCssErrorHandler()
         ajaxController = NicelyResynchronizingAjaxController()

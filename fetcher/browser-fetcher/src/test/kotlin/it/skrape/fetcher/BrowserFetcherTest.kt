@@ -21,8 +21,20 @@ private val wiremock = Testcontainer.wiremock
 @Execution(ExecutionMode.SAME_THREAD)
 class BrowserFetcherTest {
 
-
     private val baseRequest by lazy { Request(url = wiremock.httpUrl) }
+
+    @Test
+    fun `can render from string`() {
+        val renderedHtml = BrowserFetcher.render(getMarkupFromFile("es6.html"))
+
+        expectThat(renderedHtml).contains("""
+             |    <p>
+             |      <span>
+             |        dynamically added
+             |      </span>
+             |    </p>
+        """.trimMargin().replace("\n", "\r\n"))
+    }
 
     @Test
     fun `will fetch localhost 8080 with defaults if no params`() {
@@ -217,5 +229,5 @@ class BrowserFetcherTest {
         expectThat(result).isEqualTo("first-name=first-value;second-name=second-value;")
     }
 
-
+    private fun getMarkupFromFile(file: String) = javaClass.getResource("/__files/$file").readText()
 }

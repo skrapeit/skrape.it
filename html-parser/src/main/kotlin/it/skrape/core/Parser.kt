@@ -2,14 +2,12 @@ package it.skrape.core
 
 import it.skrape.SkrapeItDsl
 import it.skrape.fetcher.BrowserFetcher
-import it.skrape.fetcher.Request
 import it.skrape.fetcher.Result
 import it.skrape.selects.Doc
 import org.intellij.lang.annotations.Language
 import org.jsoup.nodes.Document
 import java.io.File
 import java.nio.charset.Charset
-import java.util.*
 import org.jsoup.parser.Parser.parse as jSoupParser
 
 internal class Parser(
@@ -22,8 +20,7 @@ internal class Parser(
     fun parse(): Doc {
         return if (jsExecution) {
             checkBrowserFetcherIsPresent()
-            val mockRequest = Request(url = html.toUriScheme())
-            BrowserFetcher.fetch(mockRequest).htmlDocument { this }
+            jSoupParser(BrowserFetcher.render(html), baseUri).toDocWrapper()
         } else jSoupParser(html, baseUri).toDocWrapper()
     }
 
@@ -36,12 +33,6 @@ internal class Parser(
     }
 
     private fun Document.toDocWrapper() = Doc(this)
-
-    private fun String.toUriScheme(): String {
-        val dataUriMimeType = "data:text/html;charset=${charset.name()};"
-        val base64encoded = Base64.getEncoder().encodeToString(toByteArray())
-        return "${dataUriMimeType}base64,$base64encoded"
-    }
 
     class MissingDependencyException(message: String = "") :
         Exception(message)
