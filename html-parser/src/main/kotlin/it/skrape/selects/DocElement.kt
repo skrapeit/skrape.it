@@ -96,10 +96,15 @@ public class DocElement internal constructor(
 
     /**
      * Get this element's parent element.
-     * TODO: what happens if no parent exists
      * @return DocElement
      */
-    public val parent: DocElement by lazy { parents.first() }
+    public val parent: DocElement by lazy {
+        try {
+            parents.first()
+        } catch (e: NoSuchElementException) {
+            throw ElementNotFoundException("parent")
+        }
+    }
 
     /**
      * Get this element's parent element as lambda.

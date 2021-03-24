@@ -16,6 +16,7 @@ import org.jsoup.select.Elements
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.*
 
 class DocElementKtTest {
@@ -303,6 +304,12 @@ class DocElementKtTest {
     }
 
     @Test
+    fun `will return empty list if no parents exists`() {
+        val parents = htmlDocument(aValidMarkup).findFirst("html") { parents }
+        expectThat(parents).isEmpty()
+    }
+
+    @Test
     fun `can get all parents of an element via lambda`() {
         val parents = htmlDocument(aValidMarkup).findFirst("b") { parents { this } }
         expectThat(parents.map { it.tagName }).containsExactly("span", "p", "body", "html")
@@ -312,6 +319,13 @@ class DocElementKtTest {
     fun `can get parent of an element`() {
         val parent = htmlDocument(aValidMarkup).findFirst("b") { parent }
         expectThat(parent.tagName).isEqualTo("span")
+    }
+
+    @Test
+    fun `will throw exception if trying to get parent but no parent exists`() {
+        expectThrows<ElementNotFoundException> {
+            htmlDocument(aValidMarkup).findFirst("html").parent
+        }
     }
 
     @Test
