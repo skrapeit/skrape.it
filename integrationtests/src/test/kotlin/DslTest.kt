@@ -2,11 +2,8 @@ import it.skrape.core.htmlDocument
 import it.skrape.fetcher.*
 import it.skrape.matchers.*
 import it.skrape.matchers.ContentTypes.*
-import it.skrape.selects.ElementNotFoundException
-import it.skrape.selects.eachHref
-import it.skrape.selects.eachText
+import it.skrape.selects.*
 import it.skrape.selects.html5.*
-import it.skrape.selects.text
 import org.jsoup.nodes.Element
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.parallel.Execution
@@ -498,6 +495,159 @@ class DslTest {
                     text toBe "last p-element"
                 }
             }
+        }
+    }
+
+    @Test
+    fun `can get parent of elements as well as of single element`() {
+        htmlDocument(
+            """
+            <html>
+                <body>
+                    <h1>welcome</h1>
+                    <div class="first-div">
+                        <p>first p-element</p>
+                        <p class="foo">some p-element</p>
+                        <p class="foo">last p-element</p>
+                    </div>
+                    <div class="second-div">
+                        <p>second p-element</p>
+                        <p class="foo">some p-element</p>
+                        <p class="foo">last p-element</p>
+                    </div>
+                </body>
+            </html>"""
+        ) {
+            val paragraphsParent: List<DocElement> = p {
+                findAll {
+                    forEach {
+                        // can get parent
+                        expectThat(it.parent.tagName).isEqualTo("div")
+
+                        // can invoke parent as lambda
+                        it.parent {
+                            expectThat(tagName).isEqualTo("div")
+                        }
+                    }
+
+                    // can just extract paragraphs parents
+                    map { it.parent }
+                }
+            }
+            // since we have 6 paragraphs we get 6 times a parent
+            expectThat(paragraphsParent).hasSize(6)
+            expectThat(paragraphsParent.eachTagName).containsExactly("div", "div", "div", "div", "div", "div")
+            expectThat(paragraphsParent.eachClassName).containsExactly("first-div", "second-div")
+
+            // this also works for a single element
+            val paragraphParent: DocElement = p {
+                findFirst {
+                    // can invoke parent as lambda
+                    parent {
+                        tagName toBe "div"
+                    }
+
+                    // can get/extract parent
+                    parent
+                }
+            }
+            paragraphParent.tagName toBe "div"
+        }
+    }
+
+    @Test
+    fun `can get siblings of elements as well as of single element`() {
+        htmlDocument(
+            """
+            <html>
+                <body>
+                    <h1>welcome</h1>
+                    <div class="first-div">
+                        <p>first p-element</p>
+                        <p class="foo">some p-element</p>
+                        <p class="foo">last p-element</p>
+                    </div>
+                    <div class="second-div">
+                        <p>second p-element</p>
+                        <p class="foo">some p-element</p>
+                        <p class="foo">last p-element</p>
+                    </div>
+                </body>
+            </html>"""
+        ) {
+            val divsSiblings: List<DocElement> = div {
+                findAll {
+                    flatMap { it.siblings }
+                }
+            }
+
+            // since we have 2 divs with 2 siblings each
+            expectThat(divsSiblings).hasSize(4)
+            expectThat(divsSiblings.eachTagName).containsExactly("h1", "div", "h1", "div")
+
+            // this also works for a single element
+            val divSiblings: List<DocElement> = div {
+                findFirst {
+                    // can invoke siblings as lambda
+                    siblings {
+                        expectThat(eachTagName).containsExactly("h1", "div")
+                    }
+
+                    // can get/extract parent
+                    siblings
+                }
+            }
+            expectThat(divSiblings.eachTagName).containsExactly("h1", "div")
+        }
+    }
+
+    @Test
+    fun `can get children of elements as well as of single element`() {
+        htmlDocument(
+            """
+            <html>
+                <body>
+                    <h1>welcome</h1>
+                    <div class="first-div">
+                        <p>first p-element</p>
+                        <p class="foo">some p-element</p>
+                        <p class="foo">last p-element</p>
+                    </div>
+                    <div class="second-div">
+                        <p>second p-element</p>
+                        <p class="foo">some p-element</p>
+                        <p class="foo">last p-element</p>
+                    </div>
+                </body>
+            </html>"""
+        ) {
+            val divsChildren: List<DocElement> = div {
+                findAll {
+                    flatMap { it.children }
+                }
+            }
+
+            // since we have 2 divs with 3 children each
+            expectThat(divsChildren).hasSize(6)
+            expectThat(divsChildren.eachTagName).containsExactly("p", "p", "p", "p", "p", "p")
+
+            // this also works for a single element
+            val divChildren: List<DocElement> = div {
+                findFirst {
+                    // can invoke children as lambda
+                    children {
+                        expectThat(eachTagName).containsExactly("p", "p", "p")
+                    }
+
+                    // can get/extract parent
+                    children
+                }
+            }
+            expectThat(divChildren.eachText).containsExactly(
+                "first p-element",
+                "some p-element",
+                "last p-element"
+            )
         }
     }
 
