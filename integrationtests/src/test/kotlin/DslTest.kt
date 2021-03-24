@@ -593,7 +593,7 @@ class DslTest {
                         expectThat(eachTagName).containsExactly("h1", "div")
                     }
 
-                    // can get/extract parent
+                    // can get/extract siblings
                     siblings
                 }
             }
@@ -639,7 +639,7 @@ class DslTest {
                         expectThat(eachTagName).containsExactly("p", "p", "p")
                     }
 
-                    // can get/extract parent
+                    // can get/extract children
                     children
                 }
             }
