@@ -48,8 +48,23 @@ class DocElementKtTest {
     }
 
     @Test
+    fun `can get all tag names of a list of elements`() {
+        val someElements = listOf(aValidElement, aValidElement)
+        expectThat(someElements.eachTagName).containsExactly("div", "div")
+    }
+
+    @Test
     fun `can get the element's text - including text of children`() {
         expectThat(aValidElement.text).isEqualTo("divs text headline paragraph foo bar fizz buzz")
+    }
+
+    @Test
+    fun `can get each text from a list of elements`() {
+        val someElements = listOf(aValidElement, aValidElement)
+        expectThat(someElements.eachText).containsExactly(
+            "divs text headline paragraph foo bar fizz buzz",
+            "divs text headline paragraph foo bar fizz buzz"
+        )
     }
 
     @Test

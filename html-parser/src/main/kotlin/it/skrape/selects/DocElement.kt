@@ -161,6 +161,9 @@ public val List<DocElement>.isNotPresent: Boolean
 public val List<DocElement>.eachText: List<String>
     get(): List<String> = map { it.text }
 
+public val List<DocElement>.eachTagName: List<String>
+    get(): List<String> = map { it.tagName }
+
 public val List<DocElement>.eachAttribute: Map<String, String>
     get() = map { it.attributes }.flatMap { it.toList() }.toMap()
 
