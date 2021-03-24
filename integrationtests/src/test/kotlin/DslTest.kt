@@ -652,6 +652,38 @@ class DslTest {
     }
 
     @Test
+    fun `can extract link to directly call it afterwards`() {
+        wiremock.setupStub(fileName = "example.html")
+        wiremock.setupStub(fileName = "example.html", path = "/relative-link")
+
+        val interestingLink = skrape(HttpFetcher) {
+            request {
+                url = "${wiremock.httpUrl}/"
+            }
+            extract {
+                htmlDocument {
+                    a {
+                        findAll { first { it.ownText == "relative link" } }.attribute("href")
+                    }
+                }
+            }
+        }
+
+        skrape(BrowserFetcher) {
+            request {
+                url = "${wiremock.httpUrl}$interestingLink"
+            }
+            expect {
+                htmlDocument {
+                    title {
+                        findFirst { text toBe "i'm the title" }
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
     fun `can read html from file system with default charset (UTF-8) using the DSL`() {
         htmlDocument(File("src/test/resources/__files/example.html")) {
             expectThat(titleText).isEqualTo("i'm the title")
