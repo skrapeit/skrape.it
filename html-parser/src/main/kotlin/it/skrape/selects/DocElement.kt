@@ -69,13 +69,6 @@ public class DocElement internal constructor(
 
     override val toCssSelector: String
         get() = cssSelector
-
-    @Deprecated(
-        "use 'findAll(cssSelector: String) instead'",
-        ReplaceWith("findAll(cssSelector)")
-    )
-    public fun select(cssSelector: String): List<DocElement> =
-        element.select(cssSelector).map { DocElement(it, relaxed) }
 }
 
 public val List<DocElement>.text: String
