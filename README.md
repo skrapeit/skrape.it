@@ -2,6 +2,7 @@
 
 [![Documentation](https://img.shields.io/badge/skrape%7Bit%7D-docs-blue.svg)](https://docs.skrape.it)
 [![maven central](https://img.shields.io/maven-central/v/it.skrape/skrapeit-core.svg?color=0)](https://search.maven.org/search?q=g:it.skrape%20AND%20a:skrapeit-core&skrapeit-core=gav)
+[![skrape-it @ kotlinlang.slack.com](https://img.shields.io/static/v1?label=kotlinlang&message=skrape-it&color=blue&logo=slack)](https://kotlinlang.slack.com/archives/CSPDWD4R4)
 [![License](https://img.shields.io/github/license/skrapeit/skrape.it.svg)](https://github.com/skrapeit/skrape.it/blob/master/LICENSE)
 
 [![master build status](https://github.com/skrapeit/skrape.it/workflows/master%20build/badge.svg)](https://github.com/skrapeit/skrape.it/actions?query=workflow%3A"master+build")
