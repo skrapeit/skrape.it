@@ -41,6 +41,20 @@ public abstract class DomTreeElement : CssSelectable() {
      */
     public val allElements: List<DocElement> by lazy { element.allElements.map { DocElement(it) } }
 
+    /**
+     * Get this element's child elements.
+     * @return List<DocElement> of child elements. If this element has no children, returns an empty list.
+     */
+    public val children: List<DocElement> by lazy {
+        element.children().map { DocElement(it) }
+    }
+
+    /**
+     * Get this element's child elements.
+     * @return T
+     */
+    public fun <T> children(init: List<DocElement>.() -> T): T = children.init()
+
     public fun eachAttribute(attributeKey: String): List<String> =
             allElements.map { it attribute attributeKey }
                     .filter { it.isNotEmpty() }

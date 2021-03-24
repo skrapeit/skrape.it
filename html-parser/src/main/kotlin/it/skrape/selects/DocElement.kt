@@ -56,6 +56,70 @@ public class DocElement internal constructor(
     public fun hasAttribute(attributeKey: String): Boolean = attribute(attributeKey).isNotBlank()
 
     /**
+     * Get all data-attributes of the element.
+     * @return Map<String, String>> of data-attributes as key value pairs
+     */
+    public val dataAttributes: Map<String, String> by lazy { attributes.filter { it.key.startsWith("data-") } }
+
+    /**
+     * Gets the literal value of this element's "class" attribute, which may include multiple class names, space separated.
+     * (E.g. on <div class="header gray"> returns, "header gray")
+     * @return String of the literal class attribute, or empty string if no class attribute set.
+     */
+    public val className: String by lazy { attribute("class").trim() }
+
+    /**
+     * Get all of the element's class names. E.g. on element <div class="header gray">,
+     * returns a set of two elements "header", "gray".
+     * @return Set<String> distinct classnames, empty if no class attribute
+     */
+    public val classNames: Set<String> by lazy { className.split(" ").filter { it.isNotBlank() }.toSet() }
+
+    /**
+     * Case insensitive check if this element has a class.
+     * @return Boolean
+     */
+    public fun hasClass(className: String): Boolean =
+        classNames.map { it.toLowerCase() }.contains(className.toLowerCase())
+
+    /**
+     * Get this element's parent and ancestors, up to the document root.
+     * @return List<DocElement> of parents, closest first.
+     */
+    public val parents: List<DocElement> by lazy { element.parents().map { DocElement(it) } }
+
+    /**
+     * Get this element's parent and ancestors, up to the document root as lambda.
+     * @return T
+     */
+    public fun <T> parents(init: List<DocElement>.() -> T): T = parents.init()
+
+    /**
+     * Get this element's parent element.
+     * TODO: what happens if no parent exists
+     * @return DocElement
+     */
+    public val parent: DocElement by lazy { parents.first() }
+
+    /**
+     * Get this element's parent element as lambda.
+     * @return T
+     */
+    public fun <T> parent(init: DocElement.() -> T): T = parent.init()
+
+    /**
+     * Get all elements that are siblings of this element.
+     * @return List<DocElement> of all siblings.
+     */
+    public val siblings: List<DocElement> by lazy { element.siblingElements().map { DocElement(it) } }
+
+    /**
+     * Get all elements that are siblings of this element as lambda.
+     * @return T
+     */
+    public fun <T> siblings(init: List<DocElement>.() -> T): T = siblings.init()
+
+    /**
      * Check if the element is present thereby it will return true if the given node can be found otherwise false.
      * @return Boolean
      */

@@ -39,7 +39,7 @@ class HttpFetcherTest {
 
     @Test
     fun `will not throw exception on non existing url`() {
-        val request = baseRequest.copy(url = "${wiremock.httpUrl}/not-existing")
+        val request = baseRequest.copy(url = "${wiremock.httpUrl}/not-existing", timeout = 9999999)
 
         val fetched = HttpFetcher.fetch(request)
 

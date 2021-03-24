@@ -177,7 +177,7 @@ class DocElementKtTest {
 
     @Test
     fun `can get the css-selector of a given element`() {
-        expectThat(aValidElement.cssSelector).isEqualTo("div.clazz")
+        expectThat(aValidElement.toCssSelector).isEqualTo("div.clazz")
     }
 
     @Test
@@ -294,6 +294,54 @@ class DocElementKtTest {
             }
         }
         expectThat(text).isEqualTo("first headline")
+    }
+
+    @Test
+    fun `can get all parents of an element`() {
+        val parents = htmlDocument(aValidMarkup).findFirst("b") { parents }
+        expectThat(parents.map { it.tagName }).containsExactly("span", "p", "body", "html")
+    }
+
+    @Test
+    fun `can get all parents of an element via lambda`() {
+        val parents = htmlDocument(aValidMarkup).findFirst("b") { parents { this } }
+        expectThat(parents.map { it.tagName }).containsExactly("span", "p", "body", "html")
+    }
+
+    @Test
+    fun `can get parent of an element`() {
+        val parent = htmlDocument(aValidMarkup).findFirst("b") { parent }
+        expectThat(parent.tagName).isEqualTo("span")
+    }
+
+    @Test
+    fun `can get parent of an element via lambda`() {
+        val parent = htmlDocument(aValidMarkup).findFirst("b") { parent { this } }
+        expectThat(parent.tagName).isEqualTo("span")
+    }
+
+    @Test
+    fun `can get all children of an element`() {
+        val children = htmlDocument(aValidMarkup).findFirst("p").children
+        expectThat(children.map { it.tagName }).containsExactly("span", "span")
+    }
+
+    @Test
+    fun `can get all children of an element via lambda`() {
+        val children = htmlDocument(aValidMarkup).findFirst("p").children { this }
+        expectThat(children.map { it.tagName }).containsExactly("span", "span")
+    }
+
+    @Test
+    fun `can get all siblings of an element`() {
+        val siblings = htmlDocument(aValidMarkup).findFirst("p").siblings
+        expectThat(siblings.map { it.tagName }).containsExactly("h2")
+    }
+
+    @Test
+    fun `can get all siblings of an element via lambda`() {
+        val siblings = htmlDocument(aValidMarkup).findFirst("p").siblings { this }
+        expectThat(siblings.map { it.tagName }).containsExactly("h2")
     }
 
     @Test
