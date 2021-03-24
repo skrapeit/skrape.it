@@ -106,7 +106,7 @@ class MatchersKtTest {
     fun `toBePresent can handle multiple occurrence of an ELEMENT`() {
         val element = mockk<DocElement> {
             every { isPresent } returns true
-            every { cssSelector } returns ".foo"
+            every { toCssSelector } returns ".foo"
         }
         element.toBePresent
     }
@@ -115,7 +115,7 @@ class MatchersKtTest {
     fun `toBePresent can handle single occurrence of an ELEMENT`() {
         val element = mockk<DocElement> {
             every { isPresent } returns true
-            every { cssSelector } returns ".foo"
+            every { toCssSelector } returns ".foo"
         }
         element.toBePresent
     }
@@ -124,7 +124,7 @@ class MatchersKtTest {
     fun `toBePresent is throwing exception if no ELEMENT matches`() {
         val element = mockk<DocElement> {
             every { isPresent } returns false
-            every { cssSelector } returns ".foo"
+            every { toCssSelector } returns ".foo"
         }
         expectThrows<AssertionError> {
             element.toBePresent

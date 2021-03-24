@@ -74,7 +74,7 @@ public val DocElement.toBePresent: DocElement
     get() = this.apply {
         generalAssertion(
                 isPresent,
-                "element '$cssSelector'",
+                "element '$toCssSelector'",
                 "is present"
         )
     }

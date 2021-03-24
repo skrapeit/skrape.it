@@ -7,6 +7,7 @@ import it.skrape.selects.eachHref
 import it.skrape.selects.eachText
 import it.skrape.selects.html5.*
 import it.skrape.selects.text
+import org.jsoup.nodes.Element
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.parallel.Execution
 import org.junit.jupiter.api.parallel.ExecutionMode
@@ -587,6 +588,11 @@ class DslTest {
         }
 
         expectThat(client.preparedRequest.url).isEqualTo("https://foo.com:12345/foo?foo=bar&fizz=buzz")
+    }
+
+    @Test
+    fun `can convert DocElement to jsoup element`() {
+        expectThat(aValidDocument().element).isA<Element>()
     }
 }
 

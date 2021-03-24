@@ -61,14 +61,20 @@ public class DocElement internal constructor(
      */
     public val isPresent: Boolean by lazy { allElements.isNotEmpty() }
 
+    /**
+     * Check if the element is NOT present thereby it will return true if the given node can not be found otherwise false.
+     * @return Boolean
+     */
     public val isNotPresent: Boolean by lazy { !isPresent }
 
-    public val className: String by lazy { element.className().orEmpty() }
-
-    public val cssSelector: String by lazy { element.cssSelector().orEmpty() }
-
+    /**
+     * Get a CSS selector that will uniquely select this element.
+     * If the element has an ID, returns #id; otherwise returns the parent (if any) CSS selector, followed by '>',
+     * followed by a unique selector for the element (tag.class.class:nth-child(n)).
+     * @return String representing the CSS Path that can be used to retrieve the element in a selector.
+     */
     override val toCssSelector: String
-        get() = cssSelector
+        get() = element.cssSelector().orEmpty()
 }
 
 public val List<DocElement>.text: String
@@ -86,42 +92,44 @@ public val List<DocElement>.isNotPresent: Boolean
 public val List<DocElement>.eachText: List<String>
     get(): List<String> = map { it.text }
 
+public val List<DocElement>.eachAttribute: Map<String, String>
+    get() = map { it.attributes }.flatMap { it.toList() }.toMap()
+
+public val List<DocElement>.eachDataAttribute: Map<String, String>
+    get() = map { it.dataAttributes }.flatMap { it.toList() }.toMap()
+
 public infix fun List<DocElement>.attribute(attributeKey: String): String =
-        filter { it.hasAttribute(attributeKey) }
-                .joinToString { it.attribute(attributeKey) }
+    filter { it.hasAttribute(attributeKey) }
+        .joinToString { it.attribute(attributeKey) }
 
 public infix fun List<DocElement>.eachAttribute(attributeKey: String): List<String> =
-        map { it attribute attributeKey }
-                .filter { it.isNotEmpty() }
+    map { it attribute attributeKey }
+        .filter { it.isNotEmpty() }
+
+public val List<DocElement>.eachClassName: List<String>
+    get(): List<String> = flatMap { it.classNames }.distinct()
 
 public val List<DocElement>.eachHref: List<String>
     get(): List<String> = eachAttribute("href")
-            .filter { it.isNotEmpty() }
 
 public val List<DocElement>.eachSrc: List<String>
     get(): List<String> = eachAttribute("src")
-            .filter { it.isNotEmpty() }
 
 public val List<DocElement>.eachLink: Map<String, String>
     get(): Map<String, String> =
         filter { it.hasAttribute("href") }
-                .associate { it.text to it.attribute("href") }
+            .associate { it.text to it.attribute("href") }
 
 public val List<DocElement>.eachImage: Map<String, String>
     get(): Map<String, String> =
         filter { it.tagName == "img" }
-                .filter { it.hasAttribute("src") }
-                .associate { it.attribute("alt") to it.attribute("src") }
-
+            .filter { it.hasAttribute("src") }
+            .associate { it.attribute("alt") to it.attribute("src") }
 
 public fun <T> List<DocElement>.forEachLink(init: (text: String, url: String) -> T) {
-    filter { it.hasAttribute("href") }
-            .forEach { init(it.text, it.attribute("href")) }
+    eachLink.forEach { init(it.key, it.value) }
 }
 
 public fun <T> List<DocElement>.forEachImage(init: (altText: String, url: String) -> T) {
-    filter { it.tagName == "img" }
-            .filter { it.hasAttribute("src") }
-            .forEach { init(it.attribute("alt"), it.attribute("src")) }
+    eachImage.forEach { init(it.key, it.value) }
 }
-
