@@ -1,14 +1,16 @@
 import com.github.tomakehurst.wiremock.client.WireMock
 import io.restassured.RestAssured.given
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.parallel.Execution
+import org.junit.jupiter.api.parallel.ExecutionMode
 import strikt.api.expectThat
 import strikt.assertions.contains
 import strikt.assertions.isEqualTo
 
 val myWiremock = Testcontainer.wiremock
 
+@Execution(ExecutionMode.SAME_THREAD)
 internal class TestcontainerTest {
-
 
     @Test
     internal fun `wiremock as testcontainer returns corresponding urls`() {
