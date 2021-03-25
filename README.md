@@ -40,11 +40,12 @@ First and foremost skrape{it} aims to be a testing tool (not tied to a particula
 ### Compatibility
 - [x] Not bind to a specific test-runner, framework or whatever.
 - [x] Open to use any other assertion library of your choice.
+- [x] Open to implement your own fetcher
 ### Extensions
 In addition, extensions for well-known testing libraries are provided to extend them with the mentioned skrape{it} functionality.
 Currently available:
-* **[skrape{it} MockMvc extension](https://github.com/skrapeit/skrapeit-mockmvc-extension)**
-* **[skrape{it} Ktor extension](https://github.com/skrapeit/skrapeit-ktor-extension)**
+* **[skrape{it} MockMvc extension](https://github.com/skrapeit/skrape.it/tree/master/mock-mvc-extension)**
+* **[skrape{it} Ktor extension](https://github.com/skrapeit/skrape.it/tree/master/ktor-extension)**
 
 ---
 
