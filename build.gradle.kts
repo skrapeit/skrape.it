@@ -42,7 +42,7 @@ allprojects {
         toolVersion = "1.9.1"
         autoCorrect = true
         input = files(DEFAULT_SRC_DIR_KOTLIN)
-        config = files("$rootDir/config/detekt/detekt.yml")
+        config = files("$rootDir/detekt.yml")
     }
 
     kotlin {
