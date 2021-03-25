@@ -7,6 +7,7 @@ include(
     "examples:scraping",
     "fetcher:basis-fetcher",
     "fetcher:http-fetcher",
+    "fetcher:ktor-fetcher",
     "fetcher:browser-fetcher",
     "html-parser",
     "integrationtests",
@@ -22,7 +23,8 @@ pluginManagement {
     }
     plugins {
         kotlin("jvm") version kotlin_version
-        id("org.jetbrains.dokka") version kotlin_version
+        // Temporarily at 1.4.30 until version matches kotlin version (1.4.31)
+        id("org.jetbrains.dokka") version "1.4.30"
         id("com.adarshr.test-logger") version "2.1.1"
         jacoco
         id("com.github.ben-manes.versions") version "0.38.0"
