@@ -26,15 +26,11 @@ public object KtorFetcher : Fetcher<Request> {
             install(HttpTimeout)
             request.authentication?.let { authentication: Authentication ->
                 if (authentication is BasicAuth) {
-                    installBasicAuth(authentication.username, authentication.password)
+                    installBasicAuth()
                 }
             }
             HttpResponseValidator {
-                validateResponse { response ->
-                    if (response.status.value >= 300) {
-                        response.toResult()
-                    }
-                }
+
                 handleResponseException { cause: Throwable ->
                     when (cause) {
                         is SocketTimeoutException -> {

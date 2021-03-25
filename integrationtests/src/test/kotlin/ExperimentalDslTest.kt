@@ -256,5 +256,5 @@ class ExperimentalDslTest {
 
 @Suppress("unused")
 enum class FetchersTestEnum(val fetcher: Fetcher<Request>) {
-    HTTP(HttpFetcher), BROWSER(BrowserFetcher)
+    HTTP(HttpFetcher), BROWSER(BrowserFetcher),KTOR(KtorFetcher)
 }

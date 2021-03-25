@@ -44,13 +44,12 @@ internal fun Request.toHttpRequest(): HttpRequestBuilder {
     }
 }
 
-internal fun HttpClientConfig<ApacheEngineConfig>.installBasicAuth(username: String, password: String) {
+internal fun HttpClientConfig<ApacheEngineConfig>.installBasicAuth() {
     engine {
         customizeRequest {
             setAuthenticationEnabled(true)
         }
     }
-
 }
 
 internal fun HttpClientConfig<ApacheEngineConfig>.installTokenAuth(token: String) {

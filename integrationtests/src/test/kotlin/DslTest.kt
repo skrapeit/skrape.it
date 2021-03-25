@@ -19,88 +19,96 @@ private val wiremock = Testcontainer.wiremock
 
 @Execution(ExecutionMode.SAME_THREAD)
 class DslTest {
+    private val fetchers = listOf(HttpFetcher, KtorFetcher)
 
     @Test
     fun `dsl can skrape by url`() {
         wiremock.setupStub(path = "/example")
-
-        skrape(HttpFetcher) {
-            request {
-                url = "${wiremock.httpUrl}/example"
-            }
-
-            expect {
-
-                status {
-                    code toBe 200
-                    message toBe "OK"
+        fetchers.forEach {
+            skrape(it) {
+                request {
+                    url = "${wiremock.httpUrl}/example"
                 }
 
-                contentType toBe TEXT_HTML_UTF8
+                expect {
 
-                htmlDocument {
-
-                    title {
-                        findFirst {
-                            text toBe "i'm the title"
-                        }
+                    status {
+                        code toBe 200
+                        message toBe "OK"
                     }
 
-                    p {
-                        findAll {
-                            toBePresentTimes(2)
-                        }
-                        findFirst {
-                            attribute("data-foo") toBe "bar"
-                            text toBe "i'm a paragraph"
+                    contentType toBe TEXT_HTML_UTF8
+
+                    htmlDocument {
+
+                        title {
+                            findFirst {
+                                text toBe "i'm the title"
+                            }
                         }
 
-                        findLast {
-                            text toBe "i'm a second paragraph"
+                        p {
+                            findAll {
+                                toBePresentTimes(2)
+                            }
+                            findFirst {
+                                attribute("data-foo") toBe "bar"
+                                text toBe "i'm a paragraph"
+                            }
+
+                            findLast {
+                                text toBe "i'm a second paragraph"
+                            }
                         }
                     }
                 }
             }
         }
+
     }
 
     @Test
     fun `can call https with relaxed ssl option via DSL`() {
         wiremock.setupStub(path = "/example")
 
-        skrape(HttpFetcher) {
-            request {
-                url = "${wiremock.httpsUrl}/example"
-                sslRelaxed = true
-            }
+        fetchers.forEach {
+            skrape(it) {
+                request {
+                    url = "${wiremock.httpsUrl}/example"
+                    sslRelaxed = true
+                }
 
-            expect {
-                status { code toBe 200 }
+                expect {
+                    status { code toBe 200 }
+                }
             }
         }
+
     }
 
     @Test
     fun `dsl can assert content-type in highly readable way`() {
         wiremock.setupStub(path = "/example")
 
-        skrape(HttpFetcher) {
-            request {
-                url = "${wiremock.httpUrl}/example"
-            }
+        fetchers.forEach {
+            skrape(it) {
+                request {
+                    url = "${wiremock.httpUrl}/example"
+                }
 
-            expect {
-                contentType toContain TEXT_HTML
-                contentType toBe TEXT_HTML_UTF8
-                contentType toBeNot APPLICATION_XHTML
-                contentType toBeNot APPLICATION_GZIP
-                contentType toBeNot APPLICATION_JSON
-                contentType toBeNot APPLICATION_TAR
-                contentType toBeNot APPLICATION_XML
-                contentType toBeNot APPLICATION_XUL
-                contentType toBeNot APPLICATION_ZIP
+                expect {
+                    contentType toContain TEXT_HTML
+                    contentType toBe TEXT_HTML_UTF8
+                    contentType toBeNot APPLICATION_XHTML
+                    contentType toBeNot APPLICATION_GZIP
+                    contentType toBeNot APPLICATION_JSON
+                    contentType toBeNot APPLICATION_TAR
+                    contentType toBeNot APPLICATION_XML
+                    contentType toBeNot APPLICATION_XUL
+                    contentType toBeNot APPLICATION_ZIP
 
-                expectThat(contentType).isEqualTo("text/html;charset=utf-8")
+                    expectThat(contentType).isEqualTo("text/html;charset=utf-8")
+                }
             }
         }
     }
@@ -109,16 +117,18 @@ class DslTest {
     fun `dsl will not follow redirects if configured`() {
         wiremock.setupRedirect()
 
-        skrape(HttpFetcher) {
-            request {
-                followRedirects = false
-                url = "${wiremock.httpUrl}/"
-            }
+        fetchers.forEach {
+            skrape(it) {
+                request {
+                    followRedirects = false
+                    url = "${wiremock.httpUrl}/"
+                }
 
-            expect {
-                status {
-                    code toBe 302
-                    message toBe "Found"
+                expect {
+                    status {
+                        code toBe 302
+                        message toBe "Found"
+                    }
                 }
             }
         }
@@ -128,20 +138,22 @@ class DslTest {
     fun `dsl can check certain header`() {
         wiremock.setupStub()
 
-        skrape(HttpFetcher) {
-            request {
-                url = "${wiremock.httpUrl}/"
-            }
-            expect {
-                val header = httpHeader("Content-Type") {
-                    expectThat(this).isEqualTo("text/html;charset=utf-8")
+        fetchers.forEach {
+            skrape(it) {
+                request {
+                    url = "${wiremock.httpUrl}/"
                 }
-                expectThat(header).isEqualTo("text/html;charset=utf-8")
+                expect {
+                    val header = httpHeader("Content-Type") {
+                        expectThat(this).isEqualTo("text/html;charset=utf-8")
+                    }
+                    expectThat(header).isEqualTo("text/html;charset=utf-8")
 
-                val nonExistingHeader = httpHeader("Non-Existing") {
-                    expectThat(this).isNull()
+                    val nonExistingHeader = httpHeader("Non-Existing") {
+                        expectThat(this).isNull()
+                    }
+                    expectThat(nonExistingHeader).isNull()
                 }
-                expectThat(nonExistingHeader).isNull()
             }
         }
     }
@@ -150,51 +162,57 @@ class DslTest {
     fun `dsl can check headers`() {
         wiremock.setupStub()
 
-        skrape(HttpFetcher) {
-            request {
-                url = "${wiremock.httpUrl}/"
-            }
-            expect {
-                val headers = httpHeaders {
-                    expectThat(this).hasEntry("Content-Type", "text/html;charset=utf-8")
-                }
-                expectThat(headers).hasEntry("Content-Type", "text/html;charset=utf-8")
-            }
-        }
+      fetchers.forEach {
+          skrape(it) {
+              request {
+                  url = "${wiremock.httpUrl}/"
+              }
+              expect {
+                  val headers = httpHeaders {
+                      expectThat(this).hasEntry("Content-Type", "text/html;charset=utf-8")
+                  }
+                  expectThat(headers).hasEntry("Content-Type", "text/html;charset=utf-8")
+              }
+          }
+      }
     }
 
     @Test
     fun `dsl can get body`() {
         wiremock.setupStub()
 
-        skrape(HttpFetcher) {
-            request {
-                url = "${wiremock.httpUrl}/"
-            }
-            expect {
-                htmlDocument {
-                    body {
-                        findFirst {
-                            text toContain "i'm a paragraph"
-                        }
-                    }
-                }
-            }
-        }
+       fetchers.forEach {
+           skrape(it) {
+               request {
+                   url = "${wiremock.httpUrl}/"
+               }
+               expect {
+                   htmlDocument {
+                       body {
+                           findFirst {
+                               text toContain "i'm a paragraph"
+                           }
+                       }
+                   }
+               }
+           }
+       }
     }
 
     @Test
     fun `dsl will follow redirect by default`() {
         wiremock.setupRedirect()
 
-        skrape(HttpFetcher) {
-            request {
-                url = "${wiremock.httpUrl}/"
-            }
-            expect {
-                status {
-                    code toBe 404
-                    message toBe "Not Found"
+        fetchers.forEach {
+            skrape(it) {
+                request {
+                    url = "${wiremock.httpUrl}/"
+                }
+                expect {
+                    status {
+                        code toBe 404
+                        message toBe "Not Found"
+                    }
                 }
             }
         }
@@ -204,31 +222,33 @@ class DslTest {
     fun `dsl can fetch url and use HTTP verb POST`() {
         wiremock.setupPostStub()
 
-        skrape(HttpFetcher) {
-            request {
-                url = "${wiremock.httpUrl}/"
-                method = Method.POST
-            }
-            expect {
+       fetchers.forEach {
+           skrape(it) {
+               request {
+                   url = "${wiremock.httpUrl}/"
+                   method = Method.POST
+               }
+               expect {
 
-                //expectThat(request.method).isEqualTo(Method.POST)
+                   //expectThat(request.method).isEqualTo(Method.POST)
 
-                status {
-                    code toBe 200
-                    message toBe "OK"
-                }
+                   status {
+                       code toBe 200
+                       message toBe "OK"
+                   }
 
-                responseStatus toBe HttpStatus.`2xx_Successful`
-                responseStatus toBe HttpStatus.`200_OK`
-                responseStatus toBeNot HttpStatus.`1xx_Informational_response`
-                responseStatus toBeNot HttpStatus.`3xx_Redirection`
-                responseStatus toBeNot HttpStatus.`4xx_Client_error`
-                responseStatus toBeNot HttpStatus.`5xx_Server_error`
+                   responseStatus toBe HttpStatus.`2xx_Successful`
+                   responseStatus toBe HttpStatus.`200_OK`
+                   responseStatus toBeNot HttpStatus.`1xx_Informational_response`
+                   responseStatus toBeNot HttpStatus.`3xx_Redirection`
+                   responseStatus toBeNot HttpStatus.`4xx_Client_error`
+                   responseStatus toBeNot HttpStatus.`5xx_Server_error`
 
-                contentType toBe APPLICATION_JSON_UTF8
-                contentType toBe "application/json;charset=utf-8"
-            }
-        }
+                   contentType toBe APPLICATION_JSON_UTF8
+                   contentType toBe "application/json;charset=utf-8"
+               }
+           }
+       }
     }
 
     @Test
@@ -236,13 +256,15 @@ class DslTest {
         wiremock.setupStub(delay = 3000)
 
         expectThrows<SocketTimeoutException> {
-            skrape(HttpFetcher) {
-                request {
-                    url = "${wiremock.httpUrl}/"
-                    timeout = 2000
-                }
-                expect {}
-            }
+           fetchers.forEach{
+               skrape(it) {
+                   request {
+                       url = "${wiremock.httpUrl}/"
+                       timeout = 2000
+                   }
+                   expect {}
+               }
+           }
         }
     }
 
@@ -250,17 +272,19 @@ class DslTest {
     fun `dsl can fetch url and extract to inferred type`() {
         wiremock.setupStub()
 
-        skrape(HttpFetcher) {
-            request {
-                url = "${wiremock.httpUrl}/"
-            }
-
-            val extracted = extract {
-                status {
-                    MyObject(message, "", emptyList())
+        fetchers.forEach {
+            skrape(it) {
+                request {
+                    url = "${wiremock.httpUrl}/"
                 }
+
+                val extracted = extract {
+                    status {
+                        MyObject(message, "", emptyList())
+                    }
+                }
+                expectThat(extracted.message).isEqualTo("OK")
             }
-            expectThat(extracted.message).isEqualTo("OK")
         }
     }
 
@@ -268,42 +292,46 @@ class DslTest {
     fun `dsl can fetch url and extract using it`() {
         wiremock.setupStub()
 
-        val extracted = skrape(HttpFetcher) {
-            request {
-                url = "${wiremock.httpUrl}/"
-            }
+       fetchers.forEach {
+           val extracted = skrape(it) {
+               request {
+                   url = "${wiremock.httpUrl}/"
+               }
 
-            extractIt<MyOtherObject> {
-                it.message = status { message }
-            }
-        }
-        expectThat(extracted.message).isEqualTo("OK")
+               extractIt<MyOtherObject> {
+                   it.message = status { message }
+               }
+           }
+           expectThat(extracted.message).isEqualTo("OK")
+       }
     }
 
     @Test
     fun `dsl can fetch url and extract using it in DSL-ish fashion`() {
         wiremock.setupStub()
 
-        val extracted = skrape(HttpFetcher) {
-            request {
-                url = "${wiremock.httpUrl}/"
-            }
+       fetchers.forEach {
+           val extracted = skrape(it) {
+               request {
+                   url = "${wiremock.httpUrl}/"
+               }
 
-            extractIt<MyObject> {
-                it.message = status { message }
-                htmlDocument {
-                    it.allParagraphs = p { findAll { eachText } }
-                    it.paragraph = findFirst("p").text
-                    it.allLinks = findAll("[href]").eachHref
-                }
-            }
-        }
-        expect {
-            that(extracted.message).isEqualTo("OK")
-            that(extracted.paragraph).isEqualTo("i'm a paragraph")
-            that(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
-            that(extracted.allLinks).containsExactly("http://some.url", "http://some-other.url", "/relative-link")
-        }
+               extractIt<MyObject> {
+                   it.message = status { message }
+                   htmlDocument {
+                       it.allParagraphs = p { findAll { eachText } }
+                       it.paragraph = findFirst("p").text
+                       it.allLinks = findAll("[href]").eachHref
+                   }
+               }
+           }
+           expect {
+               that(extracted.message).isEqualTo("OK")
+               that(extracted.paragraph).isEqualTo("i'm a paragraph")
+               that(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
+               that(extracted.allLinks).containsExactly("http://some.url", "http://some-other.url", "/relative-link")
+           }
+       }
     }
 
     /**
@@ -314,44 +342,48 @@ class DslTest {
     fun `dsl can fetch url and extract to data class`() {
         wiremock.setupStub()
 
-        val extracted = skrape(HttpFetcher) {
-            request {
-                url = "${wiremock.httpUrl}/"
-            }
+      fetchers.forEach {
+          val extracted = skrape(it) {
+              request {
+                  url = "${wiremock.httpUrl}/"
+              }
 
-            extractIt<MyDataClass> {
-                it.httpStatusCode = status { code }
-                it.httpStatusMessage = status { message }
-                htmlDocument {
-                    it.allParagraphs = p { findAll { eachText } }
-                    it.paragraph = p { findFirst { text } }
-                    it.allLinks = a {
-                        findAll { eachHref }
-                    }
-                }
-            }
-        }
+              extractIt<MyDataClass> {
+                  it.httpStatusCode = status { code }
+                  it.httpStatusMessage = status { message }
+                  htmlDocument {
+                      it.allParagraphs = p { findAll { eachText } }
+                      it.paragraph = p { findFirst { text } }
+                      it.allLinks = a {
+                          findAll { eachHref }
+                      }
+                  }
+              }
+          }
 
-        expect {
-            that(extracted.httpStatusCode).isEqualTo(200)
-            that(extracted.httpStatusMessage).isEqualTo("OK")
-            that(extracted.paragraph).isEqualTo("i'm a paragraph")
-            that(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
-            that(extracted.allLinks).containsExactly("http://some.url", "http://some-other.url", "/relative-link")
-        }
+          expect {
+              that(extracted.httpStatusCode).isEqualTo(200)
+              that(extracted.httpStatusMessage).isEqualTo("OK")
+              that(extracted.paragraph).isEqualTo("i'm a paragraph")
+              that(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
+              that(extracted.allLinks).containsExactly("http://some.url", "http://some-other.url", "/relative-link")
+          }
+      }
     }
 
     @Test
     fun `will throw custom exception if element could not be found via lambda`() {
 
         expectThrows<ElementNotFoundException> {
-            skrape(HttpFetcher) {
-                request {
-                    url = "${wiremock.httpUrl}/"
-                }
-                expect {
-                    htmlDocument {
-                        findFirst(".nonExistent") {}
+            fetchers.forEach{
+                skrape(it) {
+                    request {
+                        url = "${wiremock.httpUrl}/"
+                    }
+                    expect {
+                        htmlDocument {
+                            findFirst(".nonExistent") {}
+                        }
                     }
                 }
             }
@@ -361,42 +393,46 @@ class DslTest {
     @Test
     fun `will return empty list if element could not be found and Doc mode is relaxed`() {
 
-        skrape(HttpFetcher) {
-            request {
-                url = "${wiremock.httpUrl}/"
-            }
-            expect {
-                htmlDocument {
-                    relaxed = true
-                    findAll(".nonExistent") {
-                        toBeEmpty
-                    }
-                    findFirst(".nonExistent") {
-                        // not throwing Exception
-                    }
-                }
-            }
-        }
+      fetchers.forEach {
+          skrape(it) {
+              request {
+                  url = "${wiremock.httpUrl}/"
+              }
+              expect {
+                  htmlDocument {
+                      relaxed = true
+                      findAll(".nonExistent") {
+                          toBeEmpty
+                      }
+                      findFirst(".nonExistent") {
+                          // not throwing Exception
+                      }
+                  }
+              }
+          }
+      }
     }
 
     @Test
     fun `will throw custom exception if element called by dsl could not be found`() {
 
         expectThrows<ElementNotFoundException> {
-            skrape(HttpFetcher) {
-                request {
-                    url = "${wiremock.httpUrl}/"
-                }
-                expect {
-                    htmlDocument {
-                        div {
-                            withId = "non-existend"
-                            withClass = "non-existend"
-                            withAttribute = "non" to "existend"
-                            withAttributeKey = "non-existend"
-                            withAttributes = listOf("non" to "existend")
-                            withAttributeKeys = listOf("non-existend")
-                            findFirst {}
+            fetchers.forEach {
+                skrape(it) {
+                    request {
+                        url = "${wiremock.httpUrl}/"
+                    }
+                    expect {
+                        htmlDocument {
+                            div {
+                                withId = "non-existend"
+                                withClass = "non-existend"
+                                withAttribute = "non" to "existend"
+                                withAttributeKey = "non-existend"
+                                withAttributes = listOf("non" to "existend")
+                                withAttributeKeys = listOf("non-existend")
+                                findFirst {}
+                            }
                         }
                     }
                 }
@@ -408,25 +444,27 @@ class DslTest {
     fun `dsl can fetch url and extract from skrape`() {
         wiremock.setupStub()
 
-        val extracted = skrape(HttpFetcher) {
-            request {
-                url = "${wiremock.httpUrl}/"
-            }
+       fetchers.forEach {
+           val extracted = skrape(it) {
+               request {
+                   url = "${wiremock.httpUrl}/"
+               }
 
-            extract {
-                htmlDocument {
-                    MyObject(
-                        message = "",
-                        allParagraphs = p { findAll { eachText } },
-                        paragraph = findFirst("p").text,
-                        allLinks = selection("[href]") { findAll { eachHref } }
-                    )
-                }
-            }
-        }
-        expectThat(extracted.paragraph).isEqualTo("i'm a paragraph")
-        expectThat(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
-        expectThat(extracted.allLinks).containsExactly("http://some.url", "http://some-other.url", "/relative-link")
+               extract {
+                   htmlDocument {
+                       MyObject(
+                           message = "",
+                           allParagraphs = p { findAll { eachText } },
+                           paragraph = findFirst("p").text,
+                           allLinks = selection("[href]") { findAll { eachHref } }
+                       )
+                   }
+               }
+           }
+           expectThat(extracted.paragraph).isEqualTo("i'm a paragraph")
+           expectThat(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
+           expectThat(extracted.allLinks).containsExactly("http://some.url", "http://some-other.url", "/relative-link")
+       }
     }
 
     @Test
@@ -717,59 +755,67 @@ class DslTest {
         }
     }
 
+
     @Test
     fun `can preconfigure client`() {
 
-        val fetcher = skrape(HttpFetcher) {
-            request {
-                url = "${wiremock.httpUrl}/"
-                followRedirects = false
+        fetchers.forEach {
+            val fetcher: Scraper<Request> = skrape(it) {
+                request {
+                    url = "${wiremock.httpUrl}/"
+                    followRedirects = false
+                }
             }
+
+            wiremock.setupRedirect()
+
+            val body1 = fetcher.extract {
+                status {
+                    code toBe 302
+                    message toBe "Found"
+                }
+                responseBody
+            }
+
+            wiremock.setupRedirect()
+
+            val body2 = fetcher.apply {
+                request {
+                    followRedirects = true
+                }
+            }.extract {
+                status {
+                    code toBe 404
+                    message toBe "Not Found"
+                }
+                responseStatus toBe HttpStatus.`4xx_Client_error`
+                responseStatus toBe HttpStatus.`404_Not_Found`
+
+                responseBody
+            }
+
+            expectThat(body1).isNotEqualTo(body2)
         }
 
-        wiremock.setupRedirect()
-        val body1 = fetcher.extract {
-            status {
-                code toBe 302
-                message toBe "Found"
-            }
-            responseBody
-        }
-
-        wiremock.setupRedirect()
-        val body2 = fetcher.apply {
-            request {
-                followRedirects = true
-            }
-        }.extract {
-            status {
-                code toBe 404
-                message toBe "Not Found"
-            }
-            responseStatus toBe HttpStatus.`4xx_Client_error`
-            responseStatus toBe HttpStatus.`404_Not_Found`
-
-            responseBody
-        }
-
-        expectThat(body1).isNotEqualTo(body2)
     }
 
     @Test
     fun `can build url via dsl`() {
-        val client = skrape(HttpFetcher) {
-            request {
-                url = urlBuilder {
-                    protocol = UrlBuilder.Protocol.HTTPS
-                    port = 12345
-                    path = "/foo"
-                    queryParam = mapOf("foo" to "bar", "fizz" to "buzz")
-                    host = "foo.com"
-                }
-            }
-        }
+      fetchers.forEach {
+          val client = skrape(it) {
+              request {
+                  url = urlBuilder {
+                      protocol = UrlBuilder.Protocol.HTTPS
+                      port = 12345
+                      path = "/foo"
+                      queryParam = mapOf("foo" to "bar", "fizz" to "buzz")
+                      host = "foo.com"
+                  }
+              }
+          }
 
-        expectThat(client.preparedRequest.url).isEqualTo("https://foo.com:12345/foo?foo=bar&fizz=buzz")
+          expectThat(client.preparedRequest.url).isEqualTo("https://foo.com:12345/foo?foo=bar&fizz=buzz")
+      }
     }
 
     @Test

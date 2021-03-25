@@ -1,13 +1,3 @@
-abstract class DependencyGroup(
-    val group: String,
-    val version: String
-) {
-    fun dependency(
-        name: String,
-        group: String = this.group,
-        version: String = this.version
-    ) = "$group:$name:$version"
-}
 
 object Versions {
     const val kotlin = "1.4.31"
@@ -25,6 +15,17 @@ object Versions {
     const val okHttp = "4.9.1"
 }
 
+abstract class DependencyGroup(
+    val group: String,
+    val version: String
+) {
+    fun dependency(
+        name: String,
+        group: String = this.group,
+        version: String = this.version
+    ) = "$group:$name:$version"
+}
+
 object Deps {
 
     const val jsoup = "org.jsoup:jsoup:${Versions.jsoup}"
@@ -37,11 +38,12 @@ object Deps {
 
     object Ktor : DependencyGroup(
         group = "io.ktor",
-        version = Versions.ktor
+        version = "1.5.2"
     ) {
         val client = dependency("ktor-client-core")
         val clientJson = dependency("ktor-client-json")
         val clientApache = dependency("ktor-client-apache")
+        val clientLogging = dependency("ktor-client-logging")
     }
 
     object KotlinX {
@@ -57,6 +59,7 @@ object Deps {
         }
     }
 
+
     object TestContainers : DependencyGroup(
         group = "org.testcontainers",
         version = Versions.testContainers
@@ -64,7 +67,9 @@ object Deps {
         val testContainers = dependency("testcontainers")
         val jUnit = dependency("junit-jupiter")
     }
+
 }
+
 
 
 
