@@ -5,6 +5,7 @@ include(
     "assertions",
     "dsl",
     "examples:scraping",
+    "examples:use-pre-release-version",
     "fetcher:basis-fetcher",
     "fetcher:http-fetcher",
     "fetcher:browser-fetcher",

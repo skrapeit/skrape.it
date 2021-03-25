@@ -53,7 +53,7 @@ Currently available:
 ### Read the Docs
 You'll always find the latest documentation, release notes and examples regarding official releases at **[https://docs.skrape.it](https://docs.skrape.it)**.
 The README file you are reading right now provides example related to the latest master. Just use it [if you won't wait](#using-bleeding-edge-features-before-official-release) for latest changes to be released. 
-If you don't want to read that much or just want to get a rough overview on how to use **skrape{it}**, you can have a look at the [Documentation by Example](#documentation-by-example) section.
+If you don't want to read that much or just want to get a rough overview on how to use **skrape{it}**, you can have a look at the [Documentation by Example](#documentation-by-example) section which refers to the current master.
 
 
 ### Installation
@@ -83,10 +83,11 @@ dependencies {
 
 #### using bleeding edge features before official release
 We are offering snapshot releases via jitpack. Thereby you can install every commit and version you want.
-But be careful, these are non official releases and may be unstable as well as breaking changes can occur at any time.
+Be careful since these are non-official releases and may be unstable as well as breaking changes can occur at any time.
 
 If you want be a bit more safe you can use a certain commit instead of referencing skrape{it}'s master branch as a dependency to avoid sudden breaking changes.
-! Please make sure to go to https://jitpack.io/#skrapeit/skrape.it/ click the commits tab and the "Get it"-button to force a build of a certain commit.
+> Please that if you are the first and initial download of a specific commit [jitpack](https://jitpack.io/#skrapeit/skrape.it/) needs some time to build the requested artifact.
+
 
 ##### Add experimental stuff
 
@@ -125,6 +126,7 @@ dependencies {
 </details>
 
 ## Documentation by Example
+###### (referring to current master)
 ### Parse and verify HTML from String
 ```kotlin
 @Test
@@ -294,7 +296,6 @@ class ExampleTest {
             cookies = mapOf("some-cookie-name" to "some-value") // optional
             headers = mapOf("some-custom-header" to "some-value") // optional
         }
-        preConfigured
     }
     
     @Test
