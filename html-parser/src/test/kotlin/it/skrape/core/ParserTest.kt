@@ -1,11 +1,14 @@
 package it.skrape.core
 
 import it.skrape.selects.eachText
+import it.skrape.selects.html5.button
+import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 import strikt.api.expect
 import strikt.api.expectThat
 import strikt.api.expectThrows
 import strikt.assertions.containsExactly
+import strikt.assertions.hasEntry
 import strikt.assertions.isEqualTo
 import java.io.File
 import java.io.FileNotFoundException
@@ -148,6 +151,16 @@ class ParserTest {
         expectThrows<FileNotFoundException> {
             htmlDocument(File("invalid")) {}
         }
+    }
+
+    @Test
+    fun `will convert 'key only'-attributes to have empty string value`() {
+        @Language("HTML") val markup = "<button disabled>submit</button>"
+
+        with(htmlDocument(html = markup)) {
+            expectThat(button { findFirst { attributes } }).hasEntry("disabled", "")
+        }
+
     }
 
     private fun getMarkupFromFile(file: String) = javaClass.getResource("/__files/$file").readText()

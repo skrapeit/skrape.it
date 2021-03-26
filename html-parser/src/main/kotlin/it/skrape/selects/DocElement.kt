@@ -83,6 +83,13 @@ public class DocElement internal constructor(
         classNames.map { it.toLowerCase() }.contains(className.toLowerCase())
 
     /**
+     * Gets the literal value of this element's "id" attribute.
+     * (E.g. on <div id="main"> returns, "main")
+     * @return String of the literal id attribute value, or empty string if no id attribute set.
+     */
+    public val id: String by lazy { attribute("id").trim() }
+
+    /**
      * Get this element's parent and ancestors, up to the document root.
      * @return List<DocElement> of parents, closest first.
      */
@@ -143,7 +150,32 @@ public class DocElement internal constructor(
      * @return String representing the CSS Path that can be used to retrieve the element in a selector.
      */
     override val toCssSelector: String
-        get() = element.cssSelector().orEmpty()
+        get() = element.cssSelector()
+
+    public val parentsCssSelector: String by lazy {
+        parents {
+            when {
+                isNotEmpty() -> reversed().joinToString(separator = " > ") { it.tagName }
+                else -> ""
+            }
+        }
+    }
+
+    public val ownCssSelector: String by lazy {
+        fun String.orNull(): String? = if (isBlank()) null else this
+        fun List<String>.orNull(): List<String>? = if (isEmpty()) null else this
+        CssSelector(
+            rawCssSelector = tagName,
+            withClass = classNames.joinToString(separator = ".").orNull(),
+            withId = id,
+            withAttributes = attributes
+                .filterNot { it.key == "id" }
+                .filterNot { it.key == "class" }
+                .filterNot { it.value.isBlank() }
+                .toList(),
+            withAttributeKeys = attributes.filterValues { it.isBlank() }.map { it.key }.orNull()
+        ).toString()
+    }
 }
 
 public val List<DocElement>.text: String

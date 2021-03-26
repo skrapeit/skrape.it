@@ -6,10 +6,7 @@ import aValidMarkupWithPictures
 import io.mockk.every
 import io.mockk.mockk
 import it.skrape.core.htmlDocument
-import it.skrape.selects.html5.a
-import it.skrape.selects.html5.div
-import it.skrape.selects.html5.img
-import it.skrape.selects.html5.link
+import it.skrape.selects.html5.*
 import org.intellij.lang.annotations.Language
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
@@ -23,16 +20,17 @@ class DocElementKtTest {
 
     @Language("HTML")
     private val aValidMarkup = """
-        <h2 class='welcome'>headline</h2>
+        <h2 class='welcome' disabled>headline</h2>
         <p class='fancy'>paragraph
             <span>foo <b>bar</b></span>
-            <span>fizz <b>buzz</b></span>
+            <span>fizz <b id="xxx">buzz</b></span>
         </p>
     """.trimMargin()
 
     private val anElement = Element("div").apply {
         prependText("divs text")
         addClass("clazz")
+        addClass("klass")
         attr("foo", "bar")
         attr("fizz", "buzz")
         attr("data-foo", "foobar")
@@ -77,8 +75,8 @@ class DocElementKtTest {
         expectThat(aValidElement.html).isEqualTo(
             """
             divs text 
-            <h2 class="welcome">headline</h2> 
-            <p class="fancy">paragraph <span>foo <b>bar</b></span> <span>fizz <b>buzz</b></span> </p>
+            <h2 class="welcome" disabled>headline</h2> 
+            <p class="fancy">paragraph <span>foo <b>bar</b></span> <span>fizz <b id="xxx">buzz</b></span> </p>
             """.trimIndent()
         )
     }
@@ -87,10 +85,10 @@ class DocElementKtTest {
     fun `can get outer html of an element`() {
         expectThat(aValidElement.outerHtml).isEqualTo(
             """
-            <div class="clazz" foo="bar" fizz="buzz" data-foo="foobar">
+            <div class="clazz klass" foo="bar" fizz="buzz" data-foo="foobar">
              divs text 
-             <h2 class="welcome">headline</h2> 
-             <p class="fancy">paragraph <span>foo <b>bar</b></span> <span>fizz <b>buzz</b></span> </p>
+             <h2 class="welcome" disabled>headline</h2> 
+             <p class="fancy">paragraph <span>foo <b>bar</b></span> <span>fizz <b id="xxx">buzz</b></span> </p>
             </div>
             """.trimIndent()
         )
@@ -143,14 +141,14 @@ class DocElementKtTest {
     @Test
     fun `can get all elements under this element including itself`() {
         expectThat(aValidElement.allElements).hasSize(7)
-        expectThat(aValidElement.allElements[1].outerHtml).isEqualTo("""<h2 class="welcome">headline</h2>""")
+        expectThat(aValidElement.allElements[1].outerHtml).isEqualTo("""<h2 class="welcome" disabled>headline</h2>""")
     }
 
     @Test
     fun `can find all elements within this element (including itself) and invoke them to a lambda`() {
         val text = aValidElement.findAll {
             expectThat(size).isEqualTo(7)
-            expectThat(get(1).outerHtml).isEqualTo("""<h2 class="welcome">headline</h2>""")
+            expectThat(get(1).outerHtml).isEqualTo("""<h2 class="welcome" disabled>headline</h2>""")
             get(1).text
         }
         expectThat(text).isEqualTo("headline")
@@ -188,12 +186,46 @@ class DocElementKtTest {
 
     @Test
     fun `can get the css-class name of a given element`() {
-        expectThat(aValidElement.className).isEqualTo("clazz")
+        expectThat(aValidElement.className).isEqualTo("clazz klass")
     }
 
     @Test
     fun `can get the css-selector of a given element`() {
-        expectThat(aValidElement.toCssSelector).isEqualTo("div.clazz")
+        expectThat(aValidElement.toCssSelector).isEqualTo("div.clazz.klass")
+    }
+
+    @Test
+    fun `will return id only css-selector if given element has an id attribute`() {
+        val elementWithId = DocElement(anElement.attr("id", "bazinga"))
+        expectThat(elementWithId.toCssSelector).isEqualTo("#bazinga")
+    }
+
+    @Test
+    fun `can get ownCssSelector`() {
+        val elementWithId = DocElement(anElement.apply {
+            attr("id", "bazinga")
+            attr("key-only-attr", "")
+        })
+        expectThat(elementWithId.ownCssSelector).isEqualTo(
+            "div#bazinga.clazz.klass['key-only-attr'][foo='bar'][fizz='buzz'][data-foo='foobar']"
+        )
+    }
+
+    @Test
+    fun `ownCssSelector will not include parents if any available`() {
+        val verboseCssSelector = htmlDocument(aValidMarkup) { b { findLast { ownCssSelector } } }
+        expectThat(verboseCssSelector).isEqualTo("b#xxx")
+    }
+
+    @Test
+    fun `can get parents as css selector syntax if any available`() {
+        val verboseCssSelector = htmlDocument(aValidMarkup) { b { findLast { parentsCssSelector } } }
+        expectThat(verboseCssSelector).isEqualTo("html > body > p > span")
+    }
+
+    @Test
+    fun `parents as css selector syntax will be empty if none exist`() {
+        expectThat(aValidElement.parentsCssSelector).isEmpty()
     }
 
     @Test
@@ -220,7 +252,7 @@ class DocElementKtTest {
     fun `can get all attributes of an element`() {
         expectThat(aValidElement.attributes).isEqualTo(
             mapOf(
-                "class" to "clazz",
+                "class" to "clazz klass",
                 "foo" to "bar",
                 "fizz" to "buzz",
                 "data-foo" to "foobar"
@@ -238,7 +270,7 @@ class DocElementKtTest {
     @Test
     fun `can get all attribute values of an element`() {
         expectThat(aValidElement.attributeValues).containsExactly(
-            "clazz", "bar", "buzz", "foobar"
+            "clazz klass", "bar", "buzz", "foobar"
         )
     }
 
@@ -247,7 +279,7 @@ class DocElementKtTest {
         val someElements = listOf(aValidElement, aValidElement)
         expectThat(someElements.eachAttribute).isEqualTo(
             mapOf(
-                "class" to "clazz",
+                "class" to "clazz klass",
                 "foo" to "bar",
                 "fizz" to "buzz",
                 "data-foo" to "foobar"
@@ -272,13 +304,13 @@ class DocElementKtTest {
 
     @Test
     fun `can get class attribute of an elements`() {
-        expectThat(aValidElement.className).isEqualTo("clazz")
+        expectThat(aValidElement.className).isEqualTo("clazz klass")
     }
 
     @Test
     fun `can get all class names a list of elements`() {
         val someElements = listOf(aValidElement, aValidElement)
-        expectThat(someElements.eachClassName).containsExactly("clazz")
+        expectThat(someElements.eachClassName).containsExactly("clazz", "klass")
     }
 
     @Test
@@ -377,10 +409,10 @@ class DocElementKtTest {
     fun `string representation has certain format`() {
         expectThat(aValidElement.toString()).isEqualTo(
             """
-            <div class="clazz" foo="bar" fizz="buzz" data-foo="foobar">
+            <div class="clazz klass" foo="bar" fizz="buzz" data-foo="foobar">
              divs text 
-             <h2 class="welcome">headline</h2> 
-             <p class="fancy">paragraph <span>foo <b>bar</b></span> <span>fizz <b>buzz</b></span> </p>
+             <h2 class="welcome" disabled>headline</h2> 
+             <p class="fancy">paragraph <span>foo <b>bar</b></span> <span>fizz <b id="xxx">buzz</b></span> </p>
             </div>
             """.trimIndent()
         )
@@ -486,15 +518,24 @@ class DocElementKtTest {
 
     @Test
     fun `can conveniently iterate over all images values`() {
+        var images = mutableMapOf<String, String>()
         aValidDocument(aValidMarkupWithPictures) {
             img {
                 findAll {
                     forEachImage { altText, url ->
-                        println("$altText - $url")
+                        images.put(altText, url)
                     }
                 }
             }
         }
+        expectThat(images.toMap()).isEqualTo(
+            mapOf(
+                "foobar" to "http://foo.bar",
+                "" to "http://fizz.buzz",
+                "yummi" to "http://schnitzel.de",
+                "nested" to "http://nested.image"
+            )
+        )
     }
 
     @Test

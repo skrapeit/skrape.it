@@ -25,7 +25,7 @@ public class CssSelector(
         append(withId.toIdSelector())
         append(withClass.toClassesSelector())
         append(withAttributeKey.toAttributeKeySelector())
-        append(withAttributeKeys.toCssAttributeKeysSelector())
+        append(withAttributeKeys.toAttributesKeysSelector())
         append(withAttribute.toAttributeSelector())
         append(withAttributes.toAttributesSelector())
     }.withoutSpaces()
@@ -36,7 +36,7 @@ public class CssSelector(
 
     private fun String?.toAttributeKeySelector() = this?.let { "[$it]" }.orEmpty()
 
-    private fun List<String>?.toCssAttributeKeysSelector() =
+    private fun List<String>?.toAttributesKeysSelector() =
         this?.joinToString(prefix = "['", separator = "']['", postfix = "']").orEmpty()
 
     private fun Pair<String, String>?.toAttributeSelector() =
