@@ -167,7 +167,7 @@ public class DocElement internal constructor(
         CssSelector(
             rawCssSelector = tagName,
             withClass = classNames.joinToString(separator = ".").orNull(),
-            withId = id,
+            withId = id.orNull(),
             withAttributes = attributes
                 .filterNot { it.key == "id" }
                 .filterNot { it.key == "class" }

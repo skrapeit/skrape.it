@@ -4,6 +4,7 @@ import aValidDocument
 import it.skrape.selects.html5.*
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
+import strikt.assertions.containsExactly
 import strikt.assertions.isEqualTo
 
 class ElementExtractorsKtTest {
@@ -152,5 +153,33 @@ class ElementExtractorsKtTest {
             }
         }
         expectThat(pickedElementText).isEqualTo("2")
+    }
+
+    @Test
+    fun `can pick element by css selector matching regex`() {
+        val someRegex = "^(ol|ul).*navigation$".toRegex()
+
+        aValidDocument {
+            findBySelectorMatching(someRegex) {
+                expectThat(map { it.toCssSelector }).containsExactly(
+                    "html > body > header > nav > ol.ordered-navigation",
+                    "html > body > header > nav > ul.unordered-navigation"
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `can pick element by css selector matching regex DSL invoke`() {
+        val someRegex = "^(ol|ul).*navigation$".toRegex()
+
+        aValidDocument {
+            someRegex {
+                expectThat(map { it.toCssSelector }).containsExactly(
+                    "html > body > header > nav > ol.ordered-navigation",
+                    "html > body > header > nav > ul.unordered-navigation"
+                )
+            }
+        }
     }
 }

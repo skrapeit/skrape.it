@@ -41,6 +41,12 @@ public abstract class CssSelectable {
     public operator fun Int.invoke(cssSelector: String = ""): DocElement =
             findByIndex(this, cssSelector)
 
+    public fun findBySelectorMatching(regex: Regex): List<DocElement> =
+            this@CssSelectable.findAll("*").filter { it.ownCssSelector.matches(regex) }
+
+    public operator fun Regex.invoke(): List<DocElement> =
+            findBySelectorMatching(this)
+
     /**
      * Will pick the first occurrence of an element that
      * is matching the CSS-Selector from a parsed document and invoke it to a lambda function.
@@ -77,6 +83,12 @@ public abstract class CssSelectable {
 
     public operator fun <T> Int.invoke(cssSelector: String = "", init: DocElement.() -> T): T =
             this(cssSelector).init()
+
+    public fun <T> findBySelectorMatching(regex: Regex, init: List<DocElement>.() -> T): T =
+            findBySelectorMatching(regex).init()
+
+    public operator fun <T> Regex.invoke(init: List<DocElement>.() -> T): T =
+            this().init()
 
     /**
      * Will pick the first occurrence of an element that
