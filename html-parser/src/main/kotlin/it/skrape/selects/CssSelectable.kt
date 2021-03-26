@@ -57,15 +57,11 @@ public abstract class CssSelectable {
     public fun findThird(cssSelector: String = ""): DocElement =
             findByIndex(2, cssSelector)
 
-    public fun findLast(cssSelector: String = ""): DocElement {
-        val index = findAll(cssSelector).lastIndex
-        return findByIndex(index, cssSelector)
-    }
+    public fun findLast(cssSelector: String = ""): DocElement =
+            findAll(cssSelector).last()
 
-    public fun findSecondLast(cssSelector: String = ""): DocElement {
-        val index = findAll(cssSelector).lastIndex - 1
-        return findByIndex(index, cssSelector)
-    }
+    public fun findSecondLast(cssSelector: String = ""): DocElement =
+            findAll(cssSelector).let { it.getOrElse(it.lastIndex -1) { makeDefault(cssSelector) } }
 
     /**
      * Will pick all occurrences of elements that are matching the CSS-Selector
