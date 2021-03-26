@@ -16,40 +16,34 @@ public class CssSelector(
     public val doc: CssSelectable = Doc(Document(""))
 ) : CssSelectable() {
     override val toCssSelector: String
-        get() = "${doc.toCssSelector} $ownCssSelector".trim()
+        get() = ("${doc.toCssSelector} $this").trim()
 
-    override fun applySelector(rawCssSelector: String): List<DocElement> {
-        val combinedSelector = "$ownCssSelector $rawCssSelector".trim()
-        return doc.applySelector(combinedSelector)
-    }
+    override fun applySelector(rawCssSelector: String): List<DocElement> =
+        doc.applySelector("$this $rawCssSelector".trim())
 
-    private val ownCssSelector: String
-        get() {
-            val calculatedSelector =
-                    withId.toIdSelector().orEmpty() +
-                            withClass.toClassesSelector().orEmpty() +
-                            withAttributeKey.toAttributeKeySelector().orEmpty() +
-                            withAttributeKeys.toCssAttributeKeysSelector().orEmpty() +
-                            withAttribute.toAttributeSelector().orEmpty() +
-                            withAttributes.toAttributesSelector().orEmpty()
-            return rawCssSelector + calculatedSelector.withoutSpaces()
-        }
+    override fun toString(): String = rawCssSelector.trim() + buildString {
+        append(withId.toIdSelector())
+        append(withClass.toClassesSelector())
+        append(withAttributeKey.toAttributeKeySelector())
+        append(withAttributeKeys.toCssAttributeKeysSelector())
+        append(withAttribute.toAttributeSelector())
+        append(withAttributes.toAttributesSelector())
+    }.withoutSpaces()
 
-    private fun String?.toIdSelector() = this?.let { "#$it" }
+    private fun String?.toIdSelector() = this?.let { "#$it" }.orEmpty()
 
-    private fun CssClassName?.toClassesSelector() = this?.let { ".$it" }
+    private fun CssClassName?.toClassesSelector() = this?.let { ".$it" }.orEmpty()
 
-    private fun String?.toAttributeKeySelector() =
-            this?.let { "[$it]" }
+    private fun String?.toAttributeKeySelector() = this?.let { "[$it]" }.orEmpty()
 
     private fun List<String>?.toCssAttributeKeysSelector() =
-            this?.joinToString(prefix = "['", separator = "']['", postfix = "']")
+        this?.joinToString(prefix = "['", separator = "']['", postfix = "']").orEmpty()
 
     private fun Pair<String, String>?.toAttributeSelector() =
-            this?.let { "[${it.first}='${it.second}']" }
+        this?.let { "[${it.first}='${it.second}']" }.orEmpty()
 
     private fun List<Pair<String, String>>?.toAttributesSelector() =
-            this?.joinToString(separator = "") { "[${it.first}='${it.second}']" }
+        this?.joinToString(separator = "") { "[${it.first}='${it.second}']" }.orEmpty()
 
     private fun String.withoutSpaces() = replace("\\s".toRegex(), "")
 }
@@ -59,4 +53,4 @@ public typealias CssClassName = String
 public infix fun CssClassName.and(value: String): String = "$this.$value"
 
 public infix fun Pair<String, String>.and(pair: Pair<String, String>): MutableList<Pair<String, String>> =
-        mutableListOf(this).apply { add(pair) }
+    mutableListOf(this).apply { add(pair) }

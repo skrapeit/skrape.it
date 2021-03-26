@@ -41,12 +41,13 @@ class CssSelectorTest {
     @Test
     fun `can calculate selector and be relaxed on miss-leading spaces`() {
         val cssSelector = CssSelector(
+                rawCssSelector = "   div.foo span   ",
                 withClass = "   foobar " and " foo " and " bar ",
                 withAttribute = "   foooo " to "  bar   ",
                 withAttributes = "fizz" to "buzz" and Pair("skrape", "it"),
                 withAttributeKeys = listOf("key1", "key2")
         ).toCssSelector
-        expectThat(cssSelector).isEqualTo(".foobar.foo.bar['key1']['key2'][foooo='bar'][fizz='buzz'][skrape='it']")
+        expectThat(cssSelector).isEqualTo("div.foo span.foobar.foo.bar['key1']['key2'][foooo='bar'][fizz='buzz'][skrape='it']")
     }
 
     @Test
@@ -176,5 +177,17 @@ class CssSelectorTest {
                 rawCssSelector = "foo"
         ).toCssSelector
         expectThat(cssSelector).isEqualTo("foo.bar")
+    }
+
+    @Test
+    fun `'toString()' implementation returns calculated css selector`() {
+        val cssSelector = "${CssSelector(
+            rawCssSelector = "div span a",
+            withClass = "bar",
+            withId = "foo",
+            withAttributeKey = "foobar",
+            withAttribute = "fizz" to "buzz"
+        )}"
+        expectThat(cssSelector).isEqualTo("div span a#foo.bar[foobar][fizz='buzz']")
     }
 }
