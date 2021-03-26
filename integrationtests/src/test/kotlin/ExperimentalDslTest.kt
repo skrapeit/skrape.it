@@ -1,4 +1,3 @@
-
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.*
 import it.skrape.matchers.*
@@ -256,5 +255,5 @@ class ExperimentalDslTest {
 
 @Suppress("unused")
 enum class FetchersTestEnum(val fetcher: Fetcher<Request>) {
-    HTTP(HttpFetcher), BROWSER(BrowserFetcher),KTOR(KtorFetcher)
+    HTTP(HttpFetcher), BROWSER(BrowserFetcher)
 }

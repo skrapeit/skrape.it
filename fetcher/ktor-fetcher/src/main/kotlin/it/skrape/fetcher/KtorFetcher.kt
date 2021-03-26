@@ -7,15 +7,12 @@ import io.ktor.client.features.HttpTimeout
 import io.ktor.client.request.request
 import io.ktor.client.statement.HttpResponse
 import io.ktor.network.sockets.SocketTimeoutException
-import kotlinx.coroutines.runBlocking
 
-public object KtorFetcher : Fetcher<Request> {
+public object KtorFetcher : AsyncFetcher<Request> {
 
     override val requestBuilder: Request get() = Request()
 
-    override fun fetch(request: Request): Result = runBlocking { fetchAsync(request) }
-
-    public suspend fun fetchAsync(request: Request): Result = configuredClient(request).toResult()
+    override suspend fun fetch(request: Request): Result = configuredClient(request).toResult()
 
     @Suppress("MagicNumber")
     private suspend fun configuredClient(request: Request): HttpResponse {
@@ -55,7 +52,4 @@ public object KtorFetcher : Fetcher<Request> {
         }
         return client.request(request.toHttpRequest())
     }
-
 }
-
-

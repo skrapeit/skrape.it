@@ -1,6 +1,7 @@
 package it.skrape.fetcher
 
 import Testcontainer
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import setupCookiesStub
 import setupDeleteStub
@@ -18,7 +19,7 @@ import java.net.SocketTimeoutException
 
 private val wiremock = Testcontainer.wiremock
 
-class KtorFetcherTest  {
+class KtorFetcherTest {
 
     private val baseRequest by lazy { Request(url = "${wiremock.httpUrl}/") }
 
@@ -30,18 +31,19 @@ class KtorFetcherTest  {
             sslRelaxed = true
         )
 
-        val fetched = KtorFetcher.fetch(request)
+        val fetched = runBlocking { KtorFetcher.fetch(request) }
 
         expectThat(fetched.status { code }).isEqualTo(200)
         expectThat(fetched.contentType).isEqualTo("text/html;charset=utf-8")
         expectThat(fetched.responseBody).contains("i'm the title")
+
     }
 
     @Test
     fun `will not throw exception on non existing url`() {
         val request = baseRequest.copy(url = "${wiremock.httpUrl}/not-existing", timeout = 9999999)
 
-        val fetched = KtorFetcher.fetch(request)
+        val fetched = runBlocking { KtorFetcher.fetch(request) }
 
         expectThat(fetched.status { code }).isEqualTo(404)
     }
@@ -51,18 +53,23 @@ class KtorFetcherTest  {
         wiremock.setupRedirect()
         val request = baseRequest.copy(followRedirects = false)
 
-        val fetched = KtorFetcher.fetch(request)
+        runBlocking {
+            val fetched = KtorFetcher.fetch(request)
 
-        expectThat(fetched.status { code }).isEqualTo(302)
+            expectThat(fetched.status { code }).isEqualTo(302)
+        }
+
     }
 
     @Test
     fun `will follow redirect by default`() {
         wiremock.setupRedirect()
 
-        val fetched = KtorFetcher.fetch(baseRequest)
+        runBlocking {
+            val fetched = KtorFetcher.fetch(baseRequest)
 
-        expectThat(fetched.status { code }).isEqualTo(404)
+            expectThat(fetched.status { code }).isEqualTo(404)
+        }
     }
 
     @Test
@@ -72,7 +79,7 @@ class KtorFetcherTest  {
             url = "${wiremock.httpsUrl}/cookies",
             sslRelaxed = true
         )
-        val fetched = KtorFetcher.fetch(request)
+        val fetched = runBlocking { KtorFetcher.fetch(request) }
 
         expectThat(fetched.cookies).isEqualTo(
             listOf(
@@ -104,7 +111,7 @@ class KtorFetcherTest  {
         wiremock.setupPostStub()
         val request = baseRequest.copy(method = Method.POST)
 
-        val fetched = KtorFetcher.fetch(request)
+        val fetched = runBlocking { KtorFetcher.fetch(request) }
 
         expectThat(fetched.status { code }).isEqualTo(200)
         expectThat(fetched.contentType).isEqualTo("application/json;charset=utf-8")
@@ -116,7 +123,7 @@ class KtorFetcherTest  {
         wiremock.setupPutStub()
         val request = baseRequest.copy(method = Method.PUT)
 
-        val fetched = KtorFetcher.fetch(request)
+        val fetched = runBlocking { KtorFetcher.fetch(request) }
 
         expectThat(fetched.status { code }).isEqualTo(201)
         expectThat(fetched.responseBody).isEqualTo("i'm a PUT stub")
@@ -127,7 +134,7 @@ class KtorFetcherTest  {
         wiremock.setupDeleteStub()
         val request = baseRequest.copy(method = Method.DELETE)
 
-        val fetched = KtorFetcher.fetch(request)
+        val fetched = runBlocking { KtorFetcher.fetch(request) }
 
         expectThat(fetched.status { code }).isEqualTo(201)
         expectThat(fetched.responseBody).isEqualTo("i'm a DELETE stub")
@@ -138,7 +145,7 @@ class KtorFetcherTest  {
         wiremock.setupPatchStub()
         val request = baseRequest.copy(method = Method.PATCH)
 
-        val fetched = KtorFetcher.fetch(request)
+        val fetched = runBlocking { KtorFetcher.fetch(request) }
 
         expectThat(fetched.status { code }).isEqualTo(201)
         expectThat(fetched.responseBody).isEqualTo("i'm a PATCH stub")
@@ -149,7 +156,7 @@ class KtorFetcherTest  {
         wiremock.setupHeadStub()
         val request = baseRequest.copy(method = Method.HEAD)
 
-        val fetched = KtorFetcher.fetch(request)
+        val fetched = runBlocking { KtorFetcher.fetch(request) }
 
         expectThat(fetched.status { code }).isEqualTo(201)
         expectThat(fetched.httpHeader("result")).isEqualTo("i'm a HEAD stub")

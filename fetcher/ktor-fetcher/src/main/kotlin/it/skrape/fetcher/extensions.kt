@@ -135,5 +135,3 @@ internal fun Proxy.toHttpHost(): HttpHost? = when (this.type()) {
     Proxy.Type.HTTP -> HttpHost(this.address().hostname, this.address().port)
     else -> null
 }
-
-
