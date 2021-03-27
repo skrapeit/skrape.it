@@ -147,7 +147,7 @@ tasks {
 
 dependencies {
     implementation(project(":assertions"))
-    implementation(project(":fetcher:basis-fetcher"))
+    implementation(project(":fetcher:base-fetcher"))
     implementation(project(":fetcher:browser-fetcher"))
     implementation(project(":fetcher:http-fetcher"))
     implementation(project(":html-parser"))

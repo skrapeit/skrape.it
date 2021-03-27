@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":fetcher:basis-fetcher"))
+    implementation(project(":fetcher:base-fetcher"))
     implementation(Deps.Ktor.client)
     implementation(Deps.Ktor.clientApache)
 //    implementation(Deps.Ktor.clientLogging)

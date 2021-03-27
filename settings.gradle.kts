@@ -6,7 +6,7 @@ include(
     "dsl",
     "examples:scraping",
     "examples:use-pre-release-version",
-    "fetcher:basis-fetcher",
+    "fetcher:base-fetcher",
     "fetcher:http-fetcher",
     "fetcher:ktor-fetcher",
     "fetcher:browser-fetcher",
