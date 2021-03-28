@@ -146,9 +146,10 @@ tasks {
 }
 
 dependencies {
-    implementation(project(":assertions"))
-    implementation(project(":fetcher:base-fetcher"))
-    implementation(project(":fetcher:browser-fetcher"))
-    implementation(project(":fetcher:http-fetcher"))
-    implementation(project(":html-parser"))
+    api(project(":assertions"))
+    api(project(":fetcher:base-fetcher"))
+    api(project(":fetcher:browser-fetcher"))
+    api(project(":fetcher:http-fetcher"))
+    api(project(":fetcher:async-fetcher"))
+    api(project(":html-parser"))
 }
