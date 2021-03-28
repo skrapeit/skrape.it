@@ -143,13 +143,22 @@ tasks {
     build {
         finalizedBy(jacocoTestReport)
     }
+
+    publishToMavenLocal {
+        dependsOn(":assertions:publishToMavenLocal")
+        dependsOn(":fetcher:async-fetcher:publishToMavenLocal")
+        dependsOn(":fetcher:base-fetcher:publishToMavenLocal")
+        dependsOn(":fetcher:browser-fetcher:publishToMavenLocal")
+        dependsOn(":fetcher:http-fetcher:publishToMavenLocal")
+        dependsOn(":html-parser:publishToMavenLocal")
+    }
 }
 
 dependencies {
     api(project(":assertions"))
+    api(project(":fetcher:async-fetcher"))
     api(project(":fetcher:base-fetcher"))
     api(project(":fetcher:browser-fetcher"))
     api(project(":fetcher:http-fetcher"))
-    api(project(":fetcher:async-fetcher"))
     api(project(":html-parser"))
 }
