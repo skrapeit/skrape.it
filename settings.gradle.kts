@@ -8,7 +8,7 @@ include(
     "examples:use-pre-release-version",
     "fetcher:base-fetcher",
     "fetcher:http-fetcher",
-    "fetcher:ktor-fetcher",
+    "fetcher:async-fetcher",
     "fetcher:browser-fetcher",
     "html-parser",
     "integrationtests",

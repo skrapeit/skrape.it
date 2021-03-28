@@ -10,5 +10,5 @@ dependencies {
     testImplementation(project(path = ":fetcher:base-fetcher", configuration = "default"))
     testImplementation(project(path = ":fetcher:http-fetcher", configuration = "default"))
     testImplementation(project(path = ":fetcher:browser-fetcher", configuration = "default"))
-    testImplementation(project(path = ":fetcher:ktor-fetcher", configuration = "default"))
+    testImplementation(project(path = ":fetcher:async-fetcher", configuration = "default"))
 }
