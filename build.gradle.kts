@@ -77,8 +77,10 @@ allprojects {
         publishing {
             publications {
                 create<MavenPublication>("mavenJava") {
-                    artifactId =
-                        if (rootProject.name == project.name) rootProject.name else "${rootProject.name}-${project.name}"
+                    if (System.getenv("JITPACK") != "true") {
+                        artifactId =
+                            if (rootProject.name == project.name) rootProject.name else "${rootProject.name}-${project.name}"
+                    }
                     from(components["java"])
                     pom {
                         name.set("skrape{it}")
