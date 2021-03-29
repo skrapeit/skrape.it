@@ -1,6 +1,7 @@
 @file:Suppress("UNUSED_VARIABLE")
 
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension.Companion.DEFAULT_SRC_DIR_KOTLIN
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
@@ -18,6 +19,7 @@ plugins {
     id("com.adarshr.test-logger")
     id("io.gitlab.arturbosch.detekt")
     id("io.github.gradle-nexus.publish-plugin")
+    id("com.github.johnrengelman.shadow")
 }
 
 allprojects {
@@ -60,6 +62,7 @@ allprojects {
     val includeToPublishing = listOf(
         "assertions",
         "base-fetcher",
+        "dsl",
         "http-fetcher",
         "async-fetcher",
         "browser-fetcher",
@@ -74,7 +77,8 @@ allprojects {
         publishing {
             publications {
                 create<MavenPublication>("mavenJava") {
-                    artifactId = if(rootProject.name == project.name) rootProject.name else "${rootProject.name}-${project.name}"
+                    artifactId =
+                        if (rootProject.name == project.name) rootProject.name else "${rootProject.name}-${project.name}"
                     from(components["java"])
                     pom {
                         name.set("skrape{it}")
@@ -198,6 +202,10 @@ tasks {
     build {
         finalizedBy(jacocoTestReport)
     }
+
+    val shadowJar by getting(ShadowJar::class) {
+        archiveFileName.set("${project.name}-${project.version}.jar")
+    }
 }
 
 nexusPublishing {
@@ -211,6 +219,7 @@ dependencies {
     api(project(":async-fetcher"))
     api(project(":base-fetcher"))
     api(project(":browser-fetcher"))
+    api(project(":dsl"))
     api(project(":http-fetcher"))
     api(project(":html-parser"))
 }
