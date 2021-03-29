@@ -106,9 +106,11 @@ allprojects {
             }
         }
 
-        apply(plugin = "signing")
-        signing {
-            sign(publishing.publications["mavenJava"])
+        if (System.getenv("JITPACK") != "true") {
+            apply(plugin = "signing")
+            signing {
+                sign(publishing.publications["mavenJava"])
+            }
         }
 
     }
