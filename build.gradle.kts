@@ -70,7 +70,7 @@ allprojects {
         "skrapeit"
     )
     if (this.name in includeToPublishing) {
-
+        apply(plugin= "org.jetbrains.dokka")
         apply(plugin = "maven-publish")
         publishing {
             publications {
@@ -169,9 +169,7 @@ subprojects {
                 (isFlaggedAsNonStable || isSemanticVersion).not()
             }
         }
-    }
 
-    tasks {
         val updateDependencies by creating {
             dependsOn(useLatestVersions, test)
         }
@@ -200,6 +198,10 @@ tasks {
 
     build {
         finalizedBy(jacocoTestReport)
+    }
+
+    val publishToSonatype by getting {
+        dependsOn("dokkaJavadoc")
     }
 }
 

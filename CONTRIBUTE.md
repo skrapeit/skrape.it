@@ -1,5 +1,5 @@
 # How-To
-## 
+
 ### run all tests
 
 	./gradlew clean check
@@ -16,11 +16,11 @@
 ## Release
 ### push release to maven centrals staging repository:
 
-	./gradlew clean :core:uploadArchives
+	./gradlew clean publishToSonatype closeSonatypeStagingRepository
 	
 ### auto close and release artifact on maven centrals nexus:
 
-	./gradlew clean closeAndReleaseRepository
+	./gradlew clean publishToSonatype closeAndReleaseSonatypeStagingRepository
     
 ### install project into local maven repository
 

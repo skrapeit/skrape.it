@@ -1,7 +1,6 @@
 plugins {
     jacoco
     kotlin("jvm")
-    id("org.jetbrains.dokka")
 }
 
 dependencies {

@@ -5,7 +5,6 @@ val kotlin_version: String by project
 plugins {
     jacoco
     kotlin("jvm")
-    id("org.jetbrains.dokka")
 }
 
 val springVersion = "5.2.9.RELEASE"
