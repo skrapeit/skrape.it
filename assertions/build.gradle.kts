@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":html-parser"))
-    implementation(project(":dsl"))
-    implementation(project(":fetcher:base-fetcher"))
+    api(project(":html-parser"))
+    api(project(":dsl"))
+    api(project(":base-fetcher"))
 }

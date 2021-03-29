@@ -8,36 +8,37 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     jacoco
+    `java-library`
+    `maven-publish`
+    signing
     kotlin("jvm")
     id("org.jetbrains.dokka") apply false
     id("com.github.ben-manes.versions")
     id("se.patrikerdes.use-latest-versions")
     id("com.adarshr.test-logger")
     id("io.gitlab.arturbosch.detekt")
-    id("com.vanniktech.maven.publish")
+    id("io.github.gradle-nexus.publish-plugin")
 }
 
 allprojects {
     group = "it.skrape"
-    version = "0-SNAPSHOT"
+    version = "0.0.1"
 
     repositories {
         mavenCentral()
         jcenter()
     }
 
-    apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(plugin = "com.vanniktech.maven.publish")
     apply(plugin = "com.github.ben-manes.versions")
     apply(plugin = "se.patrikerdes.use-latest-versions")
-    apply(plugin = "io.gitlab.arturbosch.detekt")
-    apply(plugin = "com.adarshr.test-logger")
 
+    apply(plugin = "com.adarshr.test-logger")
     testlogger {
         setTheme("mocha-parallel")
         slowThreshold = 1000
     }
 
+    apply(plugin = "io.gitlab.arturbosch.detekt")
     detekt {
         toolVersion = "1.9.1"
         autoCorrect = true
@@ -45,6 +46,7 @@ allprojects {
         config = files("$rootDir/detekt.yml")
     }
 
+    apply(plugin = "org.jetbrains.kotlin.jvm")
     kotlin {
         explicitApi = ExplicitApiMode.Strict
     }
@@ -54,6 +56,58 @@ allprojects {
             languageVersion.set(JavaLanguageVersion.of(8))
         }
     }
+
+    val includeToPublishing = listOf(
+        "assertions",
+        "base-fetcher",
+        "http-fetcher",
+        "async-fetcher",
+        "browser-fetcher",
+        "html-parser",
+        "ktor-extension",
+        "mock-mvc-extension",
+        "skrapeit"
+    )
+    if (this.name in includeToPublishing) {
+
+        apply(plugin = "maven-publish")
+        publishing {
+            publications {
+                create<MavenPublication>("mavenJava") {
+                    artifactId = if(rootProject.name == project.name) rootProject.name else "${rootProject.name}-${project.name}"
+                    from(components["java"])
+                    pom {
+                        name.set("skrape{it}")
+                        description.set("A Kotlin-based testing/scraping/parsing library providing the ability to analyze and extract data from HTML (server & client-side rendered). It places particular emphasis on ease of use and a high level of readability by providing an intuitive DSL. First and foremost it aims to be a testing lib, but it can also be used to scrape websites in a convenient fashion.")
+                        url.set("https://docs.skrape.it")
+                        licenses {
+                            license {
+                                name.set("MIT License")
+                                url.set("https://opensource.org/licenses/MIT")
+                            }
+                        }
+                        developers {
+                            developer {
+                                id.set("christian-draeger")
+                                name.set("Christian Dräger")
+                            }
+                        }
+                        scm {
+                            connection.set("scm:git:git://github.com/skrapeit/skrape.it.git")
+                            developerConnection.set("scm:git:ssh://github.com:skrapeit/skrape.it.git")
+                            url.set("https://github.com/skrapeit/skrape.it/tree/master")
+                        }
+                    }
+                }
+            }
+        }
+
+        //signing {
+        //    sign(publishing.publications["mavenJava"])
+        //}
+
+    }
+
 }
 
 subprojects {
@@ -95,9 +149,9 @@ subprojects {
                 events(TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED)
             }
             systemProperties = mapOf(
-                    "junit.jupiter.execution.parallel.enabled" to true,
-                    "junit.jupiter.execution.parallel.mode.default" to "concurrent",
-                    "junit.jupiter.execution.parallel.mode.classes.default" to "concurrent"
+                "junit.jupiter.execution.parallel.enabled" to true,
+                "junit.jupiter.execution.parallel.mode.default" to "concurrent",
+                "junit.jupiter.execution.parallel.mode.classes.default" to "concurrent"
             )
         }
 
@@ -106,7 +160,8 @@ subprojects {
             gradleReleaseChannel = "current"
 
             rejectVersionIf {
-                val isFlaggedAsNonStable = listOf("alpha", "beta", "RC", "rc", "dev").any { candidate.version.contains(it) }.not()
+                val isFlaggedAsNonStable =
+                    listOf("alpha", "beta", "RC", "rc", "dev").any { candidate.version.contains(it) }.not()
                 val isSemanticVersion = "^[0-9,.v-]+(-r)?$".toRegex().matches(candidate.version)
                 (isFlaggedAsNonStable || isSemanticVersion).not()
             }
@@ -143,22 +198,19 @@ tasks {
     build {
         finalizedBy(jacocoTestReport)
     }
+}
 
-    publishToMavenLocal {
-        dependsOn(":assertions:publishToMavenLocal")
-        dependsOn(":fetcher:async-fetcher:publishToMavenLocal")
-        dependsOn(":fetcher:base-fetcher:publishToMavenLocal")
-        dependsOn(":fetcher:browser-fetcher:publishToMavenLocal")
-        dependsOn(":fetcher:http-fetcher:publishToMavenLocal")
-        dependsOn(":html-parser:publishToMavenLocal")
+nexusPublishing {
+    repositories {
+        sonatype() // TODO: credentials passed via env var or properties file
     }
 }
 
 dependencies {
     api(project(":assertions"))
-    api(project(":fetcher:async-fetcher"))
-    api(project(":fetcher:base-fetcher"))
-    api(project(":fetcher:browser-fetcher"))
-    api(project(":fetcher:http-fetcher"))
+    api(project(":async-fetcher"))
+    api(project(":base-fetcher"))
+    api(project(":browser-fetcher"))
+    api(project(":http-fetcher"))
     api(project(":html-parser"))
 }
