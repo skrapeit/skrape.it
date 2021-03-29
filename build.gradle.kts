@@ -1,7 +1,6 @@
 @file:Suppress("UNUSED_VARIABLE")
 
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension.Companion.DEFAULT_SRC_DIR_KOTLIN
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
@@ -19,7 +18,6 @@ plugins {
     id("com.adarshr.test-logger")
     id("io.gitlab.arturbosch.detekt")
     id("io.github.gradle-nexus.publish-plugin")
-    id("com.github.johnrengelman.shadow")
 }
 
 allprojects {
@@ -106,9 +104,10 @@ allprojects {
             }
         }
 
-        //signing {
-        //    sign(publishing.publications["mavenJava"])
-        //}
+        apply(plugin = "signing")
+        signing {
+            sign(publishing.publications["mavenJava"])
+        }
 
     }
 
@@ -201,10 +200,6 @@ tasks {
 
     build {
         finalizedBy(jacocoTestReport)
-    }
-
-    val shadowJar by getting(ShadowJar::class) {
-        archiveFileName.set("${project.name}-${project.version}.jar")
     }
 }
 

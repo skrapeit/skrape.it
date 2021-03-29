@@ -41,6 +41,5 @@ pluginManagement {
         id("se.patrikerdes.use-latest-versions") version "0.2.15"
         id("io.gitlab.arturbosch.detekt") version "1.16.0"
         id("io.github.gradle-nexus.publish-plugin") version "1.0.0"
-        id("com.github.johnrengelman.shadow") version "6.1.0"
     }
 }
