@@ -55,6 +55,8 @@ allprojects {
         toolchain {
             languageVersion.set(JavaLanguageVersion.of(8))
         }
+        withJavadocJar()
+        withSourcesJar()
     }
 
     val includeToPublishing = listOf(
@@ -199,15 +201,11 @@ tasks {
     build {
         finalizedBy(jacocoTestReport)
     }
-
-    val publishToSonatype by getting {
-        dependsOn("dokkaJavadoc")
-    }
 }
 
 nexusPublishing {
     repositories {
-        sonatype() // TODO: credentials passed via env var or properties file
+        sonatype()
     }
 }
 
