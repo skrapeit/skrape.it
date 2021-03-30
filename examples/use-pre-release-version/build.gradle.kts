@@ -13,5 +13,5 @@ dependencies {
     implementation("com.github.skrapeit.skrape.it:skrapeit-browser-fetcher:master-SNAPSHOT")*/
     // or use a certain commit to avoid sudden breaking changes
     // implementation("com.github.skrapeit:skrape.it:cc9b66e")
-    // implementation("it.skrape:skrapeit:1.0.0")
+    implementation("it.skrape:skrapeit:0.0.1") // TODO: use snapshot
 }
