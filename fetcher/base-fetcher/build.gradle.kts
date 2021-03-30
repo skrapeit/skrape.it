@@ -10,6 +10,7 @@ plugins {
 dependencies {
     implementation(project(":dsl"))
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version") // needed for extractIt when creating instance
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.4.3")
 
     testImplementation(project(path = ":test-utils", configuration = "default"))
     val ktorVersion = "1.5.2"

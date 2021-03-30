@@ -4,6 +4,8 @@ import it.skrape.matchers.*
 import it.skrape.matchers.ContentTypes.*
 import it.skrape.selects.*
 import it.skrape.selects.html5.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.jsoup.nodes.Element
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.parallel.Execution
@@ -14,6 +16,7 @@ import strikt.api.expectThrows
 import strikt.assertions.*
 import java.io.File
 import java.net.SocketTimeoutException
+import kotlin.system.measureTimeMillis
 
 private val wiremock = Testcontainer.wiremock
 
@@ -721,6 +724,63 @@ class DslTest {
         }
     }
 
+    @Test
+    fun `can skrape none blocking inside a coroutine`() {
+        wiremock.setupStub(path = "/delayed", delay = 5000)
+
+        val asynExecTimeInMillis = measureTimeMillis {
+            runBlocking {
+                repeat(5) {
+                    launch {
+                        skrape(KtorFetcher) {
+                            request {
+                                url = "${wiremock.httpUrl}/delayed"
+                                timeout = 10000
+                            }
+                            expect {
+                                status {
+                                    code toBe 200
+                                    message toBe "OK"
+                                }
+                                htmlDocument {
+                                    title {
+                                        findFirst { text toBe "i'm the title" }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        expectThat(asynExecTimeInMillis).isLessThan(15000)
+
+        val sequentialExecTimeInMillis = measureTimeMillis {
+            repeat(5) {
+                skrape(HttpFetcher) {
+                    request {
+                        url = "${wiremock.httpUrl}/delayed"
+                        timeout = 10000
+                    }
+                    expect {
+                        status {
+                            code toBe 200
+                            message toBe "OK"
+                        }
+                        htmlDocument {
+                            title {
+                                findFirst { text toBe "i'm the title" }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        expectThat(sequentialExecTimeInMillis).isGreaterThan(25000)
+    }
 
     @Test
     fun `can preconfigure client`() {
@@ -734,33 +794,34 @@ class DslTest {
 
         wiremock.setupRedirect()
 
-        val body1 = fetcher.extract {
-            status {
-                code toBe 302
-                message toBe "Found"
+        // TODO: add possibility to call extract / expect outside of a coroutine scoope
+        runBlocking {
+            val body1 = fetcher.extract {
+                status {
+                    code toBe 302
+                    message toBe "Found"
+                }
+                responseBody
             }
-            responseBody
+            wiremock.setupRedirect()
+
+            val body2 = fetcher.apply {
+                request {
+                    followRedirects = true
+                }
+            }.extract {
+                status {
+                    code toBe 404
+                    message toBe "Not Found"
+                }
+                responseStatus toBe HttpStatus.`4xx_Client_error`
+                responseStatus toBe HttpStatus.`404_Not_Found`
+
+                responseBody
+            }
+
+            expectThat(body1).isNotEqualTo(body2)
         }
-
-        wiremock.setupRedirect()
-
-        val body2 = fetcher.apply {
-            request {
-                followRedirects = true
-            }
-        }.extract {
-            status {
-                code toBe 404
-                message toBe "Not Found"
-            }
-            responseStatus toBe HttpStatus.`4xx_Client_error`
-            responseStatus toBe HttpStatus.`404_Not_Found`
-
-            responseBody
-        }
-
-        expectThat(body1).isNotEqualTo(body2)
-
     }
 
     @Test
