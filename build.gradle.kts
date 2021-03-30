@@ -1,4 +1,4 @@
-@file:Suppress("UNUSED_VARIABLE")
+@file:Suppress("UNUSED_VARIABLE", "LocalVariableName")
 
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension.Companion.DEFAULT_SRC_DIR_KOTLIN
@@ -21,8 +21,9 @@ plugins {
 }
 
 allprojects {
+    val release_version: String by project
+    version = release_version
     group = "it.skrape"
-    version = "0.0.2"
 
     repositories {
         mavenCentral()
