@@ -22,7 +22,7 @@ plugins {
 
 allprojects {
     group = "it.skrape"
-    version = "0.0.1"
+    version = "0.0.2"
 
     repositories {
         mavenCentral()
@@ -112,6 +112,11 @@ allprojects {
             apply(plugin = "signing")
             signing {
                 sign(publishing.publications["mavenJava"])
+
+                val signingKeyId: String? by project
+                val signingKey: String? by project
+                val signingPassword: String? by project
+                useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
             }
         }
 
