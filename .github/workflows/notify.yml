@@ -1,9 +1,10 @@
 name: Notify
 
 on:
-  push:
-    branches:
-      - 'notify-about-release'
+  workflow_run:
+    workflows: ["Release"]
+    types:
+      - completed
 
 jobs:
   tweet:
@@ -15,7 +16,7 @@ jobs:
         uses: christian-draeger/read-properties@1.0.0
         with:
           path: './gradle.properties'
-          property: 'VERSION_NAME'
+          property: 'release_version'
       - name: send tweet
         uses: ethomson/send-tweet-action@v1
         with:

@@ -1,9 +1,16 @@
 name: Release
 
-on: 
-  push:
-    tags:
-      - '*'
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Bump Version
+        default: 0.0.0
+        required: true
+#  workflow_run:
+#    workflows: ["Build + Coverage"]
+#    types:
+#      - completed
 
 jobs:
   build:
@@ -11,37 +18,47 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - name: 'Get Previous tag'
-        id: latest_tag
-        uses: "WyriHaximus/github-action-get-previous-tag@master"
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Gradle Wraper Cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/wrapper/
+          key: ${{ runner.OS }}-gradle-wraper-cache
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
       - name: Identify current version
         id: current_version
         uses: christian-draeger/read-properties@1.0.1
         with:
           path: './gradle.properties'
-          property: 'VERSION_NAME'
-      - name: Bump release version
-        id: bump_version
-        uses: christian-draeger/increment-semantic-version@1.0.1
-        with:
-          current-version: ${{ steps.current_version.outputs.value }}
-          version-fragment: ${{ steps.latest_tag.outputs.tag }}
+          property: 'release_version'
+
       - name: Write new version
         uses: christian-draeger/write-properties@1.0.1
         with:
           path: './gradle.properties'
-          property: 'VERSION_NAME'
-          value: ${{ steps.bump_version.outputs.next-version }}
-      - name: verify version bump
-        uses: christian-draeger/read-properties@1.0.1
-        with:
-          path: './gradle.properties'
-          property: 'VERSION_NAME'
+          property: 'release_version'
+          value: ${{ github.event.inputs.version }}
+
+      - name: Publish to maven central
+        run: ./gradlew publishToSonatype closeSonatypeStagingRepository
+
       - uses: matheusalbino/git-commit@v1.0.1
         with:
           user-name: skrapeit
           user-email: page.content.tester@gmail.com
-          message: bump version ${{ steps.current_version.outputs.value }} --> ${{ steps.bump_version.outputs.next-version }}
+          message: bump version ${{ steps.current_version.outputs.value }} --> ${{ github.event.inputs.version }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Tag
+        uses: negz/create-tag@v1
+        with:
+          version: ${{ github.event.inputs.version }}
+          message: ${{ github.event.inputs.version.description }}
+          token: ${{ secrets.GITHUB_TOKEN }}
