@@ -42,6 +42,14 @@ jobs:
           property: 'release_version'
           value: ${{ github.event.inputs.version }}
 
+      - name: Update github action release workflow default version
+        uses: fjogeleit/yaml-update-action@v0.2.1
+        with:
+          valueFile: '.github/workflows/release.yaml'
+          propertyPath: 'on.workflow_dispatch.inputs.version.default'
+          commitChange: 'false'
+          value: ${{ github.event.inputs.version }}
+
       - name: Publish to maven central
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
@@ -68,7 +76,7 @@ jobs:
       - name: send tweet
         uses: ethomson/send-tweet-action@v1
         with:
-          status: Hi, this is a test! ${{ github.event.inputs.version }} release notification
+          status: 🥳🪒📄 skrape{it} version ${{ github.event.inputs.version }} has just been released! 📢🙆🏻‍
           consumer-key: ${{ secrets.TWITTER_CONSUMER_API_KEY_SKRAPE_IT }}
           consumer-secret: ${{ secrets.TWITTER_CONSUMER_API_SECRET_SKRAPE_IT }}
           access-token: ${{ secrets.TWITTER_ACCESS_TOKEN_SKRAPE_IT }}
