@@ -24,7 +24,7 @@ public class Scraper<R>(public val fetcher: NonBlockingFetcher<R>, public val pr
  */
 private class FetcherConverter<T>(
     val blockingFetcher: BlockingFetcher<T>
-): NonBlockingFetcher<T> {
+) : NonBlockingFetcher<T> {
 
     override suspend fun fetch(request: T): Result {
         return blockingFetcher.fetch(request)
@@ -55,8 +55,17 @@ public suspend fun <R, T> skrape(fetcher: NonBlockingFetcher<R>, init: suspend S
  * Execute http call with a given Fetcher implementation and invoke the fetching result.
  */
 @SkrapeItDsl
-public suspend fun Scraper<*>.expect(init: Result.() -> Unit) {
-    extract(init)
+public suspend fun Scraper<*>.expect(result: Result.() -> Unit) {
+    extract(result)
+}
+
+/**
+ * Blocking implementation of 'expect' as convenience function to call it outside of an coroutine.
+ * @return T
+ */
+@SkrapeItDsl
+public fun Scraper<*>.expectBlocking(result: Result.() -> Unit) {
+    runBlocking { extract(result) }
 }
 
 /**
@@ -64,8 +73,16 @@ public suspend fun Scraper<*>.expect(init: Result.() -> Unit) {
  * @return T
  */
 @SkrapeItDsl
-public suspend fun <T> Scraper<*>.extract(extractor: Result.() -> T): T =
-    scrape().extractor()
+public suspend fun <T> Scraper<*>.extract(result: Result.() -> T): T =
+    scrape().result()
+
+/**
+ * Blocking implementation of 'extract' as convenience function to call it outside of an coroutine.
+ * @return T
+ */
+@SkrapeItDsl
+public fun <T> Scraper<*>.extractBlocking(result: Result.() -> T): T =
+    runBlocking { extract(result) }
 
 /**
  * Execute http call with a given Fetcher implementation and invoke the fetching result as this and any given generic as it.
@@ -73,7 +90,15 @@ public suspend fun <T> Scraper<*>.extract(extractor: Result.() -> T): T =
  * @return T
  */
 @SkrapeItDsl
-public suspend inline fun <reified T : Any> Scraper<*>.extractIt(crossinline extractor: Result.(T) -> Unit): T =
+public suspend inline fun <reified T : Any> Scraper<*>.extractIt(crossinline result: Result.(T) -> Unit): T =
     with(T::class) {
-        extract { createInstance().also { extractor(it) } }
+        extract { createInstance().also { result(it) } }
     }
+
+/**
+ * Blocking implementation of 'extractIt' as convenience function to call it outside of an coroutine.
+ * @return T
+ */
+@SkrapeItDsl
+public inline fun <reified T : Any> Scraper<*>.extractItBlocking(crossinline result: Result.(T) -> Unit): T =
+    runBlocking { extractIt(result) }

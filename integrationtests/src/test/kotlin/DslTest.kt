@@ -783,7 +783,7 @@ class DslTest {
     }
 
     @Test
-    fun `can preconfigure client`() {
+    fun `can use preconfigured client`() {
 
         val fetcher: Scraper<Request> = skrape(HttpFetcher) {
             request {
@@ -795,33 +795,53 @@ class DslTest {
         wiremock.setupRedirect()
 
         // TODO: add possibility to call extract / expect outside of a coroutine scoope
-        runBlocking {
-            val body1 = fetcher.extract {
-                status {
-                    code toBe 302
-                    message toBe "Found"
-                }
-                responseBody
+        val body1 = fetcher.extractBlocking {
+            status {
+                code toBe 302
+                message toBe "Found"
             }
-            wiremock.setupRedirect()
-
-            val body2 = fetcher.apply {
-                request {
-                    followRedirects = true
-                }
-            }.extract {
-                status {
-                    code toBe 404
-                    message toBe "Not Found"
-                }
-                responseStatus toBe HttpStatus.`4xx_Client_error`
-                responseStatus toBe HttpStatus.`404_Not_Found`
-
-                responseBody
-            }
-
-            expectThat(body1).isNotEqualTo(body2)
+            responseBody
         }
+        wiremock.setupRedirect()
+
+        val body2 = fetcher.apply {
+            request {
+                followRedirects = true
+            }
+        }.extractBlocking {
+            status {
+                code toBe 404
+                message toBe "Not Found"
+            }
+            responseStatus toBe HttpStatus.`4xx_Client_error`
+            responseStatus toBe HttpStatus.`404_Not_Found`
+
+            responseBody
+        }
+
+        expectThat(body1).isNotEqualTo(body2)
+
+        fetcher.expectBlocking {
+            status {
+                code toBe 404
+            }
+        }
+
+        val statusCode = fetcher.extractBlocking {
+            status {
+                code
+            }
+        }
+
+        expectThat(statusCode).isEqualTo(404)
+
+        data class MyResult(
+            var statusCode: Int = 0
+        )
+
+        val myResult = fetcher.extractItBlocking<MyResult> { it.statusCode = status { code } }
+        expectThat(myResult.statusCode).isEqualTo(404)
+
     }
 
     @Test
