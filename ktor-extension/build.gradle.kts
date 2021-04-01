@@ -4,13 +4,11 @@ plugins {
 }
 
 dependencies {
-    val ktorVersion = "1.4.1"
-
     provided(project(":html-parser"))
-    provided("io.ktor:ktor-server-test-host:$ktorVersion")
-    provided("io.ktor:ktor-server-netty:$ktorVersion")
-    provided("io.ktor:ktor-freemarker:$ktorVersion")
-    provided("io.ktor:ktor-locations:$ktorVersion")
+    provided(Deps.Ktor.serverTestHost)
+    provided(Deps.Ktor.serverNetty)
+    provided(Deps.Ktor.freemarker)
+    provided(Deps.Ktor.locations)
 }
 
 // TODO: use https://github.com/nebula-plugins/gradle-extra-configurations-plugin to get provided configuration in gradle

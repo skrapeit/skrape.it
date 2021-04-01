@@ -1,4 +1,3 @@
-
 object Versions {
     const val kotlin = "1.4.31"
     const val coroutines = "1.4.3"
@@ -6,13 +5,20 @@ object Versions {
     const val serialization = "1.0.1"
     const val datetime = "0.1.1"
     const val jsoup = "1.13.1"
-    const val htmlUnit = "2.47.1"
+    const val htmlUnit = "2.48.0"
     const val kohttp = "0.12.0"
     const val testContainers = "1.15.2"
     const val wireMock = "2.27.2"
     const val log4jOverSlf4j = "1.7.30"
     const val logback = "1.2.3"
     const val okHttp = "4.9.1"
+    const val strikt = "0.30.0"
+    const val mockk = "1.11.0"
+    const val jUnit = "5.7.0"
+    const val restAssured = "4.3.3"
+    const val javaxServlet = "4.0.1"
+    const val spring = "5.2.9.RELEASE"
+    const val jetbrainsAnnotations = "20.1.0"
 }
 
 abstract class DependencyGroup(
@@ -31,19 +37,34 @@ object Deps {
     const val jsoup = "org.jsoup:jsoup:${Versions.jsoup}"
     const val htmlUnit = "net.sourceforge.htmlunit:htmlunit:${Versions.htmlUnit}"
     const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
-    const val kOHttp = "io.github.rybalkinsd:kohttp:${Versions.kohttp}"
+    const val koHttp = "io.github.rybalkinsd:kohttp:${Versions.kohttp}"
     const val wireMock = "com.github.tomakehurst:wiremock-jre8:${Versions.wireMock}"
     const val logback = "ch.qos.logback:logback-classic:${Versions.logback}"
     const val log4jOverSlf4j = "org.slf4j:log4j-over-slf4j:${Versions.log4jOverSlf4j}"
+    const val strikt = "io.strikt:strikt-core:${Versions.strikt}"
+    const val jUnit = "org.junit.jupiter:junit-jupiter:${Versions.jUnit}"
+    const val javaxServlet = "javax.servlet:javax.servlet-api:${Versions.javaxServlet}"
+    const val jetbrainsAnnotations = "org.jetbrains:annotations:${Versions.jetbrainsAnnotations}"
+
+    object Kotlin : DependencyGroup(
+        group = "org.jetbrains.kotlin",
+        version = Versions.kotlin
+    ) {
+        val reflect = dependency("kotlin-reflect")
+    }
 
     object Ktor : DependencyGroup(
         group = "io.ktor",
-        version = "1.5.2"
+        version = Versions.ktor
     ) {
         val client = dependency("ktor-client-core")
         val clientJson = dependency("ktor-client-json")
         val clientApache = dependency("ktor-client-apache")
         val clientLogging = dependency("ktor-client-logging")
+        val serverNetty = dependency("ktor-server-netty")
+        val serverTestHost = dependency("ktor-server-test-host")
+        val freemarker = dependency("ktor-freemarker")
+        val locations = dependency("ktor-locations")
     }
 
     object KotlinX {
@@ -56,9 +77,9 @@ object Deps {
         ) {
             val test = dependency("kotlinx-coroutines-test")
             val core = dependency("kotlinx-coroutines-core")
+            val jdk8 = dependency("kotlinx-coroutines-jdk8")
         }
     }
-
 
     object TestContainers : DependencyGroup(
         group = "org.testcontainers",
@@ -68,9 +89,27 @@ object Deps {
         val jUnit = dependency("junit-jupiter")
     }
 
+    object Mockk : DependencyGroup(
+        group = "io.mockk",
+        version = Versions.mockk
+    ) {
+        val mockk = dependency("mockk")
+        val dslJvm = dependency("mockk-dsl-jvm")
+    }
+
+    object RestAssured : DependencyGroup(
+        group = "io.rest-assured",
+        version = Versions.restAssured
+    ) {
+        val restAssured = dependency("rest-assured")
+        val restAssuredAll = dependency("rest-assured-all")
+    }
+
+    object Spring : DependencyGroup(
+        group = "org.springframework",
+        version = Versions.spring
+    ) {
+        val webMvc = dependency("spring-webmvc")
+        val test = dependency("spring-test")
+    }
 }
-
-
-
-
-

@@ -10,11 +10,9 @@ java {
 }
 
 dependencies {
-    val jsoupVersion = "1.13.1"
-
     implementation(project(":dsl"))
     api(project(":base-fetcher"))
-    api("org.jsoup:jsoup:$jsoupVersion")
+    api(Deps.jsoup)
 
     "jsExecutionImplementation"(project(path = ":browser-fetcher", configuration = "default"))
 

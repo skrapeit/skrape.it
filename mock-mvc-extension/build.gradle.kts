@@ -7,14 +7,12 @@ plugins {
     kotlin("jvm")
 }
 
-val springVersion = "5.2.9.RELEASE"
-
 dependencies {
     provided(project(":html-parser"))
     provided(project(":assertions"))
-    provided("org.springframework:spring-webmvc:$springVersion")
-    provided("org.springframework:spring-test:$springVersion")
-    provided("javax.servlet:javax.servlet-api:4.0.1")
+    provided(Deps.Spring.webMvc)
+    provided(Deps.Spring.test)
+    provided(Deps.javaxServlet)
 }
 
 // TODO: use https://github.com/nebula-plugins/gradle-extra-configurations-plugin to get provided configuration in gradle

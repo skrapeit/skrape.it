@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    testImplementation("org.jetbrains:annotations:19.0.0")
+    testImplementation(Deps.jetbrainsAnnotations)
     testImplementation(project(path = ":test-utils", configuration = "default"))
     testImplementation(project(path = ":html-parser", configuration = "default"))
     testImplementation(project(path = ":assertions", configuration = "default"))

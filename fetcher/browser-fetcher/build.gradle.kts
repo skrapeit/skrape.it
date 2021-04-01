@@ -6,9 +6,8 @@ plugins {
 }
 
 dependencies {
-    val htmlUnitVersion = "2.48.0"
     api(project(":base-fetcher"))
-    api("net.sourceforge.htmlunit:htmlunit:$htmlUnitVersion") {
+    api(Deps.htmlUnit) {
         exclude("org.eclipse.jetty.websocket") // avoid android crash; see #93
     }
     val log4jOverSlf4jVersion = "1.7.30"

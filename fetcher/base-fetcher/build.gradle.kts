@@ -9,11 +9,10 @@ plugins {
 
 dependencies {
     implementation(project(":dsl"))
-    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version") // needed for extractIt when creating instance
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.4.3")
+    implementation(Deps.Kotlin.reflect) // needed for extractIt when creating instance
+    implementation(Deps.KotlinX.Coroutines.jdk8)
 
     testImplementation(project(path = ":test-utils", configuration = "default"))
-    val ktorVersion = "1.5.2"
-    testImplementation("io.ktor:ktor-client-core:$ktorVersion")
-    testImplementation("io.ktor:ktor-client-apache:$ktorVersion")
+    testImplementation(Deps.Ktor.client)
+    testImplementation(Deps.Ktor.clientApache)
 }

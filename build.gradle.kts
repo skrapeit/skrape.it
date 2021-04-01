@@ -128,13 +128,10 @@ allprojects {
 subprojects {
 
     dependencies {
-        val junitVersion = "5.7.0"
-        val striktVersion = "0.29.0"
-        val mockkVersion = "1.11.0"
-        testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
-        testImplementation("io.strikt:strikt-core:$striktVersion")
-        testImplementation("io.mockk:mockk:$mockkVersion")
-        testImplementation("io.mockk:mockk-dsl-jvm:$mockkVersion")
+        testImplementation(Deps.jUnit)
+        testImplementation(Deps.strikt)
+        testImplementation(Deps.Mockk.mockk)
+        testImplementation(Deps.Mockk.dslJvm)
     }
     tasks {
         withType<JavaCompile> {
@@ -176,7 +173,7 @@ subprojects {
 
             rejectVersionIf {
                 val isFlaggedAsNonStable =
-                    listOf("alpha", "beta", "RC", "rc", "dev").any { candidate.version.contains(it) }.not()
+                    listOf("alpha", "beta", "RC", "rc", "dev", "M1", "M2", "M3").any { candidate.version.contains(it) }.not()
                 val isSemanticVersion = "^[0-9,.v-]+(-r)?$".toRegex().matches(candidate.version)
                 (isFlaggedAsNonStable || isSemanticVersion).not()
             }
