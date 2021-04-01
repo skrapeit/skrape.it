@@ -1,5 +1,5 @@
 object Versions {
-    const val kotlin = "1.4.31"
+    const val kotlin = "1.4.32"
     const val coroutines = "1.4.3"
     const val ktor = "1.5.2"
     const val serialization = "1.0.1"
@@ -14,10 +14,10 @@ object Versions {
     const val okHttp = "4.9.1"
     const val strikt = "0.30.0"
     const val mockk = "1.11.0"
-    const val jUnit = "5.7.0"
+    const val jUnit = "5.7.1"
     const val restAssured = "4.3.3"
     const val javaxServlet = "4.0.1"
-    const val spring = "5.2.9.RELEASE"
+    const val spring = "5.3.5"
     const val jetbrainsAnnotations = "20.1.0"
 }
 
