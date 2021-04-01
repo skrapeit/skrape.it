@@ -18,18 +18,20 @@ public class Scraper<R>(public val client: NonBlockingFetcher<R>, public val pre
 }
 
 /**
- * convert a blocking Fetcher implementation into a non-blocking Fetcher
+ * Decorator that Implements a non-blocking fetcher with a given blocking Fetcher.
+ * Hint: The thereby created NonBlockingFetcher will still behave like a BlockingFetcher.
+ * It will only be converted to reduce library internal code duplication by handling everything as a coroutine internally.
  */
-private class BlockingToNonBlockingFetcherConverter<T>(
-    val wrapped: BlockingFetcher<T>
+private class FetcherConverter<T>(
+    val blockingFetcher: BlockingFetcher<T>
 ): NonBlockingFetcher<T> {
 
     override suspend fun fetch(request: T): Result {
-        return wrapped.fetch(request)
+        return blockingFetcher.fetch(request)
     }
 
     override val requestBuilder: T
-        get() = wrapped.requestBuilder
+        get() = blockingFetcher.requestBuilder
 }
 
 /**
@@ -37,8 +39,8 @@ private class BlockingToNonBlockingFetcherConverter<T>(
  * @return Result
  */
 @SkrapeItDsl
-public fun <R, T> skrape(client: BlockingFetcher<R>, init: suspend Scraper<R>.() -> T): T = runBlocking {
-    Scraper(BlockingToNonBlockingFetcherConverter(client)).init()
+public fun <R, T> skrape(fetcher: BlockingFetcher<R>, init: suspend Scraper<R>.() -> T): T = runBlocking {
+    Scraper(FetcherConverter(fetcher)).init()
 }
 
 /**
@@ -46,8 +48,8 @@ public fun <R, T> skrape(client: BlockingFetcher<R>, init: suspend Scraper<R>.()
  * @return Result
  */
 @SkrapeItDsl
-public suspend fun <R, T> skrape(client: NonBlockingFetcher<R>, init: suspend Scraper<R>.() -> T): T =
-    Scraper(client).init()
+public suspend fun <R, T> skrape(fetcher: NonBlockingFetcher<R>, init: suspend Scraper<R>.() -> T): T =
+    Scraper(fetcher).init()
 
 /**
  * Execute http call with a given Fetcher implementation and invoke the fetching result.
