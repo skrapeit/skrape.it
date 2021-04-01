@@ -33,7 +33,7 @@ private class BlockingToNonBlockingFetcherConverter<T>(
 }
 
 /**
- * Create a http-request config with given parameters or defaults.
+ * Create a scraper config with given parameters or defaults.
  * @return Result
  */
 @SkrapeItDsl
@@ -41,12 +41,16 @@ public fun <R, T> skrape(client: BlockingFetcher<R>, init: suspend Scraper<R>.()
     Scraper(BlockingToNonBlockingFetcherConverter(client)).init()
 }
 
+/**
+ * Create a non-blocking scraper config with given parameters or defaults.
+ * @return Result
+ */
 @SkrapeItDsl
 public suspend fun <R, T> skrape(client: NonBlockingFetcher<R>, init: suspend Scraper<R>.() -> T): T =
     Scraper(client).init()
 
 /**
- * Read and parse html from a skrape{it} result.
+ * Execute http call with a given Fetcher implementation and invoke the fetching result.
  */
 @SkrapeItDsl
 public suspend fun Scraper<*>.expect(init: Result.() -> Unit) {
@@ -54,7 +58,7 @@ public suspend fun Scraper<*>.expect(init: Result.() -> Unit) {
 }
 
 /**
- * Read and parse html from a skrape{it} result.
+ * Execute http call with a given Fetcher implementation and invoke the fetching result.
  * @return T
  */
 @SkrapeItDsl
@@ -62,12 +66,12 @@ public suspend fun <T> Scraper<*>.extract(extractor: Result.() -> T): T =
     scrape().extractor()
 
 /**
- * Read and parse html from a skrape{it} result.
+ * Execute http call with a given Fetcher implementation and invoke the fetching result as this and any given generic as it.
  * Attention: extract to class is only supported for classes where all parameters have default values
  * @return T
  */
 @SkrapeItDsl
-public suspend inline fun <reified T : Any> Scraper<*>.extractIt(crossinline extractor: Result.(T) -> Unit): T {
-    val instance = T::class.createInstance()
-    return extract { instance.also { extractor(it) } }
-}
+public suspend inline fun <reified T : Any> Scraper<*>.extractIt(crossinline extractor: Result.(T) -> Unit): T =
+    with(T::class) {
+        extract { createInstance().also { extractor(it) } }
+    }
