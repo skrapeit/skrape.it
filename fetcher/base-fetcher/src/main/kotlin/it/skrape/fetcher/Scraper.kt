@@ -4,7 +4,7 @@ import it.skrape.SkrapeItDsl
 import kotlinx.coroutines.runBlocking
 import kotlin.reflect.full.createInstance
 
-public class Scraper<R>(public val client: NonBlockingFetcher<R>, public val preparedRequest: R) {
+public class Scraper<R>(public val fetcher: NonBlockingFetcher<R>, public val preparedRequest: R) {
     public constructor(client: NonBlockingFetcher<R>) : this(client, client.requestBuilder)
 
     @SkrapeItDsl
@@ -14,7 +14,7 @@ public class Scraper<R>(public val client: NonBlockingFetcher<R>, public val pre
     }
 
     public suspend fun scrape(): Result =
-        client.fetch(preparedRequest)
+        fetcher.fetch(preparedRequest)
 }
 
 /**
