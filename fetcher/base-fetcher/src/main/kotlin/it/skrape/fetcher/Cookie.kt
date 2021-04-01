@@ -49,7 +49,7 @@ public fun String.toCookie(origin: String): Cookie {
     val path = attributes.getAttribute("path") ?: "/"
     val expires = attributes.getAttribute("expires").toExpires()
     val maxAge = attributes.getAttribute("max-age")?.toInt()
-    val domain = when(val domainUrl = attributes.getAttribute("domain")){
+    val domain = when (val domainUrl = attributes.getAttribute("domain")) {
         null -> Domain(origin, false)
         else -> Domain(domainUrl, true)
     }
@@ -72,11 +72,14 @@ private fun String?.toSameSite(): SameSite {
 }
 
 private fun String?.toExpires(): Expires {
-    return when(this){
+    return when (this) {
         null -> Expires.Session
         else -> Expires.Date(this)
     }
 }
 
-/** Remove http:// or https://, any subdirectories, and port if those exist */
-internal fun String.urlOrigin() = this.substringAfter("://").substringBefore("/").substringBefore(":")
+/**
+ * Remove http:// or https://, any subdirectories and port if those exist
+ */
+public val String.urlOrigin: String
+    get() = this.substringAfter("://").substringBefore("/").substringBefore(":")

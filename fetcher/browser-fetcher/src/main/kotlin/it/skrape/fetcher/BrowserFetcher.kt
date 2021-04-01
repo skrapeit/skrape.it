@@ -8,7 +8,7 @@ import it.skrape.fetcher.Method.GET
 import java.net.Proxy
 import java.net.URL
 
-public object BrowserFetcher : Fetcher<Request> {
+public object BrowserFetcher : BlockingFetcher<Request> {
     override val requestBuilder: Request get() = Request()
 
     override fun fetch(request: Request): Result {
@@ -33,7 +33,7 @@ public object BrowserFetcher : Fetcher<Request> {
                 baseUri = request.url,
                 cookies = httpResponse.responseHeaders
                         .filter { it.name == "Set-Cookie" }
-                        .map { it.value.toCookie(request.url.urlOrigin()) }
+                        .map { it.value.toCookie(request.url.urlOrigin) }
         )
 
         client.javaScriptEngine.shutdown()
@@ -96,10 +96,6 @@ public object BrowserFetcher : Fetcher<Request> {
     }
 
     private fun WebResponse.toStatus() = Result.Status(statusCode, statusMessage)
-
-
-    /** Remove http:// or https://, any subdirectories, and port if those exist */
-    private fun String.urlOrigin() = this.substringAfter("://").substringBefore("/").substringBefore(":")
 
 }
 

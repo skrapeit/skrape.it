@@ -19,7 +19,7 @@ import java.net.SocketTimeoutException
 
 private val wiremock = Testcontainer.wiremock
 
-class KtorFetcherTest {
+class AsyncFetcherTest {
 
     private val baseRequest by lazy { Request(url = "${wiremock.httpUrl}/") }
 
@@ -31,7 +31,7 @@ class KtorFetcherTest {
             sslRelaxed = true
         )
 
-        val fetched = runBlocking { KtorFetcher.fetch(request) }
+        val fetched = runBlocking { AsyncFetcher.fetch(request) }
 
         expectThat(fetched.status { code }).isEqualTo(200)
         expectThat(fetched.contentType).isEqualTo("text/html;charset=utf-8")
@@ -43,7 +43,7 @@ class KtorFetcherTest {
     fun `will not throw exception on non existing url`() {
         val request = baseRequest.copy(url = "${wiremock.httpUrl}/not-existing", timeout = 9999999)
 
-        val fetched = runBlocking { KtorFetcher.fetch(request) }
+        val fetched = runBlocking { AsyncFetcher.fetch(request) }
 
         expectThat(fetched.status { code }).isEqualTo(404)
     }
@@ -54,7 +54,7 @@ class KtorFetcherTest {
         val request = baseRequest.copy(followRedirects = false)
 
         runBlocking {
-            val fetched = KtorFetcher.fetch(request)
+            val fetched = AsyncFetcher.fetch(request)
 
             expectThat(fetched.status { code }).isEqualTo(302)
         }
@@ -66,7 +66,7 @@ class KtorFetcherTest {
         wiremock.setupRedirect()
 
         runBlocking {
-            val fetched = KtorFetcher.fetch(baseRequest)
+            val fetched = AsyncFetcher.fetch(baseRequest)
 
             expectThat(fetched.status { code }).isEqualTo(404)
         }
@@ -79,7 +79,7 @@ class KtorFetcherTest {
             url = "${wiremock.httpsUrl}/cookies",
             sslRelaxed = true
         )
-        val fetched = runBlocking { KtorFetcher.fetch(request) }
+        val fetched = runBlocking { AsyncFetcher.fetch(request) }
 
         expectThat(fetched.cookies).isEqualTo(
             listOf(
@@ -111,7 +111,7 @@ class KtorFetcherTest {
         wiremock.setupPostStub()
         val request = baseRequest.copy(method = Method.POST)
 
-        val fetched = runBlocking { KtorFetcher.fetch(request) }
+        val fetched = runBlocking { AsyncFetcher.fetch(request) }
 
         expectThat(fetched.status { code }).isEqualTo(200)
         expectThat(fetched.contentType).isEqualTo("application/json;charset=utf-8")
@@ -123,7 +123,7 @@ class KtorFetcherTest {
         wiremock.setupPutStub()
         val request = baseRequest.copy(method = Method.PUT)
 
-        val fetched = runBlocking { KtorFetcher.fetch(request) }
+        val fetched = runBlocking { AsyncFetcher.fetch(request) }
 
         expectThat(fetched.status { code }).isEqualTo(201)
         expectThat(fetched.responseBody).isEqualTo("i'm a PUT stub")
@@ -134,7 +134,7 @@ class KtorFetcherTest {
         wiremock.setupDeleteStub()
         val request = baseRequest.copy(method = Method.DELETE)
 
-        val fetched = runBlocking { KtorFetcher.fetch(request) }
+        val fetched = runBlocking { AsyncFetcher.fetch(request) }
 
         expectThat(fetched.status { code }).isEqualTo(201)
         expectThat(fetched.responseBody).isEqualTo("i'm a DELETE stub")
@@ -145,7 +145,7 @@ class KtorFetcherTest {
         wiremock.setupPatchStub()
         val request = baseRequest.copy(method = Method.PATCH)
 
-        val fetched = runBlocking { KtorFetcher.fetch(request) }
+        val fetched = runBlocking { AsyncFetcher.fetch(request) }
 
         expectThat(fetched.status { code }).isEqualTo(201)
         expectThat(fetched.responseBody).isEqualTo("i'm a PATCH stub")
@@ -156,7 +156,7 @@ class KtorFetcherTest {
         wiremock.setupHeadStub()
         val request = baseRequest.copy(method = Method.HEAD)
 
-        val fetched = runBlocking { KtorFetcher.fetch(request) }
+        val fetched = runBlocking { AsyncFetcher.fetch(request) }
 
         expectThat(fetched.status { code }).isEqualTo(201)
         expectThat(fetched.httpHeader("result")).isEqualTo("i'm a HEAD stub")
@@ -167,7 +167,7 @@ class KtorFetcherTest {
         wiremock.setupStub(path = "/delayed", delay = 6000)
 
         expectThrows<SocketTimeoutException> {
-            KtorFetcher.fetch(baseRequest.copy(url = "${wiremock.httpUrl}/delayed"))
+            AsyncFetcher.fetch(baseRequest.copy(url = "${wiremock.httpUrl}/delayed"))
         }
     }
 }

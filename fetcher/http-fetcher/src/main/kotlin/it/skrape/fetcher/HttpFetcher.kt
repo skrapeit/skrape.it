@@ -15,7 +15,7 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
-public object HttpFetcher : Fetcher<Request> {
+public object HttpFetcher : BlockingFetcher<Request> {
     override val requestBuilder: Request get() = Request()
 
     override fun fetch(request: Request): Result {
@@ -25,7 +25,7 @@ public object HttpFetcher : Fetcher<Request> {
                     responseStatus = it.toStatus(),
                     contentType = it.header("Content-Type"),
                     headers = it.headers.names().associateBy({ item -> item }, { item -> it.header(item, "")!! }),
-                    cookies = it.headers("Set-Cookie").map { item -> item.toCookie(request.url.urlOrigin()) },
+                    cookies = it.headers("Set-Cookie").map { item -> item.toCookie(request.url.urlOrigin) },
                     baseUri = request.url
             )
         }
@@ -91,9 +91,5 @@ public object HttpFetcher : Fetcher<Request> {
         val trustAllCerts = arrayOf<TrustManager>(naiveTrustManager())
         init(null, trustAllCerts, SecureRandom())
     }.socketFactory
-
-
-    /** Remove http:// or https://, any subdirectories, and port if those exist */
-    private fun String.urlOrigin() = this.substringAfter("://").substringBefore("/").substringBefore(":")
 
 }

@@ -19,7 +19,7 @@ private val wiremock = Testcontainer.wiremock
 class KtorAdapterTest {
 
 
-    class KtorBlockingFetcher(val ktorClient: HttpClient) : Fetcher<HttpRequestBuilder> {
+    class KtorBlockingFetcher(val ktorClient: HttpClient) : BlockingFetcher<HttpRequestBuilder> {
         override fun fetch(request: HttpRequestBuilder): Result {
             return runBlocking {
                 val fullResponse = ktorClient.request<HttpResponse>(request)

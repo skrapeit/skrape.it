@@ -4,8 +4,8 @@ import it.skrape.SkrapeItDsl
 import kotlinx.coroutines.runBlocking
 import kotlin.reflect.full.createInstance
 
-public class Scraper<R>(public val client: AsyncFetcher<R>, public val preparedRequest: R) {
-    public constructor(client: AsyncFetcher<R>) : this(client, client.requestBuilder)
+public class Scraper<R>(public val client: NonBlockingFetcher<R>, public val preparedRequest: R) {
+    public constructor(client: NonBlockingFetcher<R>) : this(client, client.requestBuilder)
 
     @SkrapeItDsl
     public fun request(init: R.() -> Unit): Scraper<R> {
@@ -18,11 +18,11 @@ public class Scraper<R>(public val client: AsyncFetcher<R>, public val preparedR
 }
 
 /**
- * Wrap a blocking Fetcher implementation into a AsyncFetcher
+ * convert a blocking Fetcher implementation into a non-blocking Fetcher
  */
-private class FetcherWrapper<T>(
-    val wrapped: Fetcher<T>
-): AsyncFetcher<T> {
+private class BlockingToNonBlockingFetcherConverter<T>(
+    val wrapped: BlockingFetcher<T>
+): NonBlockingFetcher<T> {
 
     override suspend fun fetch(request: T): Result {
         return wrapped.fetch(request)
@@ -30,7 +30,6 @@ private class FetcherWrapper<T>(
 
     override val requestBuilder: T
         get() = wrapped.requestBuilder
-
 }
 
 /**
@@ -38,12 +37,12 @@ private class FetcherWrapper<T>(
  * @return Result
  */
 @SkrapeItDsl
-public fun <R, T> skrape(client: Fetcher<R>, init: suspend Scraper<R>.() -> T): T = runBlocking {
-    Scraper(FetcherWrapper(client)).init()
+public fun <R, T> skrape(client: BlockingFetcher<R>, init: suspend Scraper<R>.() -> T): T = runBlocking {
+    Scraper(BlockingToNonBlockingFetcherConverter(client)).init()
 }
 
 @SkrapeItDsl
-public suspend fun <R, T> skrape(client: AsyncFetcher<R>, init: suspend Scraper<R>.() -> T): T =
+public suspend fun <R, T> skrape(client: NonBlockingFetcher<R>, init: suspend Scraper<R>.() -> T): T =
     Scraper(client).init()
 
 /**

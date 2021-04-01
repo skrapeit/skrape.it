@@ -1,6 +1,7 @@
 package it.skrape.fetcher
 
 import it.skrape.SkrapeItDsl
+import it.skrape.fetcher.UrlBuilder.Protocol
 
 @SkrapeItDsl
 public data class UrlBuilder(
