@@ -28,7 +28,13 @@ internal class Parser(
         try {
             Class.forName("it.skrape.fetcher.BrowserFetcherKt")
         } catch (e: ClassNotFoundException) {
-            throw MissingDependencyException("you need to add browser-fetcher dependency to exec JS")
+            throw MissingDependencyException(
+                """
+                ⚠️ You need to add browser-fetcher dependency to execute Javascript.
+                💡 Please add 'it.skrape:skrapeit-browser-fetcher' dependency to your project.
+                🧐 Find overview of latest releases: https://search.maven.org/artifact/it.skrape/skrapeit-browser-fetcher
+                """.trimIndent()
+            )
         }
     }
 
@@ -84,4 +90,5 @@ public fun htmlDocument(
 public val Result.document: Doc
     get() = htmlDocument { this }
 
+@SkrapeItDsl
 public fun <T> Result.htmlDocument(init: Doc.() -> T): T = htmlDocument(html = responseBody, baseUri = baseUri).init()
