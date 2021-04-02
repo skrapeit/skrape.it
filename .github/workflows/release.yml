@@ -45,7 +45,7 @@ jobs:
       - name: Update github action release workflow default version
         uses: fjogeleit/yaml-update-action@v0.2.1
         with:
-          valueFile: '.github/workflows/release.yaml'
+          valueFile: '.github/workflows/release.yml'
           propertyPath: 'on.workflow_dispatch.inputs.version.default'
           commitChange: 'false'
           value: ${{ github.event.inputs.version }}
@@ -76,7 +76,8 @@ jobs:
       - name: send tweet
         uses: ethomson/send-tweet-action@v1
         with:
-          status: 🥳🪒📄 skrape{it} version ${{ github.event.inputs.version }} has just been released! 📢🙆🏻‍
+          status: |
+              🥳🪒📄 skrape{it} version ${{ github.event.inputs.version }} has just been released! 📢🙆🏻‍
           consumer-key: ${{ secrets.TWITTER_CONSUMER_API_KEY_SKRAPE_IT }}
           consumer-secret: ${{ secrets.TWITTER_CONSUMER_API_SECRET_SKRAPE_IT }}
           access-token: ${{ secrets.TWITTER_ACCESS_TOKEN_SKRAPE_IT }}
