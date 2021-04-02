@@ -58,14 +58,14 @@ jobs:
           ORG_GRADLE_PROJECT_signingPassword: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{secrets.ORG_GRADLE_PROJECT_SONATYPEUSERNAME}}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{secrets.ORG_GRADLE_PROJECT_SONATYPEPASSWORD}}
-        run: ./gradlew publishToSonatype closeSonatypeStagingRepository
+        run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
 
       - uses: matheusalbino/git-commit@v1.0.1
         with:
           user-name: skrapeit
           user-email: page.content.tester@gmail.com
           message: bump version ${{ steps.current_version.outputs.value }} --> ${{ github.event.inputs.version }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.WORKFLOW_PERMISSION }}
 
       - name: Create Tag
         uses: negz/create-tag@v1
