@@ -43,11 +43,12 @@ jobs:
           value: ${{ github.event.inputs.version }}
 
       - name: Update github action release workflow default version
-        uses: fjogeleit/yaml-update-action@v0.2.1
+        uses: fjogeleit/yaml-update-action@v0.3.0
         with:
           valueFile: '.github/workflows/release.yml'
           propertyPath: 'on.workflow_dispatch.inputs.version.default'
           commitChange: 'false'
+          updateFile: 'true'
           value: ${{ github.event.inputs.version }}
 
       - name: Publish to maven central
