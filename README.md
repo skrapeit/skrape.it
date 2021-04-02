@@ -277,6 +277,19 @@ fun main() {
 }
 ```
 
+### Scrape async
+#### skrape{it}'s `AsyncFetcher` provides coroutine support
+```kotlin
+suspend fun getAllLinks(): Map<String, String> = skrape(AsyncFetcher) {
+    request {
+        url = "https://my-fancy.website"
+    }
+    extract {
+        htmlDocument { eachLink }
+    }
+}
+```
+
 ### Configure HTTP-Client:
 ```kotlin
 class ExampleTest {
