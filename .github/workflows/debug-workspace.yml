@@ -2,6 +2,11 @@ name: Debug Workspace
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: some input
+        default: ''
+        required: true
 
 jobs:
   build:
@@ -9,5 +14,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+      - run: ls -la
+
       - run: |
-          ls -la
+          pwd
+          cat .github/workflows/release.yaml
+
+      - name: Update github action release workflow default version
+        uses: fjogeleit/yaml-update-action@v0.2.1
+        with:
+          valueFile: '.github/workflows/release.yaml'
+          propertyPath: 'on.workflow_dispatch.inputs.version.default'
+          commitChange: 'false'
+          value: works
+
+      - run: cat .github/workflows/release.yaml
