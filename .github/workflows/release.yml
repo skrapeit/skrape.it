@@ -42,14 +42,15 @@ jobs:
           property: 'release_version'
           value: ${{ github.event.inputs.version }}
 
-      - name: Update github action release workflow default version
-        uses: fjogeleit/yaml-update-action@v0.3.0
-        with:
-          valueFile: '.github/workflows/release.yml'
-          propertyPath: 'on.workflow_dispatch.inputs.version.default'
-          commitChange: 'false'
-          updateFile: 'true'
-          value: ${{ github.event.inputs.version }}
+# deactivate for now since commit action is not able to push changes in workflow files because of missing permission
+#      - name: Update github action release workflow default version
+#        uses: fjogeleit/yaml-update-action@v0.3.0
+#        with:
+#          valueFile: '.github/workflows/release.yml'
+#          propertyPath: 'on.workflow_dispatch.inputs.version.default'
+#          commitChange: 'false'
+#          updateFile: 'true'
+#          value: ${{ github.event.inputs.version }}
 
       - name: Publish to maven central
         env:
@@ -65,7 +66,7 @@ jobs:
           user-name: skrapeit
           user-email: page.content.tester@gmail.com
           message: bump version ${{ steps.current_version.outputs.value }} --> ${{ github.event.inputs.version }}
-          github-token: ${{ secrets.WORKFLOW_PERMISSION }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Tag
         uses: negz/create-tag@v1
