@@ -41,6 +41,7 @@ First and foremost skrape{it} aims to be a testing tool (not tied to a particula
 - [x] Not bind to a specific test-runner, framework or whatever.
 - [x] Open to use any other assertion library of your choice.
 - [x] Open to implement your own fetcher
+- [x] Supports non-blocking fetching / Coroutine support
 ### Extensions
 In addition, extensions for well-known testing libraries are provided to extend them with the mentioned skrape{it} functionality.
 Currently available:
