@@ -1,4 +1,5 @@
 @file:Suppress("LocalVariableName")
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "skrapeit"
 
