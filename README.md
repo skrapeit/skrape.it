@@ -1,7 +1,7 @@
 <img width="150px" height="150px" align="right" src="skrape.png"/>
 
 [![Documentation](https://img.shields.io/badge/skrape%7Bit%7D-docs-blue.svg)](https://docs.skrape.it)
-[![maven central](https://img.shields.io/maven-central/v/it.skrape/skrapeit-core.svg?color=0)](https://search.maven.org/search?q=g:it.skrape%20AND%20a:skrapeit-core&skrapeit-core=gav)
+[![maven central](https://img.shields.io/maven-central/v/it.skrape/skrapeit.svg?color=0)](https://search.maven.org/search?q=g:it.skrape%20AND%20a:skrapeit&skrapeit=gav)
 [![skrape-it @ kotlinlang.slack.com](https://img.shields.io/static/v1?label=kotlinlang&message=skrape-it&color=blue&logo=slack)](https://kotlinlang.slack.com/archives/CSPDWD4R4)
 [![License](https://img.shields.io/github/license/skrapeit/skrape.it.svg)](https://github.com/skrapeit/skrape.it/blob/master/LICENSE)
 
@@ -58,7 +58,7 @@ If you don't want to read that much or just want to get a rough overview on how 
 
 
 ### Installation
-All our official/stable releases will be published to [mavens central repository](https://search.maven.org/search?q=g:it.skrape%20AND%20a:skrapeit-core&core=gav).
+All our official/stable releases will be published to [mavens central repository](https://search.maven.org/search?q=g:it.skrape%20AND%20a:skrapeit&skrapeit=gav).
 
 #### Add dependency
 
