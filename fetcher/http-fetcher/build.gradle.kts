@@ -6,7 +6,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":base-fetcher"))
+    api(projects.baseFetcher)
     api(Deps.koHttp)
     api(Deps.okHttp) // Hotfix since new kohttp version has been released
 

@@ -8,8 +8,8 @@ plugins {
 }
 
 dependencies {
-    provided(project(":html-parser"))
-    provided(project(":assertions"))
+    provided(projects.htmlParser)
+    provided(projects.assertions)
     provided(Deps.Spring.webMvc)
     provided(Deps.Spring.test)
     provided(Deps.javaxServlet)

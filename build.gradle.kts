@@ -27,6 +27,8 @@ allprojects {
 
     repositories {
         mavenCentral()
+        // still needed because of detekts transitive dependency to kotlinx-html-jvm
+        // see: https://github.com/Kotlin/kotlinx.html/issues/173
         jcenter()
     }
 
@@ -191,8 +193,11 @@ jacoco {
 
 tasks {
     val jacocoTestReport by getting(JacocoReport::class) {
-        dependsOn(subprojects.map { it.tasks.withType<Test>() })
-        dependsOn(subprojects.map { it.tasks.withType<JacocoReport>() })
+        dependsOn(
+            subprojects.map { it.tasks.withType<Test>() },
+            subprojects.map { it.tasks.withType<JacocoReport>() },
+            subprojects.map { it.tasks.withType<Javadoc>() },
+        )
         additionalSourceDirs.setFrom(subprojects.map { it.the<SourceSetContainer>()["main"].allSource.srcDirs })
         sourceDirectories.setFrom(subprojects.map { it.the<SourceSetContainer>()["main"].allSource.srcDirs })
         classDirectories.setFrom(subprojects.map { it.the<SourceSetContainer>()["main"].output })
@@ -217,11 +222,11 @@ nexusPublishing {
 }
 
 dependencies {
-    api(project(":assertions"))
-    api(project(":async-fetcher"))
-    api(project(":base-fetcher"))
-    api(project(":browser-fetcher"))
-    api(project(":dsl"))
-    api(project(":http-fetcher"))
-    api(project(":html-parser"))
+    api(projects.assertions)
+    api(projects.asyncFetcher)
+    api(projects.baseFetcher)
+    api(projects.browserFetcher)
+    api(projects.dsl)
+    api(projects.httpFetcher)
+    api(projects.htmlParser)
 }

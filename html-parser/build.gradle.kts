@@ -10,8 +10,8 @@ java {
 }
 
 dependencies {
-    implementation(project(":dsl"))
-    api(project(":base-fetcher"))
+    implementation(projects.dsl)
+    api(projects.baseFetcher)
     api(Deps.jsoup)
 
     "jsExecutionImplementation"(project(path = ":browser-fetcher", configuration = "default"))

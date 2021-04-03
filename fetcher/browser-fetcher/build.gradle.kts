@@ -6,7 +6,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":base-fetcher"))
+    api(projects.baseFetcher)
     api(Deps.htmlUnit) {
         exclude("org.eclipse.jetty.websocket") // avoid android crash; see #93
     }

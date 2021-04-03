@@ -8,7 +8,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":dsl"))
+    implementation(projects.dsl)
     implementation(Deps.Kotlin.reflect) // needed for extractIt when creating instance
     implementation(Deps.KotlinX.Coroutines.jdk8)
 

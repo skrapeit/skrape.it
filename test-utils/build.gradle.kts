@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly(project(":html-parser"))
+    compileOnly(projects.htmlParser)
 
     implementation(Deps.TestContainers.testContainers)
     implementation(Deps.TestContainers.jUnit)

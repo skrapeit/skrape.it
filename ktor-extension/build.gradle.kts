@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    provided(project(":html-parser"))
+    provided(projects.htmlParser)
     provided(Deps.Ktor.serverTestHost)
     provided(Deps.Ktor.serverNetty)
     provided(Deps.Ktor.freemarker)
