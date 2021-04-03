@@ -57,6 +57,7 @@ allprojects {
     java {
         toolchain {
             languageVersion.set(JavaLanguageVersion.of(8))
+            vendor.set(JvmVendorSpec.ADOPTOPENJDK)
         }
         withJavadocJar()
         withSourcesJar()
@@ -75,7 +76,7 @@ allprojects {
         "skrapeit"
     )
     if (this.name in includeToPublishing) {
-        apply(plugin= "org.jetbrains.dokka")
+        apply(plugin = "org.jetbrains.dokka")
         apply(plugin = "maven-publish")
         publishing {
             publications {
@@ -175,7 +176,8 @@ subprojects {
 
             rejectVersionIf {
                 val isFlaggedAsNonStable =
-                    listOf("alpha", "beta", "RC", "rc", "dev", "M1", "M2", "M3").any { candidate.version.contains(it) }.not()
+                    listOf("alpha", "beta", "RC", "rc", "dev", "M1", "M2", "M3").any { candidate.version.contains(it) }
+                        .not()
                 val isSemanticVersion = "^[0-9,.v-]+(-r)?$".toRegex().matches(candidate.version)
                 (isFlaggedAsNonStable || isSemanticVersion).not()
             }
