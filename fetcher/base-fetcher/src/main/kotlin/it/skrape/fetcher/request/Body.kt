@@ -16,6 +16,11 @@ public class Body {
         data = xml
     }
 
+    public fun form(form: String) {
+        contentType = FORM
+        data = form
+    }
+
     public fun json(init: Json.() -> Unit) {
         Json().also(init).toBody()
     }

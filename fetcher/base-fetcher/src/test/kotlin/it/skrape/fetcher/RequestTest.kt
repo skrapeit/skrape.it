@@ -77,6 +77,18 @@ internal class RequestTest {
     }
 
     @Test
+    internal fun `form helper method will set proper content-type and body`() {
+        val request = Request().apply {
+            body {
+                contentType = "foo"
+                form("foo=bar&fizz=buzz")
+            }
+        }
+        expectThat(request.headers["Content-Type"]).isEqualTo("application/x-www-form-urlencoded")
+        expectThat(request.body).isEqualTo("foo=bar&fizz=buzz")
+    }
+
+    @Test
     internal fun `can build form body`() {
         val request = Request().apply {
             body {
