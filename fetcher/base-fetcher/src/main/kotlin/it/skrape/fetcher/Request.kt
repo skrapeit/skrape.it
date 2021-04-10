@@ -1,6 +1,7 @@
 package it.skrape.fetcher
 
 import it.skrape.SkrapeItDsl
+import it.skrape.fetcher.request.Body
 
 @SkrapeItDsl
 public data class Request(
@@ -27,6 +28,7 @@ public data class Request(
         var timeout: Int = 5000,
         var followRedirects: Boolean = true,
         var authentication: Authentication? = null,
+        var body: String? = null,
 
         /**
          * Will ignore SSL by trusting all certificates.
@@ -40,6 +42,13 @@ public data class Request(
     }
 
     public fun proxyBuilder(init: ProxyBuilder.() -> Unit): ProxyBuilder = ProxyBuilder().also(init)
+
+    @SkrapeItDsl
+    public fun body(init: Body.() -> Unit) {
+        val invokedBody = Body().also(init)
+        body = invokedBody.data
+        headers += "Content-Type" to invokedBody.contentType
+    }
 }
 
 public enum class Method {
