@@ -726,7 +726,7 @@ class DslTest {
 
     @Test
     fun `can skrape none blocking inside a coroutine`() {
-        wiremock.setupStub(path = "/delayed", delay = 5000)
+        wiremock.setupStub(path = "/delayed", delay = 5_000)
 
         val asynExecTimeInMillis = measureTimeMillis {
             runBlocking {
@@ -735,7 +735,7 @@ class DslTest {
                         skrape(AsyncFetcher) {
                             request {
                                 url = "${wiremock.httpUrl}/delayed"
-                                timeout = 10000
+                                timeout = 15_000
                             }
                             expect {
                                 status {
@@ -754,14 +754,14 @@ class DslTest {
             }
         }
 
-        expectThat(asynExecTimeInMillis).isLessThan(15000)
+        expectThat(asynExecTimeInMillis).isLessThan(20_000)
 
         val sequentialExecTimeInMillis = measureTimeMillis {
             repeat(5) {
                 skrape(HttpFetcher) {
                     request {
                         url = "${wiremock.httpUrl}/delayed"
-                        timeout = 10000
+                        timeout = 15_000
                     }
                     expect {
                         status {

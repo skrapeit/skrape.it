@@ -75,4 +75,20 @@ internal class RequestTest {
         expectThat(request.headers["Content-Type"]).isEqualTo("application/json")
         expectThat(request.body).isEqualTo("""{"foo":"bar","xxx":{"a":"b","c":[1,"d"]}}""")
     }
+
+    @Test
+    internal fun `can build form body`() {
+        val request = Request().apply {
+            body {
+                form {
+                    "foo" to "bar"
+                    "xxx" to true
+                    "bar" to 1.6
+                    "yyy" to 42
+                }
+            }
+        }
+        expectThat(request.headers["Content-Type"]).isEqualTo("application/x-www-form-urlencoded")
+        expectThat(request.body).isEqualTo("foo=bar&xxx=true&bar=1.6&yyy=42")
+    }
 }

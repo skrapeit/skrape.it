@@ -20,10 +20,18 @@ public class Body {
         Json().also(init).toBody()
     }
 
+    public fun form(init: Form.() -> Unit) {
+        Form().also(init).toBody()
+    }
+
     private fun Json.toBody() {
         contentType = JSON
         data = toString()
+    }
 
+    private fun Form.toBody() {
+        contentType = FORM
+        data = toString()
     }
 }
 
@@ -66,5 +74,27 @@ public class Json {
         }
 }
 
+public class Form {
+    private val elements = mutableListOf<Pair<String, String>>()
+
+    public infix fun String.to(string: String?) {
+        elements += if (string == null) Pair(this, "null") else Pair(this, """$string""")
+    }
+
+    public infix fun String.to(number: Number?) {
+        elements += Pair(this, number.toString())
+    }
+
+    public infix fun String.to(boolean: Boolean?) {
+        elements += Pair(this, boolean.toString())
+    }
+
+    override fun toString(): String =
+        elements.joinToString(separator = "&") { (key, value) ->
+            """$key=$value"""
+        }
+}
+
 private const val JSON = "application/json"
 private const val XML = "text/xml"
+private const val FORM = "application/x-www-form-urlencoded"
