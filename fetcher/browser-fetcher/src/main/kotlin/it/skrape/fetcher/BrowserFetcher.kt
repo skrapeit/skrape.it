@@ -4,7 +4,6 @@ import com.gargoylesoftware.htmlunit.*
 import com.gargoylesoftware.htmlunit.html.HtmlPage
 import com.gargoylesoftware.htmlunit.util.Cookie
 import com.gargoylesoftware.htmlunit.util.NameValuePair
-import it.skrape.fetcher.Method.GET
 import java.net.Proxy
 import java.net.URL
 
@@ -12,12 +11,12 @@ public object BrowserFetcher : BlockingFetcher<Request> {
     override val requestBuilder: Request get() = Request()
 
     override fun fetch(request: Request): Result {
-        if (request.method != GET)
-            throw UnsupportedRequestOptionException("Browser mode only supports the http verb GET")
-
         val client = WebClient(BrowserVersion.BEST_SUPPORTED).withOptions(request)
+        val webRequest = WebRequest(URL(request.url), request.method.toHttpMethod()).apply {
+            request.body?.run { requestBody = this }
+        }
 
-        val page: Page = client.getPage(request.url)
+        val page: Page = client.getPage(client.currentWindow.topWindow, webRequest)
         val httpResponse = page.webResponse
         val document = when {
             page.isHtmlPage -> (page as HtmlPage).asXml()
@@ -39,7 +38,6 @@ public object BrowserFetcher : BlockingFetcher<Request> {
         client.javaScriptEngine.shutdown()
         client.close()
         client.cache.clear()
-        page.cleanUp()
         return result
     }
 
@@ -105,4 +103,11 @@ public fun Map<String, String>.asRawCookieSyntax(): String =
 public fun List<NameValuePair>.toMap(): Map<String, String> =
         associateBy({ it.name }, { it.value })
 
-public class UnsupportedRequestOptionException(message: String) : IllegalArgumentException(message)
+internal fun Method.toHttpMethod(): HttpMethod = when (this) {
+    Method.GET -> HttpMethod.GET
+    Method.POST -> HttpMethod.POST
+    Method.HEAD -> HttpMethod.HEAD
+    Method.DELETE -> HttpMethod.DELETE
+    Method.PATCH -> HttpMethod.PATCH
+    Method.PUT -> HttpMethod.PUT
+}

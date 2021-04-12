@@ -2,10 +2,12 @@ package it.skrape.fetcher
 
 import Testcontainer
 import com.gargoylesoftware.htmlunit.util.NameValuePair
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.parallel.Execution
 import org.junit.jupiter.api.parallel.ExecutionMode
 import setupCookiesStub
+import setupPostStub
 import setupRedirect
 import setupStub
 import strikt.api.expect
@@ -14,9 +16,9 @@ import strikt.api.expectThrows
 import strikt.assertions.contains
 import strikt.assertions.isEqualTo
 import java.net.SocketTimeoutException
-import java.util.*
 
 private val wiremock = Testcontainer.wiremock
+private val httpBin = Testcontainer.httpBin
 
 @Execution(ExecutionMode.SAME_THREAD)
 class BrowserFetcherTest {
@@ -129,12 +131,32 @@ class BrowserFetcherTest {
     }
 
     @Test
-    fun `will throw exception on HTTP verb POST`() {
+    fun `can handle HTTP verb POST`() {
+        wiremock.setupPostStub()
         val request = baseRequest.copy(method = Method.POST)
 
-        expectThrows<UnsupportedRequestOptionException> {
-            BrowserFetcher.fetch(request)
+        val fetched = BrowserFetcher.fetch(request)
+
+        expectThat(fetched.responseBody).contains("""{"data":"some value"}""")
+        expectThat(fetched.contentType).isEqualTo("application/json")
+    }
+
+    @Test
+    fun `can POST body`() {
+
+        val request = Request(
+            url = "$httpBin/post",
+            method = Method.POST
+        ).apply {
+            body {
+                json {
+                    "foo" to "bar"
+                }
+            }
         }
+
+        val fetched = runBlocking { BrowserFetcher.fetch(request) }
+        expectThat(fetched.responseBody).contains(""""data": "{\"foo\":\"bar\"}"""")
     }
 
     @Test
@@ -165,37 +187,6 @@ class BrowserFetcherTest {
 
         val fetched = BrowserFetcher.fetch(baseRequest)
         expectThat(fetched.responseBody).contains("dynamically added")
-    }
-
-    @Test
-    fun `can handle uri scheme`() {
-        val aValideHtml = "<html><h1>headline</h1></html>"
-        val base64encoded = Base64.getEncoder().encodeToString(aValideHtml.toByteArray())
-        val uriScheme = "data:text/html;charset=utf-8;base64,$base64encoded"
-
-        val fetched = BrowserFetcher.fetch(Request(url = uriScheme))
-
-        expectThat(fetched.responseBody).isEqualTo("""
-            |<?xml version="1.0" encoding="UTF-8"?>
-            |<html>
-            |  <head/>
-            |  <body>
-            |    <h1>
-            |      headline
-            |    </h1>
-            |  </body>
-            |</html>
-            |""".trimMargin().replace("\n", "\r\n")
-        )
-
-    }
-
-    @Test
-    fun `will not throw if response body is not html`() {
-        wiremock.setupStub(fileName = "data.json", contentType = "application/json; charset=UTF-8")
-
-        val response = BrowserFetcher.fetch(baseRequest)
-        expectThat(response.responseBody).isEqualTo("{\"data\":\"some value\"}")
     }
 
     @Test
