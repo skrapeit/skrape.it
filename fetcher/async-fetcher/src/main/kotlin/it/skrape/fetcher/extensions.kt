@@ -25,9 +25,12 @@ internal fun Request.toHttpRequest(): HttpRequestBuilder {
             }
             append("User-Agent", request.userAgent)
             cookies = request.cookies
-            if (request.authentication != null) {
-                append("Authorization", request.authentication!!.toHeaderValue())
+            request.authentication?.run {
+                append("Authorization", toHeaderValue())
             }
+        }
+        request.body?.run {
+            body = this
         }
         timeout {
             socketTimeoutMillis = request.timeout.toLong()
