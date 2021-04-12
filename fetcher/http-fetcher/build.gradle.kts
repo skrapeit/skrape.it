@@ -7,8 +7,8 @@ plugins {
 
 dependencies {
     api(projects.baseFetcher)
-    api(Deps.koHttp)
-    api(Deps.okHttp) // Hotfix since new kohttp version has been released
+    implementation(Deps.Ktor.client)
+    implementation(Deps.Ktor.clientApache)
 
     testImplementation(project(path = ":test-utils", configuration = "default"))
 }

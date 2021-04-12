@@ -732,7 +732,7 @@ class DslTest {
             runBlocking {
                 repeat(5) {
                     launch {
-                        skrape(AsyncFetcher) {
+                        skrape(HttpFetcher) {
                             request {
                                 url = "${wiremock.httpUrl}/delayed"
                                 timeout = 15_000

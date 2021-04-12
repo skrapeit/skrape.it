@@ -2,7 +2,6 @@ package it.skrape.fetcher
 
 import Testcontainer
 import com.gargoylesoftware.htmlunit.util.NameValuePair
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.parallel.Execution
 import org.junit.jupiter.api.parallel.ExecutionMode
@@ -155,7 +154,7 @@ class BrowserFetcherTest {
             }
         }
 
-        val fetched = runBlocking { BrowserFetcher.fetch(request) }
+        val fetched = BrowserFetcher.fetch(request)
         expectThat(fetched.responseBody).contains(""""data": "{\"foo\":\"bar\"}"""")
     }
 

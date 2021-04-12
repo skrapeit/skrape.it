@@ -17,6 +17,7 @@ import strikt.assertions.isEqualTo
 import java.net.SocketTimeoutException
 
 private val wiremock = Testcontainer.wiremock
+private val httpBin = Testcontainer.httpBin
 
 class HttpFetcherTest {
 
@@ -109,6 +110,24 @@ class HttpFetcherTest {
         expectThat(fetched.status { code }).isEqualTo(200)
         expectThat(fetched.contentType).isEqualTo("application/json;charset=utf-8")
         expectThat(fetched.responseBody).isEqualTo("""{"data":"some value"}""")
+    }
+
+    @Test
+    fun `can POST body`() {
+
+        val request = Request(
+            url = "$httpBin/post",
+            method = Method.POST
+        ).apply {
+            body {
+                json {
+                    "foo" to "bar"
+                }
+            }
+        }
+
+        val fetched = HttpFetcher.fetch(request)
+        expectThat(fetched.responseBody).contains(""""data": "{\"foo\":\"bar\"}"""")
     }
 
     @Test
