@@ -5,7 +5,7 @@
 [![skrape-it @ kotlinlang.slack.com](https://img.shields.io/static/v1?label=kotlinlang&message=skrape-it&color=blue&logo=slack)](https://kotlinlang.slack.com/archives/CSPDWD4R4)
 [![License](https://img.shields.io/github/license/skrapeit/skrape.it.svg)](https://github.com/skrapeit/skrape.it/blob/master/LICENSE)
 
-[![master build status](https://github.com/skrapeit/skrape.it/workflows/master%20build/badge.svg)](https://github.com/skrapeit/skrape.it/actions?query=workflow%3A"master+build")
+[![master build status](https://github.com/skrapeit/skrape.it/actions/workflows/gradle.yml/badge.svg)](https://github.com/skrapeit/skrape.it/actions")
 ![last commit](https://img.shields.io/github/last-commit/skrapeit/skrape.it)
 [![Codecov](https://img.shields.io/codecov/c/github/skrapeit/skrape.it.svg)](https://codecov.io/gh/skrapeit/skrape.it)
 [![JDK](https://img.shields.io/badge/jdk-8-green.svg)](#)
