@@ -1,8 +1,10 @@
 package it.skrape.fetcher.request
 
+import it.skrape.SkrapeItDsl
 import org.intellij.lang.annotations.Language
 
-public class Body {
+@SkrapeItDsl
+public class BodyBuilder {
     public var contentType: String = "text/plain"
     public var data: String = ""
 
@@ -30,16 +32,17 @@ public class Body {
     }
 
     private fun Json.toBody() {
-        contentType = JSON
-        data = toString()
+        this@BodyBuilder.contentType = JSON
+        this@BodyBuilder.data = toString()
     }
 
     private fun Form.toBody() {
-        contentType = FORM
-        data = toString()
+        this@BodyBuilder.contentType = FORM
+        this@BodyBuilder.data = toString()
     }
 }
 
+@SkrapeItDsl
 public class Json {
     private val elements = mutableListOf<Pair<String, String>>()
 
@@ -79,6 +82,7 @@ public class Json {
         }
 }
 
+@SkrapeItDsl
 public class Form {
     private val elements = mutableListOf<Pair<String, String>>()
 

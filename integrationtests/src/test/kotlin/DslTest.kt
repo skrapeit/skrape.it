@@ -1,5 +1,6 @@
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.*
+import it.skrape.fetcher.request.UrlBuilder
 import it.skrape.matchers.*
 import it.skrape.matchers.ContentTypes.*
 import it.skrape.selects.*
@@ -848,17 +849,22 @@ class DslTest {
     fun `can build url via dsl`() {
         val client = skrape(HttpFetcher) {
             request {
-                url = urlBuilder {
+                url {
                     protocol = UrlBuilder.Protocol.HTTPS
                     port = 12345
                     path = "/foo"
-                    queryParam = mapOf("foo" to "bar", "fizz" to "buzz")
                     host = "foo.com"
+                    parameters {
+                        "foo" to "bar"
+                        "fizz" to "buzz"
+                        "bar" to null
+                        "afew" to listOf("1", 2, .4711, null)
+                    }
                 }
             }
         }
 
-        expectThat(client.preparedRequest.url).isEqualTo("https://foo.com:12345/foo?foo=bar&fizz=buzz")
+        expectThat(client.preparedRequest.url).isEqualTo("https://foo.com:12345/foo?foo=bar&fizz=buzz&afew=1,2,0.4711,null")
     }
 
     @Test

@@ -1,5 +1,6 @@
 package it.skrape.fetcher
 
+import it.skrape.fetcher.request.UrlBuilder
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.containsKey
@@ -102,5 +103,27 @@ internal class RequestTest {
         }
         expectThat(request.headers["Content-Type"]).isEqualTo("application/x-www-form-urlencoded")
         expectThat(request.body).isEqualTo("foo=bar&xxx=true&bar=1.6&yyy=42")
+    }
+
+    @Test
+    internal fun `can build url`() {
+        val request = Request().apply {
+            url {
+                protocol = UrlBuilder.Protocol.FTP
+            }
+        }
+        expectThat(request.url).isEqualTo("ftp://localhost:8080")
+    }
+
+
+    @Test
+    internal fun `url builder will respect raw url string`() {
+        val request = Request().apply {
+            url = "http://www.skrape.it"
+            url {
+                protocol = UrlBuilder.Protocol.HTTPS
+            }
+        }
+        expectThat(request.url).isEqualTo("https://www.skrape.it")
     }
 }
