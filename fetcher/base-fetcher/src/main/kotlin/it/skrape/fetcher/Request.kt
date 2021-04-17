@@ -42,20 +42,17 @@ public data class Request(
     @SkrapeItDsl
     public fun url(init: UrlBuilder.() -> Unit) {
         val formerUrl = URI(url)
-        val urlBuilder = with(UrlBuilder(
-        )) {
-            apply {
-                protocol = protocol.findOrDefault(formerUrl.scheme)
-                host = formerUrl.host
-                port = formerUrl.port
-                path = formerUrl.path
-            }
-            also(init)
-        }
-        url = urlBuilder.toString()
+        url = UrlBuilder().apply {
+            protocol = protocol.findOrDefault(formerUrl.scheme)
+            host = formerUrl.host
+            port = formerUrl.port
+            path = formerUrl.path
+            fragment = formerUrl.fragment
+            formerUrl.query?.let { queryParam { +it } }
+        }.also(init).toString()
     }
 
-    @Deprecated("use url DSL instead", replaceWith = ReplaceWith("url {}", "it.skrape.fetcher.Request"))
+    @Deprecated("use 'url {}' DSL instead")
     public fun urlBuilder(init: UrlBuilder.() -> Unit): String {
         return UrlBuilder().also(init).toString()
     }

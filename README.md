@@ -296,12 +296,23 @@ class ExampleTest {
     val myPreConfiguredClient = skrape(HttpFetcher) {
         // url can be a plain url as string or build by #urlBuilder
         request {
-            url = urlBuilder {
-                protocol = UrlBuilder.Protocol.HTTPS
-                host = "skrape.it"
-                port = 12345
-                path = "/foo"
-                queryParam = mapOf("foo" to "bar")
+            method = Method.POST // defaults to GET
+            
+            url = "" // you can  either pass url as String (defaults to 'http://localhost:8080')
+            url { // or build url (will respect value from url as String param)
+                // thereby you can pass a url and just override or add parts
+                protocol = UrlBuilder.Protocol.HTTPS // defaults to given scheme from url param (HTTP if not set)
+                host = "skrape.it" // defaults to given host from url param (localhost if not set)
+                port = 12345  // defaults to given port from url param (8080 if not set explicitly - none port if given url param value does noit have port) - set to -1 to remove port
+                path = "/foo" // defaults to given path from url param (none path if not set)
+                queryParam { // can handle adding query parameters of several types (defaults to none)
+                    "foo" to "bar" // add query paramter foo=bar
+                    "aaa" to false // add query paramter aaa=false
+                    "bbb" to .4711 // add query paramter bbb=0.4711
+                    "ccc" to 42    // add query paramter ccc=42
+                    "ddd" to listOf("a", 1, null) // add query paramter ddd=a,1,null
+                    +"xxx"         // add query paramter xxx (just key, no value)
+                }
             }
             timeout = 5000 // optional -> defaults to 5000ms
             followRedirects = true // optional -> defaults to true
@@ -331,6 +342,103 @@ class ExampleTest {
     }
 }
 ```
+
+### send request body
+#### 1) plain as string
+##### most low level option, needs to set content-type header "by hand"
+```kotlin
+skrape(HttpFetcher) {
+    request {
+        url = "https://www.my-fancy.url"
+        method = Method.GET
+        headers = mapOf("Content-Type" to "application/json")
+        body = """{"foo":"bar"}"""
+    }
+    extract {
+        htmlDocument {
+            ...
+```
+
+#### 2) plain text with auto added content-type header that can be optionally overwritten
+```kotlin
+skrape(HttpFetcher) {
+    request {
+        url = "https://www.my-fancy.url"
+        method = Method.POST
+        body {
+            data = "just a plain text" // content-type header will automatically set to "text/plain"
+            contentType = "your-custom/content" // can optionally override content-type
+        }
+    }
+    extract {
+        htmlDocument {
+            ...
+```
+
+#### 3) with helper functions for json or xml bodies
+##### supports json and xml autocompletion when using intellij
+```kotlin
+skrape(HttpFetcher) {
+    request {
+        url = "https://www.my-fancy.url"
+        method = Method.POST
+        body {
+            json("""{"foo":"bar"}""") // will automatically set content-type header to "application/json" 
+            // or
+            xml("<foo>bar</foo>") // will automatically set content-type header to "text/xml" 
+            // or
+            form("foo=bar") // will automatically set content-type header to "application/x-www-form-urlencoded" 
+        }
+    }
+    extract {
+        htmlDocument {
+            ...
+```
+
+
+#### 4 with on the fly created json via dsl
+```kotlin
+skrape(HttpFetcher) {
+    request {
+        url = "https://www.my-fancy.url"
+        method = Method.POST
+        body {
+            // will automatically set content-type header to "application/json"
+            // will create {"foo":"bar","xxx":{"a":"b","c":[1,"d"]}} as request body
+            json {
+                "foo" to "bar"
+                "xxx" to json {
+                    "a" to "b"
+                    "c" to listOf(1, "d")
+                }
+            }
+        }
+    }
+    extract {
+        htmlDocument {
+            ...
+```
+
+#### 5 with on the fly created form via dsl
+```kotlin
+skrape(HttpFetcher) {
+    request {
+        url = "https://www.my-fancy.url"
+        method = Method.POST
+        body {
+            // will automatically set content-type header to "application/x-www-form-urlencoded"
+            // will create foo=bar&xxx=1.5 as request body
+            form {
+                "foo" to "bar"
+                "xxx" to 1.5
+            }
+        }
+    }
+    extract {
+        htmlDocument {
+            ...
+```
+
 
 ## Get in touch
 If you need help, have questions on how to use skrape{it} or want to discuss features or bugs please raise issues on [GitHub](https://github.com/skrapeit/skrape.it/issues).

@@ -849,22 +849,27 @@ class DslTest {
     fun `can build url via dsl`() {
         val client = skrape(HttpFetcher) {
             request {
+                method = Method.POST // defaults to GET
+                url = "https://foo.com:12345/foo#bar?xxx"
                 url {
                     protocol = UrlBuilder.Protocol.HTTPS
                     port = 12345
                     path = "/foo"
                     host = "foo.com"
-                    parameters {
+                    queryParam {
                         "foo" to "bar"
                         "fizz" to "buzz"
+                        +"someKey"
                         "bar" to null
                         "afew" to listOf("1", 2, .4711, null)
                     }
+                    fragment = "modal"
                 }
             }
         }
 
-        expectThat(client.preparedRequest.url).isEqualTo("https://foo.com:12345/foo?foo=bar&fizz=buzz&afew=1,2,0.4711,null")
+        expectThat(client.preparedRequest.url)
+            .isEqualTo("https://foo.com:12345/foo#modal?foo=bar&fizz=buzz&bar=null&afew=1,2,0.4711,null&someKey")
     }
 
     @Test

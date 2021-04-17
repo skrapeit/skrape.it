@@ -5,7 +5,7 @@ on:
     inputs:
       version:
         description: Bump Version
-        default: 0.0.0
+        default: 1.0.0
         required: true
 
 jobs:

@@ -48,7 +48,7 @@ class UrlBuilderTest {
             path = "/my-path"
             host = "skrape.it"
             port = 12345
-            parameters {
+            queryParam {
                 "skrape" to "it"
             }
         }.toString()
@@ -58,7 +58,7 @@ class UrlBuilderTest {
     @Test
     fun `can build valid url with ONE query parameter`() {
         val url = UrlBuilder().apply {
-            parameters {
+            queryParam {
                 "foo" to "bar"
             }
         }.toString()
@@ -68,7 +68,7 @@ class UrlBuilderTest {
     @Test
     fun `can build valid url with a bunch of query parameters`() {
         val url = UrlBuilder().apply {
-            parameters {
+            queryParam {
                 "aaa" to "zzz"
                 "bbb" to "yyy"
                 "ccc" to "xxx"
@@ -81,7 +81,7 @@ class UrlBuilderTest {
     @Test
     fun `can build valid url with list parameter`() {
         val url = UrlBuilder().apply {
-            parameters {
+            queryParam {
                 "aaa" to listOf("1", 2, .4711, true, null)
                 "bbb" to "yyy"
             }
@@ -90,10 +90,23 @@ class UrlBuilderTest {
     }
 
     @Test
+    fun `can build valid url with key only parameter shortcut`() {
+        val url = UrlBuilder().apply {
+            queryParam {
+                +"aaa"
+                "yyy" to "zzz"
+                +"bbb"
+                +"ccc"
+            }
+        }.toString()
+        expectThat(url).isEqualTo("http://localhost:8080?yyy=zzz&aaa&bbb&ccc")
+    }
+
+    @Test
     @Disabled("currently null values are ignored")
     fun `can build valid url with key only parameter`() {
         val url = UrlBuilder().apply {
-            parameters {
+            queryParam {
                 "aaa" to null
                 "dfd" to null
             }

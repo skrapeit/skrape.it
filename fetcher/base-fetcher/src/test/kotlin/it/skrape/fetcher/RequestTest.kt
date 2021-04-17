@@ -115,7 +115,6 @@ internal class RequestTest {
         expectThat(request.url).isEqualTo("ftp://localhost:8080")
     }
 
-
     @Test
     internal fun `url builder will respect raw url string`() {
         val request = Request().apply {
@@ -125,5 +124,17 @@ internal class RequestTest {
             }
         }
         expectThat(request.url).isEqualTo("https://www.skrape.it")
+    }
+
+    @Test
+    internal fun `url builder will respect raw urls query params`() {
+        val request = Request().apply {
+            url = "http://www.skrape.it:1234?foo=bar&xxx"
+            url {
+                protocol = UrlBuilder.Protocol.HTTPS
+                port = 4321
+            }
+        }
+        expectThat(request.url).isEqualTo("https://www.skrape.it:4321?foo=bar&xxx")
     }
 }

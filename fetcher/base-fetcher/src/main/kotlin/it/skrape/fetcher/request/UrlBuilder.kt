@@ -34,7 +34,7 @@ public data class UrlBuilder(
 
     private var queryParam: String = ""
 
-    public fun parameters(init: QueryParam.() -> Unit) {
+    public fun queryParam(init: QueryParam.() -> Unit) {
         queryParam = QueryParam().also(init).toString()
     }
 
@@ -52,35 +52,37 @@ public data class UrlBuilder(
         append(host)
         append(if (port < 0) "" else ":$port")
         append(if (path.isNotBlank() && !path.startsWith("/")) "/$path" else path)
-        append(queryParam)
         append(fragment?.let { "#$it" } ?: "")
+        append(queryParam)
     }
 }
 
 @SkrapeItDsl
 public class QueryParam {
-    private val params: MutableMap<String, String?> = mutableMapOf()
-
+    private val params: MutableMap<String, String> = mutableMapOf()
     public infix fun String.to(value: Any?) {
         // TODO: do not ignore entries with value null
         params.computeIfAbsent(this) {
             when (value) {
-                null -> null
+                null -> "null"
                 is List<*> -> value.joinToString(separator = ",")
                 else -> "$value"
             }
         }
     }
 
+    private val keyOnlyParams: MutableList<String> = mutableListOf()
+    public operator fun String.unaryPlus() {
+        keyOnlyParams += this
+    }
+
     override fun toString(): String {
         return buildString {
             params.forEach { (key, value) ->
-                append("&")
-                if (value == null) {
-                    append(key)
-                } else {
-                    append("$key=$value")
-                }
+                append("&$key=$value")
+            }
+            keyOnlyParams.forEach {
+                append("&$it")
             }
         }.replaceFirst("&", "?")
     }
