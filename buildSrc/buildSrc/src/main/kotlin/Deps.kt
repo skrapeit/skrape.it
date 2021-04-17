@@ -6,7 +6,7 @@ object Versions {
     const val datetime = "0.1.1"
     const val jsoup = "1.13.1"
     const val htmlUnit = "2.49.1"
-    const val testContainers = "1.15.2"
+    const val testContainers = "1.15.3"
     const val wireMock = "2.27.2"
     const val log4jOverSlf4j = "1.7.30"
     const val logback = "1.2.3"
@@ -15,7 +15,7 @@ object Versions {
     const val jUnit = "5.7.1"
     const val restAssured = "4.3.3"
     const val javaxServlet = "4.0.1"
-    const val spring = "5.3.5"
+    const val spring = "5.3.6"
     const val jetbrainsAnnotations = "20.1.0"
 }
 

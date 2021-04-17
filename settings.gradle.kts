@@ -33,7 +33,7 @@ pluginManagement {
         kotlin("jvm") version kotlin_version
         // Temporarily at 1.4.30 until version matches kotlin version (1.4.31)
         id("org.jetbrains.dokka") version "1.4.30"
-        id("com.adarshr.test-logger") version "2.1.1"
+        id("com.adarshr.test-logger") version "3.0.0"
         jacoco
         `java-library`
         `maven-publish`
