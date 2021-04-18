@@ -1,4 +1,4 @@
-name: Build + Coverage
+name: CI
 
 on:
   push:
@@ -9,9 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java-versions: [1.8, 11]
     steps:
       - uses: actions/checkout@v1
 
@@ -24,7 +21,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: ${{ matrix.java-versions }}
+          java-version: 1.8
 
       - name: Build with Gradle
         run: ./gradlew build
@@ -34,3 +31,19 @@ jobs:
         if: matrix.java-versions == '1.8'
         with:
           token: ${{secrets.CODECOV_TOKEN}}
+
+      - name: Temporarily set snapshot version
+        uses: christian-draeger/write-properties@1.0.1
+        with:
+          path: './gradle.properties'
+          property: 'release_version'
+          value: 0-SNAPHOT
+
+      - name: Publish snapshot to maven central
+        env:
+          ORG_GRADLE_PROJECT_signingKey: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
+          ORG_GRADLE_PROJECT_signingKeyId: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEYID}}
+          ORG_GRADLE_PROJECT_signingPassword: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
+          ORG_GRADLE_PROJECT_sonatypeUsername: ${{secrets.ORG_GRADLE_PROJECT_SONATYPEUSERNAME}}
+          ORG_GRADLE_PROJECT_sonatypePassword: ${{secrets.ORG_GRADLE_PROJECT_SONATYPEPASSWORD}}
+        run: ./gradlew publishToSonatype #closeSonatypeStagingRepository #closeAndReleaseSonatypeStagingRepository
