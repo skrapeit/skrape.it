@@ -18,11 +18,15 @@
 [skrape{it}](https://docs.skrape.it)
 ====================================
 
+## What it is
 _**[skrape{it}](http://www.skrape.it)**_ is a Kotlin-based HTML/XML testing and web scraping library
 that can be used seamlessly in Spring-Boot, Ktor, Android or other Kotlin-JVM projects.
 The ability to analyze and extract HTML including client-side rendered DOM trees and all other XML-related markup specifications such as SVG, UML, RSS,... makes it unique.
 It places particular emphasis on ease of use and a high level of readability by providing an intuitive DSL.
 First and foremost skrape{it} aims to be a testing tool (not tied to a particular test runner), but it can also be used to scrape websites in a convenient fashion.
+
+## What it's not
+It is no GUI/Browser automation tool that let you click around or send text inputs etc.
 
 ## Features
 ### Parsing
@@ -438,7 +442,6 @@ skrape(HttpFetcher) {
         htmlDocument {
             ...
 ```
-
 
 ## Get in touch
 If you need help, have questions on how to use skrape{it} or want to discuss features or bugs please raise issues on [GitHub](https://github.com/skrapeit/skrape.it/issues).
