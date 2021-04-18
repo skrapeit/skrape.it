@@ -26,18 +26,26 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
+  coverage-report:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.0.3
         if: matrix.java-versions == '1.8'
         with:
           token: ${{secrets.CODECOV_TOKEN}}
 
+  snapshot-release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: Temporarily set snapshot version
         uses: christian-draeger/write-properties@1.0.1
         with:
           path: './gradle.properties'
           property: 'release_version'
-          value: 0-SNAPHOT
+          value: 0-SNAPSHOT
 
       - name: Publish snapshot to maven central
         env:
@@ -46,4 +54,4 @@ jobs:
           ORG_GRADLE_PROJECT_signingPassword: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{secrets.ORG_GRADLE_PROJECT_SONATYPEUSERNAME}}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{secrets.ORG_GRADLE_PROJECT_SONATYPEPASSWORD}}
-        run: ./gradlew publishToSonatype #closeSonatypeStagingRepository #closeAndReleaseSonatypeStagingRepository
+        run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
