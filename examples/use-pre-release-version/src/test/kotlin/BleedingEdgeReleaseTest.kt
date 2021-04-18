@@ -1,6 +1,3 @@
-
-// TODO: need to fix jitpack release after module split
-
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.*
 import it.skrape.selects.html5.a

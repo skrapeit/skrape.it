@@ -87,12 +87,8 @@ dependencies {
 </details>
 
 #### using bleeding edge features before official release
-We are offering snapshot releases via jitpack. Thereby you can install every commit and version you want.
+We are offering snapshot releases by publishing every successful build of a commit that has been pushed to master branch. Thereby you can just install the latest implementation of skrape{it}.
 Be careful since these are non-official releases and may be unstable as well as breaking changes can occur at any time.
-
-If you want be a bit more safe you can use a certain commit instead of referencing skrape{it}'s master branch as a dependency to avoid sudden breaking changes.
-> Please that if you are the first and initial download of a specific commit [jitpack](https://jitpack.io/#skrapeit/skrape.it/) needs some time to build the requested artifact.
-
 
 ##### Add experimental stuff
 
@@ -100,12 +96,10 @@ If you want be a bit more safe you can use a certain commit instead of referenci
 
 ```kotlin
 repositories {
-    maven { url = uri("https://jitpack.io") }
+    maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots/") }
 }
 dependencies {
-    implementation("com.github.skrapeit:skrape.it:master-SNAPSHOT")
-    // or use a certain commit to avoid sudden breaking changes
-    implementation("com.github.skrapeit:skrape.it:<commit-hash-short>")
+    implementation("it.skrape:skrapeit:0-SNAPSHOT") // version number will sty - implementation may change ...
 }
 ```
 </details>
@@ -116,16 +110,16 @@ dependencies {
 <repositories>
     <repository>
         <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
+        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
     </repository>
 </repositories>
 
 ...
 
 <dependency>
-    <groupId>com.github.skrapeit</groupId>
-    <artifactId>skrape.it</artifactId>
-    <version>master-SNAPSHOT</version>
+    <groupId>it.skrape</groupId>
+    <artifactId>skrapeit</artifactId>
+    <version>0-SNAPSHOT</version>
 </dependency>
 ```
 </details>
