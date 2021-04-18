@@ -42,6 +42,13 @@ jobs:
           property: 'release_version'
           value: ${{ github.event.inputs.version }}
 
+      - name: Find and Replace version reference in all readme files of the repo
+        uses: jacobtomlinson/gha-find-replace@0.1.2
+        with:
+          find: ${{ steps.current_version.outputs.value }}
+          replace: ${{ github.event.inputs.version }}
+          include: "README.md" # Will match all README.md files in any nested directory
+
 # deactivate for now since commit action is not able to push changes in workflow files because of missing permission
 #      - name: Update github action release workflow default version
 #        uses: fjogeleit/yaml-update-action@v0.3.0
