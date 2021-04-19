@@ -9,7 +9,7 @@
     </appender>
 
     <!-- turning down htmlunit logging -->
-    <logger name="com.gargoylesoftware.htmlunit" level="ERROR"/>
+    <logger name="com.gargoylesoftware.htmlunit" level="OFF"/>
     <logger name="org.apache.http" level="ERROR"/>
 
     <root level="INFO">
