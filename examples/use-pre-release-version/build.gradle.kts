@@ -19,5 +19,4 @@ dependencies {
     implementation("it.skrape:skrapeit:0-SNAPSHOT") {
         isChanging = true
     }
-    implementation(Deps.KotlinX.Coroutines.core)
 }
