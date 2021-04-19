@@ -99,7 +99,14 @@ repositories {
     maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots/") }
 }
 dependencies {
-    implementation("it.skrape:skrapeit:0-SNAPSHOT") // version number will sty - implementation may change ...
+    implementation("it.skrape:skrapeit:0-SNAPSHOT") { isChanging = true } // version number will stay - implementation may change ...
+}
+
+// optional
+configurations.all {
+    resolutionStrategy {
+        cacheChangingModulesFor(0, "seconds")
+    }
 }
 ```
 </details>
