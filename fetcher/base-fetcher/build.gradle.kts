@@ -9,7 +9,9 @@ plugins {
 
 dependencies {
     implementation(projects.dsl)
-    implementation(Deps.Kotlin.reflect) // needed for extractIt when creating instance
+    implementation(Deps.Kotlin.reflect) {
+        because("to support Result#extractIt by creating instance of a class")
+    }
     implementation(Deps.KotlinX.Coroutines.core)
     implementation(Deps.KotlinX.Coroutines.jdk8)
 
