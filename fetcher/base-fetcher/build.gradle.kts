@@ -12,8 +12,7 @@ dependencies {
     implementation(Deps.Kotlin.reflect) {
         because("to support Result#extractIt by creating instance of a class")
     }
-    implementation(Deps.KotlinX.Coroutines.core)
-    implementation(Deps.KotlinX.Coroutines.jdk8)
+    api(Deps.KotlinX.Coroutines.jdk8)
 
     testImplementation(project(path = ":test-utils", configuration = "default"))
     testImplementation(Deps.Ktor.client)
