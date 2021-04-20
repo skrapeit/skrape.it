@@ -1,3 +1,4 @@
+import it.skrape.core.document
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.*
 import it.skrape.fetcher.request.UrlBuilder
@@ -7,10 +8,13 @@ import it.skrape.selects.*
 import it.skrape.selects.html5.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.intellij.lang.annotations.Language
 import org.jsoup.nodes.Element
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.parallel.Execution
 import org.junit.jupiter.api.parallel.ExecutionMode
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 import strikt.api.expect
 import strikt.api.expectThat
 import strikt.api.expectThrows
@@ -20,6 +24,7 @@ import java.net.SocketTimeoutException
 import kotlin.system.measureTimeMillis
 
 private val wiremock = Testcontainer.wiremock
+private val httpBin = Testcontainer.httpBin
 
 @Execution(ExecutionMode.SAME_THREAD)
 class DslTest {
@@ -251,6 +256,13 @@ class DslTest {
         }
     }
 
+    class MyObject(
+        var message: String? = null,
+        var paragraph: String = "",
+        var allParagraphs: List<String> = emptyList(),
+        var allLinks: List<String> = emptyList()
+    )
+
     @Test
     fun `dsl can fetch url and extract to inferred type`() {
         wiremock.setupStub()
@@ -267,6 +279,10 @@ class DslTest {
             }
             expectThat(extracted.message).isEqualTo("OK")
         }
+    }
+
+    class MyOtherObject {
+        lateinit var message: String
     }
 
     @Test
@@ -311,6 +327,14 @@ class DslTest {
         }
     }
 
+    data class MyDataClass(
+        var httpStatusCode: Int = 0,
+        var httpStatusMessage: String = "",
+        var paragraph: String = "",
+        var allParagraphs: List<String> = emptyList(),
+        var allLinks: List<String> = emptyList()
+    )
+
     /**
      * TODO: fix Class should have a single no-arg constructor: class MyDataClass
      * for classes or data classes that have none default values
@@ -334,6 +358,43 @@ class DslTest {
                         findAll { eachHref }
                     }
                 }
+            }
+        }
+
+        expect {
+            that(extracted.httpStatusCode).isEqualTo(200)
+            that(extracted.httpStatusMessage).isEqualTo("OK")
+            that(extracted.paragraph).isEqualTo("i'm a paragraph")
+            that(extracted.allParagraphs).containsExactly("i'm a paragraph", "i'm a second paragraph")
+            that(extracted.allLinks).containsExactly("http://some.url", "http://some-other.url", "/relative-link")
+        }
+    }
+
+    data class MySimpleDataClass(
+        val httpStatusCode: Int,
+        val httpStatusMessage: String,
+        val paragraph: String,
+        val allParagraphs: List<String>,
+        val allLinks: List<String>
+    )
+
+    @Test
+    fun `dsl can fetch url and extract to data class without defaults`() {
+        wiremock.setupStub()
+
+        val extracted = skrape(HttpFetcher) {
+            request {
+                url = "${wiremock.httpUrl}/"
+            }
+
+            extract {
+                MySimpleDataClass(
+                    httpStatusCode = status { code },
+                    httpStatusMessage = status { message },
+                    allParagraphs = document.p { findAll { eachText } },
+                    paragraph = document.p { findFirst { text } },
+                    allLinks = document.a { findAll { eachHref } }
+                )
             }
         }
 
@@ -876,23 +937,167 @@ class DslTest {
     fun `can convert DocElement to jsoup element`() {
         expectThat(aValidDocument().element).isA<Element>()
     }
+
+    @Test
+    fun `can scrape our docs page with JS-rendering`() {
+        skrape(BrowserFetcher) {
+            request {
+                url = "https://docs.skrape.it/docs/"
+            }
+
+            extract {
+                htmlDocument {
+                    toString() toContain "A Story of Deserializing HTML / XML."
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `can scrape our docs page without JS-rendering`() {
+        skrape(HttpFetcher) {
+            request {
+                url = "https://docs.skrape.it/docs/"
+            }
+            extract {
+                htmlDocument {
+                    toString() toContain "A Story of Deserializing HTML / XML."
+                }
+            }
+        }
+    }
+
+    @ParameterizedTest(name = "can NOT scrape basic auth protected websites without credentials in {0}-mode")
+    @EnumSource(FetchersTestEnum::class)
+    fun `can NOT scrape basic auth protected websites without credentials`(fetcherMode: FetchersTestEnum) {
+
+        skrape(fetcherMode.fetcher) {
+            request {
+                url = "$httpBin/basic-auth/cr1z/secure"
+            }
+
+            expect {
+                status {
+                    code toBe 401
+                    message toBe "UNAUTHORIZED"
+                }
+            }
+        }
+    }
+
+    @ParameterizedTest(name = "can scrape basic auth protected websites in {0}-mode")
+    @EnumSource(FetchersTestEnum::class)
+    fun `can scrape basic auth protected websites`(fetcherMode: FetchersTestEnum) {
+
+        skrape(fetcherMode.fetcher) {
+            request {
+                url = "$httpBin/basic-auth/cr1z/secure"
+
+                authentication = basic {
+                    username = "cr1z"
+                    password = "secure"
+                }
+            }
+
+            expect {
+                status {
+                    code toBe 200
+                }
+                responseBody toContain """authenticated": true"""
+                responseBody toContain """user": "cr1z"""
+            }
+        }
+    }
+
+    @Test
+    fun `can invoke a raw nested css-selector`() {
+        @Language("HTML") val myMarkUp = """
+            <div class="CollapsiblePanelTab" tabindex="0">Today's Interest (1)</div>
+                <div class="CollapsiblePanelContent">
+                <table width="667px" class="tabularData">
+                    <tr>
+                        <td width="407px" height="21"><a href="link info i need in here">description </a></td>
+                        <td width="130px">15:28</td>
+                        <td width="130px">Western</td>
+                    </tr> 
+                </table>
+            </div>
+        """.trimIndent()
+
+        val tdsWithLink = htmlDocument(myMarkUp) {
+            "table tr td a" {
+                withAttributeKey = "href"
+                findAll { this }
+            }
+        }
+
+        expectThat(tdsWithLink)
+            .hasSize(1)
+            .get { attribute("href") }.isEqualTo("link info i need in here")
+
+
+    }
+
+    @Test
+    fun `can nest selection via css selectors`() {
+        @Language("HTML") val myMarkUp = """
+            <div class="foo">
+                <div class="bar">
+                    <div>first nested div</div>
+                </div>
+            </div>
+            <div class="foo">
+                <div class="bar">
+                    <div>other nested div</div>
+                </div>
+            </div>
+            <div class="some-other"></div>
+        """.trimIndent()
+
+        htmlDocument(myMarkUp) {
+
+            div {
+                withClass = "foo"
+
+                div {
+                    withClass = "bar"
+
+                    findAll {
+                        text toBe "first nested div other nested div"
+                    }
+
+                    findFirst {
+                        text toBe "first nested div"
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `relaxed mode will not throw exception if element not exists`() {
+        htmlDocument("""<span class="xxx"">hello</span>""") {
+            relaxed = true
+            span {
+                withClass = "xxx"
+                findAll { toBeNotEmpty }
+                findFirst { text toBe "hello" }
+            }
+            span {
+                withClass = "yyy"
+                // in none relaxed mode it would throw an ElementNotFoundException when trying to find element without success
+                findAll { toBeEmpty }
+                findFirst { text toBe "" }
+            }
+            "some.crazy selectorThat[doesnt] exists" {
+                // in none relaxed mode it would throw an ElementNotFoundException when trying to find element without success
+                findAll { toBeEmpty }
+            }
+        }
+    }
 }
 
-class MyObject(
-    var message: String? = null,
-    var paragraph: String = "",
-    var allParagraphs: List<String> = emptyList(),
-    var allLinks: List<String> = emptyList()
-)
-
-data class MyDataClass(
-    var httpStatusCode: Int = 0,
-    var httpStatusMessage: String = "",
-    var paragraph: String = "",
-    var allParagraphs: List<String> = emptyList(),
-    var allLinks: List<String> = emptyList()
-)
-
-class MyOtherObject {
-    lateinit var message: String
+@Suppress("unused")
+enum class FetchersTestEnum(val fetcher: BlockingFetcher<Request>) {
+    HTTP(HttpFetcher), BROWSER(BrowserFetcher)
 }
