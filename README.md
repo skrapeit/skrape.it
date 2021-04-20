@@ -133,6 +133,9 @@ configurations.all {
 
 ## Documentation by Example
 ###### (referring to current master)
+
+> You can find further examples in the [projects integration tests](https://github.com/skrapeit/skrape.it/blob/master/integrationtests/src/test/kotlin/DslTest.kt).
+
 ### Parse and verify HTML from String
 ```kotlin
 @Test
@@ -173,6 +176,41 @@ fun `can read and return html from String`() {
 }
 ```
 
+### Parse HTML and extract
+```kotlin
+data class MySimpleDataClass(
+    val httpStatusCode: Int,
+    val httpStatusMessage: String,
+    val paragraph: String,
+    val allParagraphs: List<String>,
+    val allLinks: List<String>
+)
+
+class HtmlExtractionService {
+
+    fun extract() {
+        val extracted = skrape(HttpFetcher) {
+            request {
+                url = "http://localhost:8080"
+            }
+
+            extract {
+                MySimpleDataClass(
+                    httpStatusCode = status { code },
+                    httpStatusMessage = status { message },
+                    allParagraphs = document.p { findAll { eachText } },
+                    paragraph = document.p { findFirst { text } },
+                    allLinks = document.a { findAll { eachHref } }
+                )
+            }
+        }
+        print(extracted)
+        // will print:
+        // MyDataClass(httpStatusCode=200, httpStatusMessage=OK, paragraph=i'm a paragraph, allParagraphs=[i'm a paragraph, i'm a second paragraph], allLinks=[http://some.url, http://some-other.url])
+    }
+}
+```
+
 ### Parse HTML and extract it
 ```kotlin
 data class MyDataClass(
@@ -188,7 +226,7 @@ class HtmlExtractionService {
     fun extract() {
         val extracted = skrape(HttpFetcher) {
             request {
-                url = "http://localhost:8080/"
+                url = "http://localhost:8080"
             }           
 
             extractIt<MyDataClass> {
