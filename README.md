@@ -25,9 +25,6 @@ The ability to analyze and extract HTML including client-side rendered DOM trees
 It places particular emphasis on ease of use and a high level of readability by providing an intuitive DSL.
 First and foremost skrape{it} aims to be a testing tool (not tied to a particular test runner), but it can also be used to scrape websites in a convenient fashion.
 
-## What it's not
-It is no GUI/Browser automation tool that let you click around or send text inputs etc. but since it provides an HTTP client, JS-rendering and convenient HTML-element finding/extraction you can still archiv most of the behaviour you would do with a "real" browser whilst thinking a bit different of your scenarios.
-
 ## Features
 ### Parsing
 - [x] Deserialization of HTML/XML from websites, local html files and html as string to data classes / POJOs.
