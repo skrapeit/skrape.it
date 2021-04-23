@@ -18,7 +18,6 @@
 [skrape{it}](https://docs.skrape.it)
 ====================================
 
-## What it is
 _**[skrape{it}](http://www.skrape.it)**_ is a Kotlin-based HTML/XML testing and web scraping library
 that can be used seamlessly in Spring-Boot, Ktor, Android or other Kotlin-JVM projects.
 The ability to analyze and extract HTML including client-side rendered DOM trees and all other XML-related markup specifications such as SVG, UML, RSS,... makes it unique.
