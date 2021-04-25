@@ -495,3 +495,5 @@ However, if you are using this project and be happy with it or just want to enco
 - **Starring and sharing the project** :rocket: to help make it more popular
 - Giving proper credit when you use skrape{it}, tell your friends and others about it :smiley:
 - Sponsor Skrape{it} with a one-time donations via PayPal by just click this button → [![Donate](https://img.shields.io/badge/-donate-blue.svg?logo=paypal)](https://www.paypal.me/skrapeit) or use the GitHub sponsors programm to support on a monthly basis :sparkling_heart:
+
+[![Stargazers repo roster for @skrapeit/skrape.it](https://reporoster.com/stars/skrapeit/skrape.it)](https://github.com/skrapeit/skrape.it/stargazers)
