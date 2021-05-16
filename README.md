@@ -112,7 +112,7 @@ configurations.all {
 ```xml
 <repositories>
     <repository>
-        <id>jitpack.io</id>
+        <id>snapshot</id>
         <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
     </repository>
 </repositories>
