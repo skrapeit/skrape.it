@@ -6,6 +6,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode
 import strikt.api.expectThat
 import strikt.assertions.contains
 import strikt.assertions.isEqualTo
+import strikt.assertions.startsWith
 
 val myWiremock = Testcontainer.wiremock
 
@@ -15,10 +16,8 @@ internal class TestcontainerTest {
     @Test
     internal fun `wiremock as testcontainer returns corresponding urls`() {
         expectThat(myWiremock) {
-            get {
-                httpUrl.startsWith("http://localhost:")
-                httpsUrl.startsWith("https://localhost:")
-            }
+            get { httpUrl }.startsWith("http://localhost:")
+            get { httpsUrl }.startsWith("https://localhost:")
         }
     }
 
