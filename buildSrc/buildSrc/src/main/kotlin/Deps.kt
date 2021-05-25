@@ -5,7 +5,7 @@ object Versions {
     const val serialization = "1.0.1"
     const val datetime = "0.1.1"
     const val jsoup = "1.13.1"
-    const val htmlUnit = "2.49.1"
+    const val htmlUnit = "2.50.0"
     const val testContainers = "1.15.3"
     const val wireMock = "2.28.0"
     const val log4jOverSlf4j = "1.7.30"

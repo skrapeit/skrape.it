@@ -78,6 +78,7 @@ public object BrowserFetcher : BlockingFetcher<Request> {
             this.proxyConfig = ProxyConfig(
                     request.proxy!!.host,
                     request.proxy!!.port,
+                    "http",
                     request.proxy!!.type == Proxy.Type.SOCKS
             )
         }

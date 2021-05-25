@@ -40,7 +40,7 @@ pluginManagement {
         signing
         id("com.github.ben-manes.versions") version "0.38.0"
         id("se.patrikerdes.use-latest-versions") version "0.2.16"
-        id("io.gitlab.arturbosch.detekt") version "1.16.0"
+        id("io.gitlab.arturbosch.detekt") version "1.17.1"
         id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
     }
 }
