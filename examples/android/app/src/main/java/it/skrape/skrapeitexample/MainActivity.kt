@@ -35,7 +35,9 @@ import it.skrape.selects.html5.h3
 import it.skrape.selects.html5.img
 import it.skrape.selects.html5.li
 import it.skrape.selects.html5.ol
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class MainActivity : ComponentActivity() {
@@ -126,34 +128,36 @@ class StargazerViewModel : ViewModel() {
 
     fun updateUsers() {
         viewModelScope.launch {
-            // _users.postValue(fetch())
-            _users.postValue(dummyData)
+            _users.postValue(fetch())
+            // _users.postValue(dummyData)
         }
     }
 }
 
 private suspend fun fetch(): List<User> =
-    skrape(HttpFetcher) {
-        request {
-            url = "https://github.com/skrapeit/skrape.it/stargazers"
-        }
-        extract {
-            htmlDocument {
-                ol {
-                    withClass = "follow-list"
-                    li {
-                        findAll {
-                            map {
-                                User(
-                                    name = it.h3 {
-                                        withClass = "follow-list-name"
-                                        findFirst { text }
-                                    },
-                                    imageUrl = it.img {
-                                        withClass = "avatar-user"
-                                        findFirst { attribute("src") }
-                                    }
-                                )
+    withContext(Dispatchers.IO) {
+        skrape(HttpFetcher) {
+            request {
+                url = "https://github.com/skrapeit/skrape.it/stargazers"
+            }
+            extract {
+                htmlDocument {
+                    ol {
+                        withClass = "follow-list"
+                        li {
+                            findAll {
+                                map {
+                                    User(
+                                        name = it.h3 {
+                                            withClass = "follow-list-name"
+                                            findFirst { text }
+                                        },
+                                        imageUrl = it.img {
+                                            withClass = "avatar-user"
+                                            findFirst { attribute("src") }
+                                        }
+                                    )
+                                }
                             }
                         }
                     }
@@ -167,6 +171,3 @@ private val dummyData = listOf(
     User("https://avatars.githubusercontent.com/u/6132300?s=180&v=4", "user 2"),
     User("https://avatars.githubusercontent.com/u/32306780?s=180&v=4", "user 3"),
 )
-
-
-
