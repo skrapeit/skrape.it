@@ -132,6 +132,9 @@ configurations.all {
 
 > You can find further examples in the [projects integration tests](https://github.com/skrapeit/skrape.it/blob/master/integrationtests/src/test/kotlin/DslTest.kt).
 
+### Android
+We have a working [Android sample](https://github.com/skrapeit/skrape.it/tree/master/examples/android) using jetpack-compose in our example projects as living documentation.
+
 ### Parse and verify HTML from String
 ```kotlin
 @Test
