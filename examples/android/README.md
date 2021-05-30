@@ -45,7 +45,7 @@ Last but not least, import the skrape library.
 
 ```gradle
 dependencies {
-    implementation "it.skrape:skrapeit-core:$skrape_version"
+    implementation "it.skrape:skrapeit:$skrape_version"
 }
 ```
 
