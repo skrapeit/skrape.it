@@ -62,8 +62,8 @@ After all of that, you can just use the library as usual:
     }
 ```
 
-## Pitfalls
-### Internet persmission
+## Troubleshooting
+### missing Internet persmission
 If you want to use one of skrape{it}s Http-Client implementations to fetch html directly / dynamically from the web make sure that you have added internet permission in your `AndroidManifest.xml`:
 
 ```xml
