@@ -1,6 +1,6 @@
 # skrape{it} Android Example
 
-This is an Android sample of use of the skrape{it} library on Android with jetpack-compose.
+This is an Android sample of use of the skrape{it} library and jetpack-compose.
 
 ## The show-case
 By clicking the button the latest github users that have given skrape{it} a star will be scraped from the github website and displayed.
