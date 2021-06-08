@@ -155,14 +155,14 @@ class FormSelectorsKtTest {
 
     @Test
     fun `can parse select-tag`() {
-        val selector = aValidDocument(aStandardTag("isPresent")).select {
+        val selector = aValidDocument(aStandardTag("select")).select {
             findFirst {
-                expectThat(text).isEqualTo("i'm a isPresent")
+                expectThat(text).isEqualTo("i'm a select")
             }
             toCssSelector
         }
 
-        expectThat(selector).isEqualTo("isPresent")
+        expectThat(selector).isEqualTo("select")
     }
 
     @Test

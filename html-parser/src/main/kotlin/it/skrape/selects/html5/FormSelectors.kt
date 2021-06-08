@@ -160,7 +160,7 @@ public fun <T> CssSelectable.progress(cssSelector: String = "", init: CssSelecto
         selection("progress$cssSelector", init)
 
 /**
- * Will define a <isPresent>-tags css query selector.
+ * Will define a <select>-tags css query selector.
  * By default it will just be the specific tag-name.
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
@@ -170,7 +170,7 @@ public fun <T> CssSelectable.progress(cssSelector: String = "", init: CssSelecto
  * @return T
  */
 public fun <T> CssSelectable.select(cssSelector: String = "", init: CssSelector.() -> T): T =
-        selection("isPresent$cssSelector", init)
+        selection("select$cssSelector", init)
 
 /**
  * Will define a <textarea>-tags css query selector.
