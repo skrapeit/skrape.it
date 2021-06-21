@@ -170,18 +170,16 @@ private fun HttpClientConfig<ApacheEngineConfig>.trustSelfSignedClient() {
     }
 }
 
-private fun HttpResponse.toResult(): Result {
-    val result = Result(
-        responseBody = runBlocking { this@toResult.readText() },
-        responseStatus = this.toStatus(),
-        contentType = this.contentType()?.toString()?.replace(" ", ""),
-        headers = this.headers.flattenEntries()
-            .associateBy({ item -> item.first }, { item -> this.headers[item.first]!! }),
-        cookies = this.setCookie().map { cookie -> cookie.toDomainCookie(this.request.url.toString().urlOrigin) },
-        baseUri = this.request.url.toString()
+private fun HttpResponse.toResult(): Result =
+    Result(
+        responseBody = runBlocking { readText() },
+        responseStatus = toStatus(),
+        contentType = contentType()?.toString()?.replace(" ", ""),
+        headers = headers.flattenEntries()
+            .associateBy({ item -> item.first }, { item -> headers[item.first]!! }),
+        cookies = setCookie().map { cookie -> cookie.toDomainCookie(request.url.toString().urlOrigin) },
+        baseUri = request.url.toString()
     )
-    return result
-}
 
 private fun HttpResponse.toStatus() = Result.Status(this.status.value, this.status.description)
 
