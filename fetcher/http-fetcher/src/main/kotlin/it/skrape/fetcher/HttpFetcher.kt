@@ -1,14 +1,28 @@
 package it.skrape.fetcher
 
-import io.ktor.client.*
-import io.ktor.client.engine.apache.*
-import io.ktor.client.features.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
-import io.ktor.network.sockets.*
-import io.ktor.util.*
-import io.ktor.util.network.*
+import io.ktor.client.HttpClient
+import io.ktor.client.HttpClientConfig
+import io.ktor.client.engine.apache.Apache
+import io.ktor.client.engine.apache.ApacheEngineConfig
+import io.ktor.client.features.HttpResponseValidator
+import io.ktor.client.features.HttpTimeout
+import io.ktor.client.features.defaultRequest
+import io.ktor.client.features.timeout
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.headers
+import io.ktor.client.request.request
+import io.ktor.client.request.url
+import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.readText
+import io.ktor.client.statement.request
+import io.ktor.http.HttpMethod
+import io.ktor.http.contentType
+import io.ktor.http.setCookie
+import io.ktor.http.toHttpDate
+import io.ktor.network.sockets.SocketTimeoutException
+import io.ktor.util.flattenEntries
+import io.ktor.util.network.hostname
+import io.ktor.util.network.port
 import kotlinx.coroutines.runBlocking
 import org.apache.http.HttpHost
 import org.apache.http.conn.ssl.NoopHostnameVerifier
@@ -23,9 +37,8 @@ public object HttpFetcher : BlockingFetcher<Request> {
     override fun fetch(request: Request): Result = configuredClient(request).toResult()
 
     @Suppress("MagicNumber")
-    private fun configuredClient(request: Request): HttpResponse {
-
-        val client = HttpClient(Apache) {
+    private fun configuredClient(request: Request): HttpResponse =
+        HttpClient(Apache) {
             expectSuccess = false
             followRedirects = request.followRedirects
             install(HttpTimeout)
@@ -57,9 +70,9 @@ public object HttpFetcher : BlockingFetcher<Request> {
             if (request.sslRelaxed) {
                 trustSelfSignedClient()
             }
+        }.use {
+            runBlocking { it.request(request.toHttpRequest()) }
         }
-        return runBlocking { client.request(request.toHttpRequest()) }
-    }
 }
 
 private fun Request.toHttpRequest(): HttpRequestBuilder {
@@ -157,15 +170,18 @@ private fun HttpClientConfig<ApacheEngineConfig>.trustSelfSignedClient() {
     }
 }
 
-private fun HttpResponse.toResult(): Result = Result(
-    responseBody = runBlocking { this@toResult.readText() },
-    responseStatus = this.toStatus(),
-    contentType = this.contentType()?.toString()?.replace(" ", ""),
-    headers = this.headers.flattenEntries()
-        .associateBy({ item -> item.first }, { item -> this.headers[item.first]!! }),
-    cookies = this.setCookie().map { cookie -> cookie.toDomainCookie(this.request.url.toString().urlOrigin) },
-    baseUri = this.request.url.toString()
-)
+private fun HttpResponse.toResult(): Result {
+    val result = Result(
+        responseBody = runBlocking { this@toResult.readText() },
+        responseStatus = this.toStatus(),
+        contentType = this.contentType()?.toString()?.replace(" ", ""),
+        headers = this.headers.flattenEntries()
+            .associateBy({ item -> item.first }, { item -> this.headers[item.first]!! }),
+        cookies = this.setCookie().map { cookie -> cookie.toDomainCookie(this.request.url.toString().urlOrigin) },
+        baseUri = this.request.url.toString()
+    )
+    return result
+}
 
 private fun HttpResponse.toStatus() = Result.Status(this.status.value, this.status.description)
 
