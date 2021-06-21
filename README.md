@@ -66,7 +66,7 @@ All our official/stable releases will be published to [mavens central repository
 
 ```kotlin
 dependencies {
-    implementation("it.skrape:skrapeit:1.1.2")
+    implementation("it.skrape:skrapeit:1.1.3")
 }
 ```
 </details>
@@ -77,7 +77,7 @@ dependencies {
 <dependency>
     <groupId>it.skrape</groupId>
     <artifactId>skrapeit</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
 </dependency>
 ```
 </details>
