@@ -14,9 +14,8 @@ public object AsyncFetcher : NonBlockingFetcher<Request> {
     override suspend fun fetch(request: Request): Result = configuredClient(request).toResult()
 
     @Suppress("MagicNumber")
-    private suspend fun configuredClient(request: Request): HttpResponse {
-
-        val client = HttpClient(Apache) {
+    private suspend fun configuredClient(request: Request): HttpResponse =
+        HttpClient(Apache) {
             expectSuccess = false
             followRedirects = request.followRedirects
             install(HttpTimeout)
@@ -48,7 +47,7 @@ public object AsyncFetcher : NonBlockingFetcher<Request> {
             if (request.sslRelaxed) {
                 trustSelfSignedClient()
             }
+        }.use {
+            it.request(request.toHttpRequest())
         }
-        return client.request(request.toHttpRequest())
-    }
 }
