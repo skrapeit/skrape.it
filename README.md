@@ -193,7 +193,7 @@ class HtmlExtractionService {
                 url = "http://localhost:8080"
             }
 
-            extract {
+            response {
                 MySimpleDataClass(
                     httpStatusCode = status { code },
                     httpStatusMessage = status { message },
@@ -253,7 +253,7 @@ fun `dsl can skrape by url`() {
         request {
             url = "http://localhost:8080/example"
         }       
-        expect {
+        response {
             htmlDocument {
                 // all official html and html5 elements are supported by the DSL
                 div {
@@ -309,7 +309,7 @@ fun `dsl can skrape by url`() {
 ```kotlin
 fun getDocumentByUrl(urlToScrape: String) = skrape(BrowserFetcher) { // <--- pass BrowserFetcher to include rendered JS
     request { url = urlToScrape }
-    extract { htmlDocument { this } }
+    response { htmlDocument { this } }
 }
 
 
@@ -326,7 +326,7 @@ suspend fun getAllLinks(): Map<String, String> = skrape(AsyncFetcher) {
     request {
         url = "https://my-fancy.website"
     }
-    extract {
+    response {
         htmlDocument { eachLink }
     }
 }
@@ -367,7 +367,7 @@ class ExampleTest {
     @Test
     fun `can use preconfigured client`() {
     
-        myPreConfiguredClient.expect {
+        myPreConfiguredClient.response {
             status { code toBe 200 }
             // do more stuff
         }
@@ -377,7 +377,7 @@ class ExampleTest {
             request {
                 followRedirects = false
             }
-        }.expect {
+        }.response {
             status { code toBe 301 }
             // do more stuff
         }
@@ -396,7 +396,7 @@ skrape(HttpFetcher) {
         headers = mapOf("Content-Type" to "application/json")
         body = """{"foo":"bar"}"""
     }
-    extract {
+    response {
         htmlDocument {
             ...
 ```
@@ -412,7 +412,7 @@ skrape(HttpFetcher) {
             contentType = "your-custom/content" // can optionally override content-type
         }
     }
-    extract {
+    response {
         htmlDocument {
             ...
 ```
@@ -432,7 +432,7 @@ skrape(HttpFetcher) {
             form("foo=bar") // will automatically set content-type header to "application/x-www-form-urlencoded" 
         }
     }
-    extract {
+    response {
         htmlDocument {
             ...
 ```
@@ -456,7 +456,7 @@ skrape(HttpFetcher) {
             }
         }
     }
-    extract {
+    response {
         htmlDocument {
             ...
 ```
@@ -476,7 +476,7 @@ skrape(HttpFetcher) {
             }
         }
     }
-    extract {
+    response {
         htmlDocument {
             ...
 ```

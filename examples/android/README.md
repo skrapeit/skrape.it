@@ -80,7 +80,7 @@ private suspend fun fetch(): List<User> =
             request {
                 url = "https://some.fancy/url"
             }
-            extract {
+            response {
                 htmlDocument {
                 ...
 ```

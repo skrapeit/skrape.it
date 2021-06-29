@@ -55,8 +55,9 @@ public suspend fun <R, T> skrape(fetcher: NonBlockingFetcher<R>, init: suspend S
  * Execute http call with a given Fetcher implementation and invoke the fetching result.
  */
 @SkrapeItDsl
+@Deprecated(message = "Please use 'response' instead", replaceWith = ReplaceWith("response(result)"))
 public suspend fun Scraper<*>.expect(result: Result.() -> Unit) {
-    extract(result)
+    response(result)
 }
 
 /**
@@ -65,7 +66,7 @@ public suspend fun Scraper<*>.expect(result: Result.() -> Unit) {
  */
 @SkrapeItDsl
 public fun Scraper<*>.expectBlocking(result: Result.() -> Unit) {
-    runBlocking { extract(result) }
+    runBlocking { response(result) }
 }
 
 /**
@@ -73,7 +74,16 @@ public fun Scraper<*>.expectBlocking(result: Result.() -> Unit) {
  * @return T
  */
 @SkrapeItDsl
+@Deprecated(message = "Please use 'response' instead", replaceWith = ReplaceWith("response(result)"))
 public suspend fun <T> Scraper<*>.extract(result: Result.() -> T): T =
+    response(result)
+
+/**
+ * Execute http call with a given Fetcher implementation and invoke the fetching result.
+ * @return T
+ */
+@SkrapeItDsl
+public suspend fun <T> Scraper<*>.response(result: Result.() -> T): T =
     scrape().result()
 
 /**
@@ -82,7 +92,7 @@ public suspend fun <T> Scraper<*>.extract(result: Result.() -> T): T =
  */
 @SkrapeItDsl
 public fun <T> Scraper<*>.extractBlocking(result: Result.() -> T): T =
-    runBlocking { extract(result) }
+    runBlocking { response(result) }
 
 /**
  * Execute http call with a given Fetcher implementation and invoke the fetching result as this and any given generic as it.
@@ -92,7 +102,7 @@ public fun <T> Scraper<*>.extractBlocking(result: Result.() -> T): T =
 @SkrapeItDsl
 public suspend inline fun <reified T : Any> Scraper<*>.extractIt(crossinline result: Result.(T) -> Unit): T =
     with(T::class) {
-        extract { createInstance().also { result(it) } }
+        response { createInstance().also { result(it) } }
     }
 
 /**

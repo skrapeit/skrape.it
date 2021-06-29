@@ -50,7 +50,7 @@ class KtorAdapterTest {
                 url("${wiremock.httpUrl}/example")
             }
 
-            extract { this }
+            response { this }
         }
 
         expectThat(result.responseStatus.code).isEqualTo(200)

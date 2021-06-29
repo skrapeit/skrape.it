@@ -37,7 +37,7 @@ class DslTest {
                 url = "${wiremock.httpUrl}/example"
             }
 
-            expect {
+            response {
 
                 status {
                     code toBe 200
@@ -83,9 +83,7 @@ class DslTest {
                 sslRelaxed = true
             }
 
-            expect {
-                status { code toBe 200 }
-            }
+            response { status { code toBe 200 } }
         }
 
     }
@@ -99,7 +97,7 @@ class DslTest {
                 url = "${wiremock.httpUrl}/example"
             }
 
-            expect {
+            response {
                 contentType toContain TEXT_HTML
                 contentType toBe TEXT_HTML_UTF8
                 contentType toBeNot APPLICATION_XHTML
@@ -125,7 +123,7 @@ class DslTest {
                 url = "${wiremock.httpUrl}/"
             }
 
-            expect {
+            response {
                 status {
                     code toBe 302
                     message toBe "Found"
@@ -142,7 +140,7 @@ class DslTest {
             request {
                 url = "${wiremock.httpUrl}/"
             }
-            expect {
+            response {
                 val header = httpHeader("Content-Type") {
                     expectThat(this).isEqualTo("text/html;charset=utf-8")
                 }
@@ -164,7 +162,7 @@ class DslTest {
             request {
                 url = "${wiremock.httpUrl}/"
             }
-            expect {
+            response {
                 val headers = httpHeaders {
                     expectThat(this).hasEntry("Content-Type", "text/html;charset=utf-8")
                 }
@@ -181,7 +179,7 @@ class DslTest {
             request {
                 url = "${wiremock.httpUrl}/"
             }
-            expect {
+            response {
                 htmlDocument {
                     body {
                         findFirst {
@@ -201,7 +199,7 @@ class DslTest {
             request {
                 url = "${wiremock.httpUrl}/"
             }
-            expect {
+            response {
                 status {
                     code toBe 404
                     message toBe "Not Found"
@@ -219,7 +217,7 @@ class DslTest {
                 url = "${wiremock.httpUrl}/"
                 method = Method.POST
             }
-            expect {
+            response {
 
                 //expectThat(request.method).isEqualTo(Method.POST)
 
@@ -251,7 +249,7 @@ class DslTest {
                     url = "${wiremock.httpUrl}/"
                     timeout = 2000
                 }
-                expect {}
+                response {}
             }
         }
     }
@@ -272,7 +270,7 @@ class DslTest {
                 url = "${wiremock.httpUrl}/"
             }
 
-            val extracted = extract {
+            val extracted = response {
                 status {
                     MyObject(message, "", emptyList())
                 }
@@ -387,7 +385,7 @@ class DslTest {
                 url = "${wiremock.httpUrl}/"
             }
 
-            extract {
+            response {
                 MySimpleDataClass(
                     httpStatusCode = status { code },
                     httpStatusMessage = status { message },
@@ -415,7 +413,7 @@ class DslTest {
                 request {
                     url = "${wiremock.httpUrl}/"
                 }
-                expect {
+                response {
                     htmlDocument {
                         findFirst(".nonExistent") {}
                     }
@@ -433,7 +431,7 @@ class DslTest {
             request {
                 url = "${wiremock.httpUrl}/"
             }
-            expect {
+            response {
                 htmlDocument {
                     relaxed = true
                     findAll(".nonExistent") {
@@ -456,7 +454,7 @@ class DslTest {
                 request {
                     url = "${wiremock.httpUrl}/"
                 }
-                expect {
+                response {
                     htmlDocument {
                         div {
                             withId = "non-existend"
@@ -482,7 +480,7 @@ class DslTest {
                 url = "${wiremock.httpUrl}/"
             }
 
-            extract {
+            response {
                 htmlDocument {
                     MyObject(
                         message = "",
@@ -729,7 +727,7 @@ class DslTest {
             request {
                 url = "${wiremock.httpUrl}/"
             }
-            extract {
+            response {
                 htmlDocument {
                     a {
                         findAll { first { it.ownText == "relative link" } }.attribute("href")
@@ -742,7 +740,7 @@ class DslTest {
             request {
                 url = "${wiremock.httpUrl}$interestingLink"
             }
-            expect {
+            response {
                 htmlDocument {
                     title {
                         findFirst { text toBe "i'm the title" }
@@ -774,7 +772,7 @@ class DslTest {
             request {
                 url = "${wiremock.httpUrl}/"
             }
-            expect {
+            response {
                 htmlDocument {
                     div(".dynamic") {
                         findFirst {
@@ -799,7 +797,7 @@ class DslTest {
                                 url = "${wiremock.httpUrl}/delayed"
                                 timeout = 15_000
                             }
-                            expect {
+                            response {
                                 status {
                                     code toBe 200
                                     message toBe "OK"
@@ -825,7 +823,7 @@ class DslTest {
                         url = "${wiremock.httpUrl}/delayed"
                         timeout = 15_000
                     }
-                    expect {
+                    response {
                         status {
                             code toBe 200
                             message toBe "OK"
@@ -945,7 +943,7 @@ class DslTest {
                 url = "https://docs.skrape.it/docs/"
             }
 
-            extract {
+            response {
                 htmlDocument {
                     toString() toContain "A Story of Deserializing HTML / XML."
                 }
@@ -959,7 +957,7 @@ class DslTest {
             request {
                 url = "https://docs.skrape.it/docs/"
             }
-            extract {
+            response {
                 htmlDocument {
                     toString() toContain "A Story of Deserializing HTML / XML."
                 }
@@ -976,7 +974,7 @@ class DslTest {
                 url = "$httpBin/basic-auth/cr1z/secure"
             }
 
-            expect {
+            response {
                 status {
                     code toBe 401
                     message toBe "UNAUTHORIZED"
@@ -999,7 +997,7 @@ class DslTest {
                 }
             }
 
-            expect {
+            response {
                 status {
                     code toBe 200
                 }

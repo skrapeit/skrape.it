@@ -1,7 +1,7 @@
 
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.HttpFetcher
-import it.skrape.fetcher.extract
+import it.skrape.fetcher.response
 import it.skrape.fetcher.skrape
 import it.skrape.matchers.toBe
 import it.skrape.matchers.toBePresentExactlyOnce
@@ -28,7 +28,7 @@ class ExperimentalDslTest {
                 url = "${wiremock.httpUrl}/example"
             }
 
-            extract {
+            response {
                 htmlDocument {
                     div {
                         withClass = "foo" and "bar" and "fizz" and "buzz"
@@ -89,7 +89,7 @@ class ExperimentalDslTest {
                     port = 12345
                 }
             }
-            extract {
+            response {
                 // do something with the result
             }
 
