@@ -482,13 +482,12 @@ skrape(HttpFetcher) {
 ```
 
 ## Get in touch
-If you need help, have questions on how to use skrape{it} or want to discuss features or bugs please raise issues on [GitHub](https://github.com/skrapeit/skrape.it/issues).
-If you want to discuss or ask more generel things or possible implementations as well as feature ideas you can join the [#skrape-it channel on the Kotlin Slack](https://kotlinlang.slack.com/archives/CSPDWD4R4).
+If you need help, have questions on how to use skrape{it} or want to discuss features please don't hesitate to use the projects discussions section on [GitHub](https://github.com/skrapeit/skrape.it/discussions) or raise an [issue](https://github.com/skrapeit/skrape.it/issues) if you found a bug.
 
-* Issues: You can discuss and raise issues on [GitHub](https://github.com/skrapeit/skrape.it/issues).
-* Slack: Join the [#skrape-it](https://kotlinlang.slack.com/archives/CSPDWD4R4) channel on the Kotlin Slack.
+* Issues: You can raise issues on [GitHub](https://github.com/skrapeit/skrape.it/issues).
+* Discussions / Questions: Use the [Discussions section](https://github.com/skrapeit/skrape.it/discussions) or join the [#skrape-it](https://kotlinlang.slack.com/archives/CSPDWD4R4) channel on the Kotlin Slack.
 * Twitter: Follow [@skrape_it](https://twitter.com/skrape_it) on Twitter for updates and release notifications.
-* Stasckoverflow: post or search issues on [Stackoverflow](https://stackoverflow.com/search?q=skrape)
+* Stackoverflow: post or search issues on [Stackoverflow](https://stackoverflow.com/search?q=skrape)
 
 ## :sparkling_heart: Support the project
 Skrape{it} is and always will be **free and open-source**. I try to reply to everyone needing help using these projects. Obviously,
