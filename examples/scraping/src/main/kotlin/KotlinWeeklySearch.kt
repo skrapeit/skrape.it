@@ -1,10 +1,11 @@
+@file:Suppress("MagicNumber")
 
-import it.skrape.core.fetcher.HttpFetcher
 import it.skrape.core.htmlDocument
-import it.skrape.extract
+import it.skrape.fetcher.HttpFetcher
+import it.skrape.fetcher.response
+import it.skrape.fetcher.skrape
 import it.skrape.selects.eachHref
 import it.skrape.selects.html5.a
-import it.skrape.skrape
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
@@ -35,8 +36,8 @@ public class KotlinWeekly {
         skrape(HttpFetcher) {
             request {
                 url = "https://mailchi.mp/kotlinweekly/kotlin-weekly-$issueNumber"
-            }
-            extract {
+            }.also { println(System.currentTimeMillis()) }
+            response {
                 htmlDocument {
                     a {
                         findAll {
