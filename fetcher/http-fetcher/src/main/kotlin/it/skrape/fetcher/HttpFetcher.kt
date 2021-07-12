@@ -1,28 +1,15 @@
 package it.skrape.fetcher
 
-import io.ktor.client.HttpClient
-import io.ktor.client.HttpClientConfig
-import io.ktor.client.engine.apache.Apache
-import io.ktor.client.engine.apache.ApacheEngineConfig
-import io.ktor.client.features.HttpResponseValidator
-import io.ktor.client.features.HttpTimeout
-import io.ktor.client.features.defaultRequest
-import io.ktor.client.features.timeout
-import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.headers
-import io.ktor.client.request.request
-import io.ktor.client.request.url
-import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.readText
-import io.ktor.client.statement.request
-import io.ktor.http.HttpMethod
-import io.ktor.http.contentType
-import io.ktor.http.setCookie
-import io.ktor.http.toHttpDate
-import io.ktor.network.sockets.SocketTimeoutException
-import io.ktor.util.flattenEntries
-import io.ktor.util.network.hostname
-import io.ktor.util.network.port
+import io.ktor.client.*
+import io.ktor.client.engine.apache.*
+import io.ktor.client.features.*
+import io.ktor.client.features.logging.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
+import io.ktor.network.sockets.*
+import io.ktor.util.*
+import io.ktor.util.network.*
 import kotlinx.coroutines.runBlocking
 import org.apache.http.HttpHost
 import org.apache.http.conn.ssl.NoopHostnameVerifier
@@ -42,6 +29,9 @@ public object HttpFetcher : BlockingFetcher<Request> {
             expectSuccess = false
             followRedirects = request.followRedirects
             install(HttpTimeout)
+            install(Logging) {
+                level = LogLevel.NONE
+            }
             request.authentication?.let { authentication: Authentication ->
                 if (authentication is BasicAuth) {
                     installBasicAuth()

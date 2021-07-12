@@ -3,6 +3,7 @@ package it.skrape.fetcher
 import io.ktor.client.*
 import io.ktor.client.engine.apache.*
 import io.ktor.client.features.*
+import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.network.sockets.*
@@ -19,6 +20,9 @@ public object AsyncFetcher : NonBlockingFetcher<Request> {
             expectSuccess = false
             followRedirects = request.followRedirects
             install(HttpTimeout)
+            install(Logging) {
+                level = LogLevel.NONE
+            }
             request.authentication?.let { authentication: Authentication ->
                 if (authentication is BasicAuth) {
                     installBasicAuth()
