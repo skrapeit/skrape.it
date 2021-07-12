@@ -9,9 +9,10 @@ import it.skrape.selects.html5.a
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
+import java.time.LocalDateTime
 
 public fun main() {
-    KotlinWeekly().search("ktor").forEach {
+    KotlinWeekly().search("skrape.it").forEach {
         println(it)
     }
 }
@@ -21,8 +22,7 @@ public class KotlinWeekly {
     public fun search(partialHref: String): List<String> {
         var allLinks = listOf<String>()
         runBlocking {
-            @Suppress("MagicNumber")
-            val deferred = (223..242).map { issueNumber ->
+            val deferred = (223..257).map { issueNumber ->
                 async {
                     scrape(issueNumber)
                 }
@@ -36,7 +36,7 @@ public class KotlinWeekly {
         skrape(HttpFetcher) {
             request {
                 url = "https://mailchi.mp/kotlinweekly/kotlin-weekly-$issueNumber"
-            }.also { println(System.currentTimeMillis()) }
+            }.also { println("call ${it.preparedRequest.url} at ${LocalDateTime.now()}") }
             response {
                 htmlDocument {
                     a {
