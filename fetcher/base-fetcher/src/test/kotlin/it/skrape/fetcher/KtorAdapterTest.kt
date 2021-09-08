@@ -18,19 +18,16 @@ private val wiremock = Testcontainer.wiremock
 
 class KtorAdapterTest {
 
-
     class KtorBlockingFetcher(val ktorClient: HttpClient) : BlockingFetcher<HttpRequestBuilder> {
-        override fun fetch(request: HttpRequestBuilder): Result {
-            return runBlocking {
-                val fullResponse = ktorClient.request<HttpResponse>(request)
-
+        override fun fetch(request: HttpRequestBuilder): Result = runBlocking {
+            with(ktorClient.request<HttpResponse>(request)) {
                 Result(
-                    responseBody = fullResponse.readText(),
-                    responseStatus = Result.Status(fullResponse.status.value, fullResponse.status.description),
-                    contentType = fullResponse.contentType()?.toString(),
-                    headers = fullResponse.headers.toMap().mapValues { it.value.firstOrNull().orEmpty() },
-                    baseUri = fullResponse.request.url.toString(),
-                    cookies = listOf(fullResponse.setCookie()) as List<Cookie>
+                    responseBody = readText(),
+                    responseStatus = Result.Status(status.value, status.description),
+                    contentType = contentType()?.toString(),
+                    headers = headers.toMap().mapValues { it.value.firstOrNull().orEmpty() },
+                    baseUri = request.url.toString(),
+                    cookies = listOf(setCookie()) as List<Cookie>
                 )
             }
         }
