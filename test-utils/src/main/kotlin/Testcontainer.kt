@@ -29,10 +29,10 @@ public object Testcontainer {
 }
 
 private class WireMockContainer(
-    version: String = "2.27.2-alpine",
+    version: String = "2.9.0-alpine",
     val httpPort: Int = 8080,
     val httpsPort: Int = 8443,
-) : GenericContainer<WireMockContainer>(DockerImageName.parse("rodolpheche/wiremock:$version")) {
+) : GenericContainer<WireMockContainer>(DockerImageName.parse("wiremock/wiremock:$version")) {
     init {
         withExposedPorts(httpPort, httpsPort)
         withCommand("--https-port $httpsPort")
