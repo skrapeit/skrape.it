@@ -12,7 +12,11 @@ public object Testcontainer {
     )
 
     public val wiremock: Wiremock by lazy {
-        with(WireMockContainer().apply { start() }) {
+        with(WireMockContainer().apply {
+            if (!isWindows) {
+                start()
+            }
+        }) {
             Wiremock(
                 client = WireMock(containerIpAddress, getMappedPort(httpPort)),
                 httpUrl = "http://$containerIpAddress:${getMappedPort(httpPort)}",
@@ -22,9 +26,17 @@ public object Testcontainer {
     }
 
     public val httpBin: String by lazy {
-        with(HttpBinContainer().apply { start() }) {
+        with(HttpBinContainer().apply {
+            if (!isWindows) {
+                start()
+            }
+        }) {
             "http://$containerIpAddress:${getMappedPort(internalPort)}"
         }
+    }
+
+    private val isWindows: Boolean by lazy {
+        System.getProperty("os.name").startsWith("Windows")
     }
 }
 

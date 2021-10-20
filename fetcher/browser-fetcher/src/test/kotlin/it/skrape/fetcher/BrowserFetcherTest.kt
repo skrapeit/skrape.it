@@ -3,6 +3,8 @@ package it.skrape.fetcher
 import Testcontainer
 import com.gargoylesoftware.htmlunit.util.NameValuePair
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledOnOs
+import org.junit.jupiter.api.condition.OS
 import org.junit.jupiter.api.parallel.Execution
 import org.junit.jupiter.api.parallel.ExecutionMode
 import setupCookiesStub
@@ -20,6 +22,7 @@ private val wiremock = Testcontainer.wiremock
 private val httpBin = Testcontainer.httpBin
 
 @Execution(ExecutionMode.SAME_THREAD)
+@DisabledOnOs(OS.WINDOWS)
 class BrowserFetcherTest {
 
     private val baseRequest by lazy { Request(url = wiremock.httpUrl) }

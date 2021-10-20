@@ -1,6 +1,8 @@
 import com.github.tomakehurst.wiremock.client.WireMock
 import io.restassured.RestAssured.given
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledOnOs
+import org.junit.jupiter.api.condition.OS
 import org.junit.jupiter.api.parallel.Execution
 import org.junit.jupiter.api.parallel.ExecutionMode
 import strikt.api.expectThat
@@ -11,6 +13,7 @@ import strikt.assertions.startsWith
 val myWiremock = Testcontainer.wiremock
 
 @Execution(ExecutionMode.SAME_THREAD)
+@DisabledOnOs(OS.WINDOWS)
 internal class TestcontainerTest {
 
     @Test
