@@ -14,8 +14,7 @@ jobs:
           - 1.8
         os:
           - ubuntu-latest
-          - macos-latest
-          - windows-latest
+          - windows-2016
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v1
