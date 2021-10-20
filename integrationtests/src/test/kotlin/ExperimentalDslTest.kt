@@ -10,6 +10,8 @@ import it.skrape.selects.html5.customTag
 import it.skrape.selects.html5.div
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledOnOs
+import org.junit.jupiter.api.condition.OS
 import org.junit.jupiter.api.parallel.Execution
 import org.junit.jupiter.api.parallel.ExecutionMode
 import java.net.Proxy
@@ -17,6 +19,7 @@ import java.net.Proxy
 private val wiremock = Testcontainer.wiremock
 
 @Execution(ExecutionMode.SAME_THREAD)
+@DisabledOnOs(OS.WINDOWS)
 class ExperimentalDslTest {
 
     @Test
