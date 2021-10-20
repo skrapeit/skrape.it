@@ -3,6 +3,8 @@ package it.skrape.fetcher
 import Testcontainer
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledOnOs
+import org.junit.jupiter.api.condition.OS
 import setupCookiesStub
 import setupDeleteStub
 import setupHeadStub
@@ -20,6 +22,7 @@ import java.net.SocketTimeoutException
 private val wiremock = Testcontainer.wiremock
 private val httpBin = Testcontainer.httpBin
 
+@DisabledOnOs(OS.WINDOWS)
 class AsyncFetcherTest {
 
     private val baseRequest by lazy { Request(url = "${wiremock.httpUrl}/") }

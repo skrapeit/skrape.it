@@ -9,6 +9,8 @@ import io.ktor.http.*
 import io.ktor.util.*
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledOnOs
+import org.junit.jupiter.api.condition.OS
 import setupStub
 import strikt.api.expectThat
 import strikt.assertions.contains
@@ -16,6 +18,7 @@ import strikt.assertions.isEqualTo
 
 private val wiremock = Testcontainer.wiremock
 
+@DisabledOnOs(OS.WINDOWS)
 class KtorAdapterTest {
 
     class KtorBlockingFetcher(val ktorClient: HttpClient) : BlockingFetcher<HttpRequestBuilder> {
