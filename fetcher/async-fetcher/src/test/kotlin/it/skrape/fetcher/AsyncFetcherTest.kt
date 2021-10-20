@@ -35,7 +35,7 @@ class AsyncFetcherTest {
         val fetched = runBlocking { AsyncFetcher.fetch(request) }
 
         expectThat(fetched.status { code }).isEqualTo(200)
-        expectThat(fetched.contentType).isEqualTo("text/html;charset=utf-8")
+        expectThat(fetched.contentType).isEqualTo("text/html;charset=UTF-8")
         expectThat(fetched.responseBody).contains("i'm the title")
 
     }
@@ -115,7 +115,7 @@ class AsyncFetcherTest {
         val fetched = runBlocking { AsyncFetcher.fetch(request) }
 
         expectThat(fetched.status { code }).isEqualTo(200)
-        expectThat(fetched.contentType).isEqualTo("application/json;charset=utf-8")
+        expectThat(fetched.contentType).isEqualTo("application/json;charset=UTF-8")
         expectThat(fetched.responseBody).isEqualTo("""{"data":"some value"}""")
     }
 

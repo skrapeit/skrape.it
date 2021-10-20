@@ -108,7 +108,7 @@ class DslTest {
                 contentType toBeNot APPLICATION_XUL
                 contentType toBeNot APPLICATION_ZIP
 
-                expectThat(contentType).isEqualTo("text/html;charset=utf-8")
+                expectThat(contentType).isEqualTo("text/html;charset=UTF-8")
             }
         }
     }
@@ -142,9 +142,9 @@ class DslTest {
             }
             response {
                 val header = httpHeader("Content-Type") {
-                    expectThat(this).isEqualTo("text/html;charset=utf-8")
+                    expectThat(this).isEqualTo("text/html; charset=UTF-8")
                 }
-                expectThat(header).isEqualTo("text/html;charset=utf-8")
+                expectThat(header).isEqualTo("text/html; charset=UTF-8")
 
                 val nonExistingHeader = httpHeader("Non-Existing") {
                     expectThat(this).isNull()
@@ -164,9 +164,9 @@ class DslTest {
             }
             response {
                 val headers = httpHeaders {
-                    expectThat(this).hasEntry("Content-Type", "text/html;charset=utf-8")
+                    expectThat(this).hasEntry("Content-Type", "text/html; charset=UTF-8")
                 }
-                expectThat(headers).hasEntry("Content-Type", "text/html;charset=utf-8")
+                expectThat(headers).hasEntry("Content-Type", "text/html; charset=UTF-8")
             }
         }
     }
@@ -234,7 +234,7 @@ class DslTest {
                 responseStatus toBeNot HttpStatus.`5xx_Server_error`
 
                 contentType toBe APPLICATION_JSON_UTF8
-                contentType toBe "application/json;charset=utf-8"
+                contentType toBe "application/json;charset=UTF-8"
             }
         }
     }
@@ -945,7 +945,7 @@ class DslTest {
 
             response {
                 htmlDocument {
-                    toString() toContain "A Story of Deserializing HTML / XML."
+                    toString() toContain "Focus and Paradigms"
                 }
             }
         }
@@ -959,7 +959,7 @@ class DslTest {
             }
             response {
                 htmlDocument {
-                    toString() toContain "A Story of Deserializing HTML / XML."
+                    toString() toContain "Focus and Paradigms"
                 }
             }
         }
