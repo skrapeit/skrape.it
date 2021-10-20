@@ -945,7 +945,7 @@ class DslTest {
 
             response {
                 htmlDocument {
-                    toString() toContain "A Story of Deserializing HTML / XML."
+                    toString() toContain "Focus and Paradigms"
                 }
             }
         }
@@ -959,7 +959,7 @@ class DslTest {
             }
             response {
                 htmlDocument {
-                    toString() toContain "A Story of Deserializing HTML / XML."
+                    toString() toContain "Focus and Paradigms"
                 }
             }
         }
