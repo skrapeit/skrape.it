@@ -28,12 +28,12 @@ jobs:
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.0.3
-        if: matrix.java-versions == '1.8'
+        if: ${{ matrix.java-versions == '1.8' && matrix.os == 'ubuntu-latest' }}
         with:
           token: ${{secrets.CODECOV_TOKEN}}
 
       - name: Temporarily set snapshot version
-        if: github.event_name == 'push'
+        if: ${{ github.event_name == 'push' && matrix.os == 'ubuntu-latest' }}
         uses: christian-draeger/write-properties@1.0.1
         with:
           path: './gradle.properties'
@@ -41,7 +41,7 @@ jobs:
           value: 0-SNAPSHOT
 
       - name: Publish snapshot to maven central
-        if: github.event_name == 'push'
+        if: ${{ github.event_name == 'push' && matrix.os == 'ubuntu-latest' }}
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
           ORG_GRADLE_PROJECT_signingKeyId: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEYID}}
