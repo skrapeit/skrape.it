@@ -151,15 +151,16 @@ fun `can read and return html from String`() {
             </body>
         </html>""") {
 
-        h1 {
-            findFirst {
-                text toBe "welcome"
+            h1 {
+                findFirst {
+                    text toBe "welcome"
+                }
             }
             p {
                 withClass = "foo"
                 findFirst {
                     text toBe "some p-element"
-                    className  toBe "foo"
+                    className toBe "foo"
                 }
             }
             p {
