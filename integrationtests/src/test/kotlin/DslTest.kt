@@ -1076,6 +1076,37 @@ class DslTest {
     }
 
     @Test
+    fun `can handle attributes with spaces in the value`() {
+        @Language("HTML") val myMarkUp = """
+            <div data-status="Important Value">
+                Text1
+            </div>
+            <div data-status="NoSpaceInThisOne">
+                Text2
+            </div>
+        """.trimIndent()
+
+        htmlDocument(myMarkUp) {
+
+            // This one we find since there is no space in the value
+            div {
+                withAttribute = Pair("data-status", "NoSpaceInThisOne")
+                findAll {
+                    text toBe "Text2"
+                }
+            }
+
+            // However due to stripping of whitespaces this one is not found
+            div {
+                withAttribute = Pair("data-status", "Important Value")
+                findAll {
+                    text toBe "Text1"
+                }
+            }
+        }
+    }
+
+    @Test
     fun `relaxed mode will not throw exception if element not exists`() {
         htmlDocument("""<span class="xxx"">hello</span>""") {
             relaxed = true
