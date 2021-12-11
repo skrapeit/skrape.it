@@ -27,9 +27,6 @@ allprojects {
 
     repositories {
         mavenCentral()
-        // still needed because of detekts transitive dependency to kotlinx-html-jvm
-        // see: https://github.com/Kotlin/kotlinx.html/issues/173
-        jcenter()
     }
 
     apply(plugin = "com.github.ben-manes.versions")
@@ -43,9 +40,10 @@ allprojects {
 
     apply(plugin = "io.gitlab.arturbosch.detekt")
     detekt {
-        toolVersion = "1.9.1"
+        toolVersion = "1.19.0"
         autoCorrect = true
-        input = files(DEFAULT_SRC_DIR_KOTLIN)
+        buildUponDefaultConfig = true
+        source = files(DEFAULT_SRC_DIR_KOTLIN)
         config = files("$rootDir/detekt.yml")
     }
 
@@ -56,8 +54,7 @@ allprojects {
 
     java {
         toolchain {
-            languageVersion.set(JavaLanguageVersion.of(8))
-            vendor.set(JvmVendorSpec.ADOPTOPENJDK)
+            languageVersion.set(JavaLanguageVersion.of(16))
         }
         withJavadocJar()
         withSourcesJar()
@@ -81,10 +78,7 @@ allprojects {
         publishing {
             publications {
                 create<MavenPublication>("mavenJava") {
-                    if (System.getenv("JITPACK") != "true") {
-                        artifactId =
-                            if (rootProject.name == project.name) rootProject.name else "${rootProject.name}-${project.name}"
-                    }
+                    artifactId = if (rootProject.name == project.name) rootProject.name else "${rootProject.name}-${project.name}"
                     from(components["java"])
                     pom {
                         name.set("skrape{it}")
@@ -112,20 +106,16 @@ allprojects {
             }
         }
 
-        if (System.getenv("JITPACK") != "true") {
-            apply(plugin = "signing")
-            signing {
-                sign(publishing.publications["mavenJava"])
+        apply(plugin = "signing")
+        signing {
+            sign(publishing.publications["mavenJava"])
 
-                val signingKeyId: String? by project
-                val signingKey: String? by project
-                val signingPassword: String? by project
-                useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
-            }
+            val signingKeyId: String? by project
+            val signingKey: String? by project
+            val signingPassword: String? by project
+            useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
         }
-
     }
-
 }
 
 subprojects {
