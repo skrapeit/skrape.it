@@ -1084,11 +1084,13 @@ class DslTest {
             <div data-status="NoSpaceInThisOne">
                 Text2
             </div>
+            <div data-status=" Spaces everywhere  ">
+                Text3
+            </div>
         """.trimIndent()
 
         htmlDocument(myMarkUp) {
 
-            // This one we find since there is no space in the value
             div {
                 withAttribute = Pair("data-status", "NoSpaceInThisOne")
                 findAll {
@@ -1096,11 +1098,17 @@ class DslTest {
                 }
             }
 
-            // However due to stripping of whitespaces this one is not found
             div {
                 withAttribute = Pair("data-status", "Important Value")
                 findAll {
                     text toBe "Text1"
+                }
+            }
+
+            div {
+                withAttribute = "data-status" to " Spaces everywhere  "
+                findAll {
+                    text toBe "Text3"
                 }
             }
         }

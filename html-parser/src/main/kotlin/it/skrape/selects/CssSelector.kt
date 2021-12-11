@@ -28,22 +28,22 @@ public class CssSelector(
         append(withAttributeKeys.toAttributesKeysSelector())
         append(withAttribute.toAttributeSelector())
         append(withAttributes.toAttributesSelector())
-    }.withoutSpaces()
+    }
 
-    private fun String?.toIdSelector() = this?.let { "#$it" }.orEmpty()
+    private fun String?.toIdSelector() = this?.let { "#$it" }.orEmpty().withoutSpaces()
 
-    private fun CssClassName?.toClassesSelector() = this?.let { ".$it" }.orEmpty()
+    private fun CssClassName?.toClassesSelector() = this?.let { ".$it" }.orEmpty().withoutSpaces()
 
-    private fun String?.toAttributeKeySelector() = this?.let { "[$it]" }.orEmpty()
+    private fun String?.toAttributeKeySelector() = this?.let { "[$it]" }.orEmpty().withoutSpaces()
 
     private fun List<String>?.toAttributesKeysSelector() =
-        this?.joinToString(prefix = "['", separator = "']['", postfix = "']").orEmpty()
+        this?.joinToString(prefix = "['", separator = "']['", postfix = "']").orEmpty().withoutSpaces()
 
     private fun Pair<String, String>?.toAttributeSelector() =
-        this?.let { "[${it.first}='${it.second}']" }.orEmpty()
+        this?.let { "[${it.first.withoutSpaces()}='${it.second}']" }.orEmpty()
 
     private fun List<Pair<String, String>>?.toAttributesSelector() =
-        this?.joinToString(separator = "") { "[${it.first}='${it.second}']" }.orEmpty()
+        this?.joinToString(separator = "") { it.toAttributeSelector() }.orEmpty()
 
     private fun String.withoutSpaces() = replace("\\s".toRegex(), "")
 }
