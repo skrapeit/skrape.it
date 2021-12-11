@@ -39,6 +39,14 @@ class CssSelectorTest {
     }
 
     @Test
+    fun `whitespaces in class names will be kicked`() {
+        val cssSelector = CssSelector(
+            withClass = "   foobar " and " foo " and " bar "
+        ).toCssSelector
+        expectThat(cssSelector).isEqualTo(".foobar.foo.bar")
+    }
+
+    @Test
     fun `can calculate selector and be relaxed on miss-leading spaces`() {
         val cssSelector = CssSelector(
                 rawCssSelector = "   div.foo span   ",
@@ -47,7 +55,7 @@ class CssSelectorTest {
                 withAttributes = "fizz" to "buzz" and Pair("skrape", "it"),
                 withAttributeKeys = listOf("key1", "key2")
         ).toCssSelector
-        expectThat(cssSelector).isEqualTo("div.foo span.foobar.foo.bar['key1']['key2'][foooo='bar'][fizz='buzz'][skrape='it']")
+        expectThat(cssSelector).isEqualTo("div.foo span.foobar.foo.bar['key1']['key2'][foooo='  bar   '][fizz='buzz'][skrape='it']")
     }
 
     @Test
@@ -59,9 +67,25 @@ class CssSelectorTest {
     }
 
     @Test
+    fun `whitespaces in id will be kicked`() {
+        val cssSelector = CssSelector(
+            withId = " f o o  "
+        ).toCssSelector
+        expectThat(cssSelector).isEqualTo("#foo")
+    }
+
+    @Test
     fun `can calculate attributeKey selector from element`() {
         val cssSelector = CssSelector(
-                withAttributeKey = "foo"
+            withAttributeKey = "foo"
+        ).toCssSelector
+        expectThat(cssSelector).isEqualTo("[foo]")
+    }
+
+    @Test
+    fun `whitespaces in attributeKey will be kicked`() {
+        val cssSelector = CssSelector(
+            withAttributeKey = " f o o  "
         ).toCssSelector
         expectThat(cssSelector).isEqualTo("[foo]")
     }
@@ -70,6 +94,22 @@ class CssSelectorTest {
     fun `can calculate attribute selector from element`() {
         val cssSelector = CssSelector(
                 withAttribute = "foo" to "bar"
+        ).toCssSelector
+        expectThat(cssSelector).isEqualTo("[foo='bar']")
+    }
+
+    @Test
+    fun `can calculate attribute selector with attribute value containing whitespaces`() {
+        val cssSelector = CssSelector(
+            withAttribute = "foo" to " bar foobar  "
+        ).toCssSelector
+        expectThat(cssSelector).isEqualTo("[foo=' bar foobar  ']")
+    }
+
+    @Test
+    fun `whitespaces in attribute key will be kicked`() {
+        val cssSelector = CssSelector(
+            withAttribute = "   f o o  " to "bar"
         ).toCssSelector
         expectThat(cssSelector).isEqualTo("[foo='bar']")
     }
