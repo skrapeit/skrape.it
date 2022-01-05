@@ -11,6 +11,7 @@ import strikt.assertions.containsExactly
 import strikt.assertions.hasEntry
 import strikt.assertions.isEqualTo
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileNotFoundException
 
 class ParserTest {
@@ -150,6 +151,37 @@ class ParserTest {
     fun `will throw exception if file not found and invoke document lambda`() {
         expectThrows<FileNotFoundException> {
             htmlDocument(File("invalid")) {}
+        }
+    }
+
+    @Test
+    fun `can read html from input stream`() {
+        val fileToParse = FileInputStream(File("src/test/resources/__files/example.html"))
+        val parsedFile = htmlDocument(fileToParse)
+        expectThat(parsedFile.titleText).isEqualTo("i'm the title")
+    }
+
+
+    @Test
+    fun `can read html from input stream and invoke document lambda`() {
+        val fileToParse = FileInputStream(File("src/test/resources/__files/example.html"))
+        htmlDocument(fileToParse) {
+            expectThat(titleText).isEqualTo("i'm the title")
+        }
+    }
+
+    @Test
+    fun `can read html from input stream with custom charset`() {
+        val fileToParse = FileInputStream(File("src/test/resources/__files/example.html"))
+        val parsedFile = htmlDocument(fileToParse, charset = Charsets.ISO_8859_1)
+        expectThat(parsedFile.titleText).isEqualTo("i'm the title")
+    }
+
+    @Test
+    fun `can read html from input stream with custom charset and invoke document lambda`() {
+        val fileToParse = FileInputStream(File("src/test/resources/__files/example.html"))
+        htmlDocument(fileToParse, charset = Charsets.ISO_8859_1) {
+            expectThat(titleText).isEqualTo("i'm the title")
         }
     }
 

@@ -6,7 +6,9 @@ import it.skrape.fetcher.Result
 import it.skrape.selects.Doc
 import org.intellij.lang.annotations.Language
 import org.jsoup.nodes.Document
+import java.io.BufferedReader
 import java.io.File
+import java.io.InputStream
 import java.nio.charset.Charset
 import org.jsoup.parser.Parser.parse as jSoupParser
 
@@ -47,6 +49,9 @@ internal class Parser(
 /**
  * Read and parse HTML from a String.
  * @param html represents a html snippet
+ * @param charset defaults to UTF-8
+ * @param jsExecution defaults to false
+ * @param baseUri defaults to empty String
  */
 public fun <T> htmlDocument(
     @Language("HTML") html: String,
@@ -55,7 +60,6 @@ public fun <T> htmlDocument(
     baseUri: String = "",
     init: Doc.() -> T
 ): T = htmlDocument(html, charset, jsExecution, baseUri).init()
-
 
 /**
  * Read and parse a html file from local file-system.
@@ -70,7 +74,22 @@ public fun <T> htmlDocument(
     jsExecution: Boolean = false,
     baseUri: String = "",
     init: Doc.() -> T
-): T = htmlDocument(file.readText(charset), charset, jsExecution, baseUri).init()
+): T = htmlDocument(file, charset, jsExecution, baseUri).init()
+
+/**
+ * Read and parse a html file from InputStream.
+ * @param bytes
+ * @param charset defaults to UTF-8
+ * @param jsExecution defaults to false
+ * @param baseUri defaults to empty String
+ */
+public fun <T> htmlDocument(
+    bytes: InputStream,
+    charset: Charset = Charsets.UTF_8,
+    jsExecution: Boolean = false,
+    baseUri: String = "",
+    init: Doc.() -> T
+): T = htmlDocument(bytes, charset, jsExecution, baseUri).init()
 
 @SkrapeItDsl
 public fun htmlDocument(
@@ -86,6 +105,13 @@ public fun htmlDocument(
     jsExecution: Boolean = false,
     baseUri: String = ""
 ): Doc = htmlDocument(file.readText(charset), charset, jsExecution, baseUri)
+
+public fun htmlDocument(
+    bytes: InputStream,
+    charset: Charset = Charsets.UTF_8,
+    jsExecution: Boolean = false,
+    baseUri: String = ""
+): Doc = htmlDocument(bytes.bufferedReader().use(BufferedReader::readText), charset, jsExecution, baseUri)
 
 public val Result.document: Doc
     get() = htmlDocument { this }
