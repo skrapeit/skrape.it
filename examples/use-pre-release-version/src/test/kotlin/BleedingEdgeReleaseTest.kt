@@ -1,6 +1,7 @@
+
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.*
-import it.skrape.selects.html5.a
+import it.skrape.selects.html5.span
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
@@ -16,19 +17,26 @@ class BleedingEdgeReleaseTest {
             request {
                 url = "https://github.com/skrapeit/skrape.it"
             }
-            extract {
+            response {
                 htmlDocument {
                     ".pagehead-actions" {
-                        a {
-                            withClass = "social-count"
-                            findFirst { text }
+                        0 {
+                            val star = children.first {
+                                it.text.contains("Star")
+                            }
+                            star.span {
+                                withClass = "Counter"
+                                0 {
+                                    text
+                                }
+                            }
                         }
                     }
                 }
             }
         }
 
-        expectThat(projectsGithubStars).isGreaterThanOrEqualTo("239")
+        expectThat(projectsGithubStars).isGreaterThanOrEqualTo("449")
     }
 
     @Test
@@ -37,7 +45,7 @@ class BleedingEdgeReleaseTest {
             request {
                 url = "https://docs.skrape.it"
             }
-            extract {
+            response {
                 htmlDocument {
                     titleText
                 }
@@ -54,12 +62,19 @@ class BleedingEdgeReleaseTest {
                 request {
                     url = "https://github.com/skrapeit/skrape.it"
                 }
-                extract {
+                response {
                     htmlDocument {
                         ".pagehead-actions" {
-                            a {
-                                withClass = "social-count"
-                                findFirst { text }
+                            0 {
+                                val star = children.first {
+                                    it.text.contains("Star")
+                                }
+                                star.span {
+                                    withClass = "Counter"
+                                    0 {
+                                        text
+                                    }
+                                }
                             }
                         }
                     }
