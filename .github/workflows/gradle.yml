@@ -35,7 +35,7 @@ jobs:
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
-        if: ${{ matrix.java-versions == '1.8' && matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.java-versions == '16' && matrix.os == 'ubuntu-latest' }}
         with:
           token: ${{secrets.CODECOV_TOKEN}}
           files: ./build/reports/kover/report.xml
