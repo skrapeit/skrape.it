@@ -2,17 +2,18 @@
 
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension.Companion.DEFAULT_SRC_DIR_KOTLIN
+import kotlinx.kover.api.KoverTaskExtension
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    jacoco
     `java-library`
     `maven-publish`
     signing
     kotlin("jvm")
     id("org.jetbrains.dokka") apply false
+    id("org.jetbrains.kotlinx.kover")
     id("com.github.ben-manes.versions")
     id("se.patrikerdes.use-latest-versions")
     id("com.adarshr.test-logger")
@@ -179,31 +180,12 @@ subprojects {
     }
 }
 
-jacoco {
-    toolVersion = "0.8.6"
-}
-
 tasks {
-    val jacocoTestReport by getting(JacocoReport::class) {
-        dependsOn(
-            subprojects.map { it.tasks.withType<Test>() },
-            subprojects.map { it.tasks.withType<JacocoReport>() },
-            subprojects.map { it.tasks.withType<Javadoc>() },
-        )
-        additionalSourceDirs.setFrom(subprojects.map { it.the<SourceSetContainer>()["main"].allSource.srcDirs })
-        sourceDirectories.setFrom(subprojects.map { it.the<SourceSetContainer>()["main"].allSource.srcDirs })
-        classDirectories.setFrom(subprojects.map { it.the<SourceSetContainer>()["main"].output })
-        executionData.setFrom(project.fileTree(".") { include("**/build/jacoco/test.exec") })
-        reports {
-            xml.isEnabled = true
-            html.isEnabled = false
-            csv.isEnabled = false
-            html.destination = file("${buildDir}/reports/jacoco/html")
+    test {
+        extensions.configure(KoverTaskExtension::class) {
+            excludes = listOf("com.example.subpackage.*")
         }
-    }
-
-    build {
-        finalizedBy(jacocoTestReport)
+        finalizedBy(koverReport, koverCollectProjectsReports)
     }
 }
 

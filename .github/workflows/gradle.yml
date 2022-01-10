@@ -34,10 +34,11 @@ jobs:
         run: ./gradlew build
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1.0.3
+        uses: codecov/codecov-action@v2
         if: ${{ matrix.java-versions == '1.8' && matrix.os == 'ubuntu-latest' }}
         with:
           token: ${{secrets.CODECOV_TOKEN}}
+          files: ./build/reports/kover/report.xml
 
       - name: Temporarily set snapshot version
         if: ${{ github.event_name == 'push' && matrix.os == 'ubuntu-latest' }}

@@ -1,7 +1,6 @@
 @file:Suppress("PropertyName")
 
 plugins {
-    jacoco
     kotlin("jvm")
 }
 

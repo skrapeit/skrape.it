@@ -3,7 +3,6 @@
 val kotlin_version: String by project
 
 plugins {
-    jacoco
     kotlin("jvm")
 }
 
