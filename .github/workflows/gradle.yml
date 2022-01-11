@@ -31,7 +31,11 @@ jobs:
           java-version: ${{ matrix.java-version }}
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: |
+          ./gradlew build
+          cat ./build/reports/kover/report.xml
+          cat ./build/reports/kover/html/index.html
+
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
