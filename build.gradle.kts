@@ -189,6 +189,10 @@ tasks {
     }
 }
 
+kover {
+    coverageEngine.set(kotlinx.kover.api.CoverageEngine.JACOCO)
+}
+
 nexusPublishing {
     repositories {
         sonatype()
