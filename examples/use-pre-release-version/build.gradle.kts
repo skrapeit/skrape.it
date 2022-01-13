@@ -16,8 +16,7 @@ configurations.all {
 }
 
 dependencies {
-    implementation("it.skrape:skrapeit:1.1.5")
-    /*implementation("it.skrape:skrapeit:0-SNAPSHOT") {
+    implementation("it.skrape:skrapeit:0-SNAPSHOT") {
         isChanging = true
-    }*/
+    }
 }
