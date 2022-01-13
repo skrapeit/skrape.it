@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    implementation("it.skrape:skrapeit:+")
+    implementation("it.skrape:skrapeit:1.1.5")
 }
