@@ -185,12 +185,12 @@ tasks {
         extensions.configure(KoverTaskExtension::class) {
             excludes = listOf("com.example.subpackage.*")
         }
-        finalizedBy(koverReport, koverCollectProjectsReports)
+        finalizedBy(koverReport, koverMergedReport)
     }
 }
 
 kover {
-    coverageEngine.set(kotlinx.kover.api.CoverageEngine.JACOCO)
+    coverageEngine.set(kotlinx.kover.api.CoverageEngine.INTELLIJ)
 }
 
 nexusPublishing {

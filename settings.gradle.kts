@@ -36,7 +36,7 @@ pluginManagement {
         `java-library`
         `maven-publish`
         signing
-        id("org.jetbrains.kotlinx.kover") version "0.5.0-RC"
+        id("org.jetbrains.kotlinx.kover") version "0.5.0-RC2"
         id("com.github.ben-manes.versions") version "0.39.0"
         id("se.patrikerdes.use-latest-versions") version "0.2.18"
         id("io.gitlab.arturbosch.detekt") version "1.19.0"
