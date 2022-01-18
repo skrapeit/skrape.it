@@ -3,7 +3,6 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension.Companion.DEFAULT_SRC_DIR_KOTLIN
 import kotlinx.kover.api.KoverTaskExtension
-import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -152,9 +151,6 @@ subprojects {
             shouldRunAfter(useLatestVersions)
             dependsOn(detekt)
             useJUnitPlatform()
-            testLogging {
-                events(TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED)
-            }
             systemProperties = mapOf(
                 "junit.jupiter.execution.parallel.enabled" to true,
                 "junit.jupiter.execution.parallel.mode.default" to "concurrent",
