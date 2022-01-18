@@ -37,6 +37,7 @@ allprojects {
     testlogger {
         setTheme("mocha-parallel")
         slowThreshold = 1000
+        showStandardStreams = false
     }
 
     apply(plugin = "io.gitlab.arturbosch.detekt")
