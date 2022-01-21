@@ -33,13 +33,10 @@ jobs:
       - name: Build with Gradle
         run: |
           ./gradlew build
-          cat ./build/reports/kover/report.xml
-          cat ./build/reports/kover/html/index.html
-
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
-        if: ${{ matrix.java-version == '16' && matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.java-version == '1.8' && matrix.os == 'ubuntu-latest' }}
         with:
           token: ${{secrets.CODECOV_TOKEN}}
           files: ./build/reports/kover/report.xml
