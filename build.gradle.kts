@@ -141,12 +141,6 @@ subprojects {
             }
         }
 
-        withType<JacocoReport> {
-            reports {
-                xml.isEnabled = true
-            }
-        }
-
         withType<Test> {
             shouldRunAfter(useLatestVersions)
             dependsOn(detekt)
@@ -182,7 +176,7 @@ tasks {
         extensions.configure(KoverTaskExtension::class) {
             excludes = listOf("com.example.subpackage.*")
         }
-        finalizedBy(koverReport, koverMergedReport)
+        finalizedBy(koverReport, koverCollectReports)
     }
 }
 

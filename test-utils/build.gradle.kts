@@ -9,6 +9,5 @@ dependencies {
     implementation(Deps.TestContainers.jUnit)
     implementation(Deps.wireMock)
 
-    testImplementation(Deps.RestAssured.restAssured)
-    testImplementation(Deps.RestAssured.restAssuredAll)
+    testImplementation(Deps.restAssured)
 }

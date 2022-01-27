@@ -41,6 +41,7 @@ object Deps {
     const val jUnit = "org.junit.jupiter:junit-jupiter:${Versions.jUnit}"
     const val javaxServlet = "javax.servlet:javax.servlet-api:${Versions.javaxServlet}"
     const val jetbrainsAnnotations = "org.jetbrains:annotations:${Versions.jetbrainsAnnotations}"
+    const val restAssured = "io.rest-assured:kotlin-extensions:${Versions.restAssured}"
 
     object Kotlin : DependencyGroup(
         group = "org.jetbrains.kotlin",
@@ -91,14 +92,6 @@ object Deps {
     ) {
         val mockk = dependency("mockk")
         val dslJvm = dependency("mockk-dsl-jvm")
-    }
-
-    object RestAssured : DependencyGroup(
-        group = "io.rest-assured",
-        version = Versions.restAssured
-    ) {
-        val restAssured = dependency("rest-assured")
-        val restAssuredAll = dependency("rest-assured-all")
     }
 
     object Spring : DependencyGroup(
