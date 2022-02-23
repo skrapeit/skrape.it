@@ -8,7 +8,6 @@ dependencies {
     api(projects.baseFetcher)
     api(Deps.htmlUnit) {
         exclude("org.eclipse.jetty.websocket") // avoid android crash; see #93
-        isChanging = true
     }
     val log4jOverSlf4jVersion = "1.7.30"
     val logbackVersion = "1.2.3"
