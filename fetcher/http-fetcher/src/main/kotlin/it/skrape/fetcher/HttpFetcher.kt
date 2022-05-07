@@ -2,12 +2,12 @@ package it.skrape.fetcher
 
 import io.ktor.client.*
 import io.ktor.client.engine.apache.*
-import io.ktor.client.features.*
-import io.ktor.client.features.logging.*
+import io.ktor.client.network.sockets.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.network.sockets.*
 import io.ktor.util.*
 import io.ktor.util.network.*
 import kotlinx.coroutines.runBlocking
@@ -39,7 +39,7 @@ public object HttpFetcher : BlockingFetcher<Request> {
             }
             HttpResponseValidator {
 
-                handleResponseException { cause: Throwable ->
+                handleResponseExceptionWithRequest { cause: Throwable, _: HttpRequest ->
                     when (cause) {
                         is SocketTimeoutException -> {
                             throw cause
@@ -81,7 +81,7 @@ private fun Request.toHttpRequest(): HttpRequestBuilder {
             }
         }
         request.body?.run {
-            body = this
+            setBody(this)
         }
         timeout {
             socketTimeoutMillis = request.timeout.toLong()
@@ -162,7 +162,7 @@ private fun HttpClientConfig<ApacheEngineConfig>.trustSelfSignedClient() {
 
 private fun HttpResponse.toResult(): Result =
     Result(
-        responseBody = runBlocking { readText() },
+        responseBody = runBlocking { bodyAsText() },
         responseStatus = toStatus(),
         contentType = contentType()?.toString()?.replace(" ", ""),
         headers = headers.flattenEntries()

@@ -2,7 +2,7 @@ package it.skrape.fetcher
 
 import io.ktor.client.*
 import io.ktor.client.engine.apache.*
-import io.ktor.client.features.*
+import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -30,7 +30,7 @@ internal fun Request.toHttpRequest(): HttpRequestBuilder {
             }
         }
         request.body?.run {
-            body = this
+            setBody(this)
         }
         timeout {
             socketTimeoutMillis = request.timeout.toLong()
@@ -110,7 +110,7 @@ internal fun HttpClientConfig<ApacheEngineConfig>.trustSelfSignedClient() {
 }
 
 internal suspend fun HttpResponse.toResult(): Result = Result(
-    responseBody = this.readText(),
+    responseBody = this.bodyAsText(),
     responseStatus = this.toStatus(),
     contentType = this.contentType()?.toString()?.replace(" ", ""),
     headers = this.headers.flattenEntries()
