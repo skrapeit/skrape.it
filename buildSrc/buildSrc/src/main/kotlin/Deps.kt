@@ -1,14 +1,14 @@
 object Versions {
-    const val kotlin = "1.5.31"
-    const val coroutines = "1.5.0"
-    const val ktor = "1.5.4"
+    const val kotlin = "1.6.21"
+    const val coroutines = "1.6.1"
+    const val ktor = "2.0.1"
     const val serialization = "1.0.1"
     const val datetime = "0.1.1"
     const val jsoup = "1.13.1" // 1.14.3
     const val htmlUnit = "2.58.0"
     const val testContainers = "1.16.2"
     const val wireMock = "2.28.0"
-    const val log4jOverSlf4j = "1.7.32"
+    const val log4jOverSlf4j = "1.7.36"
     const val logback = "1.2.7"
     const val strikt = "0.33.0"
     const val mockk = "1.12.1"
@@ -60,8 +60,8 @@ object Deps {
         val clientLogging = dependency("ktor-client-logging")
         val serverNetty = dependency("ktor-server-netty")
         val serverTestHost = dependency("ktor-server-test-host")
-        val freemarker = dependency("ktor-freemarker")
-        val locations = dependency("ktor-locations")
+        val freemarker = dependency("ktor-server-freemarker")
+        val locations = dependency("ktor-server-locations")
     }
 
     object KotlinX {

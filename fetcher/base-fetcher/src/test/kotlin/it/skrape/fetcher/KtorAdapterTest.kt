@@ -23,9 +23,9 @@ class KtorAdapterTest {
 
     class KtorBlockingFetcher(val ktorClient: HttpClient) : BlockingFetcher<HttpRequestBuilder> {
         override fun fetch(request: HttpRequestBuilder): Result = runBlocking {
-            with(ktorClient.request<HttpResponse>(request)) {
+            with(ktorClient.request(request)) {
                 Result(
-                    responseBody = readText(),
+                    responseBody = bodyAsText(),
                     responseStatus = Result.Status(status.value, status.description),
                     contentType = contentType()?.toString(),
                     headers = headers.toMap().mapValues { it.value.firstOrNull().orEmpty() },
