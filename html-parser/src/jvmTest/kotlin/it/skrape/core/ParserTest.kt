@@ -111,7 +111,7 @@ class ParserTest {
 
     @Test
     fun `can read html from file`() {
-        val fileToParse = File("src/test/resources/__files/example.html")
+        val fileToParse = File("src/jvmTest/resources/__files/example.html")
         val parsedFile = htmlDocument(fileToParse)
         expectThat(parsedFile.titleText).isEqualTo("i'm the title")
     }
@@ -119,7 +119,7 @@ class ParserTest {
 
     @Test
     fun `can read html from file and invoke document lambda`() {
-        val fileToParse = File("src/test/resources/__files/example.html")
+        val fileToParse = File("src/jvmTest/resources/__files/example.html")
         htmlDocument(fileToParse) {
             expectThat(titleText).isEqualTo("i'm the title")
         }
@@ -127,14 +127,14 @@ class ParserTest {
 
     @Test
     fun `can read html from file with custom charset`() {
-        val fileToParse = File("src/test/resources/__files/example.html")
+        val fileToParse = File("src/jvmTest/resources/__files/example.html")
         val parsedFile = htmlDocument(fileToParse, charset = Charsets.ISO_8859_1)
         expectThat(parsedFile.titleText).isEqualTo("i'm the title")
     }
 
     @Test
     fun `can read html from file with custom charset and invoke document lambda`() {
-        val fileToParse = File("src/test/resources/__files/example.html")
+        val fileToParse = File("src/jvmTest/resources/__files/example.html")
         htmlDocument(fileToParse, charset = Charsets.ISO_8859_1) {
             expectThat(titleText).isEqualTo("i'm the title")
         }
@@ -156,7 +156,7 @@ class ParserTest {
 
     @Test
     fun `can read html from input stream`() {
-        val fileToParse = FileInputStream(File("src/test/resources/__files/example.html"))
+        val fileToParse = FileInputStream(File("src/jvmTest/resources/__files/example.html"))
         val parsedFile = htmlDocument(fileToParse)
         expectThat(parsedFile.titleText).isEqualTo("i'm the title")
     }
@@ -164,7 +164,7 @@ class ParserTest {
 
     @Test
     fun `can read html from input stream and invoke document lambda`() {
-        val fileToParse = FileInputStream(File("src/test/resources/__files/example.html"))
+        val fileToParse = FileInputStream(File("src/jvmTest/resources/__files/example.html"))
         htmlDocument(fileToParse) {
             expectThat(titleText).isEqualTo("i'm the title")
         }
@@ -172,14 +172,14 @@ class ParserTest {
 
     @Test
     fun `can read html from input stream with custom charset`() {
-        val fileToParse = FileInputStream(File("src/test/resources/__files/example.html"))
+        val fileToParse = FileInputStream(File("src/jvmTest/resources/__files/example.html"))
         val parsedFile = htmlDocument(fileToParse, charset = Charsets.ISO_8859_1)
         expectThat(parsedFile.titleText).isEqualTo("i'm the title")
     }
 
     @Test
     fun `can read html from input stream with custom charset and invoke document lambda`() {
-        val fileToParse = FileInputStream(File("src/test/resources/__files/example.html"))
+        val fileToParse = FileInputStream(File("src/jvmTest/resources/__files/example.html"))
         htmlDocument(fileToParse, charset = Charsets.ISO_8859_1) {
             expectThat(titleText).isEqualTo("i'm the title")
         }

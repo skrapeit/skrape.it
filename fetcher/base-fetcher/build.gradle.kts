@@ -3,17 +3,28 @@
 val kotlin_version: String by project
 
 plugins {
-    kotlin("jvm")
+    kotlin("multiplatform")
 }
 
-dependencies {
-    implementation(projects.dsl)
-    implementation(Deps.Kotlin.reflect) {
-        because("to support Result#extractIt by creating instance of a class")
+kotlin {
+    sourceSets {
+        val jvmMain by getting {
+            dependencies {
+                implementation(projects.dsl)
+                implementation(Deps.Kotlin.reflect) {
+                    because("to support Result#extractIt by creating instance of a class")
+                }
+                api(Deps.KotlinX.Coroutines.jdk8)
+            }
+        }
+        val jvmTest by getting {
+            dependencies {
+                implementation(Deps.wireMock)
+                implementation(projects.testUtils)
+                implementation(Deps.Ktor.client)
+                implementation(Deps.Ktor.clientApache)
+            }
+        }
     }
-    api(Deps.KotlinX.Coroutines.jdk8)
-
-    testImplementation(project(path = ":test-utils", configuration = "default"))
-    testImplementation(Deps.Ktor.client)
-    testImplementation(Deps.Ktor.clientApache)
 }
+

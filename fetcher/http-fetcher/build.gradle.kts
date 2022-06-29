@@ -1,16 +1,26 @@
 @file:Suppress("PropertyName")
 
 plugins {
-    kotlin("jvm")
+    kotlin("multiplatform")
 }
 
-dependencies {
-    api(projects.baseFetcher)
-    implementation(Deps.Ktor.client)
-    implementation(Deps.Ktor.clientApache)
-    implementation(Deps.Ktor.clientLogging)
-    implementation(Deps.logback)
-    implementation(Deps.log4jOverSlf4j)
-
-    testImplementation(project(path = ":test-utils", configuration = "default"))
+kotlin {
+    sourceSets {
+        val jvmMain by getting {
+            dependencies {
+                api(projects.baseFetcher)
+                implementation(Deps.Ktor.client)
+                implementation(Deps.Ktor.clientApache)
+                implementation(Deps.Ktor.clientLogging)
+                implementation(Deps.logback)
+                implementation(Deps.log4jOverSlf4j)
+            }
+        }
+        val jvmTest by getting {
+            dependencies {
+                implementation(Deps.wireMock)
+                implementation(projects.testUtils)
+            }
+        }
+    }
 }

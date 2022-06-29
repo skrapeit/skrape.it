@@ -1,9 +1,16 @@
 plugins {
-    kotlin("jvm")
+    kotlin("multiplatform")
 }
 
-dependencies {
-    api(projects.htmlParser)
-    api(projects.dsl)
-    api(projects.baseFetcher)
+kotlin {
+    sourceSets {
+        val jvmMain by getting {
+            dependencies {
+                api(projects.htmlParser)
+                api(projects.dsl)
+                api(projects.baseFetcher)
+            }
+
+        }
+    }
 }

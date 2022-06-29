@@ -30,7 +30,7 @@ pluginManagement {
         gradlePluginPortal()
     }
     plugins {
-        kotlin("jvm") version kotlin_version
+        kotlin("multiplatform") version kotlin_version
         id("org.jetbrains.dokka") version kotlin_version
         id("com.adarshr.test-logger") version "3.1.0"
         `java-library`

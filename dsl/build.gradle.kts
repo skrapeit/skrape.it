@@ -1,3 +1,3 @@
 plugins {
-    kotlin("jvm")
+    kotlin("multiplatform")
 }

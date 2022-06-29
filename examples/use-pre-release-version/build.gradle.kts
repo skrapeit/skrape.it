@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm")
+    kotlin("multiplatform")
 }
 
 repositories {
@@ -15,8 +15,14 @@ configurations.all {
     }
 }
 
-dependencies {
-    implementation("it.skrape:skrapeit:0-SNAPSHOT") {
-        isChanging = true
+kotlin {
+    sourceSets {
+        val jvmMain by getting {
+            dependencies {
+                implementation("it.skrape:skrapeit:0-SNAPSHOT") {
+                    isChanging = true
+                }
+            }
+        }
     }
 }

@@ -1,23 +1,17 @@
-@file:Suppress("UNUSED_VARIABLE", "LocalVariableName")
-
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension.Companion.DEFAULT_SRC_DIR_KOTLIN
 import kotlinx.kover.api.KoverTaskExtension
-import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    `java-library`
     `maven-publish`
     signing
-    kotlin("jvm")
+    id("io.github.gradle-nexus.publish-plugin")
+    kotlin("multiplatform") apply false
     id("org.jetbrains.dokka") apply false
     id("org.jetbrains.kotlinx.kover")
     id("com.github.ben-manes.versions")
     id("se.patrikerdes.use-latest-versions")
     id("com.adarshr.test-logger")
     id("io.gitlab.arturbosch.detekt")
-    id("io.github.gradle-nexus.publish-plugin")
 }
 
 allprojects {
@@ -47,20 +41,6 @@ allprojects {
         source = files(DEFAULT_SRC_DIR_KOTLIN)
         config = files("$rootDir/detekt.yml")
     }
-
-    apply(plugin = "org.jetbrains.kotlin.jvm")
-    kotlin {
-        explicitApi = ExplicitApiMode.Strict
-    }
-
-    java {
-        toolchain {
-            languageVersion.set(JavaLanguageVersion.of(8))
-        }
-        withJavadocJar()
-        withSourcesJar()
-    }
-
     val includeToPublishing = listOf(
         "assertions",
         "base-fetcher",
@@ -80,7 +60,7 @@ allprojects {
             publications {
                 create<MavenPublication>("mavenJava") {
                     artifactId = if (rootProject.name == project.name) rootProject.name else "${rootProject.name}-${project.name}"
-                    from(components["java"])
+                    //from(components["java"])
                     pom {
                         name.set("skrape{it}")
                         description.set("A Kotlin-based testing/scraping/parsing library providing the ability to analyze and extract data from HTML (server & client-side rendered). It places particular emphasis on ease of use and a high level of readability by providing an intuitive DSL. First and foremost it aims to be a testing lib, but it can also be used to scrape websites in a convenient fashion.")
@@ -120,25 +100,25 @@ allprojects {
 }
 
 subprojects {
+    apply(plugin = "org.jetbrains.kotlin.multiplatform")
 
-    dependencies {
-        testImplementation(Deps.jUnit)
-        testImplementation(Deps.strikt)
-        testImplementation(Deps.Mockk.mockk)
-        testImplementation(Deps.Mockk.dslJvm)
+    configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
+        jvm()
+
+        sourceSets {
+            val jvmTest by getting {
+                dependencies {
+                    implementation(Deps.jUnit)
+                    implementation(Deps.strikt)
+                    implementation(Deps.Mockk.mockk)
+                    implementation(Deps.Mockk.dslJvm)
+                }
+            }
+        }
     }
     tasks {
         withType<JavaCompile> {
             options.encoding = "UTF-8"
-        }
-
-        withType<KotlinCompile> {
-            kotlinOptions.apply {
-                jvmTarget = "1.8"
-                freeCompilerArgs = listOf("-Xjsr305=strict")
-                apiVersion = "1.4"
-                languageVersion = "1.4"
-            }
         }
 
         withType<Test> {
@@ -152,7 +132,7 @@ subprojects {
             )
         }
 
-        withType<DependencyUpdatesTask> {
+        withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
 
             gradleReleaseChannel = "current"
 
@@ -166,14 +146,14 @@ subprojects {
         }
 
         val updateDependencies by creating {
-            dependsOn(useLatestVersions, test)
+            dependsOn(useLatestVersions, named("allTests"))
         }
     }
 }
 
 tasks {
-    test {
-        extensions.configure(KoverTaskExtension::class) {
+    withType<Test> {
+        extensions.configure<KoverTaskExtension> {
             excludes = listOf("com.example.subpackage.*")
         }
         finalizedBy(koverReport, koverCollectReports)
@@ -188,14 +168,4 @@ nexusPublishing {
     repositories {
         sonatype()
     }
-}
-
-dependencies {
-    api(projects.assertions)
-    api(projects.asyncFetcher)
-    api(projects.baseFetcher)
-    api(projects.browserFetcher)
-    api(projects.dsl)
-    api(projects.httpFetcher)
-    api(projects.htmlParser)
 }

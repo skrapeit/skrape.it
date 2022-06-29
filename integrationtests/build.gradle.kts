@@ -1,14 +1,21 @@
 plugins {
-    kotlin("jvm")
+    kotlin("multiplatform")
 }
 
-dependencies {
-    testImplementation(Deps.jetbrainsAnnotations)
-    testImplementation(project(path = ":test-utils", configuration = "default"))
-    testImplementation(project(path = ":html-parser", configuration = "default"))
-    testImplementation(project(path = ":assertions", configuration = "default"))
-    testImplementation(project(path = ":base-fetcher", configuration = "default"))
-    testImplementation(project(path = ":http-fetcher", configuration = "default"))
-    testImplementation(project(path = ":browser-fetcher", configuration = "default"))
-    testImplementation(project(path = ":async-fetcher", configuration = "default"))
+kotlin {
+    sourceSets {
+        val jvmTest by getting {
+            dependencies {
+                implementation(Deps.jetbrainsAnnotations)
+                implementation(Deps.wireMock)
+                implementation(project(":test-utils"))
+                implementation(project(":html-parser"))
+                implementation(project(":assertions"))
+                implementation(project(":base-fetcher"))
+                implementation(project(":http-fetcher"))
+                implementation(project(":browser-fetcher"))
+                implementation(project(":async-fetcher"))
+            }
+        }
+    }
 }
