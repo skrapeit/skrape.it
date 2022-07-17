@@ -71,12 +71,11 @@ jobs:
           ORG_GRADLE_PROJECT_sonatypePassword: ${{secrets.ORG_GRADLE_PROJECT_SONATYPEPASSWORD}}
         run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
 
-      - uses: matheusalbino/git-commit@v1.0.1
+      - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          user-name: skrapeit
-          user-email: page.content.tester@gmail.com
-          message: bump version ${{ steps.current_version.outputs.value }} --> ${{ github.event.inputs.version }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          commit_user_name: skrapeit
+          commit_user_email: page.content.tester@gmail.com
+          commit_message: bump version ${{ steps.current_version.outputs.value }} --> ${{ github.event.inputs.version }}
 
       - name: Create Tag
         uses: negz/create-tag@v1
