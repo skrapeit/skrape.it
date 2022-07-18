@@ -11,24 +11,29 @@ jobs:
     strategy:
       matrix:
         java-version:
-          - 1.8
+          - 8
         os:
           - ubuntu-latest
           - windows-2016
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
 
-      - name: Gradle Wraper Cache
+      - name: Gradle Wrapper Cache
         uses: actions/cache@v1
         with:
-          path: ~/.gradle/wrapper/
-          key: ${{ runner.OS }}-gradle-wraper-cache
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
           java-version: ${{ matrix.java-version }}
+          distribution: 'zulu'
 
       - name: Build with Gradle
         run: |
@@ -36,7 +41,7 @@ jobs:
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
-        if: ${{ matrix.java-version == '1.8' && matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.java-version == '8' && matrix.os == 'ubuntu-latest' }}
         with:
           token: ${{secrets.CODECOV_TOKEN}}
           files: ./build/reports/kover/report.xml
