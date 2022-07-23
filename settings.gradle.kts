@@ -1,28 +1,22 @@
-@file:Suppress("LocalVariableName")
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-
 rootProject.name = "skrapeit"
 
 include(
-    "assertions",
-    "dsl",
-    "examples:scraping",
-    "examples:use-pre-release-version",
-    "base-fetcher",
-    "http-fetcher",
-    "async-fetcher",
-    "browser-fetcher",
-    "html-parser",
-    "integrationtests",
-    "ktor-extension",
-    "mock-mvc-extension",
-    "test-utils"
+    ":assertions",
+    ":dsl",
+    ":examples:scraping",
+    ":examples:use-pre-release-version",
+    ":fetcher:base-fetcher",
+    ":fetcher:http-fetcher",
+    ":fetcher:async-fetcher",
+    ":fetcher:browser-fetcher",
+    ":html-parser",
+    ":integrationtests",
+    ":ktor-extension",
+    ":mock-mvc-extension",
+    ":test-utils"
 )
 
-project(":base-fetcher").projectDir = file("fetcher/base-fetcher")
-project(":http-fetcher").projectDir = file("fetcher/http-fetcher")
-project(":browser-fetcher").projectDir = file("fetcher/browser-fetcher")
-project(":async-fetcher").projectDir = file("fetcher/async-fetcher")
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 apply(from = "./buildSrc/repositories.settings.gradle.kts")
 

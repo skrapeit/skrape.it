@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm")
+    buildsrc.convention.`kotlin-jvm`
 }
 
 repositories {

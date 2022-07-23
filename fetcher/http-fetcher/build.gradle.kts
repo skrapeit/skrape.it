@@ -1,11 +1,10 @@
-@file:Suppress("PropertyName")
-
 plugins {
-    kotlin("jvm")
+    buildsrc.convention.`kotlin-jvm`
+    buildsrc.convention.`maven-publishing`
 }
 
 dependencies {
-    api(projects.baseFetcher)
+    api(projects.fetcher.baseFetcher)
     implementation(Deps.Ktor.client)
     implementation(Deps.Ktor.clientApache)
     implementation(Deps.Ktor.clientLogging)

@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm")
+    buildsrc.convention.`kotlin-jvm`
 }
 
 java {
@@ -10,10 +10,11 @@ java {
 
 dependencies {
     implementation(projects.dsl)
-    api(projects.baseFetcher)
+    api(projects.fetcher.baseFetcher)
     api(Deps.jsoup)
 
-    "jsExecutionImplementation"(project(path = ":browser-fetcher", configuration = "default"))
+    // TODO figure out what jsExecutionImplementation is for
+    "jsExecutionImplementation"(project(path = ":fetcher:browser-fetcher", configuration = "default"))
 
     testImplementation(project(path = ":test-utils", configuration = "default"))
 }

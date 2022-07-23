@@ -1,9 +1,10 @@
 plugins {
-    kotlin("jvm")
+    buildsrc.convention.`kotlin-jvm`
+    buildsrc.convention.`maven-publishing`
 }
 
 dependencies {
-    implementation(projects.baseFetcher)
+    implementation(projects.fetcher.baseFetcher)
     implementation(Deps.Ktor.client)
     implementation(Deps.Ktor.clientApache)
     implementation(Deps.Ktor.clientLogging)
