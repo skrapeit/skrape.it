@@ -1,8 +1,9 @@
-package buildsrc.convent
+package buildsrc.convention
 
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension.Companion.DEFAULT_SRC_DIR_KOTLIN
 
 plugins {
+    base
     id("io.gitlab.arturbosch.detekt")
 }
 
@@ -14,6 +15,6 @@ detekt {
     config = files("$rootDir/detekt.yml")
 }
 
-tasks.withType<Test>().configureEach {
+tasks.check {
     dependsOn(tasks.detekt)
 }
