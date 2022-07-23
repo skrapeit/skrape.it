@@ -4,8 +4,8 @@ plugins {
 
 repositories {
     mavenCentral()
-    maven {
-        url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+    maven("https://oss.sonatype.org/content/repositories/snapshots/") {
+        mavenContent { snapshotsOnly() }
     }
 }
 
