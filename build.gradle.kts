@@ -199,3 +199,8 @@ dependencies {
     api(projects.httpFetcher)
     api(projects.htmlParser)
 }
+
+tasks.wrapper {
+    gradleVersion = "7.5"
+    distributionType = Wrapper.DistributionType.ALL
+}
