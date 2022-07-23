@@ -1,9 +1,6 @@
-@file:Suppress("PropertyName")
-
-val kotlin_version: String by project
-
 plugins {
-    kotlin("jvm")
+    buildsrc.convention.`kotlin-jvm`
+    buildsrc.convention.`maven-publishing`
 }
 
 dependencies {

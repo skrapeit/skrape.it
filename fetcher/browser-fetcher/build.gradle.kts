@@ -1,11 +1,9 @@
-@file:Suppress("PropertyName")
-
 plugins {
-    kotlin("jvm")
+    buildsrc.convention.`kotlin-jvm`
 }
 
 dependencies {
-    api(projects.baseFetcher)
+    api(projects.fetcher.baseFetcher)
     api(Deps.htmlUnit) {
         exclude("org.eclipse.jetty.websocket") // avoid android crash; see #93
     }

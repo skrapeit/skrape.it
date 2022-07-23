@@ -1,9 +1,10 @@
 plugins {
-    kotlin("jvm")
+    buildsrc.convention.`kotlin-jvm`
+    buildsrc.convention.`maven-publishing`
 }
 
 dependencies {
     api(projects.htmlParser)
     api(projects.dsl)
-    api(projects.baseFetcher)
+    api(projects.fetcher.baseFetcher)
 }
