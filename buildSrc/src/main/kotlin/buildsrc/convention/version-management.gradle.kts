@@ -8,16 +8,15 @@ plugins {
     id("se.patrikerdes.use-latest-versions")
 }
 
-tasks.withType<Test>().configureEach {
-
+val updateDependencies by tasks.registering {
+    group = LifecycleBasePlugin.BUILD_GROUP
+    dependsOn(tasks.useLatestVersions)
+    dependsOn(tasks.withType<Test>())
 }
 
-val allTestTasks = tasks.withType<Test>()
-
-//val updateDependencies by tasks.registering {
-//  dependsOn(tasks.useLatestVersions, tasks.check)
-//}
-
+tasks.check {
+    mustRunAfter(updateDependencies)
+}
 
 tasks.withType<DependencyUpdatesTask>().configureEach {
 
