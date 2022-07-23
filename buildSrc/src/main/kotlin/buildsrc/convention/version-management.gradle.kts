@@ -3,9 +3,9 @@ package buildsrc.convention
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
-  base
-  id("com.github.ben-manes.versions")
-  id("se.patrikerdes.use-latest-versions")
+    base
+    id("com.github.ben-manes.versions")
+    id("se.patrikerdes.use-latest-versions")
 }
 
 tasks.withType<Test>().configureEach {
@@ -19,16 +19,24 @@ val allTestTasks = tasks.withType<Test>()
 //}
 
 
-
 tasks.withType<DependencyUpdatesTask>().configureEach {
 
-  gradleReleaseChannel = "current"
+    gradleReleaseChannel = "current"
 
-  rejectVersionIf {
-    val isFlaggedAsNonStable =
-      listOf("alpha", "beta", "RC", "rc", "dev", "M1", "M2", "M3").any { candidate.version.contains(it) }
-        .not()
-    val isSemanticVersion = "^[0-9,.v-]+(-r)?$".toRegex().matches(candidate.version)
-    (isFlaggedAsNonStable || isSemanticVersion).not()
-  }
+    rejectVersionIf {
+        val isFlaggedAsNonStable =
+            listOf(
+                "alpha",
+                "beta",
+                "RC",
+                "rc",
+                "dev",
+                "M1",
+                "M2",
+                "M3"
+            ).any { candidate.version.contains(it) }
+                .not()
+        val isSemanticVersion = "^[0-9,.v-]+(-r)?$".toRegex().matches(candidate.version)
+        (isFlaggedAsNonStable || isSemanticVersion).not()
+    }
 }
