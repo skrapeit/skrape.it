@@ -20,7 +20,7 @@ dependencies {
 }
 
 kotlin {
-    explicitApi = ExplicitApiMode.Strict
+    explicitApi()
     jvmToolchain {
         (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of("8"))
     }
@@ -38,13 +38,13 @@ tasks.withType<JavaCompile>().configureEach {
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.apply {
         jvmTarget = "1.8"
-        freeCompilerArgs = listOf("-Xjsr305=strict")
+        freeCompilerArgs += listOf("-Xjsr305=strict")
         apiVersion = "1.4"
         languageVersion = "1.4"
     }
 }
 
-tasks.withType<Test> {
+tasks.withType<Test>().configureEach {
 //  shouldRunAfter(useLatestVersions)
 //  dependsOn(detekt)
     useJUnitPlatform()
