@@ -3,15 +3,18 @@
 @Suppress("UnstableApiUsage") // Central declaration of repositories is an incubating feature
 dependencyResolutionManagement {
 
-  repositories {
-    mavenCentral()
-    gradlePluginPortal()
-  }
-
-  pluginManagement {
     repositories {
-      gradlePluginPortal()
-      mavenCentral()
+        mavenCentral()
+        gradlePluginPortal()
+        maven("https://oss.sonatype.org/content/repositories/snapshots/") {
+            mavenContent { snapshotsOnly() }
+        }
     }
-  }
+
+    pluginManagement {
+        repositories {
+            gradlePluginPortal()
+            mavenCentral()
+        }
+    }
 }
