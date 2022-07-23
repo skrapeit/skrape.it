@@ -2,14 +2,7 @@ plugins {
     buildsrc.convention.`kotlin-jvm`
 }
 
-repositories {
-    mavenCentral()
-    maven("https://oss.sonatype.org/content/repositories/snapshots/") {
-        mavenContent { snapshotsOnly() }
-    }
-}
-
-configurations.all {
+configurations.configureEach {
     resolutionStrategy {
         cacheChangingModulesFor(0, "seconds")
     }
