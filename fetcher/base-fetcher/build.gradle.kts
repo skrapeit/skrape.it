@@ -4,7 +4,7 @@ val kotlin_version: String by project
 
 plugins {
     buildsrc.convention.`kotlin-jvm`
-    buildsrc.convention.`maven-publishing`
+    buildsrc.convention.`publish-jvm`
 }
 
 dependencies {
