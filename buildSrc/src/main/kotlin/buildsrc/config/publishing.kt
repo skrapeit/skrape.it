@@ -65,6 +65,6 @@ fun Project.isKotlinMultiplatformJavaEnabled(): Boolean {
         extensions.findByType(KotlinMultiplatformExtension::class)
 
     return multiplatformExtension?.targets
-        ?.any { it is KotlinJvmTarget && it.withJavaEnabled }
+        ?.any { target -> target is KotlinJvmTarget && target.withJavaEnabled }
         ?: false
 }
