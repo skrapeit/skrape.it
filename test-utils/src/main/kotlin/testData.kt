@@ -195,5 +195,3 @@ public fun aStandardTag(tag: String): String = """<$tag class="$tag-class">i'm a
 public fun aValidTitle(text: String = "i'm the title"): String = "<title>$text</title>"
 
 public fun a3TimesNestedTag(tag: String): String = "<$tag>1<$tag>2<$tag>3</$tag></$tag></$tag>"
-
-

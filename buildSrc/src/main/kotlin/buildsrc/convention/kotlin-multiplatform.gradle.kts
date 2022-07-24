@@ -7,3 +7,16 @@ plugins {
     id("buildsrc.convention.base")
     id("buildsrc.convention.detekt")
 }
+
+kotlin {
+    explicitApi()
+
+    targets.all {
+        compilations.all {
+            kotlinOptions {
+                apiVersion = "1.5"
+                languageVersion = "1.7"
+            }
+        }
+    }
+}

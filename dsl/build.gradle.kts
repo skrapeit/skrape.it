@@ -1,4 +1,7 @@
 plugins {
-    buildsrc.convention.`kotlin-jvm`
-    buildsrc.convention.`publish-jvm`
+    buildsrc.convention.`kotlin-multiplatform`
+}
+
+kotlin {
+    jvm {}
 }

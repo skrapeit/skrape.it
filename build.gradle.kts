@@ -1,7 +1,6 @@
 plugins {
-    buildsrc.convention.base
-    buildsrc.convention.`kotlin-jvm`
-    buildsrc.convention.`publish-jvm`
+    buildsrc.convention.`kotlin-multiplatform`
+    buildsrc.convention.`publish-kmp`
 
     id("org.jetbrains.kotlinx.kover")
 
@@ -13,14 +12,22 @@ val release_version: String by project
 version = release_version
 group = "it.skrape"
 
-dependencies {
-    api(projects.assertions)
-    api(projects.fetcher.asyncFetcher)
-    api(projects.fetcher.baseFetcher)
-    api(projects.fetcher.browserFetcher)
-    api(projects.dsl)
-    api(projects.fetcher.httpFetcher)
-    api(projects.htmlParser)
+kotlin {
+    jvm {}
+
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                api(projects.assertions)
+                api(projects.fetcher.asyncFetcher)
+                api(projects.fetcher.baseFetcher)
+                api(projects.fetcher.browserFetcher)
+                api(projects.dsl)
+                api(projects.fetcher.httpFetcher)
+                api(projects.htmlParser)
+            }
+        }
+    }
 }
 
 tasks.withType<Test>().configureEach {
