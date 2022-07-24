@@ -12,5 +12,5 @@ dependencies {
     api("ch.qos.logback:logback-classic:$logbackVersion")
     api("org.slf4j:log4j-over-slf4j:$log4jOverSlf4jVersion")
 
-    testImplementation(project(path = ":test-utils", configuration = "default"))
+    testImplementation(projects.testUtils)
 }

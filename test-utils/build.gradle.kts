@@ -5,9 +5,10 @@ plugins {
 dependencies {
     compileOnly(projects.htmlParser)
 
+    api(Deps.wireMock)
+
     implementation(Deps.TestContainers.testContainers)
     implementation(Deps.TestContainers.jUnit)
-    implementation(Deps.wireMock)
 
     testImplementation(Deps.restAssured)
 }

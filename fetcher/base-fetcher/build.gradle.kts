@@ -14,7 +14,7 @@ dependencies {
     }
     api(Deps.KotlinX.Coroutines.jdk8)
 
-    testImplementation(project(path = ":test-utils", configuration = "default"))
+    testImplementation(projects.testUtils)
     testImplementation(Deps.Ktor.client)
     testImplementation(Deps.Ktor.clientApache)
 }
