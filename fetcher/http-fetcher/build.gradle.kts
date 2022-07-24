@@ -11,5 +11,5 @@ dependencies {
     implementation(Deps.logback)
     implementation(Deps.log4jOverSlf4j)
 
-    testImplementation(project(path = ":test-utils", configuration = "default"))
+    testImplementation(projects.testUtils)
 }
