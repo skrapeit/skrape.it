@@ -46,12 +46,14 @@ tasks.withType<KotlinCompile>().configureEach {
 }
 
 tasks.withType<Test>().configureEach {
-//  shouldRunAfter(useLatestVersions)
-//  dependsOn(detekt)
     useJUnitPlatform()
     systemProperties = mapOf(
         "junit.jupiter.execution.parallel.enabled" to true,
         "junit.jupiter.execution.parallel.mode.default" to "concurrent",
         "junit.jupiter.execution.parallel.mode.classes.default" to "concurrent"
     )
+}
+
+tasks.named<Jar>("javadocJar") {
+    from(tasks.dokkaJavadoc)
 }
