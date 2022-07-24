@@ -1,14 +1,32 @@
 plugins {
-    buildsrc.convention.`kotlin-jvm`
+    buildsrc.convention.`kotlin-multiplatform`
 }
 
-dependencies {
-    compileOnly(projects.htmlParser)
+kotlin {
+    jvm {}
 
-    api(Deps.wireMock)
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                compileOnly(projects.htmlParser)
 
-    implementation(Deps.TestContainers.testContainers)
-    implementation(Deps.TestContainers.jUnit)
+            }
+        }
 
-    testImplementation(Deps.restAssured)
+        val jvmMain by getting {
+            dependencies {
+                api(Deps.wireMock)
+
+                api(Deps.jUnit)
+                api(Deps.strikt)
+                api(Deps.Mockk.mockk)
+                api(Deps.Mockk.dslJvm)
+
+                implementation(Deps.TestContainers.testContainers)
+                implementation(Deps.TestContainers.jUnit)
+
+                implementation(Deps.restAssured)
+            }
+        }
+    }
 }
