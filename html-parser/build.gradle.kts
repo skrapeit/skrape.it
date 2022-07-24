@@ -13,8 +13,7 @@ dependencies {
     api(projects.fetcher.baseFetcher)
     api(Deps.jsoup)
 
-    // TODO figure out what jsExecutionImplementation is for
-    "jsExecutionImplementation"(project(path = ":fetcher:browser-fetcher", configuration = "default"))
+    "jsExecutionImplementation"(projects.fetcher.browserFetcher)
 
-    testImplementation(project(path = ":test-utils", configuration = "default"))
+    testImplementation(projects.testUtils)
 }
