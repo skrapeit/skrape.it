@@ -3,7 +3,6 @@ plugins {
     buildsrc.convention.`publish-kmp`
 }
 
-
 kotlin {
     jvm {}
     sourceSets {
