@@ -19,7 +19,7 @@ jobs:
           - 8
         os:
           - ubuntu-latest
-          - windows-2016
+          - windows-2019
       # in case one combination fails, we still want to see results from others
       fail-fast: false
     runs-on: ${{ matrix.os }}
