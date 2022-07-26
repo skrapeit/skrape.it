@@ -18,15 +18,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Gradle Wrapper Cache
+      - name: Setup Gradle Dependencies Cache
         uses: actions/cache@v3
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts') }}
+
+      - name: Setup Gradle Wrapper Cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -69,7 +71,7 @@ jobs:
 #          updateFile: 'true'
 #          value: ${{ github.event.inputs.version }}
 
-      - name: Publish to maven central
+      - name: Publish to Maven Central
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
           ORG_GRADLE_PROJECT_signingKeyId: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEYID}}
