@@ -16,6 +16,7 @@ import org.apache.http.conn.ssl.NoopHostnameVerifier
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy
 import org.apache.http.ssl.SSLContextBuilder
 import java.net.Proxy
+import java.net.URL
 
 public object HttpFetcher : BlockingFetcher<Request> {
 
@@ -26,6 +27,8 @@ public object HttpFetcher : BlockingFetcher<Request> {
     @Suppress("MagicNumber")
     private fun configuredClient(request: Request): HttpResponse =
         HttpClient(Apache) {
+            val resource: URL? = HttpFetcher::class.java.classLoader.getResource("org/apache/http/message/BasicLineFormatter.class")
+            println("resource: $resource")
             expectSuccess = false
             followRedirects = request.followRedirects
             install(HttpTimeout)
