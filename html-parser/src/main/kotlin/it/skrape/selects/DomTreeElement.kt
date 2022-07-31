@@ -17,7 +17,7 @@ public abstract class DomTreeElement : CssSelectable() {
      * @see #ownText()
      * @see #textNodes()
      */
-    public val text: String by lazy { element.text().orEmpty() }
+    public val text: String by lazy { element.text() }
 
     /**
      * Retrieves the element's inner HTML. E.g. on a {@code <div>} with one empty {@code <p>}, would return
@@ -25,7 +25,7 @@ public abstract class DomTreeElement : CssSelectable() {
      * @return String of HTML.
      * @see outerHtml
      */
-    public val html: String by lazy { element.html().orEmpty() }
+    public val html: String by lazy { element.html() }
 
     /**
      * Get the outer HTML of this node. For example, on a {@code p} element, may return {@code <p>Para</p>}.
@@ -33,7 +33,7 @@ public abstract class DomTreeElement : CssSelectable() {
      * @see html
      * @see text
      */
-    public val outerHtml: String by lazy { element.outerHtml().orEmpty() }
+    public val outerHtml: String by lazy { element.outerHtml() }
 
     /**
      * Find all elements in the document.

@@ -17,9 +17,9 @@ public class Doc(public val document: Document, override var relaxed: Boolean = 
      * @return unencoded, un-normalized text
      * @see text
      */
-    public val wholeText: String by lazy { document.wholeText().orEmpty() }
+    public val wholeText: String by lazy { document.wholeText() }
 
-    public val titleText: String by lazy { document.title().orEmpty() }
+    public val titleText: String by lazy { document.title() }
 
     override val toCssSelector: String = ""
 
