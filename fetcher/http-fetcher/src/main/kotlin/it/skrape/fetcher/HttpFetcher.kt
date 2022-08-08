@@ -27,7 +27,8 @@ public object HttpFetcher : BlockingFetcher<Request> {
     @Suppress("MagicNumber")
     private fun configuredClient(request: Request): HttpResponse =
         HttpClient(Apache) {
-            val resource: URL? = HttpFetcher::class.java.classLoader.getResource("org/apache/http/message/BasicLineFormatter.class")
+            val resource: URL? =
+                HttpFetcher::class.java.classLoader.getResource("org/apache/http/message/BasicLineFormatter.class")
             println("resource: $resource")
             expectSuccess = false
             followRedirects = request.followRedirects
