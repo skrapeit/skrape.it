@@ -9,7 +9,7 @@ configurations.configureEach {
 }
 
 dependencies {
-    implementation("it.skrape:skrapeit:0-SNAPSHOT") {
+    implementation("it.skrape:skrapeit:1.3.0-alpha.1") {
         isChanging = true
     }
 }
