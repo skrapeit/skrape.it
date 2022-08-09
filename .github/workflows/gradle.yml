@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [ master ]
 
+# This allows a subsequently queued workflow run to interrupt previous runs
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
 jobs:
   build:
     strategy:
@@ -14,20 +19,25 @@ jobs:
           - 8
         os:
           - ubuntu-latest
-          - windows-2016
+          - windows-2019
+      # in case one combination fails, we still want to see results from others
+      fail-fast: false
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v3
 
-      - name: Gradle Wrapper Cache
-        uses: actions/cache@v1
+      - name: Setup Gradle Dependencies Cache
+        uses: actions/cache@v3
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts') }}
+
+      - name: Setup Gradle Wrapper Cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -54,7 +64,7 @@ jobs:
           property: 'release_version'
           value: 0-SNAPSHOT
 
-      - name: Publish snapshot to maven central
+      - name: Publish snapshot to Maven Central
         if: ${{ github.event_name == 'push' && matrix.os == 'ubuntu-latest' }}
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
