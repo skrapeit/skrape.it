@@ -16,24 +16,24 @@ public class DocElement internal constructor(
      *
      * @return String of the tag's name
      */
-    public val tagName: String by lazy { element.tagName().orEmpty() }
+    public val tagName: String by lazy { element.tagName() }
 
     /**
      * Gets the text owned by this element only; does not get the combined text of all children.
-     * For example, given HTML {@code <p>Hello <b>there</b> now!</p>}, {@code p.ownText()} returns {@code "Hello now!"},
-     * whereas {@code text} returns {@code "Hello there now!"}.
+     * For example, given HTML `<p>Hello <b>there</b> now!</p>`, `p.ownText()` returns `"Hello now!",
+     * whereas `text` returns `"Hello there now!"`.
      * Note that the text within the {@code b} element is not returned, as it is not a direct child of the {@code p} element.
      *
      * @return unencoded text, or empty string if none.
      * @see text
      */
-    public val ownText: String by lazy { element.ownText().orEmpty() }
+    public val ownText: String by lazy { element.ownText() }
 
     /**
      * Get all of the element's attributes.
      * @return Map<String, String>> of attribute key value pairs
      */
-    public val attributes: Map<String, String> by lazy { element.attributes().map { it.key to it.value }.toMap() }
+    public val attributes: Map<String, String> by lazy { element.attributes().associate { it.key to it.value } }
 
     /**
      * Get all attribute keys of the element.
