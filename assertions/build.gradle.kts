@@ -14,5 +14,14 @@ kotlin {
                 api(projects.fetcher.baseFetcher)
             }
         }
+
+        val jvmTest by getting {
+            dependencies {
+                implementation(Deps.jUnit)
+                implementation(Deps.strikt)
+                implementation(Deps.Mockk.mockk)
+                implementation(Deps.Mockk.dslJvm)
+            }
+        }
     }
 }
