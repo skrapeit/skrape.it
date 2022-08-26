@@ -80,7 +80,7 @@ public actual class DocElement internal constructor(
      * @return Boolean
      */
     public actual fun hasClass(className: String): Boolean =
-        classNames.map { it.toLowerCase() }.contains(className.toLowerCase())
+        classNames.any { it.lowercase() == className.lowercase() }
 
     /**
      * Gets the literal value of this element's "id" attribute.

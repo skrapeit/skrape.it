@@ -143,7 +143,7 @@ private fun String?.toExpires(): Expires {
     }
 }
 
-private fun String?.toSameSite(): SameSite = when (this?.toLowerCase()) {
+private fun String?.toSameSite(): SameSite = when (this?.lowercase()) {
     "strict" -> SameSite.STRICT
     "lax" -> SameSite.LAX
     "none" -> SameSite.NONE

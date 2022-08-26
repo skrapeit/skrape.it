@@ -88,7 +88,7 @@ internal fun String?.toExpires(): Expires {
     }
 }
 
-internal fun String?.toSameSite(): SameSite = when (this?.toLowerCase()) {
+internal fun String?.toSameSite(): SameSite = when (this?.lowercase()) {
     "strict" -> SameSite.STRICT
     "lax" -> SameSite.LAX
     "none" -> SameSite.NONE
