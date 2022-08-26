@@ -33,7 +33,9 @@ public actual class DocElement internal constructor(
      * Get all of the element's attributes.
      * @return Map<String, String>> of attribute key value pairs
      */
-    public actual val attributes: Map<String, String> by lazy { element.attributes().map { it.key to it.value }.toMap() }
+    public actual val attributes: Map<String, String> by lazy {
+        element.attributes().associate { it.key to it.value }
+    }
 
     /**
      * Get all attribute keys of the element.
@@ -80,7 +82,7 @@ public actual class DocElement internal constructor(
      * @return Boolean
      */
     public actual fun hasClass(className: String): Boolean =
-        classNames.any { it.lowercase() == className.lowercase() }
+        classNames.any { it.equals(className, ignoreCase = true) }
 
     /**
      * Gets the literal value of this element's "id" attribute.
