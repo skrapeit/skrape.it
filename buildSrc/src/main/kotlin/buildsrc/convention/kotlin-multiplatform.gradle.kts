@@ -6,6 +6,8 @@ plugins {
 
     id("buildsrc.convention.base")
     id("buildsrc.convention.detekt")
+
+    id("org.jetbrains.kotlinx.kover")
 }
 
 kotlin {
