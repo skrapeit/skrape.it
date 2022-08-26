@@ -31,16 +31,11 @@ kotlin {
 }
 
 tasks.withType<Test>().configureEach {
-//    finalizedBy(tasks.koverReport, tasks.koverCollectReports)
-}
-
-koverMerged {
-    enable()
+    finalizedBy(tasks.koverReport, tasks.koverCollectReports)
 }
 
 kover {
-    isDisabled.set(false)
-    engine.set(kotlinx.kover.api.DefaultIntellijEngine) // change Coverage Engine
+    intellijEngineVersion.set("1.0.680")
 }
 
 nexusPublishing {
