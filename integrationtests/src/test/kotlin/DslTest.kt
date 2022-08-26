@@ -857,7 +857,7 @@ class DslTest {
 
         wiremock.setupRedirect()
 
-        // TODO: add possibility to call extract / expect outside of a coroutine scoope
+        // TODO: add possibility to call extract / expect outside of a coroutine scope
         val body1 = fetcher.extractBlocking {
             status {
                 code toBe 302
