@@ -20,9 +20,9 @@ public actual class Doc(
      * @return unencoded, un-normalized text
      * @see text
      */
-    public actual val wholeText: String by lazy { document.wholeText().orEmpty() }
+    public actual val wholeText: String by lazy { document.wholeText() }
 
-    public actual val titleText: String by lazy { document.title().orEmpty() }
+    public actual val titleText: String by lazy { document.title() }
 
     override val toCssSelector: String = ""
 

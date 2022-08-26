@@ -15,8 +15,8 @@ public expect class DocElement : DomTreeElement {
 
     /**
      * Gets the text owned by this element only; does not get the combined text of all children.
-     * For example, given HTML {@code <p>Hello <b>there</b> now!</p>}, {@code p.ownText()} returns {@code "Hello now!"},
-     * whereas {@code text} returns {@code "Hello there now!"}.
+     * For example, given HTML `<p>Hello <b>there</b> now!</p>`, `p.ownText()` returns `"Hello now!",
+     * whereas `text` returns `"Hello there now!"`.
      * Note that the text within the {@code b} element is not returned, as it is not a direct child of the {@code p} element.
      *
      * @return unencoded text, or empty string if none.
