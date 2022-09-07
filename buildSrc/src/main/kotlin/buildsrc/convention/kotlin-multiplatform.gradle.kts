@@ -11,8 +11,8 @@ plugins {
 kotlin {
     explicitApi()
 
-    targets.all {
-        compilations.all {
+    targets.configureEach {
+        compilations.configureEach {
             kotlinOptions {
                 apiVersion = "1.5"
                 languageVersion = "1.7"
