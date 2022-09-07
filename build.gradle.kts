@@ -1,8 +1,10 @@
+import kotlinx.kover.api.KoverNames
+
 plugins {
     buildsrc.convention.`kotlin-multiplatform`
     buildsrc.convention.`publish-kmp`
 
-    id("org.jetbrains.kotlinx.kover")
+    buildsrc.convention.kover
 
     id("io.github.gradle-nexus.publish-plugin")
 }
@@ -31,11 +33,33 @@ kotlin {
 }
 
 tasks.withType<Test>().configureEach {
-    finalizedBy(tasks.koverReport, tasks.koverCollectReports)
+    finalizedBy(tasks.koverReport)
+    // lazily access koverMergedReport task because it doesn't have a specific DSL accessor or type
+    val koverMergedReportTask = tasks.matching { it.name == KoverNames.MERGED_REPORT_TASK_NAME }
+    finalizedBy(koverMergedReportTask)
 }
 
-kover {
-    intellijEngineVersion.set("1.0.680")
+koverMerged {
+    enable()
+
+    filters {
+        projects {
+            excludes += listOf(
+                ":examples:scraping",
+                ":examples:use-pre-release-version",
+                ":fetcher:async-fetcher",
+                ":fetcher:base-fetcher",
+                ":fetcher:browser-fetcher",
+                ":fetcher:http-fetcher",
+
+                // Intermediate projects, without a build.gradle.kts.
+                // (These exclusions can be removed in a future Kover release https://github.com/Kotlin/kotlinx-kover/issues/222)
+                ":examples",
+                ":fetcher",
+                ":test-utils",
+            )
+        }
+    }
 }
 
 nexusPublishing {
