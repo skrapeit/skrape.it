@@ -2,7 +2,7 @@ import kotlinx.kover.api.KoverNames
 
 plugins {
     buildsrc.convention.`kotlin-multiplatform`
-    buildsrc.convention.`publish-kmp`
+    buildsrc.convention.`publish-kotlin-multiplatform`
 
     buildsrc.convention.kover
 

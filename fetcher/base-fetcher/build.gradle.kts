@@ -1,6 +1,6 @@
 plugins {
     buildsrc.convention.`kotlin-multiplatform`
-    buildsrc.convention.`publish-kmp`
+    buildsrc.convention.`publish-kotlin-multiplatform`
 }
 
 kotlin {
