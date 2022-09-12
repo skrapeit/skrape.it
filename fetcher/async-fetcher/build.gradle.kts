@@ -1,15 +1,32 @@
 plugins {
-    buildsrc.convention.`kotlin-jvm`
-    buildsrc.convention.`publish-jvm`
+    buildsrc.convention.`kotlin-multiplatform`
+    buildsrc.convention.`publish-kotlin-multiplatform`
 }
 
-dependencies {
-    implementation(projects.fetcher.baseFetcher)
-    implementation(Deps.Ktor.client)
-    implementation(Deps.Ktor.clientApache)
-    implementation(Deps.Ktor.clientLogging)
-    implementation(Deps.logback)
-    implementation(Deps.log4jOverSlf4j)
+kotlin {
+    jvm {}
 
-    testImplementation(projects.testUtils)
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(projects.fetcher.baseFetcher)
+                implementation(Deps.Ktor.client)
+                implementation(Deps.Ktor.clientApache)
+                implementation(Deps.Ktor.clientLogging)
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies {
+                implementation(Deps.logback)
+                implementation(Deps.log4jOverSlf4j)
+            }
+        }
+
+        val jvmTest by getting {
+            dependencies {
+                implementation(projects.testUtils)
+            }
+        }
+    }
 }
