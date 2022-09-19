@@ -2,11 +2,11 @@ package it.skrape.fetcher
 
 import io.ktor.client.*
 import io.ktor.client.engine.apache.*
-import io.ktor.client.features.*
-import io.ktor.client.features.logging.*
+import io.ktor.client.network.sockets.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
-import io.ktor.network.sockets.*
 
 public object AsyncFetcher : NonBlockingFetcher<Request> {
 
@@ -30,7 +30,7 @@ public object AsyncFetcher : NonBlockingFetcher<Request> {
             }
             HttpResponseValidator {
 
-                handleResponseException { cause: Throwable ->
+                handleResponseExceptionWithRequest { cause: Throwable, _ ->
                     when (cause) {
                         is SocketTimeoutException -> {
                             throw cause
@@ -39,9 +39,9 @@ public object AsyncFetcher : NonBlockingFetcher<Request> {
                 }
             }
             engine {
-                request.proxy?.toProxy()?.toHttpHost()?.let {
+                request.proxy?.let {
                     customizeClient {
-                        setProxy(it)
+                        setProxy(it.toHttpHost())
                     }
                 }
                 connectionRequestTimeout = request.timeout

@@ -1,9 +1,12 @@
 package it.skrape.fetcher
 
 import com.gargoylesoftware.htmlunit.*
+import com.gargoylesoftware.htmlunit.ProxyConfig
 import com.gargoylesoftware.htmlunit.html.HtmlPage
 import com.gargoylesoftware.htmlunit.util.Cookie
 import com.gargoylesoftware.htmlunit.util.NameValuePair
+import io.ktor.client.engine.*
+import io.ktor.util.network.*
 import java.net.Proxy
 import java.net.URL
 
@@ -75,11 +78,12 @@ public object BrowserFetcher : BlockingFetcher<Request> {
 
     private fun WebClientOptions.withProxySettings(request: Request): WebClientOptions {
         if (request.proxy != null) {
+            val resolved = request.proxy!!.resolveAddress()
             this.proxyConfig = ProxyConfig(
-                    request.proxy!!.host,
-                    request.proxy!!.port,
+                    resolved.hostname,
+                    resolved.port,
                     "http",
-                    request.proxy!!.type == Proxy.Type.SOCKS
+                    request.proxy!!.type == ProxyType.SOCKS
             )
         }
         return this

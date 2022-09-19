@@ -37,5 +37,5 @@ public infix fun ContentType.toContain(expected: ContentTypes): ContentType /* =
         this.apply { generalAssertion(raw().contains(expected.value), expected) }
 
 private fun ContentType.raw() = (this as String)
-        .toLowerCase()
+        .lowercase()
         .replace("\\s".toRegex(), "")

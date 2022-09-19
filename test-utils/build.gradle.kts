@@ -3,11 +3,23 @@ plugins {
 }
 
 kotlin {
+    js {
+        browser()
+    }
+
     sourceSets {
-        val jvmMain by getting {
+        val commonMain by getting {
             dependencies {
                 compileOnly(projects.htmlParser)
-
+            }
+        }
+        val jsMain by getting {
+            dependencies {
+                implementation(kotlin("stdlib"))
+            }
+        }
+        val jvmMain by getting {
+            dependencies {
                 implementation(Deps.TestContainers.testContainers)
                 implementation(Deps.TestContainers.jUnit)
                 implementation(Deps.wireMock)

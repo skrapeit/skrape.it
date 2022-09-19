@@ -1,7 +1,7 @@
 object Versions {
-    const val kotlin = "1.5.31"
-    const val coroutines = "1.5.0"
-    const val ktor = "1.5.4"
+    const val kotlin = "1.7.10"
+    const val coroutines = "1.6.3"
+    const val ktor = "2.0.3"
     const val serialization = "1.0.1"
     const val datetime = "0.1.1"
     const val jsoup = "1.13.1" // 1.14.3
@@ -48,6 +48,7 @@ object Deps {
         version = Versions.kotlin
     ) {
         val reflect = dependency("kotlin-reflect")
+        val test = dependency("test")
     }
 
     object Ktor : DependencyGroup(
@@ -60,8 +61,8 @@ object Deps {
         val clientLogging = dependency("ktor-client-logging")
         val serverNetty = dependency("ktor-server-netty")
         val serverTestHost = dependency("ktor-server-test-host")
-        val freemarker = dependency("ktor-freemarker")
-        val locations = dependency("ktor-locations")
+        val freemarker = dependency("ktor-server-freemarker")
+        val locations = dependency("ktor-server-locations")
     }
 
     object KotlinX {

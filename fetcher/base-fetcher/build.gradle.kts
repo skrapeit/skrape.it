@@ -7,7 +7,23 @@ plugins {
 }
 
 kotlin {
+    js() {
+        browser()
+    }
+
     sourceSets {
+        val commonMain by getting {
+            dependencies {
+                api(Deps.Ktor.client)
+                implementation(projects.dsl)
+            }
+        }
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+                implementation("ch.tutteli.atrium:atrium-fluent-en_GB-common:0.18.0")
+            }
+        }
         val jvmMain by getting {
             dependencies {
                 implementation(projects.dsl)
@@ -23,6 +39,12 @@ kotlin {
                 implementation(projects.testUtils)
                 implementation(Deps.Ktor.client)
                 implementation(Deps.Ktor.clientApache)
+                implementation("ch.tutteli.atrium:atrium-fluent-en_GB:0.18.0")
+            }
+        }
+        val jsTest by getting {
+            dependencies {
+                implementation("ch.tutteli.atrium:atrium-fluent-en_GB-js:0.18.0")
             }
         }
     }

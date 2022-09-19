@@ -1,4 +1,5 @@
 
+import io.ktor.http.*
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.HttpFetcher
 import it.skrape.fetcher.response
@@ -87,9 +88,7 @@ class ExperimentalDslTest {
                 url = "http://some.url"
 
                 proxy = proxyBuilder {
-                    type = Proxy.Type.HTTP
-                    host = "http://some.proxy"
-                    port = 12345
+                    http(Url("http://some.proxy:12345"))
                 }
             }
             response {

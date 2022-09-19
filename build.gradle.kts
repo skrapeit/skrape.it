@@ -103,7 +103,14 @@ subprojects {
     apply(plugin = "org.jetbrains.kotlin.multiplatform")
 
     configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
-        jvm()
+        jvm() {
+            testRuns["test"].executionTask.configure {
+                useJUnitPlatform()
+            }
+            compilations.all {
+                kotlinOptions.jvmTarget = "11"
+            }
+        }
 
         sourceSets {
             val jvmTest by getting {

@@ -19,7 +19,7 @@ kotlin {
     sourceSets {
         val jvmMain by getting {
             dependencies {
-                implementation("it.skrape:skrapeit:0-SNAPSHOT") {
+                implementation("it.skrape:skrapeit:1.2.1") {
                     isChanging = true
                 }
             }
