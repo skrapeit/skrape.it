@@ -26,7 +26,7 @@ public abstract class DomTreeElement : CssSelectable() {
      * @return String of HTML.
      * @see outerHtml
      */
-    public val html: String by lazy { element.html().orEmpty() }
+    public val html: String by lazy { element.html().orEmpty().trimMargin() }
 
     /**
      * Get the outer HTML of this node. For example, on a {@code p} element, may return {@code <p>Para</p>}.

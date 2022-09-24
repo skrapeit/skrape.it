@@ -8,3 +8,5 @@ actual typealias Elements = org.jsoup.select.Elements
 @Suppress("ACTUAL_WITHOUT_EXPECT") //Without this kotlin currently produces a false error
 actual typealias Attributes = org.jsoup.nodes.Attributes
 actual typealias Node = org.jsoup.nodes.Node
+
+internal actual fun emptyElements(): Elements = Elements()

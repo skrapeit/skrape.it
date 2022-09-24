@@ -30,8 +30,10 @@ class MetadataSelectorsKtTest {
 	fun `can parse head-tag`() {
         val selector = aValidDocument().head {
             findFirst {
-                expect(html).toContain("<title>i'm the title</title>")
-                expect(outerHtml).toContain("<title>i'm the title</title>")
+                val myHtml = this.html
+                val myOuter = this.outerHtml
+                expect(myHtml).toContain("<title>i'm the title</title>")
+                expect(myOuter).toContain("<title>i'm the title</title>")
             }
             toCssSelector
         }

@@ -3,7 +3,7 @@ plugins {
 }
 
 kotlin {
-    js {
+    js() {
         browser()
     }
 

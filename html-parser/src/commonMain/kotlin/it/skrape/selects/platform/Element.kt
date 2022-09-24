@@ -12,7 +12,7 @@ expect open class Element: Node {
     fun children(): Elements
     fun cssSelector(): String
     fun siblingElements(): Elements
-    fun getAllElements(): Elements
+    open fun getAllElements(): Elements
 
     fun text(): String?
     fun wholeText(): String?

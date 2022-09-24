@@ -56,6 +56,7 @@ object Deps {
         version = Versions.ktor
     ) {
         val client = dependency("ktor-client-core")
+        val clientJS = dependency("ktor-client-js")
         val clientJson = dependency("ktor-client-json")
         val clientApache = dependency("ktor-client-apache")
         val clientLogging = dependency("ktor-client-logging")

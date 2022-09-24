@@ -1,14 +1,15 @@
 package it.skrape.selects.platform
 
-import Beautify
+import it.skrape.core.Parser
 import kotlinx.browser.document
 import kotlinx.dom.addClass
 import org.w3c.dom.*
-import kotlin.js.json
+import parseHTML
 import org.w3c.dom.Attr as WC3Attribute
 import org.w3c.dom.Document as WC3Document
 import org.w3c.dom.Element as WC3Element
 import org.w3c.dom.Node as WC3Node
+import Node as LinkedomNode
 
 actual class Attribute(private val attribute: WC3Attribute) : MutableMap.MutableEntry<String, String> {
 
@@ -38,7 +39,7 @@ actual class Elements(elements: List<Element>) : ArrayList<Element>(elements) {
         val res = flatMap { (it.wc3Element?.querySelectorAll(query!!)?.asList() ?: emptyList()) }
             .plus(this.filter { it.wc3Element?.matches(query!!) ?: false }.map { it.wc3Element })
             .distinct()
-            .map { Element(it as WC3Element) }
+            .map { Element(it.unsafeCast<WC3Element>()) }
         return Elements(res)
     }
 
@@ -47,46 +48,56 @@ actual class Elements(elements: List<Element>) : ArrayList<Element>(elements) {
 
 actual abstract class Node(val wc3Node: WC3Node?) {
     actual abstract fun attributes(): Attributes
-    actual fun outerHtml(): String = if (wc3Node is WC3Element) wc3Node.outerHTML else ""
+    actual fun outerHtml(): String = wc3Node.unsafeCast<WC3Element>().outerHTML
     actual open fun attr(key: String, value: String): Node = this
 }
 
 fun WC3Element?.isRootElement(): Boolean = this?.tagName?.lowercase() == "root" && id == "root"
 
-fun WC3Element?.jsoupTagName(): String = if (isRootElement()) "#root" else this?.tagName?.lowercase() ?: ""
 
 actual open class Element(val wc3Element: WC3Element?) : Node(wc3Element) {
 
-    actual constructor(selector: String) : this( try { document.createElement(selector) } catch (ex: Throwable) { null })
+    companion object ElementFactory {
+        private val factoryDocument = if (Parser.Companion.IS_BROWSER) document else parseHTML("").window.document
 
+        private fun createElement(selector: String): WC3Element = factoryDocument.createElement(selector)
+    }
+
+    actual constructor(selector: String) : this(
+        try {
+            createElement(selector)
+        } catch (ex: Throwable) {
+            null
+        }
+    )
 
     actual override fun attributes(): Attributes = Attributes(wc3Element?.attributes)
     actual override fun attr(key: String, value: String): Element =
         this.also { it.wc3Element?.setAttribute(key, value) }
 
-    actual fun tagName(): String = wc3Element.jsoupTagName()
+    actual open fun tagName(): String = wc3Element?.tagName?.lowercase() ?: ""
 
     actual fun parents(): Elements = Elements(collectParents(wc3Element))
     private fun collectParents(elem: WC3Element?): List<WC3Element> {
         val parents = elem?.parentElement?.let { collectParents(it) } ?: emptyList()
-        //HACK: We dismiss root elements, since they are the root of our doc
-        //TODO Better way to determine root element. Check tag, id and parents maybe?
-        return (if (elem?.parentElement == null || elem.parentElement.isRootElement()) emptyList() else listOf(elem.parentElement!!)) + parents
-        //return (parents ?: mutableListOf()).apply { elem?.parentElement?.also(this::add) }
+        return (if (elem?.parentElement == null) emptyList() else listOf(elem.parentElement!!)) + parents
     }
 
-    actual fun children(): Elements = Elements(wc3Element?.children?.asList() ?: emptyList())
+    actual open fun children(): Elements = Elements(wc3Element?.children?.asList() ?: emptyList())
+
     actual fun cssSelector(): String = wc3Element?.let(this::getCssSelector) ?: ""
 
     private fun getCssSelector(elem: WC3Element): String {
         if (elem.id.isNotBlank()) return "#${elem.id}"
         // Translate HTML namespace ns:tag to CSS namespace syntax ns|tag
-        val tagName = elem.jsoupTagName().replace(':', '|')
+        val tagName = elem.tagName.lowercase().replace(':', '|')
         val selector = StringBuilder(tagName)
-        val classes = elem.classList.asList().joinToString(".")
+        val classes = elem.classList.value.replace(" ", ".")
         if (classes.isNotEmpty()) selector.append(".$classes")
-
-        if (elem.parentElement == null || elem.parentNode is WC3Document || elem.parentElement.isRootElement()) // don't add Document to selector, as will always have a html node
+        if (elem.parentElement == null
+            || elem.parentElement!!.nodeType == LinkedomNode.DOCUMENT_TYPE_NODE
+            || elem.parentElement!!.nodeType == LinkedomNode.DOCUMENT_FRAGMENT_NODE
+            || elem.parentElement!!.nodeType == LinkedomNode.DOCUMENT_NODE) // don't add Document to selector, as will always have a html node
             return selector.toString()
 
         if ((elem.parentElement?.querySelectorAll(selector.toString())?.length ?: 0) > 1) selector.append(
@@ -96,7 +107,7 @@ actual open class Element(val wc3Element: WC3Element?) : Node(wc3Element) {
                 )
             }"
         )
-        elem.parentElement?.let {selector.insert(0, " > ") }
+        elem.parentElement?.let { selector.insert(0, " > ") }
 
         return getCssSelector(elem.parentElement!!) + selector.toString()
     }
@@ -116,40 +127,81 @@ actual open class Element(val wc3Element: WC3Element?) : Node(wc3Element) {
         return Elements(siblings)
     }
 
-    actual fun getAllElements(): Elements = Elements(listOf(this) + children().flatMap { it.getAllElements() })
+    actual open fun getAllElements(): Elements {
+        val toVisit = mutableListOf(this)
+        val toAdd = mutableListOf<Element>()
+        while(toVisit.isNotEmpty()) {
+            val cElem = toVisit.removeAt(0)
+            toVisit.addAll(0, cElem.children())
+            toAdd.add(cElem)
+        }
+        println("All elements are $toAdd")
+        return Elements(toAdd)
+    }
 
-    actual fun text(): String? = (wc3Element as HTMLElement?)?.innerText?.replace("\\s+".toRegex(), " ")?.trim()
-    actual fun wholeText(): String? = wc3Element?.textContent
-    actual fun ownText(): String? =
-        (wc3Node?.childNodes?.asList()?.firstOrNull { it is Text } as Text?)?.wholeText?.trim()
+    private fun getAllNodes(): List<WC3Node> {
+        if (wc3Node == null) return emptyList()
+        val toVisit = mutableListOf(wc3Node)
+        val retList = mutableListOf<WC3Node>()
+        while (toVisit.isNotEmpty()) {
+            val cNode = toVisit.removeAt(0)
+            toVisit.addAll(0, cNode.childNodes.asList())
+            retList.add(cNode)
+        }
+        return retList
+    }
+
+    actual fun text(): String? = (wc3Element?.unsafeCast<HTMLElement>())?.textContent?.replace("\\s+".toRegex(), " ")
+        ?.trim()//.also { println("Text on $wc3Element is ${wc3Element?.textContent}") }
+
+    actual fun wholeText(): String? = getAllNodes().onEach { println("${it.nodeName}(${it.nodeType}) \"${it.textContent}\"") }
+        .filter { it.nodeType == LinkedomNode.TEXT_NODE }
+        .joinToString("", transform = { it.textContent ?: "" })
+
+    actual fun ownText(): String? {
+        return wc3Node?.childNodes?.asList()?.filter { it.nodeType == LinkedomNode.TEXT_NODE }
+            ?.joinToString("", transform = { it.textContent!!.trim() }) ?: ""
+    }
 
     // performance sensitive
-    actual fun html(): String? = wc3Element?.innerHTML?.let { Beautify.beautifyHtml(it, json("indent_size" to 1, "extra_liners" to emptyArray<String>(), "indent_inner_html" to true)) }
+    actual open fun html(): String? = wc3Element?.innerHTML
     actual fun html(html: String?): Element {
         wc3Element?.innerHTML = html ?: ""
         return this
     }
 
-    actual fun prependText(text: String): Element = this.also { wc3Element?.prepend(Text(text)) }
+    actual fun prependText(text: String): Element = this.also { wc3Element?.prepend(text) }
 
     actual fun addClass(clazz: String): Element = this.also { wc3Element?.addClass(clazz) }
-    actual fun append(markup: String): Element = this.also { wc3Element?.innerHTML += markup }
+    actual fun append(markup: String): Element = this.also { wc3Element?.innerHTML += "\n$markup" }
 
     override fun toString(): String = wc3Element?.outerHTML ?: ""
 }
 
-actual class Document(private val myDoc: WC3Document) : Element((myDoc.rootElement ?: myDoc.documentElement)?.run {
+actual class Document(private val myDoc: WC3Document) : Element(
+    (myDoc.rootElement ?: myDoc.documentElement)/*?.run {
     document.createElement("root").apply {
         id = "root"
         appendChild(this@run)
         myDoc.appendChild(this)
     }
-}) {
+}*/
+) {
 
-    actual constructor(baseUri: String) : this(WC3Document()) {
+    actual constructor(baseUri: String) : this(parseHTML("").window.document) {
         //URI is ignored for now while figuring out what to do
     }
 
-    actual fun title(): String? = myDoc.title
+    actual fun title(): String? {
+        val titles = myDoc.documentElement?.querySelectorAll("title")
+        return if (titles != null && titles.length > 0) titles[0]!!.textContent else ""
+    }
 
+    override fun children(): Elements = Elements(myDoc.children)
+
+    override fun html(): String = myDoc.documentElement?.outerHTML ?: ""
+
+    override fun tagName() = "#root"
 }
+
+internal actual fun emptyElements(): Elements = Elements(emptyList<Element>())

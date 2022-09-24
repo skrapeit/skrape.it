@@ -7,6 +7,7 @@ import io.ktor.utils.io.charsets.*
 import io.ktor.utils.io.core.*
 import it.skrape.selects.eachText
 import it.skrape.selects.html5.button
+import kotlinx.coroutines.test.runTest
 import kotlin.js.JsName
 import kotlin.test.Test
 
@@ -14,20 +15,22 @@ class ParserTest {
 
     @Test
     @JsName("CanParseHTML")
-	fun `can parse HTML`() {
-        val htmlAsString = getMarkupFromFile("example.html")
+	fun `can parse HTML`() = runTest {
+        kotlin.runCatching {
+            val htmlAsString = getMarkupFromFile("example.html")
 
-        val result = htmlDocument(html = htmlAsString)
+            val result = htmlDocument(html = htmlAsString)
 
-        expect(result) {
-            its { titleText }.toEqual("i'm the title")
-            its { result.findFirst("p").text }.toEqual("i'm a paragraph")
+            expect(result) {
+                its { titleText }.toEqual("i'm the title")
+                its { result.findFirst("p").text }.toEqual("i'm a paragraph")
+            }
         }
     }
 
     @Test
     @JsName("CanParseHTMLAndInvokeDocumentLambda")
-	fun `can parse HTML and invoke document lambda`() {
+	fun `can parse HTML and invoke document lambda`() = runTest {
         val htmlAsString = getMarkupFromFile("example.html")
 
         htmlDocument(html = htmlAsString) {
@@ -40,7 +43,7 @@ class ParserTest {
 
     @Test
     @JsName("CanParseJSRenderedHTMLUsingUriScheme")
-	fun `can parse JS rendered HTML using uri scheme`() {
+	fun `can parse JS rendered HTML using uri scheme`() = runTest {
         val htmlAsString = getMarkupFromFile("js.html")
 
         val result = htmlDocument(html = htmlAsString, jsExecution = true)
@@ -54,7 +57,7 @@ class ParserTest {
 
     @Test
     @JsName("CanParseJSRenderedHTMLUsingUriSchemeAndInvokeDocumentLambda")
-	fun `can parse JS rendered HTML using uri scheme and invoke document lambda`() {
+	fun `can parse JS rendered HTML using uri scheme and invoke document lambda`() = runTest {
         val htmlAsString = getMarkupFromFile("js.html")
 
         htmlDocument(html = htmlAsString, jsExecution = true) {
@@ -69,7 +72,7 @@ class ParserTest {
 
     @Test
     @JsName("CanParseES6RenderedHTMLUsingUriScheme")
-	fun `can parse ES6 rendered HTML using uri scheme`() {
+	fun `can parse ES6 rendered HTML using uri scheme`() = runTest {
         val htmlAsString = getMarkupFromFile("es6.html")
 
         val result = htmlDocument(html = htmlAsString, jsExecution = true)
@@ -82,7 +85,7 @@ class ParserTest {
 
     @Test
     @JsName("CanParseES6RenderedHTMLUsingUriSchemeAndInvokeDocumentLambda")
-	fun `can parse ES6 rendered HTML using uri scheme and invoke document lambda`() {
+	fun `can parse ES6 rendered HTML using uri scheme and invoke document lambda`() = runTest {
         val htmlAsString = getMarkupFromFile("es6.html")
 
         htmlDocument(html = htmlAsString, jsExecution = true) {
@@ -96,7 +99,7 @@ class ParserTest {
 
     @Test
     @JsName("CanParseXML")
-	fun `can parse XML`() {
+	fun `can parse XML`() = runTest {
         val xmlAsString = getMarkupFromFile("example.xml")
 
         htmlDocument(xmlAsString) {
@@ -114,8 +117,8 @@ class ParserTest {
 
     @Test
     @JsName("CanReadHtmlFromInputStream")
-	fun `can read html from input stream`() {
-        val fileToParse = getInputFromFile("src/commonTest/resources/__files/example.html")
+	fun `can read html from input stream`() = runTest {
+        val fileToParse = getInputFromFile("example.html")
         val parsedFile = htmlDocument(fileToParse)
         expect(parsedFile.titleText).toEqual("i'm the title")
     }
@@ -123,8 +126,8 @@ class ParserTest {
 
     @Test
     @JsName("CanReadHtmlFromInputStreamAndInvokeDocumentLambda")
-	fun `can read html from input stream and invoke document lambda`() {
-        val fileToParse = getInputFromFile("src/commonTest/resources/__files/example.html")
+	fun `can read html from input stream and invoke document lambda`() = runTest {
+        val fileToParse = getInputFromFile("example.html")
         htmlDocument(fileToParse) {
             expect(titleText).toEqual("i'm the title")
         }
@@ -132,16 +135,16 @@ class ParserTest {
 
     @Test
     @JsName("CanReadHtmlFromInputStreamWithCustomCharset")
-	fun `can read html from input stream with custom charset`() {
-        val fileToParse = getInputFromFile("src/commonTest/resources/__files/example.html")
+	fun `can read html from input stream with custom charset`() = runTest {
+        val fileToParse = getInputFromFile("example.html")
         val parsedFile = htmlDocument(fileToParse, charset = Charsets.ISO_8859_1)
         expect(parsedFile.titleText).toEqual("i'm the title")
     }
 
     @Test
     @JsName("CanReadHtmlFromInputStreamWithCustomCharsetAndInvokeDocumentLambda")
-	fun `can read html from input stream with custom charset and invoke document lambda`() {
-        val fileToParse = getInputFromFile("src/commonTest/resources/__files/example.html")
+	fun `can read html from input stream with custom charset and invoke document lambda`() = runTest {
+        val fileToParse = getInputFromFile("example.html")
         htmlDocument(fileToParse, charset = Charsets.ISO_8859_1) {
             expect(titleText).toEqual("i'm the title")
         }
@@ -149,7 +152,7 @@ class ParserTest {
 
     @Test
     @JsName("WillConvertKeyOnlyAttributesToHaveEmptyStringValue")
-	fun `will convert 'key only'-attributes to have empty string value`() {
+	fun `will convert 'key only'-attributes to have empty string value`() = runTest {
         val markup = "<button disabled>submit</button>"
 
         with(htmlDocument(html = markup)) {
@@ -160,5 +163,5 @@ class ParserTest {
 
 }
 
-expect fun getInputFromFile(location: String): Input
-expect fun getMarkupFromFile(location: String): String
+expect suspend fun getInputFromFile(location: String): Input
+expect suspend fun getMarkupFromFile(location: String): String
