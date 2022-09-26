@@ -11,6 +11,8 @@ import org.w3c.dom.Element as WC3Element
 import org.w3c.dom.Node as WC3Node
 import Node as LinkedomNode
 
+val printer = PrettyPrinter()
+
 actual class Attribute(private val attribute: WC3Attribute) : MutableMap.MutableEntry<String, String> {
 
     override val key: String = attribute.name
@@ -32,7 +34,6 @@ actual class Attributes(private val attributes: NamedNodeMap?) : Iterable<Attrib
 @Suppress("ACTUAL_WITHOUT_EXPECT") //Elements inherits from ArrayList, which inherits from MutableList, so we are fine
 actual class Elements(elements: List<Element>) : ArrayList<Element>(elements) {
     constructor(collection: HTMLCollection) : this(collection.asList().map { Element(it) })
-    constructor(collection: NodeList) : this(collection.asList().map { Element(it as WC3Element) })
     constructor(collection: List<WC3Element>) : this(collection.map { Element(it) })
 
     actual fun select(query: String?): Elements {
@@ -48,18 +49,15 @@ actual class Elements(elements: List<Element>) : ArrayList<Element>(elements) {
 
 actual abstract class Node(val wc3Node: WC3Node?) {
     actual abstract fun attributes(): Attributes
-    actual fun outerHtml(): String = wc3Node.unsafeCast<WC3Element>().outerHTML
+    actual fun outerHtml(): String = if (wc3Node != null) printer.print(wc3Node) else ""
     actual open fun attr(key: String, value: String): Node = this
 }
-
-fun WC3Element?.isRootElement(): Boolean = this?.tagName?.lowercase() == "root" && id == "root"
-
 
 actual open class Element(val wc3Element: WC3Element?) : Node(wc3Element) {
 
     companion object ElementFactory {
-        private val factoryDocument = if (Parser.Companion.IS_BROWSER) document else parseHTML("").window.document
-
+        private val factoryDocument = if (Parser.IS_BROWSER) document else parseHTML("").window.document
+        private val textPrinter = TextPrinter()
         private fun createElement(selector: String): WC3Element = factoryDocument.createElement(selector)
     }
 
@@ -67,13 +65,17 @@ actual open class Element(val wc3Element: WC3Element?) : Node(wc3Element) {
         try {
             createElement(selector)
         } catch (ex: Throwable) {
+            println(ex)
             null
         }
     )
 
     actual override fun attributes(): Attributes = Attributes(wc3Element?.attributes)
+
     actual override fun attr(key: String, value: String): Element =
-        this.also { it.wc3Element?.setAttribute(key, value) }
+        this.also {
+            it.wc3Element?.setAttribute(key, value)
+        }
 
     actual open fun tagName(): String = wc3Element?.tagName?.lowercase() ?: ""
 
@@ -97,7 +99,8 @@ actual open class Element(val wc3Element: WC3Element?) : Node(wc3Element) {
         if (elem.parentElement == null
             || elem.parentElement!!.nodeType == LinkedomNode.DOCUMENT_TYPE_NODE
             || elem.parentElement!!.nodeType == LinkedomNode.DOCUMENT_FRAGMENT_NODE
-            || elem.parentElement!!.nodeType == LinkedomNode.DOCUMENT_NODE) // don't add Document to selector, as will always have a html node
+            || elem.parentElement!!.nodeType == LinkedomNode.DOCUMENT_NODE
+        ) // don't add Document to selector, as will always have a html node
             return selector.toString()
 
         if ((elem.parentElement?.querySelectorAll(selector.toString())?.length ?: 0) > 1) selector.append(
@@ -130,12 +133,11 @@ actual open class Element(val wc3Element: WC3Element?) : Node(wc3Element) {
     actual open fun getAllElements(): Elements {
         val toVisit = mutableListOf(this)
         val toAdd = mutableListOf<Element>()
-        while(toVisit.isNotEmpty()) {
+        while (toVisit.isNotEmpty()) {
             val cElem = toVisit.removeAt(0)
             toVisit.addAll(0, cElem.children())
             toAdd.add(cElem)
         }
-        println("All elements are $toAdd")
         return Elements(toAdd)
     }
 
@@ -151,20 +153,29 @@ actual open class Element(val wc3Element: WC3Element?) : Node(wc3Element) {
         return retList
     }
 
-    actual fun text(): String? = (wc3Element?.unsafeCast<HTMLElement>())?.textContent?.replace("\\s+".toRegex(), " ")
-        ?.trim()//.also { println("Text on $wc3Element is ${wc3Element?.textContent}") }
+    actual fun text(): String? = wc3Node?.let { textPrinter.print(it) }
 
-    actual fun wholeText(): String? = getAllNodes().onEach { println("${it.nodeName}(${it.nodeType}) \"${it.textContent}\"") }
-        .filter { it.nodeType == LinkedomNode.TEXT_NODE }
-        .joinToString("", transform = { it.textContent ?: "" })
+    actual fun wholeText(): String? =
+        getAllNodes()
+            .filter { it.nodeType == LinkedomNode.TEXT_NODE }
+            .joinToString("", transform = { it.textContent ?: "" })
 
     actual fun ownText(): String? {
         return wc3Node?.childNodes?.asList()?.filter { it.nodeType == LinkedomNode.TEXT_NODE }
             ?.joinToString("", transform = { it.textContent!!.trim() }) ?: ""
     }
 
+    //Template elements treat their child nodes differently to others.
+    // However, we always want the content to correctly parse and print the nodes
+    private fun getChildNodes() =
+        if (wc3Element?.lowerTagName == "template") { // template gets treated differently
+            wc3Element.unsafeCast<HTMLTemplateElement>().content.childNodes
+        } else {
+            wc3Node!!.childNodes
+        }
+
     // performance sensitive
-    actual open fun html(): String? = wc3Element?.innerHTML
+    actual open fun html(): String? = printer.print(getChildNodes())
     actual fun html(html: String?): Element {
         wc3Element?.innerHTML = html ?: ""
         return this
@@ -175,18 +186,10 @@ actual open class Element(val wc3Element: WC3Element?) : Node(wc3Element) {
     actual fun addClass(clazz: String): Element = this.also { wc3Element?.addClass(clazz) }
     actual fun append(markup: String): Element = this.also { wc3Element?.innerHTML += "\n$markup" }
 
-    override fun toString(): String = wc3Element?.outerHTML ?: ""
+    override fun toString(): String = outerHtml()
 }
 
-actual class Document(private val myDoc: WC3Document) : Element(
-    (myDoc.rootElement ?: myDoc.documentElement)/*?.run {
-    document.createElement("root").apply {
-        id = "root"
-        appendChild(this@run)
-        myDoc.appendChild(this)
-    }
-}*/
-) {
+actual class Document(private val myDoc: WC3Document) : Element((myDoc.rootElement ?: myDoc.documentElement)) {
 
     actual constructor(baseUri: String) : this(parseHTML("").window.document) {
         //URI is ignored for now while figuring out what to do
@@ -199,7 +202,7 @@ actual class Document(private val myDoc: WC3Document) : Element(
 
     override fun children(): Elements = Elements(myDoc.children)
 
-    override fun html(): String = myDoc.documentElement?.outerHTML ?: ""
+    override fun html(): String = printer.print(wc3Node!!)
 
     override fun tagName() = "#root"
 }
