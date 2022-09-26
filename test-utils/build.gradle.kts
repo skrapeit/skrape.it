@@ -4,7 +4,11 @@ plugins {
 
 kotlin {
     js() {
-        browser()
+        browser() {
+            commonWebpackConfig {
+                configDirectory = rootProject.projectDir.toPath().resolve("webpack.config.d").toFile()
+            }
+        }
     }
 
     sourceSets {

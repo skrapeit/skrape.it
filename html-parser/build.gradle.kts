@@ -11,12 +11,16 @@ plugins {
 kotlin {
     js() {
         browser {
+            commonWebpackConfig {
+                configDirectory = rootProject.projectDir.toPath().resolve("webpack.config.d").toFile()
+            }
             testTask {
                 environment("PROJECT_PATH", projectDir.absolutePath)
                 useKarma {
                     useFirefoxHeadless()
                     useChromeHeadless()
                     useSourceMapSupport()
+                    useConfigDirectory(rootProject.projectDir.toPath().resolve("karma.config.d").toFile())
                 }
             }
         }
@@ -29,6 +33,7 @@ kotlin {
             }
         }
         useCommonJs()
+
     }
     sourceSets {
         val commonMain by getting {
