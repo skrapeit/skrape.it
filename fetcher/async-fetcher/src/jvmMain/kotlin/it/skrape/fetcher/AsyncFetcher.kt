@@ -30,7 +30,7 @@ public object AsyncFetcher : NonBlockingFetcher<Request> {
             }
             HttpResponseValidator {
 
-                handleResponseExceptionWithRequest { cause: Throwable, _ ->
+                handleResponseExceptionWithRequest { cause: Throwable, _: HttpRequest ->
                     when (cause) {
                         is SocketTimeoutException -> {
                             throw cause
@@ -39,9 +39,9 @@ public object AsyncFetcher : NonBlockingFetcher<Request> {
                 }
             }
             engine {
-                request.proxy?.let {
+                request.proxy?.toProxy()?.toHttpHost()?.let {
                     customizeClient {
-                        setProxy(it.toHttpHost())
+                        setProxy(it)
                     }
                 }
                 connectionRequestTimeout = request.timeout

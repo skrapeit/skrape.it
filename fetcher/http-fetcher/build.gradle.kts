@@ -1,14 +1,14 @@
-@file:Suppress("PropertyName")
-
 plugins {
-    kotlin("multiplatform")
+    buildsrc.convention.`kotlin-multiplatform`
+    buildsrc.convention.`kotlin-multiplatform-jvm`
+    buildsrc.convention.`publish-jvm`
 }
 
 kotlin {
     sourceSets {
         val jvmMain by getting {
             dependencies {
-                api(projects.baseFetcher)
+                api(projects.fetcher.baseFetcher)
                 implementation(Deps.Ktor.client)
                 implementation(Deps.Ktor.clientApache)
                 implementation(Deps.Ktor.clientLogging)
@@ -18,7 +18,6 @@ kotlin {
         }
         val jvmTest by getting {
             dependencies {
-                implementation(Deps.wireMock)
                 implementation(projects.testUtils)
             }
         }

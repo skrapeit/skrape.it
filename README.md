@@ -30,10 +30,10 @@ First and foremost skrape{it} aims to be a testing tool (not tied to a particula
 - [x] Designed to deserialize HTML but can handle any XML-related markup specifications such as SVG, UML, RSS or XML itself.
 - [x] DSL to select html elements as well as supporting CSS query-selector syntax by string invocation.
 ### Http-Client
-- [x] Http-Client without verbosity and ceremony to make requests and corresponding request options like headers, cookies etc in a fluent style interface.
+- [x] Http-Client without verbosity and ceremony to make requests and corresponding request options like headers, cookies etc. in a fluent style interface.
 - [x] Pre-configure client regarding auth and other request settings 
 - [x] Can handle client side rendered web pages. Javascript execution results can optionally be considered in the response body.
-### Idomatic
+### Idiomatic
 - [x] Easy to use, idiomatic and type-safe DSL to ensure a high level of readability.
 - [x] Build-in matchers/assertions based on infix functions to archive a very high level of readability.
 - [x] DSL is behaving like a Fluent-Api to make data extraction/scraping as comfortable as possible.
@@ -66,7 +66,7 @@ All our official/stable releases will be published to [mavens central repository
 
 ```kotlin
 dependencies {
-    implementation("it.skrape:skrapeit:1.2.1")
+    implementation("it.skrape:skrapeit:1.2.2")
 }
 ```
 </details>
@@ -77,7 +77,7 @@ dependencies {
 <dependency>
     <groupId>it.skrape</groupId>
     <artifactId>skrapeit</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
 </dependency>
 ```
 </details>
@@ -497,6 +497,6 @@ the development, maintenance takes time.
 However, if you are using this project and be happy with it or just want to encourage me to continue creating stuff or fund the caffeine and pizzas that fuel its development, there are few ways you can do it :-
 - **Starring and sharing the project** :rocket: to help make it more popular
 - Giving proper credit when you use skrape{it}, tell your friends and others about it :smiley:
-- Sponsor Skrape{it} with a one-time donations via PayPal by just click this button → [![Donate](https://img.shields.io/badge/-donate-blue.svg?logo=paypal)](https://www.paypal.me/skrapeit) or use the GitHub sponsors programm to support on a monthly basis :sparkling_heart:
+- Sponsor skrape{it} with a one-time donations via PayPal by just click this button → [![Donate](https://img.shields.io/badge/-donate-blue.svg?logo=paypal)](https://www.paypal.me/skrapeit) or use the GitHub sponsors program to support on a monthly basis :sparkling_heart:
 
 [![Stargazers repo roster for @skrapeit/skrape.it](https://reporoster.com/stars/skrapeit/skrape.it)](https://github.com/skrapeit/skrape.it/stargazers)

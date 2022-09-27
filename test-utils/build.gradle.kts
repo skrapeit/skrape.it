@@ -1,5 +1,7 @@
 plugins {
-    kotlin("multiplatform")
+    buildsrc-convention.`kotlin-multiplatform`
+    buildsrc.convention.`kotlin-multiplatform-jvm`
+    buildsrc-convention.`kotlin-multiplatform-js`
 }
 
 kotlin {

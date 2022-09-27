@@ -1,5 +1,7 @@
 plugins {
-    kotlin("multiplatform")
+    buildsrc.convention.`kotlin-multiplatform`
+    buildsrc.convention.`kotlin-multiplatfomr-jvm`
+    buildsrc.convention.`publish-jvm`
 }
 
 kotlin {
@@ -8,7 +10,7 @@ kotlin {
             dependencies {
                 api(projects.htmlParser)
                 api(projects.dsl)
-                api(projects.baseFetcher)
+                api(projects.fetcher.baseFetcher)
             }
 
         }

@@ -1,7 +1,7 @@
-@file:Suppress("PropertyName")
-
 plugins {
-    kotlin("multiplatform")
+    buildsrc.convention.`kotlin-multiplatform`
+    buildsrc.convention.`kotlin-multiplatform-jvm`
+    buildsrc.convention.`publish-jvm`
 }
 
 kotlin {
@@ -32,3 +32,5 @@ kotlin {
     }
 }
 
+    testImplementation(project(path = ":test-utils", configuration = "default"))
+}

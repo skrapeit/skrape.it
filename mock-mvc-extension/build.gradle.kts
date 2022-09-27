@@ -1,11 +1,7 @@
-@file:Suppress("PropertyName")
-
-import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
-
-val kotlin_version: String by project
-
 plugins {
-    kotlin("multiplatform")
+    buildsrc.convention.`kotlin-multiplatform`
+    buildscr.convention.`kotlin-multiplatform-jvm`
+    buildsrc.convention.`publish-jvm`
 }
 
 kotlin {
@@ -29,10 +25,6 @@ kotlin {
             }
         }
     }
-}
-
-dependencies {
-
 }
 
 // TODO: use https://github.com/nebula-plugins/gradle-extra-configurations-plugin to get provided configuration in gradle

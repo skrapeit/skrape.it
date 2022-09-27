@@ -1,13 +1,7 @@
 plugins {
-    kotlin("multiplatform")
+    buildsrc.convention.`kotlin-jvm`
 }
 
-kotlin {
-    sourceSets {
-        val jvmMain by getting {
-            dependencies {
-                implementation("it.skrape:skrapeit:+")
-            }
-        }
-    }
+dependencies {
+    implementation("it.skrape:skrapeit:+")
 }

@@ -1,5 +1,6 @@
 plugins {
-    kotlin("multiplatform")
+    buildsrc.convention.`kotlin-multiplatform`
+    buildsrc.convention.`kotlin-multiplatform-jvm`
 }
 
 kotlin {
@@ -7,14 +8,13 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(Deps.jetbrainsAnnotations)
-                implementation(Deps.wireMock)
-                implementation(project(":test-utils"))
-                implementation(project(":html-parser"))
-                implementation(project(":assertions"))
-                implementation(project(":base-fetcher"))
-                implementation(project(":http-fetcher"))
-                implementation(project(":browser-fetcher"))
-                implementation(project(":async-fetcher"))
+                implementation(projects.testUtils)
+                implementation(projects.htmlParser)
+                implementation(projects.assertions)
+                implementation(projects.fetcher.baseFetcher)
+                implementation(projects.fetcher.httpFetcher)
+                implementation(projects.fetcher.browserFetcher)
+                implementation(projects.fetcher.asyncFetcher)
             }
         }
     }

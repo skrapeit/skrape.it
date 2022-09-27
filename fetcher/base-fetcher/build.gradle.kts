@@ -3,14 +3,13 @@
 val kotlin_version: String by project
 
 plugins {
-    kotlin("multiplatform")
+    buildsrc.convention.`kotlin-multiplatform`
+    buildsrc.convention.`kotlin-multiplatform-jvm`
+    buildsrc.convention.`kotlin-multiplatform-js-browser`
+    buildsrc.convention.`publish-jvm`
 }
 
 kotlin {
-    js() {
-        browser()
-    }
-
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -35,7 +34,6 @@ kotlin {
         }
         val jvmTest by getting {
             dependencies {
-                implementation(Deps.wireMock)
                 implementation(projects.testUtils)
                 implementation(Deps.Ktor.client)
                 implementation(Deps.Ktor.clientApache)
