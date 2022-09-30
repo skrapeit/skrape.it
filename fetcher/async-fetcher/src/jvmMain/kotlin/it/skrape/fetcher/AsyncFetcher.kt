@@ -39,7 +39,7 @@ public object AsyncFetcher : NonBlockingFetcher<Request> {
                 }
             }
             engine {
-                request.proxy?.toProxy()?.toHttpHost()?.let {
+                request.proxy?.toHttpHost()?.let {
                     customizeClient {
                         setProxy(it)
                     }

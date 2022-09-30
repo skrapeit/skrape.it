@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
+
 plugins {
     buildsrc.convention.`kotlin-multiplatform-jvm`
     buildsrc.convention.`publish-multiplatform`
@@ -27,8 +29,7 @@ kotlin {
 }
 
 // TODO: use https://github.com/nebula-plugins/gradle-extra-configurations-plugin to get provided configuration in gradle
-fun DependencyHandlerScope.provided(dependencyNotation: Any) {
+fun KotlinDependencyHandler.provided(dependencyNotation: Any) {
     compileOnly(dependencyNotation)
-    testCompileOnly(dependencyNotation)
     runtimeOnly(dependencyNotation)
 }

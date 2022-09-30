@@ -22,7 +22,8 @@ apply(from = "./buildSrc/repositories.settings.gradle.kts")
 
 @Suppress("UnstableApiUsage") // Central declaration of repositories is an incubating feature
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    //This breaks kotlin npm resolution
+    //repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
 }
 
 // Gradle Plugin versions are defined in ./buildSrc/build.gradle.kts

@@ -1,7 +1,9 @@
+import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
+
 plugins {
     buildsrc.convention.`kotlin-multiplatform`
-    buildscr.convention.`kotlin-multiplatform-jvm`
-    buildsrc.convention.`publish-jvm`
+    buildsrc.convention.`kotlin-multiplatform-jvm`
+    buildsrc.convention.`publish-multiplatform`
 }
 
 kotlin {

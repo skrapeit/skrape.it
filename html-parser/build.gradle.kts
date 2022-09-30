@@ -1,9 +1,9 @@
 plugins {
-    buildsrc-convention.`kotlin-multiplatform`
+    buildsrc.convention.`kotlin-multiplatform`
     buildsrc.convention.`kotlin-multiplatform-jvm`
-    buildsrc-convention.`kotlin-multiplatform-js-web`
-    buildsrc-convention.`kotlin-multiplatform-js-node`
-    buildsrc.convention.`publish-jvm`
+    buildsrc.convention.`kotlin-multiplatform-js-web`
+    buildsrc.convention.`kotlin-multiplatform-js-node`
+    buildsrc.convention.`publish-multiplatform`
 }
 
 /*java {
@@ -13,54 +13,24 @@ plugins {
 }*/
 
 kotlin {
-    js() {
-        browser {
-            commonWebpackConfig {
-                configDirectory = rootProject.projectDir.toPath().resolve("webpack.config.d").toFile()
-            }
-            testTask {
-                environment("PROJECT_PATH", projectDir.absolutePath)
-                useKarma {
-                    useFirefoxHeadless()
-                    useChromeHeadless()
-                    useSourceMapSupport()
-                    useConfigDirectory(rootProject.projectDir.toPath().resolve("karma.config.d").toFile())
-                }
-            }
-        }
-        nodejs {
-            testTask {
-                environment("PROJECT_PATH", projectDir.absolutePath)
-                useMocha {
-
-                }
-            }
-        }
-        useCommonJs()
-
-    }
     sourceSets {
         val commonMain by getting {
             dependencies {
                 implementation(Deps.Ktor.client)
-                implementation(kotlin("stdlib"))
                 implementation(projects.dsl)
                 implementation("com.benasher44:uuid:0.4.1")
-                api(projects.baseFetcher)
+                api(projects.fetcher.baseFetcher)
             }
         }
         val commonTest by getting {
             dependencies {
-                implementation(kotlin("test"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.2")
                 implementation(projects.testUtils)
-                implementation("ch.tutteli.atrium:atrium-fluent-en_GB-common:0.18.0")
             }
         }
         val jsTest by getting {
             dependencies {
                 implementation(Deps.Ktor.clientJS)
-                implementation("ch.tutteli.atrium:atrium-fluent-en_GB-js:0.18.0")
             }
         }
         val jsMain by getting {
@@ -76,14 +46,8 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(projects.dsl)
-                api(projects.browserFetcher)
+                api(projects.fetcher.browserFetcher)
                 api(Deps.jsoup)
-            }
-        }
-        val jvmTest by getting {
-            dependencies {
-                implementation(Deps.wireMock)
-                implementation("ch.tutteli.atrium:atrium-fluent-en_GB:0.18.0")
             }
         }
     }

@@ -17,6 +17,7 @@ object Versions {
     const val javaxServlet = "4.0.1"
     const val spring = "5.3.13"
     const val jetbrainsAnnotations = "23.0.0"
+    const val atrium = "0.18.0"
 }
 
 abstract class DependencyGroup(
@@ -64,6 +65,17 @@ object Deps {
         val serverTestHost = dependency("ktor-server-test-host")
         val freemarker = dependency("ktor-server-freemarker")
         val locations = dependency("ktor-server-locations")
+
+        val server = dependency("ktor-server-core")
+    }
+
+    object Atrium : DependencyGroup(
+        group = "ch.tutteli.atrium",
+        version = Versions.atrium
+    ) {
+        val fluentCommon = dependency("atrium-fluent-en_GB-common")
+        val fluentJvm = dependency("atrium-fluent-en_GB")
+        val fluentJs = dependency("atrium-fluent-en_GB-js")
     }
 
     object KotlinX {

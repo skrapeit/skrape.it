@@ -1,7 +1,7 @@
 plugins {
     buildsrc.convention.`kotlin-multiplatform`
     buildsrc.convention.`kotlin-multiplatform-jvm`
-    buildsrc.convention.`publish-jvm`
+    buildsrc.convention.`publish-multiplatform`
 }
 
 kotlin {
@@ -13,7 +13,7 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-                api(projects.baseFetcher)
+                api(projects.fetcher.baseFetcher)
                 api(Deps.htmlUnit) {
                     exclude("org.eclipse.jetty.websocket") // avoid android crash; see #93
                 }
@@ -32,5 +32,3 @@ kotlin {
     }
 }
 
-    testImplementation(project(path = ":test-utils", configuration = "default"))
-}

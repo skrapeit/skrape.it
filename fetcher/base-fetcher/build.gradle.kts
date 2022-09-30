@@ -5,8 +5,8 @@ val kotlin_version: String by project
 plugins {
     buildsrc.convention.`kotlin-multiplatform`
     buildsrc.convention.`kotlin-multiplatform-jvm`
-    buildsrc.convention.`kotlin-multiplatform-js-browser`
-    buildsrc.convention.`publish-jvm`
+    buildsrc.convention.`kotlin-multiplatform-js-web`
+    buildsrc.convention.`publish-multiplatform`
 }
 
 kotlin {
@@ -15,12 +15,6 @@ kotlin {
             dependencies {
                 api(Deps.Ktor.client)
                 implementation(projects.dsl)
-            }
-        }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-                implementation("ch.tutteli.atrium:atrium-fluent-en_GB-common:0.18.0")
             }
         }
         val jvmMain by getting {
@@ -37,12 +31,6 @@ kotlin {
                 implementation(projects.testUtils)
                 implementation(Deps.Ktor.client)
                 implementation(Deps.Ktor.clientApache)
-                implementation("ch.tutteli.atrium:atrium-fluent-en_GB:0.18.0")
-            }
-        }
-        val jsTest by getting {
-            dependencies {
-                implementation("ch.tutteli.atrium:atrium-fluent-en_GB-js:0.18.0")
             }
         }
     }

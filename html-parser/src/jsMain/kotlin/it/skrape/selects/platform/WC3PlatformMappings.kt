@@ -155,12 +155,12 @@ actual open class Element(val wc3Element: WC3Element?) : Node(wc3Element) {
 
     actual fun text(): String? = wc3Node?.let { textPrinter.print(it) }
 
-    actual fun wholeText(): String? =
+    actual fun wholeText(): String =
         getAllNodes()
             .filter { it.nodeType == LinkedomNode.TEXT_NODE }
             .joinToString("", transform = { it.textContent ?: "" })
 
-    actual fun ownText(): String? {
+    actual fun ownText(): String {
         return wc3Node?.childNodes?.asList()?.filter { it.nodeType == LinkedomNode.TEXT_NODE }
             ?.joinToString("", transform = { it.textContent!!.trim() }) ?: ""
     }
@@ -195,9 +195,9 @@ actual class Document(private val myDoc: WC3Document) : Element((myDoc.rootEleme
         //URI is ignored for now while figuring out what to do
     }
 
-    actual fun title(): String? {
+    actual fun title(): String {
         val titles = myDoc.documentElement?.querySelectorAll("title")
-        return if (titles != null && titles.length > 0) titles[0]!!.textContent else ""
+        return titles?.get(0)?.textContent ?: ""
     }
 
     override fun children(): Elements = Elements(myDoc.children)

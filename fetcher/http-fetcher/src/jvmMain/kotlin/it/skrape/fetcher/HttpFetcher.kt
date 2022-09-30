@@ -52,7 +52,7 @@ public object HttpFetcher : BlockingFetcher<Request> {
                 }
             }
             engine {
-                request.proxy?.toProxy()?.toHttpHost()?.let {
+                request.proxy?.toHttpHost()?.let {
                     customizeClient {
                         setProxy(it)
                     }
@@ -170,7 +170,7 @@ private fun HttpResponse.toResult(): Result =
         responseStatus = toStatus(),
         contentType = contentType()?.toString()?.replace(" ", ""),
         headers = headers.flattenEntries()
-            .associateBy({ item -> item.first }, { item -> headers[item.first]!! }),
+            .associateBy({ item:Pair<String,String> -> item.first }, { item -> headers[item.first]!! }),
         cookies = setCookie().map { cookie -> cookie.toDomainCookie(request.url.toString().urlOrigin) },
         baseUri = request.url.toString()
     )

@@ -15,8 +15,8 @@ expect open class Element: Node {
     open fun getAllElements(): Elements
 
     fun text(): String?
-    fun wholeText(): String?
-    fun ownText(): String?
+    fun wholeText(): String
+    fun ownText(): String
 
     // performance sensitive
     fun html(): String?
