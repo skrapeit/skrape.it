@@ -11,7 +11,7 @@ import ch.qos.logback.core.encoder.LayoutWrappingEncoder
 import ch.qos.logback.core.spi.ContextAwareBase
 
 public class LoggingConfigurator : Configurator, ContextAwareBase() {
-    override fun configure(loggerContext: LoggerContext) {
+    override fun configure(loggerContext: LoggerContext): Configurator.ExecutionStatus? {
         val consoleAppender = ConsoleAppender<ILoggingEvent>()
         consoleAppender.context = loggerContext
         consoleAppender.name = "console"
@@ -38,5 +38,7 @@ public class LoggingConfigurator : Configurator, ContextAwareBase() {
         val rootLogger = loggerContext.getLogger(Logger.ROOT_LOGGER_NAME)
         rootLogger.level = Level.INFO
         rootLogger.addAppender(consoleAppender)
+
+        return Configurator.ExecutionStatus.NEUTRAL
     }
 }
