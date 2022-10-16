@@ -2,6 +2,7 @@ package it.skrape.fetcher
 
 import Testcontainer
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.condition.DisabledOnOs
 import org.junit.jupiter.api.condition.OS
@@ -28,7 +29,7 @@ class AsyncFetcherTest {
     private val baseRequest by lazy { Request(url = "${wiremock.httpUrl}/") }
 
     @Test
-    fun `can fetch https url and use HTTP verb GET by default`() {
+    fun `can fetch https url and use HTTP verb GET by default`() = runTest {
         wiremock.setupStub(path = "/example")
         val request = baseRequest.copy(
             url = "${wiremock.httpsUrl}/example",
@@ -53,7 +54,7 @@ class AsyncFetcherTest {
     }
 
     @Test
-    fun `will not follow redirects if configured`() {
+    fun `will not follow redirects if configured`() = runTest {
         wiremock.setupRedirect()
         val request = baseRequest.copy(followRedirects = false)
 
@@ -66,7 +67,7 @@ class AsyncFetcherTest {
     }
 
     @Test
-    fun `will follow redirect by default`() {
+    fun `will follow redirect by default`() = runTest {
         wiremock.setupRedirect()
 
         runBlocking {
@@ -77,7 +78,7 @@ class AsyncFetcherTest {
     }
 
     @Test
-    fun `can fetch cookies`() {
+    fun `can fetch cookies`() = runTest {
         wiremock.setupCookiesStub(path = "/cookies")
         val request = baseRequest.copy(
             url = "${wiremock.httpsUrl}/cookies",
@@ -111,7 +112,7 @@ class AsyncFetcherTest {
     }
 
     @Test
-    fun `can fetch url and use HTTP verb POST`() {
+    fun `can fetch url and use HTTP verb POST`() = runTest {
         wiremock.setupPostStub()
         val request = baseRequest.copy(method = Method.POST)
 
@@ -141,7 +142,7 @@ class AsyncFetcherTest {
     }
 
     @Test
-    fun `can fetch url and use HTTP verb PUT`() {
+    fun `can fetch url and use HTTP verb PUT`() = runTest {
         wiremock.setupPutStub()
         val request = baseRequest.copy(method = Method.PUT)
 
@@ -152,7 +153,7 @@ class AsyncFetcherTest {
     }
 
     @Test
-    fun `can fetch url and use HTTP verb DELETE`() {
+    fun `can fetch url and use HTTP verb DELETE`() = runTest {
         wiremock.setupDeleteStub()
         val request = baseRequest.copy(method = Method.DELETE)
 
@@ -163,7 +164,7 @@ class AsyncFetcherTest {
     }
 
     @Test
-    fun `can fetch url and use HTTP verb PATCH`() {
+    fun `can fetch url and use HTTP verb PATCH`() = runTest {
         wiremock.setupPatchStub()
         val request = baseRequest.copy(method = Method.PATCH)
 
@@ -174,7 +175,7 @@ class AsyncFetcherTest {
     }
 
     @Test
-    fun `can fetch url and use HTTP verb HEAD`() {
+    fun `can fetch url and use HTTP verb HEAD`() = runTest {
         wiremock.setupHeadStub()
         val request = baseRequest.copy(method = Method.HEAD)
 
@@ -185,7 +186,7 @@ class AsyncFetcherTest {
     }
 
     @Test
-    fun `will throw exception on timeout`() {
+    fun `will throw exception on timeout`() = runTest {
         wiremock.setupStub(path = "/delayed", delay = 6000)
 
         expectThrows<SocketTimeoutException> {

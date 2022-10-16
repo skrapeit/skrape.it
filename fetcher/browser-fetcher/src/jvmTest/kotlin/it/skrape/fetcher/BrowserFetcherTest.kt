@@ -2,6 +2,7 @@ package it.skrape.fetcher
 
 import Testcontainer
 import com.gargoylesoftware.htmlunit.util.NameValuePair
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.condition.DisabledOnOs
 import org.junit.jupiter.api.condition.OS
@@ -41,7 +42,7 @@ class BrowserFetcherTest {
     }
 
     @Test
-    fun `will fetch localhost 8080 with defaults if no params`() {
+    fun `will fetch localhost 8080 with defaults if no params`() = runTest {
         wiremock.setupStub()
 
         val fetched = BrowserFetcher.fetch(baseRequest)
@@ -53,7 +54,7 @@ class BrowserFetcherTest {
     }
 
     @Test
-    fun `can fetch url and use HTTP verb GET by default`() {
+    fun `can fetch url and use HTTP verb GET by default`() = runTest {
         wiremock.setupStub(path = "/example")
 
         val request = baseRequest.copy(
@@ -79,7 +80,7 @@ class BrowserFetcherTest {
     }
 
     @Test
-    fun `will not follow redirects if configured`() {
+    fun `will not follow redirects if configured`() = runTest {
         wiremock.setupRedirect()
         val request = baseRequest.copy(followRedirects = false)
 
@@ -89,7 +90,7 @@ class BrowserFetcherTest {
     }
 
     @Test
-    fun `will follow redirect by default`() {
+    fun `will follow redirect by default`() = runTest {
         wiremock.setupRedirect()
 
         val fetched = BrowserFetcher.fetch(baseRequest)
@@ -98,7 +99,7 @@ class BrowserFetcherTest {
     }
 
     @Test
-    fun `can fetch cookies`() {
+    fun `can fetch cookies`() = runTest {
         wiremock.setupCookiesStub(path = "/cookies")
 
         val request = baseRequest.copy(
@@ -133,7 +134,7 @@ class BrowserFetcherTest {
     }
 
     @Test
-    fun `can handle HTTP verb POST`() {
+    fun `can handle HTTP verb POST`() = runTest {
         wiremock.setupPostStub()
         val request = baseRequest.copy(method = Method.POST)
 
@@ -162,7 +163,7 @@ class BrowserFetcherTest {
     }
 
     @Test
-    fun `can parse js rendered elements`() {
+    fun `can parse js rendered elements`() = runTest {
         wiremock.setupStub(fileName = "js.html")
 
         val fetched = BrowserFetcher.fetch(baseRequest)
@@ -171,7 +172,7 @@ class BrowserFetcherTest {
     }
 
     @Test
-    fun `can parse js rendered elements from https page`() {
+    fun `can parse js rendered elements from https page`() = runTest {
         wiremock.setupStub(fileName = "js.html")
         val request = baseRequest.copy(
             url = wiremock.httpsUrl,
@@ -184,7 +185,7 @@ class BrowserFetcherTest {
     }
 
     @Test
-    fun `can parse es6 rendered elements from https page`() {
+    fun `can parse es6 rendered elements from https page`() = runTest {
         wiremock.setupStub(fileName = "es6.html")
 
         val fetched = BrowserFetcher.fetch(baseRequest)
@@ -192,7 +193,7 @@ class BrowserFetcherTest {
     }
 
     @Test
-    fun `will throw exception on timeout`() {
+    fun `will throw exception on timeout`() = runTest {
         wiremock.setupStub(delay = 6000)
 
         expectThrows<SocketTimeoutException> {

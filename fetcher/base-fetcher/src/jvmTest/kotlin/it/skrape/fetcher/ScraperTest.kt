@@ -1,6 +1,7 @@
 package it.skrape.fetcher
 
 import Testcontainer
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import setupStub
@@ -11,7 +12,7 @@ class ScraperTest {
 
     @Test
     @Disabled("need to mock HttpFetcher")
-    fun `can scrape directly with default options`() {
+    fun `can scrape directly with default options`() = runTest {
         wiremock.setupStub(contentType = "test/type")
         // val result = Scraper(HttpFetcher).scrape()
 
@@ -21,7 +22,7 @@ class ScraperTest {
 
     @Test
     @Disabled("need to mock HttpFetcher")
-    fun `can scrape html via custom http request`() {
+    fun `can scrape html via custom http request`() = runTest {
         wiremock.setupStub(path = "/example")
         // val result = Scraper(HttpFetcher, Request(url = "http://localhost:8080/example")).scrape()
 

@@ -8,6 +8,7 @@ import it.skrape.selects.*
 import it.skrape.selects.html5.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.intellij.lang.annotations.Language
 import org.jsoup.nodes.Element
 import org.junit.jupiter.api.Test
@@ -33,7 +34,7 @@ private val httpBin = Testcontainer.httpBin
 class DslTest {
 
     @Test
-    fun `dsl can skrape by url`() {
+    fun `dsl can skrape by url`() = runTest {
         wiremock.setupStub(path = "/example")
         skrape(HttpFetcher) {
             request {
@@ -77,7 +78,7 @@ class DslTest {
     }
 
     @Test
-    fun `can call https with relaxed ssl option via DSL`() {
+    fun `can call https with relaxed ssl option via DSL`() = runTest {
         wiremock.setupStub(path = "/example")
 
         skrape(HttpFetcher) {
@@ -92,7 +93,7 @@ class DslTest {
     }
 
     @Test
-    fun `dsl can assert content-type in highly readable way`() {
+    fun `dsl can assert content-type in highly readable way`() = runTest {
         wiremock.setupStub(path = "/example")
 
         skrape(HttpFetcher) {
@@ -117,7 +118,7 @@ class DslTest {
     }
 
     @Test
-    fun `dsl will not follow redirects if configured`() {
+    fun `dsl will not follow redirects if configured`() = runTest {
         wiremock.setupRedirect()
 
         skrape(HttpFetcher) {
@@ -136,7 +137,7 @@ class DslTest {
     }
 
     @Test
-    fun `dsl can check certain header`() {
+    fun `dsl can check certain header`() = runTest {
         wiremock.setupStub()
 
         skrape(HttpFetcher) {
@@ -158,7 +159,7 @@ class DslTest {
     }
 
     @Test
-    fun `dsl can check headers`() {
+    fun `dsl can check headers`() = runTest {
         wiremock.setupStub()
 
         skrape(HttpFetcher) {
@@ -175,7 +176,7 @@ class DslTest {
     }
 
     @Test
-    fun `dsl can get body`() {
+    fun `dsl can get body`() = runTest {
         wiremock.setupStub()
 
         skrape(HttpFetcher) {
@@ -195,7 +196,7 @@ class DslTest {
     }
 
     @Test
-    fun `dsl will follow redirect by default`() {
+    fun `dsl will follow redirect by default`() = runTest {
         wiremock.setupRedirect()
 
         skrape(HttpFetcher) {
@@ -212,7 +213,7 @@ class DslTest {
     }
 
     @Test
-    fun `dsl can fetch url and use HTTP verb POST`() {
+    fun `dsl can fetch url and use HTTP verb POST`() = runTest {
         wiremock.setupPostStub()
 
         skrape(HttpFetcher) {
@@ -243,7 +244,7 @@ class DslTest {
     }
 
     @Test
-    fun `dsl will throw exception on timeout`() {
+    fun `dsl will throw exception on timeout`() = runTest {
         wiremock.setupStub(delay = 3000)
 
         expectThrows<SocketTimeoutException> {
@@ -265,7 +266,7 @@ class DslTest {
     )
 
     @Test
-    fun `dsl can fetch url and extract to inferred type`() {
+    fun `dsl can fetch url and extract to inferred type`() = runTest {
         wiremock.setupStub()
 
         skrape(HttpFetcher) {
@@ -287,7 +288,7 @@ class DslTest {
     }
 
     @Test
-    fun `dsl can fetch url and extract using it`() {
+    fun `dsl can fetch url and extract using it`() = runTest {
         wiremock.setupStub()
 
         val extracted = skrape(HttpFetcher) {
@@ -303,7 +304,7 @@ class DslTest {
     }
 
     @Test
-    fun `dsl can fetch url and extract using it in DSL-ish fashion`() {
+    fun `dsl can fetch url and extract using it in DSL-ish fashion`() = runTest {
         wiremock.setupStub()
 
         val extracted = skrape(HttpFetcher) {
@@ -341,7 +342,7 @@ class DslTest {
      * for classes or data classes that have none default values
      */
     @Test
-    fun `dsl can fetch url and extract to data class`() {
+    fun `dsl can fetch url and extract to data class`() = runTest {
         wiremock.setupStub()
 
         val extracted = skrape(HttpFetcher) {
@@ -380,7 +381,7 @@ class DslTest {
     )
 
     @Test
-    fun `dsl can fetch url and extract to data class without defaults`() {
+    fun `dsl can fetch url and extract to data class without defaults`() = runTest {
         wiremock.setupStub()
 
         val extracted = skrape(HttpFetcher) {
@@ -475,7 +476,7 @@ class DslTest {
     }
 
     @Test
-    fun `dsl can fetch url and extract from skrape`() {
+    fun `dsl can fetch url and extract from skrape`() = runTest {
         wiremock.setupStub()
 
         val extracted = skrape(HttpFetcher) {
@@ -722,7 +723,7 @@ class DslTest {
     }
 
     @Test
-    fun `can extract link to directly call it afterwards`() {
+    fun `can extract link to directly call it afterwards`() = runTest {
         wiremock.setupStub(fileName = "example.html")
         wiremock.setupStub(fileName = "example.html", path = "/relative-link")
 
@@ -768,7 +769,7 @@ class DslTest {
     }
 
     @Test
-    fun `can scrape js rendered page`() {
+    fun `can scrape js rendered page`() = runTest {
         wiremock.setupStub(fileName = "js.html")
 
         skrape(BrowserFetcher) {
@@ -788,7 +789,7 @@ class DslTest {
     }
 
     @Test
-    fun `can skrape none blocking inside a coroutine`() {
+    fun `can skrape none blocking inside a coroutine`() = runTest {
         wiremock.setupStub(path = "/delayed", delay = 5_000)
 
         val asynExecTimeInMillis = measureTimeMillis {
@@ -846,7 +847,7 @@ class DslTest {
     }
 
     @Test
-    fun `can use preconfigured client`() {
+    fun `can use preconfigured client`() = runTest {
 
         val fetcher: Scraper<Request> = skrape(HttpFetcher) {
             request {

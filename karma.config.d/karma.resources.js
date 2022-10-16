@@ -1,22 +1,15 @@
 config.middleware = config.middleware || [];
 config.middleware.push('resource-loader');
 
-/*config.files = config.files || [];
-config.files.push({
-  pattern: PROJECT_PATH + "/build/processedResources/js/test/**",
-  included: false,
-  served: true
-  })
-
-config.proxies = {"/resources/": PROJECT_PATH + "/build/processedResources/js/test/__files/"}
-*/
-
 config.set({
   client: {
     mocha: {
-      timeout: 2000
+      timeout: 100000
     }
-  }
+  },
+  browserNoActivityTimeout: 100000,
+  browserSocketTimeout: 100000,
+  logLevel: config.LOG_DEBUG
 })
 
 function ResourceLoaderMiddleware() {

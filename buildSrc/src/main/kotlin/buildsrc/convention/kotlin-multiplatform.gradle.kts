@@ -20,6 +20,7 @@ configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(Deps.Atrium.fluentCommon)
+                implementation(Deps.KotlinX.Coroutines.test)
             }
         }
     }

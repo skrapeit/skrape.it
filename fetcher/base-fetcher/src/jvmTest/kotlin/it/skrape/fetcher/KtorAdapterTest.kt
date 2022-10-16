@@ -9,6 +9,7 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.util.*
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.condition.DisabledOnOs
 import org.junit.jupiter.api.condition.OS
@@ -43,7 +44,7 @@ class KtorAdapterTest {
     val KTOR_CLIENT = HttpClient(Apache)
 
     @Test
-    fun `dsl can skrape by url`() {
+    fun `dsl can skrape by url`() = runTest {
         wiremock.setupStub(path = "/example")
 
         val result = skrape(KtorBlockingFetcher(KTOR_CLIENT)) {

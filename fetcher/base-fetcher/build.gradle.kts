@@ -23,7 +23,6 @@ kotlin {
                 implementation(Deps.Kotlin.reflect) {
                     because("to support Result#extractIt by creating instance of a class")
                 }
-                api(Deps.KotlinX.Coroutines.jdk8)
             }
         }
         val jvmTest by getting {

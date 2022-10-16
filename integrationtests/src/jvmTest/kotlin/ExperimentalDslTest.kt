@@ -9,6 +9,7 @@ import it.skrape.matchers.toBePresentExactlyOnce
 import it.skrape.selects.and
 import it.skrape.selects.html5.customTag
 import it.skrape.selects.html5.div
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.condition.DisabledOnOs
@@ -24,7 +25,7 @@ private val wiremock = Testcontainer.wiremock
 class ExperimentalDslTest {
 
     @Test
-    fun `can use latest features`() {
+    fun `can use latest features`() = runTest {
         wiremock.setupStub(path = "/example")
 
         val myText = skrape(HttpFetcher) {

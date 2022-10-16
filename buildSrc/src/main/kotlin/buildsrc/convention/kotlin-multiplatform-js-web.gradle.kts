@@ -17,8 +17,9 @@ configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
             // A common karma config directory is used and the project location is supplied via an environment-variable
             testTask {
                 environment("PROJECT_PATH", projectDir.absolutePath)
+                environment("ROOT_PROJECT_PATH", rootProject.projectDir.absolutePath)
                 useKarma {
-                    useFirefoxHeadless()
+                    //useFirefoxHeadless()
                     useChromeHeadless()
                     useSourceMapSupport()
                     useConfigDirectory(rootProject.projectDir.toPath().resolve("karma.config.d").toFile())

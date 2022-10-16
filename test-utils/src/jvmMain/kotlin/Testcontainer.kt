@@ -1,31 +1,55 @@
-import com.github.tomakehurst.wiremock.client.WireMock
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.serialization.kotlinx.json.*
 import org.testcontainers.containers.BindMode
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.utility.DockerImageName
+import java.security.cert.X509Certificate
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
-public object Testcontainer {
-    public data class Wiremock(
-        val client: WireMock,
-        val httpUrl: String,
-        val httpsUrl: String,
+actual object Testcontainer {
+    actual data class Wiremock(
+        actual val httpUrl: String,
+        actual val httpsUrl: String,
+        actual val ktorClient: HttpClient
     )
 
-    public val wiremock: Wiremock by lazy {
+    actual val wiremock: Wiremock by lazy {
         with(WireMockContainer().apply {
-            if (!isWindows) {
+            //if (!isWindows) {
                 start()
-            }
+            //}
         }) {
             Wiremock(
-                client = WireMock(containerIpAddress, getMappedPort(httpPort)),
                 httpUrl = "http://$containerIpAddress:${getMappedPort(httpPort)}",
                 httpsUrl = "https://$containerIpAddress:${getMappedPort(httpsPort)}",
+                ktorClient = HttpClient(CIO) {
+                    install(ContentNegotiation) {
+                        json()
+                    }
+                    engine {
+                        https {
+                            trustManager = object : X509TrustManager {
+                                override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+                                }
+
+                                override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+                                }
+
+                                override fun getAcceptedIssuers(): Array<X509Certificate> = emptyArray()
+
+                            }
+                        }
+                    }
+                }
             )
         }
     }
 
-    public val httpBin: String by lazy {
+    actual val httpBin: String by lazy {
         with(HttpBinContainer().apply {
             if (!isWindows) {
                 start()
@@ -38,6 +62,10 @@ public object Testcontainer {
     private val isWindows: Boolean by lazy {
         System.getProperty("os.name").startsWith("Windows")
     }
+
+    actual suspend fun getWiremock(): Wiremock = wiremock
+
+    actual suspend fun getHttpBin(): String = httpBin
 }
 
 private class WireMockContainer(
