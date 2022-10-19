@@ -23,6 +23,6 @@ config.plugins.push(new webpack.ProvidePlugin({
     URL: "url"
 }))
 
-/*config.resolve.alias = {
-    "browser-process-hrtime": require.resolve("browser-hrtime"),
-};*/
+config.resolve.alias = {
+    "testcontainers": false,
+};

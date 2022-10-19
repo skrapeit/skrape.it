@@ -11,8 +11,9 @@ configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
             //Setup tests to use mocha and supply the project path as an environment-variable to enable location of resources
             testTask {
                 environment("PROJECT_PATH", projectDir.absolutePath)
+                environment("ROOT_PROJECT_PATH", rootProject.projectDir.absolutePath)
                 useMocha {
-
+                    this.timeout = "5000"
                 }
             }
         }

@@ -6,11 +6,20 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.await
 import kotlinx.serialization.json.*
 
+typealias FileMapping = Pair<String, String>
+
 actual object Testcontainer {
+
+    val IS_BROWSER: Boolean = js(
+        "typeof window !== 'undefined' && typeof window.document !== 'undefined' || typeof self !== 'undefined' && typeof self.location !== 'undefined'" // ktlint-disable max-line-length
+    ) as Boolean
+
+    val IS_NODE: Boolean = js(
+        "typeof process !== 'undefined' && process.versions != null && process.versions.node != null"
+    ) as Boolean
 
     private val client =
         HttpClient(Js) {
@@ -34,49 +43,96 @@ actual object Testcontainer {
         get() = TODO("Not yet implemented")
 
     private lateinit var wiremockInstance: Wiremock
-    private val mutex = Mutex()
+    private lateinit var httpBinInstance: String
 
     actual suspend fun getWiremock(): Wiremock {
-        mutex.withLock {
-            if (!this::wiremockInstance.isInitialized) {
-                println("Creating wiremock container")
+        if (!this::wiremockInstance.isInitialized) {
+            val wiremockImage = "wiremock/wiremock:2.34.0-alpine"
+            val httpPort = 8080
+            val httpsPort = 8443
+            val internalPorts = intArrayOf(httpPort, httpsPort)
+            val commands = arrayOf("--https-port", "8443", "--enable-stub-cors")
+            val fileMappings = arrayOf(FileMapping("/__files", "/home/wiremock/__files"))
+            if (IS_BROWSER) {
                 val containerInfo = client.post("http://localhost:9876/containers/create") {
                     contentType(ContentType.Application.Json)
                     setBody(buildJsonObject {
-                        put("image", "wiremock/wiremock:2.34.0-alpine")
+                        put("image", wiremockImage)
                         put("ports", buildJsonArray {
-                            add(8080)
-                            add(8443)
+                            internalPorts.forEach { add(it) }
                         })
                         put("command", buildJsonArray {
-                            add("--https-port")
-                            add("8443")
-                            add("--enable-stub-cors")
-                            add("--print-all-network-traffic")
+                            commands.forEach { add(it) }
                         })
-                        put("mapResources", buildJsonObject {
-                            put("realPath", "/__files")
-                            put("containerPath", "/home/wiremock/__files/")
+                        put("mappings", buildJsonArray {
+                            fileMappings.forEach {
+                                add(buildJsonArray {
+                                    add(it.first)
+                                    add(it.second)
+                                })
+                            }
                         })
                     })
 
                 }
-                println("Got a response")
                 val jsonResponse = containerInfo.body<JsonObject>()
-                println("Contains $jsonResponse")
                 val address = jsonResponse.getValue("address").jsonPrimitive.content
                 val ports = jsonResponse["ports"]?.unsafeCast<JsonObject>() ?: emptyMap<String, String>()
                 wiremockInstance = Wiremock(
-                    httpUrl = "http://$address:${ports["8080"]}",
-                    httpsUrl = "https://$address:${ports["8443"]}"
+                    httpUrl = "http://$address:${ports[httpPort.toString()]}",
+                    httpsUrl = "https://$address:${ports[httpsPort.toString()]}"
                 )
+            } else if (IS_NODE) {
+                val rootProjectPath = js("process.env[\"ROOT_PROJECT_PATH\"]")
+                var container = GenericContainer(wiremockImage)
+                    .withExposedPorts(*internalPorts)
+                    .withCmd(commands)
+                fileMappings.forEach { (from, to) ->
+                    container =
+                        container.withBindMount("$rootProjectPath/test-utils/src/commonMain/resources$from", to, "ro")
+                }
+                val startedContainer = container.start().await()
+                wiremockInstance = Wiremock(
+                    httpUrl = "http://${startedContainer.getHost()}:${startedContainer.getMappedPort(httpPort)}",
+                    httpsUrl = "https://${startedContainer.getHost()}:${startedContainer.getMappedPort(httpsPort)}"
+                )
+            } else {
+                error("Unknown js platform")
             }
         }
         return wiremockInstance
     }
 
     actual suspend fun getHttpBin(): String {
-        TODO("Not yet implemented")
+        if (!this::httpBinInstance.isInitialized) {
+            val httpBinImage = "kennethreitz/httpbin:latest"
+            val httpBinPort = 80
+            if (IS_BROWSER) {
+                val containerInfo = client.post("http://localhost:9876/containers/create") {
+                    contentType(ContentType.Application.Json)
+                    setBody(buildJsonObject {
+                        put("image", httpBinImage)
+                        put("ports", buildJsonArray {
+                            add(httpBinPort)
+                        })
+                    })
+
+                }
+                val jsonResponse = containerInfo.body<JsonObject>()
+                val address = jsonResponse.getValue("address").jsonPrimitive.content
+                val ports = jsonResponse["ports"]?.unsafeCast<JsonObject>() ?: emptyMap<String, String>()
+                httpBinInstance = "http://$address:${ports["80"]}"
+            } else if (IS_NODE) {
+                val container = GenericContainer(httpBinImage)
+                    .withExposedPorts(httpBinPort)
+                val startedContainer = container.start().await()
+                httpBinInstance = "http://${startedContainer.getHost()}:${startedContainer.getMappedPort(httpBinPort)}"
+            } else {
+                error("Unsupported JS Platform")
+            }
+
+        }
+        return httpBinInstance
     }
 
 }
