@@ -1,7 +1,8 @@
 package it.skrape.core
 
+import com.gargoylesoftware.htmlunit.BrowserVersion
+import com.gargoylesoftware.htmlunit.WebClient
 import io.ktor.utils.io.charsets.*
-import it.skrape.fetcher.BrowserFetcher
 import it.skrape.selects.Doc
 import it.skrape.selects.platform.Document
 import java.io.File
@@ -14,21 +15,24 @@ internal actual class Parser actual constructor(
     actual val baseUri: String
 ) {
 
+
     actual fun parse(): Doc {
         return if (jsExecution) {
-            checkBrowserFetcherIsPresent()
-            jSoupParser(BrowserFetcher.render(html), baseUri).toDocWrapper()
+            checkForHtmlUnit()
+            val renderedHtml =
+                WebClient(BrowserVersion.BEST_SUPPORTED).use { it.loadHtmlCodeIntoCurrentWindow(html).asXml() }
+            jSoupParser(renderedHtml, baseUri).toDocWrapper()
         } else jSoupParser(html, baseUri).toDocWrapper()
     }
 
-    private fun checkBrowserFetcherIsPresent() {
+    private fun checkForHtmlUnit() {
         try {
-            Class.forName("it.skrape.fetcher.BrowserFetcherKt")
+            Class.forName("com.gargoylesoftware.htmlunit.WebClient")
         } catch (e: ClassNotFoundException) {
             throw MissingDependencyException(
                 """
-                ⚠️ You need to add browser-fetcher dependency to execute Javascript.
-                💡 Please add 'it.skrape:skrapeit-browser-fetcher' dependency to your project.
+                ⚠️ You need to add HtmlUnit dependency to execute Javascript.
+                💡 Please add 'net.sourceforge.htmlunit:htmlunit' dependency to your project.
                 🧐 Find overview of latest releases: https://search.maven.org/artifact/it.skrape/skrapeit-browser-fetcher
                 """.trimIndent()
             )
@@ -48,7 +52,7 @@ internal actual class Parser actual constructor(
  * @param jsExecution defaults to false
  * @param baseUri defaults to empty String
  */
-public fun <T> htmlDocument(
+fun <T> htmlDocument(
     file: File,
     charset: Charset = Charsets.UTF_8,
     jsExecution: Boolean = false,
@@ -56,7 +60,7 @@ public fun <T> htmlDocument(
     init: Doc.() -> T
 ): T = htmlDocument(file, charset, jsExecution, baseUri).init()
 
-public fun htmlDocument(
+fun htmlDocument(
     file: File,
     charset: Charset = Charsets.UTF_8,
     jsExecution: Boolean = false,

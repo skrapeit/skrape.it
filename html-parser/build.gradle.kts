@@ -46,7 +46,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(projects.dsl)
-                api(projects.fetcher.browserFetcher)
+                api(Deps.htmlUnit)
                 api(Deps.jsoup)
             }
         }
