@@ -31,16 +31,17 @@ actual object Testcontainer {
 
     actual data class Wiremock(
         actual val httpUrl: String,
-        actual val httpsUrl: String
+        actual val httpsUrl: String,
+        val httpPort: Int
     ) {
-        actual val ktorClient: HttpClient = client
+        actual val ktorClient: HttpClient = client.config {  }.also {
+            //Since fetch doesn't support relaxing ssl fall back to http
+            it.plugin(HttpSend).intercept { request ->
+                request.url.set(scheme = "http", port = httpPort)
+                execute(request)
+            }
+        }
     }
-
-    actual val wiremock: Wiremock
-        get() = TODO("Not yet implemented")
-
-    actual val httpBin: String
-        get() = TODO("Not yet implemented")
 
     private lateinit var wiremockInstance: Wiremock
     private lateinit var httpBinInstance: String
@@ -80,7 +81,8 @@ actual object Testcontainer {
                 val ports = jsonResponse["ports"]?.unsafeCast<JsonObject>() ?: emptyMap<String, String>()
                 wiremockInstance = Wiremock(
                     httpUrl = "http://$address:${ports[httpPort.toString()]}",
-                    httpsUrl = "https://$address:${ports[httpsPort.toString()]}"
+                    httpsUrl = "https://$address:${ports[httpsPort.toString()]}",
+                    ports[httpPort.toString()].toString().toInt()
                 )
             } else if (IS_NODE) {
                 val rootProjectPath = js("process.env[\"ROOT_PROJECT_PATH\"]")
@@ -94,7 +96,8 @@ actual object Testcontainer {
                 val startedContainer = container.start().await()
                 wiremockInstance = Wiremock(
                     httpUrl = "http://${startedContainer.getHost()}:${startedContainer.getMappedPort(httpPort)}",
-                    httpsUrl = "https://${startedContainer.getHost()}:${startedContainer.getMappedPort(httpsPort)}"
+                    httpsUrl = "https://${startedContainer.getHost()}:${startedContainer.getMappedPort(httpsPort)}",
+                    startedContainer.getMappedPort(httpPort)
                 )
             } else {
                 error("Unknown js platform")

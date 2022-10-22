@@ -17,7 +17,7 @@ actual object Testcontainer {
         actual val ktorClient: HttpClient
     )
 
-    actual val wiremock: Wiremock by lazy {
+    val wiremock: Wiremock by lazy {
         with(WireMockContainer().apply {
             //if (!isWindows) {
                 start()
@@ -49,7 +49,7 @@ actual object Testcontainer {
         }
     }
 
-    actual val httpBin: String by lazy {
+    val httpBin: String by lazy {
         with(HttpBinContainer().apply {
             if (!isWindows) {
                 start()

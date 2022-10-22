@@ -9,7 +9,5 @@ expect object Testcontainer {
     }
 
     suspend fun getWiremock(): Wiremock
-    val wiremock: Wiremock
     suspend fun getHttpBin(): String
-    val httpBin: String
 }
