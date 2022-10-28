@@ -1,14 +1,21 @@
 plugins {
-    buildsrc.convention.`kotlin-jvm`
+    buildsrc.convention.`kotlin-multiplatform`
+    buildsrc.convention.`kotlin-multiplatform-jvm`
 }
 
-dependencies {
-    testImplementation(Deps.jetbrainsAnnotations)
-    testImplementation(projects.testUtils)
-    testImplementation(projects.htmlParser)
-    testImplementation(projects.assertions)
-    testImplementation(projects.fetcher.baseFetcher)
-    testImplementation(projects.fetcher.httpFetcher)
-    testImplementation(projects.fetcher.browserFetcher)
-    testImplementation(projects.fetcher.asyncFetcher)
+kotlin {
+    sourceSets {
+        val jvmTest by getting {
+            dependencies {
+                implementation(Deps.jetbrainsAnnotations)
+                implementation(projects.testUtils)
+                implementation(projects.htmlParser)
+                implementation(projects.assertions)
+                implementation(projects.fetcher.baseFetcher)
+                implementation(projects.fetcher.httpFetcher)
+                implementation(projects.fetcher.browserFetcher)
+                implementation(projects.fetcher.asyncFetcher)
+            }
+        }
+    }
 }

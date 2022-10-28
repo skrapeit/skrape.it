@@ -1,19 +1,35 @@
+import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
+
 plugins {
-    buildsrc.convention.`kotlin-jvm`
-    buildsrc.convention.`publish-jvm`
+    buildsrc.convention.`kotlin-multiplatform-jvm`
+    buildsrc.convention.`publish-multiplatform`
 }
 
-dependencies {
-    provided(projects.htmlParser)
-    provided(Deps.Ktor.serverTestHost)
-    provided(Deps.Ktor.serverNetty)
-    provided(Deps.Ktor.freemarker)
-    provided(Deps.Ktor.locations)
+kotlin {
+    sourceSets {
+        val jvmMain by getting {
+            dependencies {
+                provided(projects.htmlParser)
+                provided(Deps.Ktor.serverTestHost)
+                provided(Deps.Ktor.serverNetty)
+                provided(Deps.Ktor.freemarker)
+                provided(Deps.Ktor.locations)
+            }
+        }
+        val jvmTest by getting {
+            dependencies {
+                provided(projects.htmlParser)
+                provided(Deps.Ktor.serverTestHost)
+                provided(Deps.Ktor.serverNetty)
+                provided(Deps.Ktor.freemarker)
+                provided(Deps.Ktor.locations)
+            }
+        }
+    }
 }
 
 // TODO: use https://github.com/nebula-plugins/gradle-extra-configurations-plugin to get provided configuration in gradle
-fun DependencyHandlerScope.provided(dependencyNotation: Any) {
+fun KotlinDependencyHandler.provided(dependencyNotation: Any) {
     compileOnly(dependencyNotation)
-    testCompileOnly(dependencyNotation)
     runtimeOnly(dependencyNotation)
 }

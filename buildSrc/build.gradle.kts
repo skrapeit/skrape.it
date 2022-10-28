@@ -1,17 +1,18 @@
 plugins {
     `kotlin-dsl`
+    //Convention plugins require 1.6.21
     kotlin("jvm") version "1.6.21"
 }
 
 // set the versions of Gradle plugins that the subprojects will use here
-val kotlinVersion = "1.6.21"
+val kotlinVersion = "1.7.10"
 
 val detektPlugin = "1.19.0"
 val gradleNexusPublishPlugin = "1.1.0"
 val gradleTestLoggerPlugin = "3.1.0"
 val gradleVersionsPlugin = "0.39.0"
 val kotlinDokkaPlugin = "1.6.21"
-val kotlinxKoverPlugin = "0.5.0"
+val kotlinxKoverPlugin = "0.6.1"
 val useLatestVersionsPlugin = "0.2.18"
 
 dependencies {

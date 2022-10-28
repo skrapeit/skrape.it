@@ -1,8 +1,8 @@
 object Versions {
-    const val kotlin = "1.6.21"
-    const val coroutines = "1.6.1"
-    const val ktor = "2.0.3" //2.0.1
-    const val serialization = "1.0.1"
+    const val kotlin = "1.7.10"
+    const val coroutines = "1.6.4"
+    const val ktor = "2.1.2"
+    const val serialization = "1.4.0"
     const val datetime = "0.1.1"
     const val jsoup = "1.13.1" // 1.14.3
     const val htmlUnit = "2.63.0"
@@ -17,6 +17,8 @@ object Versions {
     const val javaxServlet = "4.0.1"
     const val spring = "5.3.13"
     const val jetbrainsAnnotations = "23.0.0"
+    const val atrium = "0.18.0"
+    const val uuid = "0.4.1"
 }
 
 abstract class DependencyGroup(
@@ -42,12 +44,14 @@ object Deps {
     const val javaxServlet = "javax.servlet:javax.servlet-api:${Versions.javaxServlet}"
     const val jetbrainsAnnotations = "org.jetbrains:annotations:${Versions.jetbrainsAnnotations}"
     const val restAssured = "io.rest-assured:kotlin-extensions:${Versions.restAssured}"
+    const val uuid = "com.benasher44:uuid:${Versions.uuid}"
 
     object Kotlin : DependencyGroup(
         group = "org.jetbrains.kotlin",
         version = Versions.kotlin
     ) {
         val reflect = dependency("kotlin-reflect")
+        val test = dependency("test")
     }
 
     object Ktor : DependencyGroup(
@@ -55,13 +59,27 @@ object Deps {
         version = Versions.ktor
     ) {
         val client = dependency("ktor-client-core")
-        val clientJson = dependency("ktor-client-json")
+        val clientJS = dependency("ktor-client-js")
+        val clientCIO = dependency("ktor-client-cio")
+        val serializationJson = dependency("ktor-serialization-kotlinx-json")
+        val clientContentNegotiation = dependency("ktor-client-content-negotiation")
         val clientApache = dependency("ktor-client-apache")
         val clientLogging = dependency("ktor-client-logging")
         val serverNetty = dependency("ktor-server-netty")
         val serverTestHost = dependency("ktor-server-test-host")
         val freemarker = dependency("ktor-server-freemarker")
         val locations = dependency("ktor-server-locations")
+
+        val server = dependency("ktor-server-core")
+    }
+
+    object Atrium : DependencyGroup(
+        group = "ch.tutteli.atrium",
+        version = Versions.atrium
+    ) {
+        val fluentCommon = dependency("atrium-fluent-en_GB-common")
+        val fluentJvm = dependency("atrium-fluent-en_GB")
+        val fluentJs = dependency("atrium-fluent-en_GB-js")
     }
 
     object KotlinX {

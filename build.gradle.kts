@@ -24,11 +24,26 @@ dependencies {
 }
 
 tasks.withType<Test>().configureEach {
-    finalizedBy(tasks.koverReport, tasks.koverCollectReports)
+    // lazily access koverMergedReport task because it doesn't have a specific DSL accessor or type
+    val koverMergedReportTask = tasks.matching { it.name == kotlinx.kover.api.KoverNames.MERGED_REPORT_TASK_NAME }
+    finalizedBy(tasks.koverReport, koverMergedReportTask)
 }
 
-kover {
-    coverageEngine.set(kotlinx.kover.api.CoverageEngine.INTELLIJ)
+koverMerged {
+    enable()
+
+    filters {
+        projects {
+            excludes += listOf(
+                ":examples:scraping",
+                ":examples:use-pre-release-version",
+                ":fetcher:async-fetcher",
+                ":fetcher:base-fetcher",
+                ":fetcher:browser-fetcher",
+                ":fetcher:http-fetcher"
+            )
+        }
+    }
 }
 
 nexusPublishing {
