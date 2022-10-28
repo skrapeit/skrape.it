@@ -12,7 +12,7 @@ val gradleNexusPublishPlugin = "1.1.0"
 val gradleTestLoggerPlugin = "3.1.0"
 val gradleVersionsPlugin = "0.39.0"
 val kotlinDokkaPlugin = "1.6.21"
-val kotlinxKoverPlugin = "0.5.0"
+val kotlinxKoverPlugin = "0.6.1"
 val useLatestVersionsPlugin = "0.2.18"
 
 dependencies {

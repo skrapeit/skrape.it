@@ -23,6 +23,7 @@ configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
                     useChromeHeadless()
                     useSourceMapSupport()
                     useConfigDirectory(rootProject.projectDir.toPath().resolve("karma.config.d").toFile())
+                    useCoverage(html = true)
                 }
             }
         }

@@ -1,7 +1,6 @@
 package buildsrc.convention
 
 import buildsrc.config.createSkrapeItPom
-import buildsrc.config.credentialsAction
 
 plugins {
     `maven-publish`
@@ -30,11 +29,9 @@ publishing {
             name = "LocalProjectDir"
         }
     }
-    publications {
-        forEach {
-            /*it.createSkrapeItPom {
-                name.set("skrape{it} ${project.name}")
-            }*/
+    publications.withType<MavenPublication>().forEach {
+        it.createSkrapeItPom {
+            name.set("skrape{it} ${project.name}")
         }
     }
 }
