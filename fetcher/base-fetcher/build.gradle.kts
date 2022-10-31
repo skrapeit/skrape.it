@@ -20,6 +20,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(projects.dsl)
+                implementation(Deps.Ktor.clientCIO)
                 implementation(Deps.Kotlin.reflect) {
                     because("to support Result#extractIt by creating instance of a class")
                 }

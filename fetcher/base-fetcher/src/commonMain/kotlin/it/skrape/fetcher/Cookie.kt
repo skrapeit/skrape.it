@@ -62,7 +62,7 @@ public fun String.toCookie(origin: String): Cookie {
 private fun List<String>.getAttribute(attributeName: String) =
     this.find { it.startsWith("${attributeName}=", ignoreCase = true) }?.takeLastWhile { it != '=' }
 
-private fun String?.toSameSite(): SameSite {
+internal fun String?.toSameSite(): SameSite {
     return when (this?.lowercase()) {
         "strict" -> SameSite.STRICT
         "lax" -> SameSite.LAX
@@ -71,7 +71,7 @@ private fun String?.toSameSite(): SameSite {
     }
 }
 
-private fun String?.toExpires(): Expires {
+internal fun String?.toExpires(): Expires {
     return when (this) {
         null -> Expires.Session
         else -> Expires.Date(this)

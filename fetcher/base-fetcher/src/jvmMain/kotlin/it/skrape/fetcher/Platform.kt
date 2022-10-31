@@ -1,8 +1,16 @@
 package it.skrape.fetcher
 
+import io.ktor.client.*
+import io.ktor.client.engine.*
+import io.ktor.client.engine.cio.*
 import it.skrape.SkrapeItDsl
 import kotlinx.coroutines.runBlocking
 import kotlin.reflect.full.createInstance
+
+actual val platformConfig: KtorClientPlatformConfig<*> = object : KtorClientPlatformConfig<HttpClientEngineConfig> {
+    override val engine: HttpClientEngineFactory<HttpClientEngineConfig> = CIO
+    override val config: HttpClientConfig<HttpClientEngineConfig>.() -> Unit = {}
+}
 
 /**
  * Create a scraper config with given parameters or defaults.
