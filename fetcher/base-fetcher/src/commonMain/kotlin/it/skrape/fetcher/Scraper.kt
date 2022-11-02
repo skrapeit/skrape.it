@@ -1,17 +1,18 @@
 package it.skrape.fetcher
 
+import io.ktor.client.*
 import it.skrape.SkrapeItDsl
 
-public class Scraper<R>(public val fetcher: NonBlockingFetcher<R>, public val preparedRequest: R) {
-    public constructor(client: NonBlockingFetcher<R>) : this(client, client.requestBuilder)
+class Scraper<R>(val fetcher: NonBlockingFetcher<R>, val preparedRequest: R) {
+    constructor(client: NonBlockingFetcher<R>) : this(client, client.requestBuilder)
 
     @SkrapeItDsl
-    public fun request(init: R.() -> Unit): Scraper<R> {
+    fun request(init: R.() -> Unit): Scraper<R> {
         this.preparedRequest.run(init)
         return this
     }
 
-    public suspend fun scrape(): Result =
+    suspend fun scrape(): Result =
         fetcher.fetch(preparedRequest)
 }
 
@@ -37,22 +38,40 @@ internal class FetcherConverter<T>(
  * @return Result
  */
 @SkrapeItDsl
-public expect fun <R, T> skrape(fetcher: BlockingFetcher<R>, init: suspend Scraper<R>.() -> T): T
+@Deprecated(message = "Fetchers are deprecated", replaceWith = ReplaceWith("skrape(init)"))
+expect fun <R, T> skrape(fetcher: BlockingFetcher<R>, init: suspend Scraper<R>.() -> T): T
 
 /**
  * Create a non-blocking scraper config with given parameters or defaults.
  * @return Result
  */
 @SkrapeItDsl
-public suspend fun <R, T> skrape(fetcher: NonBlockingFetcher<R>, init: suspend Scraper<R>.() -> T): T =
+@Deprecated(message = "Fetchers are deprecated", replaceWith = ReplaceWith("skrape(init)"))
+suspend fun <R, T> skrape(fetcher: NonBlockingFetcher<R>, init: suspend Scraper<R>.() -> T): T =
     Scraper(fetcher).init()
+
+/**
+ * Create a non-blocking scraper config with given parameters or defaults.
+ * @return Result
+ */
+suspend fun <T> skrape(init: suspend KtorScraper.() -> T): T =
+    KtorScraper().init()
+
+suspend fun <T> skrape(
+    config: HttpClientConfig<*>.() -> Unit = KtorScraper.EMPTY_CONFIG,
+    init: suspend KtorScraper.() -> T
+): T =
+    KtorScraper(config).init()
+
+suspend fun <T> KtorScraper.response(result: Result.() -> T): T =
+    scrape().result()
 
 /**
  * Execute http call with a given Fetcher implementation and invoke the fetching result.
  */
 @SkrapeItDsl
 @Deprecated(message = "Please use 'response' instead", replaceWith = ReplaceWith("response(result)"))
-public suspend fun Scraper<*>.expect(result: Result.() -> Unit) {
+suspend fun Scraper<*>.expect(result: Result.() -> Unit) {
     response(result)
 }
 
@@ -62,7 +81,7 @@ public suspend fun Scraper<*>.expect(result: Result.() -> Unit) {
  */
 @SkrapeItDsl
 @Deprecated(message = "Please use 'response' instead", replaceWith = ReplaceWith("response(result)"))
-public suspend fun <T> Scraper<*>.extract(result: Result.() -> T): T =
+suspend fun <T> Scraper<*>.extract(result: Result.() -> T): T =
     response(result)
 
 /**
@@ -70,5 +89,5 @@ public suspend fun <T> Scraper<*>.extract(result: Result.() -> T): T =
  * @return T
  */
 @SkrapeItDsl
-public suspend fun <T> Scraper<*>.response(result: Result.() -> T): T =
+suspend fun <T> Scraper<*>.response(result: Result.() -> T): T =
     scrape().result()
