@@ -26,7 +26,11 @@ class KtorScraper(config: HttpClientConfig<*>.()->Unit = EMPTY_CONFIG) {
         val clientTemplate = HttpClient(platformConfig.engine) {
             followRedirects = false //We handle those ourselves
             install(KtorDynamicPlugin)
-            install(HttpTimeout)
+            install(HttpTimeout) {
+                requestTimeoutMillis = 5000
+                socketTimeoutMillis = 5000
+                connectTimeoutMillis = 5000
+            }
 
             @Suppress("UNCHECKED_CAST")
             (platformConfig.config as (HttpClientConfig<*>.()->Unit))()
@@ -126,7 +130,7 @@ class KtorDynamicPlugin {
         private suspend fun Sender.handleCall(
             context: HttpRequestBuilder,
             origin: HttpClientCall,
-            allowHttpsDowngrade: Boolean = false, //TODO maybe this should be influenced by sslRelaxed
+            allowHttpsDowngrade: Boolean,
             client: HttpClient
         ): HttpClientCall {
             if (!origin.response.status.isRedirect()) return origin
@@ -192,3 +196,11 @@ var KtorRequestBuilder.authentication: Authentication?
 var KtorRequestBuilder.sslRelaxed: Boolean
     get() = attributes.getOrNull(KtorDynamicPlugin.KEY_SSL_RELAXED) ?: false
     set(value) = attributes.put(KtorDynamicPlugin.KEY_SSL_RELAXED, value)
+
+var KtorRequestBuilder.timeout: Int
+    get() = getCapabilityOrNull(HttpTimeout)?.requestTimeoutMillis?.toInt() ?: 5000
+    set(value) = timeout {
+        requestTimeoutMillis = value.toLong()
+        socketTimeoutMillis = value.toLong()
+        connectTimeoutMillis = value.toLong()
+    }
