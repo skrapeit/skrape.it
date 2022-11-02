@@ -95,6 +95,7 @@ class KtorDynamicPlugin {
         internal const val defaultUserAgent = "Mozilla/5.0 skrape.it"
         internal val KEY_FOLLOW_REDIRECT = AttributeKey<Boolean>("it.skrape.fetcher.KtorScraper.FollowRedirect")
         internal val KEY_AUTHENTICATION = AttributeKey<Authentication>("it.skrape.fetcher.KtorScraper.Authentication")
+        internal val KEY_SSL_RELAXED = AttributeKey<Boolean>("it.skrape.fetcher.KtorScraper.SslRelaxed")
 
         override val key: AttributeKey<KtorDynamicPlugin> = AttributeKey("it.skrape.fetcher.KtorDynamicPlugin")
 
@@ -110,7 +111,14 @@ class KtorDynamicPlugin {
                     context.headers.appendMissing(HttpHeaders.Authorization, listOf(context.attributes[KEY_AUTHENTICATION].toHeaderValue()))
                 }
                 val origin = execute(context)
-                if (context.attributes.getOrNull(KEY_FOLLOW_REDIRECT) == true) handleCall(context, origin, client = scope) else origin
+                if (context.attributes.getOrNull(KEY_FOLLOW_REDIRECT) == true)
+                    handleCall(
+                        context,
+                        origin,
+                        allowHttpsDowngrade = context.attributes.getOrNull(KEY_SSL_RELAXED) == true,
+                        client = scope)
+                else
+                    origin
             }
         }
 
@@ -180,3 +188,7 @@ var KtorRequestBuilder.followRedirect: Boolean
 var KtorRequestBuilder.authentication: Authentication?
     get() = attributes.getOrNull(KtorDynamicPlugin.KEY_AUTHENTICATION)
     set(value) = if (value == null) attributes.remove(KtorDynamicPlugin.KEY_AUTHENTICATION) else attributes.put(KtorDynamicPlugin.KEY_AUTHENTICATION, value)
+
+var KtorRequestBuilder.sslRelaxed: Boolean
+    get() = attributes.getOrNull(KtorDynamicPlugin.KEY_SSL_RELAXED) ?: false
+    set(value) = attributes.put(KtorDynamicPlugin.KEY_SSL_RELAXED, value)
