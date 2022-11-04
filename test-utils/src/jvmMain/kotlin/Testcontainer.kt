@@ -51,9 +51,9 @@ actual object Testcontainer {
 
     val httpBin: String by lazy {
         with(HttpBinContainer().apply {
-            if (!isWindows) {
+            //if (!isWindows) {
                 start()
-            }
+            //}
         }) {
             "http://$containerIpAddress:${getMappedPort(internalPort)}"
         }
@@ -75,7 +75,7 @@ private class WireMockContainer(
 ) : GenericContainer<WireMockContainer>(DockerImageName.parse("wiremock/wiremock:$version")) {
     init {
         withExposedPorts(httpPort, httpsPort)
-        withCommand("--https-port $httpsPort")
+        withCommand("--https-port $httpsPort --verbose")
         withClasspathResourceMapping("./__files", "/home/wiremock/__files/", BindMode.READ_ONLY)
         waitingFor(Wait.forListeningPort())
     }

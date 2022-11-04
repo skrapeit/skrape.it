@@ -38,9 +38,10 @@ private suspend fun Testcontainer.Wiremock.stubMethod(
 ) {
     ktorClient.post {
         url("$httpUrl/__admin/mappings")
+        contentType(ContentType.Application.Json)
         setBody(buildJsonObject {
             putJsonObject("request") {
-                put("method", method)
+                put("method", method.uppercase())
                 put("url", "/")
             }
             putJsonObject("response") {
@@ -75,13 +76,14 @@ suspend fun Testcontainer.Wiremock.setupPostStub() = baseStubWithFile(
 suspend fun Testcontainer.Wiremock.setupRedirect() {
     ktorClient.post {
         url("$httpUrl/__admin/mappings")
+        contentType(ContentType.Application.Json)
         setBody(buildJsonObject {
             putJsonObject("request") {
-                put("method", "get")
+                put("method", "GET")
                 put("url", "/")
             }
             putJsonObject("response") {
-                put("status", 403)
+                put("status", 302)
                 putJsonObject("headers") {
                     put("Content-Type", "text/html")
                     put("location", "/redirected")
@@ -105,9 +107,10 @@ suspend fun Testcontainer.Wiremock.setupCookiesStub(
 ) {
     ktorClient.post {
         url("$httpUrl/__admin/mappings")
+        contentType(ContentType.Application.Json)
         setBody(buildJsonObject {
             putJsonObject("request") {
-                put("method", "get")
+                put("method", "GET")
                 put("url", path)
             }
             putJsonObject("response") {

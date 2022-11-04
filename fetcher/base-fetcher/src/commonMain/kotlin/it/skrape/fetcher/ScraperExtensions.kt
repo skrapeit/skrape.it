@@ -11,7 +11,7 @@ suspend fun <T> skrape(
     config: HttpClientConfig<*>.() -> Unit = Scraper.EMPTY_CONFIG,
     init: suspend Scraper.() -> T
 ): T =
-    Scraper(config).init()
+    Scraper(config = config).init()
 
 suspend fun <T> Scraper.response(result: Result.() -> T): T =
     scrape().result()

@@ -10,6 +10,7 @@ import io.ktor.http.*
 import io.ktor.util.*
 import io.ktor.util.reflect.*
 import it.skrape.SkrapeItDsl
+import it.skrape.fetcher.request.BodyBuilder
 
 typealias KtorRequestBuilder = HttpRequestBuilder
 
@@ -82,7 +83,7 @@ internal fun Int.toMaxAge(): Int? = when (this) {
 private suspend fun HttpResponse.toResult(): Result = Result(
     responseBody = bodyAsText(),
     responseStatus = Result.Status(status.value, status.description),
-    contentType = contentType()?.contentType,
+    contentType = contentType()?.toString(),
     headers = headers.flattenEntries().associateBy({ it.first }, { it.second}),
     baseUri = request.url.toString(),
     cookies = setCookie().map { cookie -> cookie.toDomainCookie(this.request.url.toString().urlOrigin) }
@@ -115,7 +116,7 @@ class KtorDynamicPlugin {
                     context.headers.appendMissing(HttpHeaders.Authorization, listOf(context.attributes[KEY_AUTHENTICATION].toHeaderValue()))
                 }
                 val origin = execute(context)
-                if (context.attributes.getOrNull(KEY_FOLLOW_REDIRECT) == true)
+                if (context.attributes.getOrNull(KEY_FOLLOW_REDIRECT) != false)
                     handleCall(
                         context,
                         origin,
@@ -217,16 +218,22 @@ fun KtorRequestBuilder.copy(
     sslRelaxed: Boolean = this.sslRelaxed,
     timeout: Int = this.timeout
 ) = KtorRequestBuilder().takeFrom(this).also {
-    if (url.isNotEmpty()) this.url.takeFrom(url)
-    this.method = method
-    this.headers.appendAll(headers)
-    this.setBody(body)
-    this.attributes.putAll(attributes)
-    this.userAgent = userAgent
-    this.followRedirects = followRedirects
-    this.authentication = authentication
-    this.sslRelaxed = sslRelaxed
-    this.timeout = timeout
+    it.url.takeFrom(url)
+    it.method = method
+    it.headers.appendAll(headers)
+    it.setBody(body)
+    it.attributes.putAll(attributes)
+    it.userAgent = userAgent
+    it.followRedirects = followRedirects
+    it.authentication = authentication
+    it.sslRelaxed = sslRelaxed
+    it.timeout = timeout
+}
+
+fun KtorRequestBuilder.body(block: BodyBuilder.()->Unit) {
+    val builder = BodyBuilder().apply(block)
+    contentType(io.ktor.http.ContentType.parse(builder.contentType))
+    setBody(builder.data)
 }
 
 
