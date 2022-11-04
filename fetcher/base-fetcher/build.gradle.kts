@@ -17,6 +17,11 @@ kotlin {
                 implementation(projects.dsl)
             }
         }
+        val commonTest by getting {
+            dependencies {
+                implementation(projects.testUtils)
+            }
+        }
         val jvmMain by getting {
             dependencies {
                 implementation(projects.dsl)

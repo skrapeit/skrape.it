@@ -10,15 +10,3 @@ actual val platformConfig: KtorClientPlatformConfig<*> = object : KtorClientPlat
     override val engine: HttpClientEngineFactory<HttpClientEngineConfig> = Js
     override val config: HttpClientConfig<HttpClientEngineConfig>.() -> Unit = {}
 }
-
-/**
- * Create a scraper config with given parameters or defaults.
- * @return Result
- */
-@SkrapeItDsl
-actual fun <R, T> skrape(
-    fetcher: BlockingFetcher<R>,
-    init: suspend Scraper<R>.() -> T
-): dynamic {
-    return GlobalScope.promise { Scraper(FetcherConverter(fetcher)).init() }
-}

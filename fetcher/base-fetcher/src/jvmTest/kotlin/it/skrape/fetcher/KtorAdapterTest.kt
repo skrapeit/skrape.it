@@ -23,31 +23,11 @@ private val wiremock = Testcontainer.wiremock
 @DisabledOnOs(OS.WINDOWS)
 class KtorAdapterTest {
 
-    class KtorBlockingFetcher(val ktorClient: HttpClient) : BlockingFetcher<HttpRequestBuilder> {
-        override fun fetch(request: HttpRequestBuilder): Result = runBlocking {
-            with(ktorClient.request(request)) {
-                Result(
-                    responseBody = bodyAsText(),
-                    responseStatus = Result.Status(status.value, status.description),
-                    contentType = contentType()?.toString(),
-                    headers = headers.toMap().mapValues { it.value.firstOrNull().orEmpty() },
-                    baseUri = request.url.toString(),
-                    cookies = listOf(setCookie()) as List<Cookie>
-                )
-            }
-        }
-
-        override val requestBuilder: HttpRequestBuilder
-            get() = HttpRequestBuilder()
-    }
-
-    val KTOR_CLIENT = HttpClient(Apache)
-
     @Test
     fun `dsl can skrape by url`() = runTest {
         wiremock.setupStub(path = "/example")
 
-        val result = skrape(KtorBlockingFetcher(KTOR_CLIENT)) {
+        val result = skrape {
             request {
                 url("${wiremock.httpUrl}/example")
             }

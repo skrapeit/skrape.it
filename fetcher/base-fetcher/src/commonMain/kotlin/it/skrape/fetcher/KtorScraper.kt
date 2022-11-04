@@ -8,19 +8,20 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.util.*
+import io.ktor.util.reflect.*
 import it.skrape.SkrapeItDsl
-import it.skrape.fetcher.ContentType
 
 typealias KtorRequestBuilder = HttpRequestBuilder
 
 interface KtorClientPlatformConfig<T : HttpClientEngineConfig> {
     val engine: HttpClientEngineFactory<T>
     val config: HttpClientConfig<T>.()->Unit
+    //TODO on some platforms it should be possible to relax ssl before a call if requested
 }
 
 expect val platformConfig: KtorClientPlatformConfig<*>
 
-class KtorScraper(config: HttpClientConfig<*>.()->Unit = EMPTY_CONFIG) {
+class Scraper(val requestBuilder: KtorRequestBuilder = KtorRequestBuilder(), config: HttpClientConfig<*>.()->Unit = EMPTY_CONFIG) {
 
     companion object {
         val clientTemplate = HttpClient(platformConfig.engine) {
@@ -40,7 +41,6 @@ class KtorScraper(config: HttpClientConfig<*>.()->Unit = EMPTY_CONFIG) {
     }
 
     private val client: HttpClient
-    private val requestBuilder: KtorRequestBuilder = KtorRequestBuilder()
 
     init {
         client = if (config == EMPTY_CONFIG) {
@@ -51,7 +51,7 @@ class KtorScraper(config: HttpClientConfig<*>.()->Unit = EMPTY_CONFIG) {
     }
 
     @SkrapeItDsl
-    public fun request(block: KtorRequestBuilder.()->Unit): KtorScraper {
+    public fun request(block: KtorRequestBuilder.()->Unit): Scraper {
         requestBuilder.apply(block)
         return this
     }
@@ -185,7 +185,7 @@ var KtorRequestBuilder.userAgent: String
     get() = this.attributes.getOrNull(KtorDynamicPlugin.KEY_USERAGENT) ?: KtorDynamicPlugin.defaultUserAgent
     set(value) = this.attributes.put(KtorDynamicPlugin.KEY_USERAGENT, value)
 
-var KtorRequestBuilder.followRedirect: Boolean
+var KtorRequestBuilder.followRedirects: Boolean
     get() = attributes.getOrNull(KtorDynamicPlugin.KEY_FOLLOW_REDIRECT) ?: false
     set(value) = attributes.put(KtorDynamicPlugin.KEY_FOLLOW_REDIRECT, value)
 
@@ -204,3 +204,35 @@ var KtorRequestBuilder.timeout: Int
         socketTimeoutMillis = value.toLong()
         connectTimeoutMillis = value.toLong()
     }
+
+fun KtorRequestBuilder.copy(
+    url: String = "",
+    method: HttpMethod = this.method,
+    headers: HeadersBuilder = HeadersBuilder(),
+    body: Any = this.body,
+    attributes: Attributes = Attributes(),
+    userAgent: String = this.userAgent,
+    followRedirects: Boolean = this.followRedirects,
+    authentication: Authentication? = this.authentication,
+    sslRelaxed: Boolean = this.sslRelaxed,
+    timeout: Int = this.timeout
+) = KtorRequestBuilder().takeFrom(this).also {
+    if (url.isNotEmpty()) this.url.takeFrom(url)
+    this.method = method
+    this.headers.appendAll(headers)
+    this.setBody(body)
+    this.attributes.putAll(attributes)
+    this.userAgent = userAgent
+    this.followRedirects = followRedirects
+    this.authentication = authentication
+    this.sslRelaxed = sslRelaxed
+    this.timeout = timeout
+}
+
+
+fun HttpClientConfig<*>.useBrowserUserAgent() {
+    install(UserAgent) {
+        //Use a chrome userAgent
+        agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36"
+    }
+}
