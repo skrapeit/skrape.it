@@ -52,7 +52,7 @@ actual object Testcontainer {
             val httpPort = 8080
             val httpsPort = 8443
             val internalPorts = intArrayOf(httpPort, httpsPort)
-            val commands = arrayOf("--https-port", "8443", "--enable-stub-cors")
+            val commands = arrayOf("--https-port", "8443", "--enable-stub-cors", "--verbose")
             val fileMappings = arrayOf(FileMapping("/__files", "/home/wiremock/__files"))
             if (IS_BROWSER) {
                 val containerInfo = client.post("http://localhost:9876/containers/create") {

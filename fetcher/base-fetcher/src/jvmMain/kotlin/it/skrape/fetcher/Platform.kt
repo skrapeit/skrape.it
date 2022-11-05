@@ -4,13 +4,31 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.*
 import io.ktor.client.engine.cio.*
+import io.ktor.util.*
 import it.skrape.SkrapeItDsl
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import java.security.cert.X509Certificate
+import java.util.concurrent.atomic.AtomicInteger
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 import kotlin.reflect.full.createInstance
 
 actual val platformConfig: KtorClientPlatformConfig<*> = object : KtorClientPlatformConfig<CIOEngineConfig> {
+
     override val engine: HttpClientEngineFactory<CIOEngineConfig> = CIO
     override val config: HttpClientConfig<CIOEngineConfig>.() -> Unit = {}
+    override val sslRelaxedConfig: HttpClientConfig<CIOEngineConfig>.() -> Unit = {
+        engine {
+            https.trustManager = object : X509TrustManager {
+                override fun checkClientTrusted(p0: Array<out X509Certificate>?, p1: String?) {}
+                override fun checkServerTrusted(p0: Array<out X509Certificate>?, p1: String?) {}
+                override fun getAcceptedIssuers(): Array<X509Certificate> = emptyArray()
+            }
+        }
+    }
+
 }
 
 //Provide default configurations similar to the old fetchers

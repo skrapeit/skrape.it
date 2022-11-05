@@ -1,14 +1,16 @@
 package it.skrape.fetcher
 
 import Testcontainer
-import ch.tutteli.atrium.api.fluent.en_GB.toBeAnInstanceOf
-import ch.tutteli.atrium.api.fluent.en_GB.toContain
-import ch.tutteli.atrium.api.fluent.en_GB.toEqual
+import ch.tutteli.atrium.api.fluent.en_GB.*
 import ch.tutteli.atrium.api.verbs.expect
+import ch.tutteli.atrium.logic.toAssertionContainer
 import io.ktor.client.network.sockets.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import io.ktor.util.reflect.*
+import io.ktor.utils.io.*
+import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.test.TestScope
 import setupCookiesStub
 import setupDeleteStub
@@ -43,7 +45,7 @@ class AsyncFetcherTest {
 
     private fun runTestWith(vararg init: suspend () -> Unit, block: suspend TestScope.() -> Unit) =
         kotlinx.coroutines.test.runTest {
-        for (func in init) {
+            for (func in init) {
                 func()
             }
             block()
@@ -63,7 +65,7 @@ class AsyncFetcherTest {
         val fetched = Scraper(request).scrape()
 
         expect(fetched.status { code }).toEqual(200)
-        expect(fetched.contentType).toEqual("text/html;charset=UTF-8")
+        expect(fetched.contentType).toEqual("text/html; charset=UTF-8")
         expect(fetched.responseBody).toContain("i'm the title")
 
     }
@@ -223,8 +225,21 @@ class AsyncFetcherTest {
         wiremock.setupStub(path = "/delayed", delay = 6000)
         try {
             Scraper(baseRequest.copy(url = "${wiremock.httpUrl}/delayed", timeout = 10)).scrape()
-        } catch (ex: Exception) {
-            expect(ex).toBeAnInstanceOf<HttpRequestTimeoutException>()
+        }  catch (ex: Exception) {
+            //JS wraps the actual exception in a CancellaionException
+            val tEx = if (ex is CancellationException) ex.cause else ex
+            //This expectation is weird since the timeout can be either of 3 exceptions which are all valid
+            expect(tEx).toBeAnInstanceOf<IOException>().and {
+                val possibleErrors = listOf(
+                    SocketTimeoutException::class,
+                    ConnectTimeoutException::class,
+                    HttpRequestTimeoutException::class
+                )
+                toAssertionContainer().createAndAppend(
+                    "Is a timeout error",
+                    possibleErrors
+                ) { mEx -> possibleErrors.any { mEx.instanceOf(it) } }
+            }
         }
     }
 }

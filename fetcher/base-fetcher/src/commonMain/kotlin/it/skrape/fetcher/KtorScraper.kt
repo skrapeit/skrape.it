@@ -16,16 +16,19 @@ typealias KtorRequestBuilder = HttpRequestBuilder
 
 interface KtorClientPlatformConfig<T : HttpClientEngineConfig> {
     val engine: HttpClientEngineFactory<T>
-    val config: HttpClientConfig<T>.()->Unit
-    //TODO on some platforms it should be possible to relax ssl before a call if requested
+    val config: HttpClientConfig<T>.() -> Unit
+    val sslRelaxedConfig: HttpClientConfig<T>.() -> Unit
 }
 
 expect val platformConfig: KtorClientPlatformConfig<*>
 
-class Scraper(val requestBuilder: KtorRequestBuilder = KtorRequestBuilder(), config: HttpClientConfig<*>.()->Unit = EMPTY_CONFIG) {
+class Scraper(
+    val requestBuilder: KtorRequestBuilder = KtorRequestBuilder(),
+    config: HttpClientConfig<*>.() -> Unit = EMPTY_CONFIG
+) {
 
     companion object {
-        val clientTemplate = HttpClient(platformConfig.engine) {
+        val defaultClientConfig: HttpClientConfig<*>.() -> Unit = {
             followRedirects = false //We handle those ourselves
             install(KtorDynamicPlugin)
             install(HttpTimeout) {
@@ -35,29 +38,40 @@ class Scraper(val requestBuilder: KtorRequestBuilder = KtorRequestBuilder(), con
             }
 
             @Suppress("UNCHECKED_CAST")
-            (platformConfig.config as (HttpClientConfig<*>.()->Unit))()
+            (platformConfig.config as (HttpClientConfig<*>.() -> Unit))()
         }
 
-        internal val EMPTY_CONFIG: HttpClientConfig<*>.()->Unit = {}
+        internal val EMPTY_CONFIG: HttpClientConfig<*>.() -> Unit = {}
     }
 
-    private val client: HttpClient
+    private val client: HttpClient by lazy {
+        HttpClient(platformConfig.engine) {
+            defaultClientConfig()
+            config()
+        }
+    }
 
-    init {
-        client = if (config == EMPTY_CONFIG) {
-            clientTemplate
-        } else {
-            clientTemplate.config(config)
+    @Suppress("UNCHECKED_CAST")
+    private val relaxedClient by lazy {
+        HttpClient(platformConfig.engine) {
+            defaultClientConfig()
+            config()
+            (platformConfig.sslRelaxedConfig as HttpClientConfig<*>.() -> Unit)()
         }
     }
 
     @SkrapeItDsl
-    public fun request(block: KtorRequestBuilder.()->Unit): Scraper {
+    fun request(block: KtorRequestBuilder.() -> Unit): Scraper {
         requestBuilder.apply(block)
         return this
     }
 
-    public suspend fun scrape(): Result = client.request(requestBuilder).toResult()
+    suspend fun scrape(): Result = (
+            if (requestBuilder.sslRelaxed)
+                relaxedClient.request(requestBuilder)
+            else
+                client.request(requestBuilder)
+            ).toResult()
 
 }
 
@@ -84,7 +98,7 @@ private suspend fun HttpResponse.toResult(): Result = Result(
     responseBody = bodyAsText(),
     responseStatus = Result.Status(status.value, status.description),
     contentType = contentType()?.toString(),
-    headers = headers.flattenEntries().associateBy({ it.first }, { it.second}),
+    headers = headers.flattenEntries().associateBy({ it.first }, { it.second }),
     baseUri = request.url.toString(),
     cookies = setCookie().map { cookie -> cookie.toDomainCookie(this.request.url.toString().urlOrigin) }
 )
@@ -95,7 +109,7 @@ private suspend fun HttpResponse.toResult(): Result = Result(
  */
 class KtorDynamicPlugin {
 
-    companion object: HttpClientPlugin<Nothing, KtorDynamicPlugin> {
+    companion object : HttpClientPlugin<Nothing, KtorDynamicPlugin> {
         internal val KEY_USERAGENT = AttributeKey<String>("it.skrape.fetcher.KtorScraper.UserAgent")
         internal const val defaultUserAgent = "Mozilla/5.0 skrape.it"
         internal val KEY_FOLLOW_REDIRECT = AttributeKey<Boolean>("it.skrape.fetcher.KtorScraper.FollowRedirect")
@@ -113,7 +127,10 @@ class KtorDynamicPlugin {
                 context.headers.appendMissing(HttpHeaders.UserAgent, listOf(userAgent))
                 //If we set authentication apply it
                 if (context.attributes.contains(KEY_AUTHENTICATION)) {
-                    context.headers.appendMissing(HttpHeaders.Authorization, listOf(context.attributes[KEY_AUTHENTICATION].toHeaderValue()))
+                    context.headers.appendMissing(
+                        HttpHeaders.Authorization,
+                        listOf(context.attributes[KEY_AUTHENTICATION].toHeaderValue())
+                    )
                 }
                 val origin = execute(context)
                 if (context.attributes.getOrNull(KEY_FOLLOW_REDIRECT) != false)
@@ -179,6 +196,7 @@ private fun HttpStatusCode.isRedirect(): Boolean = when (value) {
     HttpStatusCode.TemporaryRedirect.value,
     HttpStatusCode.PermanentRedirect.value,
     HttpStatusCode.SeeOther.value -> true
+
     else -> false
 }
 
@@ -192,7 +210,10 @@ var KtorRequestBuilder.followRedirects: Boolean
 
 var KtorRequestBuilder.authentication: Authentication?
     get() = attributes.getOrNull(KtorDynamicPlugin.KEY_AUTHENTICATION)
-    set(value) = if (value == null) attributes.remove(KtorDynamicPlugin.KEY_AUTHENTICATION) else attributes.put(KtorDynamicPlugin.KEY_AUTHENTICATION, value)
+    set(value) = if (value == null) attributes.remove(KtorDynamicPlugin.KEY_AUTHENTICATION) else attributes.put(
+        KtorDynamicPlugin.KEY_AUTHENTICATION,
+        value
+    )
 
 var KtorRequestBuilder.sslRelaxed: Boolean
     get() = attributes.getOrNull(KtorDynamicPlugin.KEY_SSL_RELAXED) ?: false
@@ -230,7 +251,7 @@ fun KtorRequestBuilder.copy(
     it.timeout = timeout
 }
 
-fun KtorRequestBuilder.body(block: BodyBuilder.()->Unit) {
+fun KtorRequestBuilder.body(block: BodyBuilder.() -> Unit) {
     val builder = BodyBuilder().apply(block)
     contentType(io.ktor.http.ContentType.parse(builder.contentType))
     setBody(builder.data)
@@ -240,6 +261,7 @@ fun KtorRequestBuilder.body(block: BodyBuilder.()->Unit) {
 fun HttpClientConfig<*>.useBrowserUserAgent() {
     install(UserAgent) {
         //Use a chrome userAgent
-        agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36"
+        agent =
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36"
     }
 }
