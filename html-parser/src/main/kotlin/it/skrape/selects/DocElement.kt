@@ -30,6 +30,15 @@ public class DocElement internal constructor(
     public val ownText: String by lazy { element.ownText() }
 
     /**
+     * Get the (unencoded) text of all children of this element, including any newlines and spaces present in the
+     * original.
+     *
+     * @return unencoded, un-normalized text
+     * @see #text()
+     */
+    public val wholeText: String by lazy { element.wholeText() }
+
+    /**
      * Get all of the element's attributes.
      * @return Map<String, String>> of attribute key value pairs
      */

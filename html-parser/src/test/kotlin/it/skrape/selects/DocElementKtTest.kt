@@ -71,6 +71,17 @@ class DocElementKtTest {
     }
 
     @Test
+    fun `can get the element's whole text - not-encoded, un-normalized with whitespaces etc`() {
+        expectThat(aValidElement.wholeText).isEqualTo(
+            """divs text        headline
+        paragraph
+            foo bar
+            fizz buzz
+        """
+        )
+    }
+
+    @Test
     fun `can get inner html of an element`() {
         expectThat(aValidElement.html).isEqualTo(
             """
