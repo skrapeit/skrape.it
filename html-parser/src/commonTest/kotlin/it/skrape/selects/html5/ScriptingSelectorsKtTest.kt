@@ -2,8 +2,7 @@ package it.skrape.selects.html5
 
 import aSelfClosingTag
 import aValidDocument
-import ch.tutteli.atrium.api.fluent.en_GB.toEqual
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.matchers.shouldBe
 import it.skrape.selects.attribute
 import kotlin.test.Test
 import kotlin.js.JsName
@@ -15,12 +14,12 @@ class ScriptingSelectorsKtTest {
 	fun `can parse script-tag`() {
         val selector = aValidDocument(aSelfClosingTag("script")).script {
             findAll {
-                expect(attribute("custom-attr")).toEqual("script-attr")
+                attribute("custom-attr").shouldBe("script-attr")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("script")
+        selector.shouldBe("script")
     }
 
     @JsName("CanParseCanvasTag")
@@ -28,12 +27,12 @@ class ScriptingSelectorsKtTest {
 	fun `can parse canvas-tag`() {
         val selector = aValidDocument(aSelfClosingTag("canvas")).canvas {
             findFirst {
-                expect(attribute("custom-attr")).toEqual("canvas-attr")
+                attribute("custom-attr").shouldBe("canvas-attr")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("canvas")
+        selector.shouldBe("canvas")
     }
 
     @JsName("CanParseNoscriptTag")
@@ -41,11 +40,11 @@ class ScriptingSelectorsKtTest {
 	fun `can parse noscript-tag`() {
         val selector = aValidDocument(aSelfClosingTag("noscript")).noscript {
             findAll {
-                expect(attribute("custom-attr")).toEqual("noscript-attr")
+                attribute("custom-attr").shouldBe("noscript-attr")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("noscript")
+        selector.shouldBe("noscript")
     }
 }

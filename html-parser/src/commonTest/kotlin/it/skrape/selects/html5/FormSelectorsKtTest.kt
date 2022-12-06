@@ -3,8 +3,7 @@ package it.skrape.selects.html5
 import aSelfClosingTag
 import aStandardTag
 import aValidDocument
-import ch.tutteli.atrium.api.fluent.en_GB.toEqual
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 import kotlin.js.JsName
 
@@ -15,12 +14,12 @@ class FormSelectorsKtTest {
 	fun `can parse button-tag`() {
         val selector = aValidDocument(aStandardTag("button")).button {
             findFirst {
-                expect(text).toEqual("i'm a button")
+                text.shouldBe("i'm a button")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("button")
+        selector.shouldBe("button")
     }
 
     @JsName("CanParseDatalistTag")
@@ -28,12 +27,12 @@ class FormSelectorsKtTest {
 	fun `can parse datalist-tag`() {
         val selector = aValidDocument(aStandardTag("datalist")).datalist {
             findFirst {
-                expect(text).toEqual("i'm a datalist")
+                text.shouldBe("i'm a datalist")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("datalist")
+        selector.shouldBe("datalist")
     }
 
     @JsName("CanParseFieldsetTag")
@@ -41,12 +40,12 @@ class FormSelectorsKtTest {
 	fun `can parse fieldset-tag`() {
         val selector = aValidDocument(aStandardTag("fieldset")).fieldset {
             findFirst {
-                expect(text).toEqual("i'm a fieldset")
+                text.shouldBe("i'm a fieldset")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("fieldset")
+        selector.shouldBe("fieldset")
     }
 
     @JsName("CanParseFormTag")
@@ -54,12 +53,12 @@ class FormSelectorsKtTest {
 	fun `can parse form-tag`() {
         val selector = aValidDocument(aStandardTag("form")).form {
             findFirst {
-                expect(text).toEqual("i'm a form")
+                text.shouldBe("i'm a form")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("form")
+        selector.shouldBe("form")
     }
 
     @JsName("CanParseInputTag")
@@ -67,12 +66,12 @@ class FormSelectorsKtTest {
 	fun `can parse input-tag`() {
         val selector = aValidDocument(aSelfClosingTag("input")).input {
             findFirst {
-                expect(attribute("custom-attr")).toEqual("input-attr")
+                attribute("custom-attr").shouldBe("input-attr")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("input")
+        selector.shouldBe("input")
     }
 
     @JsName("CanParseLabelTag")
@@ -80,12 +79,12 @@ class FormSelectorsKtTest {
 	fun `can parse label-tag`() {
         val selector = aValidDocument(aStandardTag("label")).label {
             findFirst {
-                expect(text).toEqual("i'm a label")
+                text.shouldBe("i'm a label")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("label")
+        selector.shouldBe("label")
     }
 
     @JsName("CanParseLegendTag")
@@ -93,12 +92,12 @@ class FormSelectorsKtTest {
 	fun `can parse legend-tag`() {
         val selector = aValidDocument(aStandardTag("legend")).legend {
             findFirst {
-                expect(text).toEqual("i'm a legend")
+                text.shouldBe("i'm a legend")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("legend")
+        selector.shouldBe("legend")
     }
 
     @JsName("CanParseMeterTag")
@@ -106,12 +105,12 @@ class FormSelectorsKtTest {
 	fun `can parse meter-tag`() {
         val selector = aValidDocument(aStandardTag("meter")).meter {
             findFirst {
-                expect(text).toEqual("i'm a meter")
+                text.shouldBe("i'm a meter")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("meter")
+        selector.shouldBe("meter")
     }
 
     @JsName("CanParseOptgroupTag")
@@ -119,12 +118,12 @@ class FormSelectorsKtTest {
 	fun `can parse optgroup-tag`() {
         val selector = aValidDocument(aStandardTag("optgroup")).optgroup {
             findFirst {
-                expect(text).toEqual("i'm a optgroup")
+                text.shouldBe("i'm a optgroup")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("optgroup")
+        selector.shouldBe("optgroup")
     }
 
     @JsName("CanParseOptionTag")
@@ -132,12 +131,12 @@ class FormSelectorsKtTest {
 	fun `can parse option-tag`() {
         val selector = aValidDocument(aStandardTag("option")).option {
             findFirst {
-                expect(text).toEqual("i'm a option")
+                text.shouldBe("i'm a option")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("option")
+        selector.shouldBe("option")
     }
 
     @JsName("CanParseOutputTag")
@@ -145,12 +144,12 @@ class FormSelectorsKtTest {
 	fun `can parse output-tag`() {
         val selector = aValidDocument(aStandardTag("output")).output {
             findFirst {
-                expect(text).toEqual("i'm a output")
+                text.shouldBe("i'm a output")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("output")
+        selector.shouldBe("output")
     }
 
     @JsName("CanParseProgressTag")
@@ -158,12 +157,12 @@ class FormSelectorsKtTest {
 	fun `can parse progress-tag`() {
         val selector = aValidDocument(aStandardTag("progress")).progress {
             findFirst {
-                expect(text).toEqual("i'm a progress")
+                text.shouldBe("i'm a progress")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("progress")
+        selector.shouldBe("progress")
     }
 
     @JsName("CanParseSelectTag")
@@ -171,12 +170,12 @@ class FormSelectorsKtTest {
 	fun `can parse select-tag`() {
         val selector = aValidDocument(aStandardTag("select")).select {
             findFirst {
-                expect(text).toEqual("i'm a select")
+                text.shouldBe("i'm a select")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("select")
+        selector.shouldBe("select")
     }
 
     @JsName("CanParseTextareaTag")
@@ -184,11 +183,11 @@ class FormSelectorsKtTest {
 	fun `can parse textarea-tag`() {
         val selector = aValidDocument(aStandardTag("textarea")).textarea {
             findFirst {
-                expect(text).toEqual("i'm a textarea")
+                text.shouldBe("i'm a textarea")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("textarea")
+        selector.shouldBe("textarea")
     }
 }

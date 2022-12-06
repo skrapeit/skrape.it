@@ -1,8 +1,7 @@
 package it.skrape.matchers
 
-import ch.tutteli.atrium.api.fluent.en_GB.toEqual
-import ch.tutteli.atrium.api.fluent.en_GB.toThrow
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.shouldBe
 import it.skrape.fetcher.Result
 import kotlin.js.JsName
 import kotlin.test.Test
@@ -22,7 +21,7 @@ class StatusMatchersKtTest {
         val returnedContentTypeValue = Result.Status(httpStatus.code, httpStatus.message) toBe httpStatus
         returnedContentTypeValue.copy(code = 999) toBeNot httpStatus
         returnedContentTypeValue.copy(message = "xxx") toBeNot httpStatus
-        expect(returnedContentTypeValue).toEqual(httpStatus.toStatus())
+        returnedContentTypeValue.shouldBe(httpStatus.toStatus())
     }
 
     @JsName("WillThrowExceptionForNoneMatchingStatusCodes")
@@ -30,9 +29,9 @@ class StatusMatchersKtTest {
 	fun `will throw exception for none matching status codes`() = testParameterized<HttpStatus>("^((?!xx).)*\$", ::matchNoneCodeTest)
     
     fun matchNoneCodeTest(httpStatus: HttpStatus) {
-        expect {
+        shouldThrow<AssertionError> {
             Result.Status(httpStatus.code + 1, httpStatus.message) toBe httpStatus
-        }.toThrow<AssertionError>()
+        }
     }
 
     @JsName("WillThrowExceptionForNoneMatchingStatusMessage")
@@ -40,9 +39,9 @@ class StatusMatchersKtTest {
 	fun `will throw exception for none matching status message`() = testParameterized<HttpStatus>("^((?!xx).)*\$", ::matchNoneStatusTest)
 
     fun matchNoneStatusTest(httpStatus: HttpStatus) {
-        expect {
+        shouldThrow<AssertionError> {
             Result.Status(httpStatus.code, httpStatus.message + "foo") toBe httpStatus
-        }.toThrow<AssertionError>()
+        }
     }
 
     @JsName("CanMatchStatusCodeByFirstDigitAndIgnoringMessage")

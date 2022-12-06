@@ -1,7 +1,6 @@
 package it.skrape.matchers
 
-import ch.tutteli.atrium.api.fluent.en_GB.toEqual
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.matchers.shouldBe
 import kotlin.js.JsName
 import kotlin.test.Test
 
@@ -16,7 +15,7 @@ class ContentTypeHeaderMatchersKtTest {
     fun testExactMatch(contentType:ContentTypes) {
         val returnedContentTypeValue = contentType.value toBe contentType
         "${contentType.value}foo" toBeNot contentType
-        expect(returnedContentTypeValue).toEqual(contentType.value)
+        returnedContentTypeValue.shouldBe(contentType.value)
     }
 
     @JsName("CanMatchPartialContentTypesFromString")

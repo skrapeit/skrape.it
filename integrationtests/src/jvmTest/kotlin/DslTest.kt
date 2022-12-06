@@ -1,7 +1,8 @@
+import io.ktor.client.request.*
+import io.ktor.http.*
 import it.skrape.core.document
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.*
-import it.skrape.fetcher.request.UrlBuilder
 import it.skrape.matchers.*
 import it.skrape.matchers.ContentTypes.*
 import it.skrape.selects.*
@@ -16,8 +17,6 @@ import org.junit.jupiter.api.condition.DisabledOnOs
 import org.junit.jupiter.api.condition.OS
 import org.junit.jupiter.api.parallel.Execution
 import org.junit.jupiter.api.parallel.ExecutionMode
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.EnumSource
 import strikt.api.expect
 import strikt.api.expectThat
 import strikt.api.expectThrows
@@ -38,7 +37,7 @@ class DslTest {
         wiremock.setupStub(path = "/example")
         skrape(HttpFetcher) {
             request {
-                url = "${wiremock.httpUrl}/example"
+                url("${wiremock.httpUrl}/example")
             }
 
             response {
@@ -83,7 +82,7 @@ class DslTest {
 
         skrape(HttpFetcher) {
             request {
-                url = "${wiremock.httpsUrl}/example"
+                url("${wiremock.httpsUrl}/example")
                 sslRelaxed = true
             }
 
@@ -98,7 +97,7 @@ class DslTest {
 
         skrape(HttpFetcher) {
             request {
-                url = "${wiremock.httpUrl}/example"
+                url("${wiremock.httpUrl}/example")
             }
 
             response {
@@ -124,7 +123,7 @@ class DslTest {
         skrape(HttpFetcher) {
             request {
                 followRedirects = false
-                url = "${wiremock.httpUrl}/"
+                url("${wiremock.httpUrl}/")
             }
 
             response {
@@ -142,7 +141,7 @@ class DslTest {
 
         skrape(HttpFetcher) {
             request {
-                url = "${wiremock.httpUrl}/"
+                url("${wiremock.httpUrl}/")
             }
             response {
                 val header = httpHeader("Content-Type") {
@@ -164,7 +163,7 @@ class DslTest {
 
         skrape(HttpFetcher) {
             request {
-                url = "${wiremock.httpUrl}/"
+                url("${wiremock.httpUrl}/")
             }
             response {
                 val headers = httpHeaders {
@@ -181,7 +180,7 @@ class DslTest {
 
         skrape(HttpFetcher) {
             request {
-                url = "${wiremock.httpUrl}/"
+                url("${wiremock.httpUrl}/")
             }
             response {
                 htmlDocument {
@@ -201,7 +200,7 @@ class DslTest {
 
         skrape(HttpFetcher) {
             request {
-                url = "${wiremock.httpUrl}/"
+                url("${wiremock.httpUrl}/")
             }
             response {
                 status {
@@ -218,8 +217,8 @@ class DslTest {
 
         skrape(HttpFetcher) {
             request {
-                url = "${wiremock.httpUrl}/"
-                method = Method.POST
+                url("${wiremock.httpUrl}/")
+                method = HttpMethod.Post
             }
             response {
 
@@ -250,7 +249,7 @@ class DslTest {
         expectThrows<SocketTimeoutException> {
             skrape(HttpFetcher) {
                 request {
-                    url = "${wiremock.httpUrl}/"
+                    url("${wiremock.httpUrl}/")
                     timeout = 2000
                 }
                 response {}
@@ -271,7 +270,7 @@ class DslTest {
 
         skrape(HttpFetcher) {
             request {
-                url = "${wiremock.httpUrl}/"
+                url("${wiremock.httpUrl}/")
             }
 
             val extracted = response {
@@ -293,7 +292,7 @@ class DslTest {
 
         val extracted = skrape(HttpFetcher) {
             request {
-                url = "${wiremock.httpUrl}/"
+                url("${wiremock.httpUrl}/")
             }
 
             extractIt<MyOtherObject> {
@@ -309,7 +308,7 @@ class DslTest {
 
         val extracted = skrape(HttpFetcher) {
             request {
-                url = "${wiremock.httpUrl}/"
+                url("${wiremock.httpUrl}/")
             }
 
             extractIt<MyObject> {
@@ -347,7 +346,7 @@ class DslTest {
 
         val extracted = skrape(HttpFetcher) {
             request {
-                url = "${wiremock.httpUrl}/"
+                url("${wiremock.httpUrl}/")
             }
 
             extractIt<MyDataClass> {
@@ -386,7 +385,7 @@ class DslTest {
 
         val extracted = skrape(HttpFetcher) {
             request {
-                url = "${wiremock.httpUrl}/"
+                url("${wiremock.httpUrl}/")
             }
 
             response {
@@ -415,7 +414,7 @@ class DslTest {
         expectThrows<ElementNotFoundException> {
             skrape(HttpFetcher) {
                 request {
-                    url = "${wiremock.httpUrl}/"
+                    url("${wiremock.httpUrl}/")
                 }
                 response {
                     htmlDocument {
@@ -428,12 +427,10 @@ class DslTest {
 
 
     @Test
-    fun `will return empty list if element could not be found and Doc mode is relaxed`() {
-
-
+    fun `will return empty list if element could not be found and Doc mode is relaxed`() = runTest {
         skrape(HttpFetcher) {
             request {
-                url = "${wiremock.httpUrl}/"
+                url("${wiremock.httpUrl}/")
             }
             response {
                 htmlDocument {
@@ -456,7 +453,7 @@ class DslTest {
         expectThrows<ElementNotFoundException> {
             skrape(HttpFetcher) {
                 request {
-                    url = "${wiremock.httpUrl}/"
+                    url("${wiremock.httpUrl}/")
                 }
                 response {
                     htmlDocument {
@@ -481,7 +478,7 @@ class DslTest {
 
         val extracted = skrape(HttpFetcher) {
             request {
-                url = "${wiremock.httpUrl}/"
+                url("${wiremock.httpUrl}/")
             }
 
             response {
@@ -729,7 +726,7 @@ class DslTest {
 
         val interestingLink = skrape(HttpFetcher) {
             request {
-                url = "${wiremock.httpUrl}/"
+                url("${wiremock.httpUrl}/")
             }
             response {
                 htmlDocument {
@@ -742,7 +739,7 @@ class DslTest {
 
         skrape(BrowserFetcher) {
             request {
-                url = "${wiremock.httpUrl}$interestingLink"
+                url("${wiremock.httpUrl}$interestingLink")
             }
             response {
                 htmlDocument {
@@ -774,7 +771,7 @@ class DslTest {
 
         skrape(BrowserFetcher) {
             request {
-                url = "${wiremock.httpUrl}/"
+                url("${wiremock.httpUrl}/")
             }
             response {
                 htmlDocument {
@@ -798,7 +795,7 @@ class DslTest {
                     launch {
                         skrape(HttpFetcher) {
                             request {
-                                url = "${wiremock.httpUrl}/delayed"
+                                url("${wiremock.httpUrl}/delayed")
                                 timeout = 20_000
                             }
                             response {
@@ -824,7 +821,7 @@ class DslTest {
             repeat(5) {
                 skrape(HttpFetcher) {
                     request {
-                        url = "${wiremock.httpUrl}/delayed"
+                        url("${wiremock.httpUrl}/delayed")
                         timeout = 15_000
                     }
                     response {
@@ -849,9 +846,9 @@ class DslTest {
     @Test
     fun `can use preconfigured client`() = runTest {
 
-        val fetcher: Scraper<Request> = skrape(HttpFetcher) {
+        val fetcher: Scraper = skrape(HttpFetcher) {
             request {
-                url = "${wiremock.httpUrl}/"
+                url("${wiremock.httpUrl}/")
                 followRedirects = false
             }
         }
@@ -909,15 +906,15 @@ class DslTest {
     }
 
     @Test
-    fun `can build url via dsl`() {
+    fun `can build url via dsl`() = runTest {
         val client = skrape(HttpFetcher) {
             request {
-                method = Method.POST // defaults to GET
-                url = "https://foo.com:12345/foo#bar?xxx"
+                method = HttpMethod.Post // defaults to GET
+                url("https://foo.com:12345/foo#bar?xxx")
                 url {
-                    protocol = UrlBuilder.Protocol.HTTPS
+                    protocol = URLProtocol.HTTPS
                     port = 12345
-                    path = "/foo"
+                    path("/foo")
                     host = "foo.com"
                     queryParam {
                         "foo" to "bar"
@@ -931,7 +928,7 @@ class DslTest {
             }
         }
 
-        expectThat(client.preparedRequest.url)
+        expectThat(client.requestBuilder.url.toString())
             .isEqualTo("https://foo.com:12345/foo#modal?foo=bar&fizz=buzz&bar=null&afew=1,2,0.4711,null&someKey")
     }
 
@@ -941,10 +938,10 @@ class DslTest {
     }
 
     @Test
-    fun `can scrape our docs page with JS-rendering`() {
+    fun `can scrape our docs page with JS-rendering`() = runTest {
         skrape(BrowserFetcher) {
             request {
-                url = "https://docs.skrape.it/docs/"
+                url("https://docs.skrape.it/docs/")
             }
 
             response {
@@ -956,10 +953,10 @@ class DslTest {
     }
 
     @Test
-    fun `can scrape our docs page without JS-rendering`() {
+    fun `can scrape our docs page without JS-rendering`() = runTest {
         skrape(HttpFetcher) {
             request {
-                url = "https://docs.skrape.it/docs/"
+                url("https://docs.skrape.it/docs/")
             }
             response {
                 htmlDocument {
@@ -969,13 +966,12 @@ class DslTest {
         }
     }
 
-    @ParameterizedTest(name = "can NOT scrape basic auth protected websites without credentials in {0}-mode")
-    @EnumSource(FetchersTestEnum::class)
-    fun `can NOT scrape basic auth protected websites without credentials`(fetcherMode: FetchersTestEnum) {
+    @Test
+    fun `can NOT scrape basic auth protected websites without credentials`() = runTest {
 
-        skrape(fetcherMode.fetcher) {
+        skrape {
             request {
-                url = "$httpBin/basic-auth/cr1z/secure"
+                url("$httpBin/basic-auth/cr1z/secure")
             }
 
             response {
@@ -987,13 +983,12 @@ class DslTest {
         }
     }
 
-    @ParameterizedTest(name = "can scrape basic auth protected websites in {0}-mode")
-    @EnumSource(FetchersTestEnum::class)
-    fun `can scrape basic auth protected websites`(fetcherMode: FetchersTestEnum) {
+    @Test
+    fun `can scrape basic auth protected websites`() = runTest {
 
-        skrape(fetcherMode.fetcher) {
+        skrape {
             request {
-                url = "$httpBin/basic-auth/cr1z/secure"
+                url("$httpBin/basic-auth/cr1z/secure")
 
                 authentication = basic {
                     username = "cr1z"
@@ -1136,9 +1131,4 @@ class DslTest {
             }
         }
     }
-}
-
-@Suppress("unused")
-enum class FetchersTestEnum(val fetcher: BlockingFetcher<Request>) {
-    HTTP(HttpFetcher), BROWSER(BrowserFetcher)
 }

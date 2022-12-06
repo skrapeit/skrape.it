@@ -12,7 +12,7 @@ kotlin {
             dependencies {
                 api(projects.htmlParser)
                 api(projects.dsl)
-                api(projects.fetcher.baseFetcher)
+                api(projects.fetcher)
             }
         }
     }

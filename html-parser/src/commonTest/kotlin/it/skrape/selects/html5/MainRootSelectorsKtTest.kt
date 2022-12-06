@@ -1,8 +1,7 @@
 package it.skrape.selects.html5
 
 import aValidDocument
-import ch.tutteli.atrium.api.fluent.en_GB.toEqual
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 import kotlin.js.JsName
 
@@ -13,11 +12,11 @@ class MainRootSelectorsKtTest {
 	fun `can pick html-tag`() {
         val selector = aValidDocument().html("") {
             findFirst {
-                expect(attribute("lang")).toEqual("en")
+                attribute("lang").shouldBe("en")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("html")
+        selector.shouldBe("html")
     }
 }

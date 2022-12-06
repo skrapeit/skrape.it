@@ -1,8 +1,7 @@
 package it.skrape.core
 
-import ch.tutteli.atrium.api.fluent.en_GB.toEqual
-import ch.tutteli.atrium.api.fluent.en_GB.toThrow
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.shouldBe
 import io.ktor.utils.io.bits.*
 import io.ktor.utils.io.core.*
 import io.ktor.utils.io.streams.*
@@ -19,7 +18,7 @@ class ParserTestJVM {
     fun `can read html from file`() = runTest  {
         val fileToParse = getInputFromFile("example.html")
         val parsedFile = htmlDocument(fileToParse)
-        expect(parsedFile.titleText).toEqual("i'm the title")
+        parsedFile.titleText.shouldBe("i'm the title")
     }
 
 
@@ -27,7 +26,7 @@ class ParserTestJVM {
     fun `can read html from file and invoke document lambda`() = runTest  {
         val fileToParse = getInputFromFile("example.html")
         htmlDocument(fileToParse) {
-            expect(titleText).toEqual("i'm the title")
+            titleText.shouldBe("i'm the title")
         }
     }
 
@@ -35,29 +34,29 @@ class ParserTestJVM {
     fun `can read html from file with custom charset`() = runTest  {
         val fileToParse = getInputFromFile("example.html")
         val parsedFile = htmlDocument(fileToParse, charset = Charsets.ISO_8859_1)
-        expect(parsedFile.titleText).toEqual("i'm the title")
+        parsedFile.titleText.shouldBe("i'm the title")
     }
 
     @Test
     fun `can read html from file with custom charset and invoke document lambda`() = runTest {
         val fileToParse = getInputFromFile("example.html")
         htmlDocument(fileToParse, charset = Charsets.ISO_8859_1) {
-            expect(titleText).toEqual("i'm the title")
+            titleText.shouldBe("i'm the title")
         }
     }
 
     @Test
     fun `will throw exception if file not found`() {
-        expect {
+        shouldThrow<FileNotFoundException> {
             htmlDocument(File("invalid"))
-        }.toThrow<FileNotFoundException>()
+        }
     }
 
     @Test
     fun `will throw exception if file not found and invoke document lambda`() {
-        expect {
+        shouldThrow<FileNotFoundException> {
             htmlDocument(File("invalid")) {}
-        }.toThrow<FileNotFoundException>()
+        }
     }
 }
 

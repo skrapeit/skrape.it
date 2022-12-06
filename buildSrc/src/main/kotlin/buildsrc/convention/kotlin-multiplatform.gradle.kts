@@ -19,7 +19,7 @@ configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-                implementation(Deps.Atrium.fluentCommon)
+                implementation(Deps.Kotest.assertions)
                 implementation(Deps.KotlinX.Coroutines.test)
             }
         }
@@ -42,7 +42,7 @@ afterEvaluate {
                 }
                 return@matching false
             }
-            testSourceSets.onEach { println("Test sourceSet $it") }.forEach { it.languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi") }
+            testSourceSets.forEach { it.languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi") }
         }
     }
 }

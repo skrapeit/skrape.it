@@ -1,8 +1,7 @@
 package it.skrape.selects.html5
 
 import a3TimesNestedTag
-import ch.tutteli.atrium.api.fluent.en_GB.toEqual
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.matchers.shouldBe
 import it.skrape.core.htmlDocument
 import it.skrape.selects.text
 import kotlin.js.JsName
@@ -16,20 +15,20 @@ class EmbeddedContentSelectorsKtTest {
         htmlDocument(a3TimesNestedTag("applet")) {
             applet {
                 findAll {
-                    expect(text).toEqual("123 23 3")
+                    text.shouldBe("123 23 3")
                 }
                 findFirst {
-                    expect(text).toEqual("123")
+                    text.shouldBe("123")
                 }
                 applet {
                     findAll {
-                        expect(text).toEqual("23 3")
+                        text.shouldBe("23 3")
                     }
                     findFirst {
-                        expect(text).toEqual("23")
+                        text.shouldBe("23")
                         applet {
                             findAll {
-                                expect(text).toEqual("3")
+                                text.shouldBe("3")
                             }
                         }
                     }
@@ -44,20 +43,20 @@ class EmbeddedContentSelectorsKtTest {
         htmlDocument("<div><embed src='helloworld.swf'></div>") {
             embed {
                 findFirst {
-                    expect(attribute("src")).toEqual("helloworld.swf")
+                    attribute("src").shouldBe("helloworld.swf")
                 }
             }
             div {
                 findFirst {
                     embed {
                         findFirst {
-                            expect(attribute("src")).toEqual("helloworld.swf")
+                            attribute("src").shouldBe("helloworld.swf")
                         }
                     }
                 }
                 embed {
                     findFirst {
-                        expect(attribute("src")).toEqual("helloworld.swf")
+                        attribute("src").shouldBe("helloworld.swf")
                     }
                 }
             }
@@ -70,20 +69,20 @@ class EmbeddedContentSelectorsKtTest {
         htmlDocument("<div><iframe>hello</iframe></div>") {
             iframe {
                 findAll {
-                    expect(text).toEqual("hello")
+                    text.shouldBe("hello")
                 }
             }
             div {
                 findFirst {
                     iframe {
                         findFirst {
-                            expect(text).toEqual("hello")
+                            text.shouldBe("hello")
                         }
                     }
                 }
                 iframe {
                     findFirst {
-                        expect(text).toEqual("hello")
+                        text.shouldBe("hello")
                     }
                 }
             }
@@ -96,20 +95,20 @@ class EmbeddedContentSelectorsKtTest {
         htmlDocument("<div><noembed src='helloworld.swf'></div>") {
             noembed {
                 findFirst {
-                    expect(attribute("src")).toEqual("helloworld.swf")
+                    attribute("src").shouldBe("helloworld.swf")
                 }
             }
             div {
                 findFirst {
                     noembed {
                         findFirst {
-                            expect(attribute("src")).toEqual("helloworld.swf")
+                            attribute("src").shouldBe("helloworld.swf")
                         }
                     }
                 }
                 noembed {
                     findFirst {
-                        expect(attribute("src")).toEqual("helloworld.swf")
+                        attribute("src").shouldBe("helloworld.swf")
                     }
                 }
             }
@@ -122,20 +121,20 @@ class EmbeddedContentSelectorsKtTest {
         htmlDocument(a3TimesNestedTag("object")) {
             `object` {
                 findAll {
-                    expect(text).toEqual("123 23 3")
+                    text.shouldBe("123 23 3")
                 }
                 findFirst {
-                    expect(text).toEqual("123")
+                    text.shouldBe("123")
                 }
                 `object` {
                     findAll {
-                        expect(text).toEqual("23 3")
+                        text.shouldBe("23 3")
                     }
                     findFirst {
-                        expect(text).toEqual("23")
+                        text.shouldBe("23")
                         `object` {
                             findAll {
-                                expect(text).toEqual("3")
+                                text.shouldBe("3")
                             }
                         }
                     }
@@ -150,20 +149,20 @@ class EmbeddedContentSelectorsKtTest {
         htmlDocument("<div><param name='autoplay' value='true'></div>") {
             param {
                 findFirst {
-                    expect(attribute("name")).toEqual("autoplay")
+                    attribute("name").shouldBe("autoplay")
                 }
             }
             div {
                 findFirst {
                     param {
                         findFirst {
-                            expect(attribute("name")).toEqual("autoplay")
+                            attribute("name").shouldBe("autoplay")
                         }
                     }
                 }
                 param {
                     findFirst {
-                        expect(attribute("name")).toEqual("autoplay")
+                        attribute("name").shouldBe("autoplay")
                     }
                 }
             }
@@ -176,20 +175,20 @@ class EmbeddedContentSelectorsKtTest {
         htmlDocument(a3TimesNestedTag("picture")) {
             picture {
                 findAll {
-                    expect(text).toEqual("123 23 3")
+                    text.shouldBe("123 23 3")
                 }
                 findFirst {
-                    expect(text).toEqual("123")
+                    text.shouldBe("123")
                 }
                 picture {
                     findAll {
-                        expect(text).toEqual("23 3")
+                        text.shouldBe("23 3")
                     }
                     findFirst {
-                        expect(text).toEqual("23")
+                        text.shouldBe("23")
                         picture {
                             findAll {
-                                expect(text).toEqual("3")
+                                text.shouldBe("3")
                             }
                         }
                     }
@@ -204,20 +203,20 @@ class EmbeddedContentSelectorsKtTest {
         htmlDocument("<div><source src='horse.ogg' type='audio/ogg'></div>") {
             source {
                 findFirst {
-                    expect(attribute("src")).toEqual("horse.ogg")
+                    attribute("src").shouldBe("horse.ogg")
                 }
             }
             div {
                 findFirst {
                     source {
                         findFirst {
-                            expect(attribute("src")).toEqual("horse.ogg")
+                            attribute("src").shouldBe("horse.ogg")
                         }
                     }
                 }
                 source {
                     findFirst {
-                        expect(attribute("src")).toEqual("horse.ogg")
+                        attribute("src").shouldBe("horse.ogg")
                     }
                 }
             }

@@ -1,8 +1,7 @@
-import ch.tutteli.atrium.api.fluent.en_GB.its
-import ch.tutteli.atrium.api.fluent.en_GB.toContain
-import ch.tutteli.atrium.api.fluent.en_GB.toEqual
-import ch.tutteli.atrium.api.fluent.en_GB.toStartWith
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.assertions.assertSoftly
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldContain
+import io.kotest.matchers.string.shouldStartWith
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -26,22 +25,22 @@ internal class TestcontainerTest {
     @JsName("WiremockAsTestcontainerReturnsCorrespondingUrls")
     @Test
     fun `wiremock as testcontainer returns corresponding urls`() = runTest {
-        expect(getWiremock()) {
-            its { httpUrl }.toStartWith("http://localhost:")
-            its { httpsUrl }.toStartWith("https://localhost:")
+        assertSoftly(getWiremock()) {
+            httpUrl.shouldStartWith("http://localhost:")
+            httpsUrl.shouldStartWith("https://localhost:")
         }
     }
 
     @JsName("WiremockIsRunningAndAdminPageIsAvailableUnderHttpPort")
     @Test
     fun `wiremock is running and admin page is available under http port`() = runTest {
-        expect(callWiremock(path = "/__admin/").status).toEqual(HttpStatusCode.OK)
+        callWiremock(path = "/__admin/").status.shouldBe(HttpStatusCode.OK)
     }
 
     @JsName("WiremockIsRunningAndAdminPageIsAvailableUnderHttpsPort")
     @Test
     fun `wiremock is running and admin page is available under https port`() = runTest {
-        expect(callWiremock(baseUri = getWiremock().httpsUrl, path = "/__admin/").status).toEqual(HttpStatusCode.OK)
+        callWiremock(baseUri = getWiremock().httpsUrl, path = "/__admin/").status.shouldBe(HttpStatusCode.OK)
     }
 
     @JsName("CanAddFileForStub")
@@ -49,11 +48,11 @@ internal class TestcontainerTest {
     fun `can add file for stub`() = runTest {
         getWiremock().setupStub()
         val call = callWiremock(path = "/__files/example.html")
-        expect(call) {
-            its(HttpResponse::status).toEqual(HttpStatusCode.OK)
-            its(HttpResponse::contentType).toEqual(ContentType.parse("text/html"))
+        assertSoftly(call) {
+            status.shouldBe(HttpStatusCode.OK)
+            contentType().shouldBe(ContentType.parse("text/html"))
         }
-        expect(call.bodyAsText()).toContain("<title>i'm the title</title>")
+        call.bodyAsText().shouldContain("<title>i'm the title</title>")
     }
 
     @JsName("CanOverrideStubs")
@@ -72,9 +71,8 @@ internal class TestcontainerTest {
                 }
             })
         }
-        expect(callWiremock(path = "/abc")) {
-            its(HttpResponse::status).toEqual(HttpStatusCode.fromValue(418))
-        }
+
+        callWiremock(path = "/abc").status.shouldBe(HttpStatusCode.fromValue(418))
 
 
         getWiremock().ktorClient.post {
@@ -90,17 +88,17 @@ internal class TestcontainerTest {
                 }
             })
         }
-        expect(callWiremock(path = "/abc").status).toEqual(HttpStatusCode.fromValue(201))
+        callWiremock(path = "/abc").status.shouldBe(HttpStatusCode.fromValue(201))
     }
 
     @JsName("CanOverrideConvenientStubs")
     @Test
     fun `can override convenient stubs`() = runTest {
         getWiremock().setupStub(path = "/xyz", statusCode = 418)
-        expect(callWiremock(path = "/xyz").status).toEqual(HttpStatusCode.fromValue(418))
+        callWiremock(path = "/xyz").status.shouldBe(HttpStatusCode.fromValue(418))
 
         getWiremock().setupStub(path = "/abc", statusCode = 201)
-        expect(callWiremock(path = "/abc").status).toEqual(HttpStatusCode.fromValue(201))
+        callWiremock(path = "/abc").status.shouldBe(HttpStatusCode.fromValue(201))
     }
 
     private suspend fun callWiremock(baseUri: String? = null, path: String): HttpResponse {

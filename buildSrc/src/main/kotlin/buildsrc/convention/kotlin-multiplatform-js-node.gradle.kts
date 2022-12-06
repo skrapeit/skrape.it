@@ -6,25 +6,18 @@ plugins {
 }
 
 configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
-    js {
+    js(IR) {
         nodejs {
             //Setup tests to use mocha and supply the project path as an environment-variable to enable location of resources
             testTask {
                 environment("PROJECT_PATH", projectDir.absolutePath)
                 environment("ROOT_PROJECT_PATH", rootProject.projectDir.absolutePath)
                 useMocha {
-                    this.timeout = "5000"
+                    this.timeout = "100000"
                 }
             }
+            binaries.executable()
         }
         useCommonJs()
-    }
-
-    sourceSets {
-        val jsTest by getting {
-            dependencies {
-                implementation(Deps.Atrium.fluentJs)
-            }
-        }
     }
 }

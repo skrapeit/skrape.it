@@ -1,8 +1,7 @@
 package it.skrape.selects
 
-import ch.tutteli.atrium.api.fluent.en_GB.toEqual
-import ch.tutteli.atrium.api.fluent.en_GB.toThrow
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.shouldBe
 import it.skrape.core.htmlDocument
 import it.skrape.selects.html5.p
 import kotlin.test.Test
@@ -21,11 +20,11 @@ class ResultExtractorsTest {
 	@Test
 	fun `will throw custom exception if element could not be found via element function`() {
 
-        expect {
+        shouldThrow<ElementNotFoundException> {
             htmlDocument(htmlSnippet) {
                 findAll(".nonExistent")
             }
-        }.toThrow<ElementNotFoundException>()
+        }
     }
 
     @JsName("CanPickElementsViaSelectFunctions")
@@ -35,7 +34,7 @@ class ResultExtractorsTest {
         htmlDocument(htmlSnippet) {
             p {
                 findFirst {
-                    expect(text).toEqual(expectedValue)
+                    text.shouldBe(expectedValue)
                 }
             }
         }

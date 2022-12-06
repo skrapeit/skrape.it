@@ -16,13 +16,6 @@ configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
             )
         }
 
-        //Atrium requires JVM-Target 11 so compile the tests for JVM 11
-        val test by compilations.getting {
-            kotlinOptions {
-                jvmTarget = "11"
-            }
-        }
-
         val main by compilations.getting {
             kotlinOptions {
                 jvmTarget = "1.8"
@@ -46,7 +39,6 @@ configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
                 implementation(Deps.strikt)
                 implementation(Deps.Mockk.mockk)
                 implementation(Deps.Mockk.dslJvm)
-                implementation(Deps.Atrium.fluentJvm)
             }
         }
     }

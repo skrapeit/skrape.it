@@ -3,8 +3,7 @@ package it.skrape.selects.html5
 import aSelfClosingTag
 import aStandardTag
 import aValidDocument
-import ch.tutteli.atrium.api.fluent.en_GB.toEqual
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 import kotlin.js.JsName
 
@@ -15,12 +14,12 @@ class MediaSelectorsKtTest {
 	fun `can parse area-tag`() {
         val selector = aValidDocument(aStandardTag("area")).area {
             findFirst {
-                expect(className).toEqual("area-class")
+                className.shouldBe("area-class")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("area")
+        selector.shouldBe("area")
     }
 
     @JsName("CanParseAudioTag")
@@ -28,12 +27,12 @@ class MediaSelectorsKtTest {
 	fun `can parse audio-tag`() {
         val selector = aValidDocument(aStandardTag("audio")).audio {
             findFirst {
-                expect(text).toEqual("i'm a audio")
+                text.shouldBe("i'm a audio")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("audio")
+        selector.shouldBe("audio")
     }
 
     @JsName("CanParseImgTag")
@@ -41,12 +40,12 @@ class MediaSelectorsKtTest {
 	fun `can parse img-tag`() {
         val selector = aValidDocument(aSelfClosingTag("img")).img {
             findFirst {
-                expect(attribute("custom-attr")).toEqual("img-attr")
+                attribute("custom-attr").shouldBe("img-attr")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("img")
+        selector.shouldBe("img")
     }
 
     @JsName("CanParseMapTag")
@@ -54,12 +53,12 @@ class MediaSelectorsKtTest {
 	fun `can parse map-tag`() {
         val selector = aValidDocument(aStandardTag("map")).map {
             findFirst {
-                expect(text).toEqual("i'm a map")
+                text.shouldBe("i'm a map")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("map")
+        selector.shouldBe("map")
     }
 
     @JsName("CanParseTrackTag")
@@ -67,12 +66,12 @@ class MediaSelectorsKtTest {
 	fun `can parse track-tag`() {
         val selector = aValidDocument(aSelfClosingTag("track")).track {
             findFirst {
-                expect(attribute("custom-attr")).toEqual("track-attr")
+                attribute("custom-attr").shouldBe("track-attr")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("track")
+        selector.shouldBe("track")
     }
 
     @JsName("CanParseVideoTag")
@@ -80,11 +79,11 @@ class MediaSelectorsKtTest {
 	fun `can parse video-tag`() {
         val selector = aValidDocument(aStandardTag("video")).video {
             findFirst {
-                expect(text).toEqual("i'm a video")
+                text.shouldBe("i'm a video")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("video")
+        selector.shouldBe("video")
     }
 }

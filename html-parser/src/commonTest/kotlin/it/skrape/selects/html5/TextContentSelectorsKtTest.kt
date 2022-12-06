@@ -1,8 +1,7 @@
 package it.skrape.selects.html5
 
 import aValidDocument
-import ch.tutteli.atrium.api.fluent.en_GB.toEqual
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.matchers.shouldBe
 import kotlin.js.JsName
 import kotlin.test.Test
 
@@ -13,12 +12,12 @@ class TextContentSelectorsKtTest {
 	fun `can parse blockquote-tag`() {
         val selector = aValidDocument().blockquote {
             findFirst {
-                expect(text).toEqual("i'm a quote")
+                text.shouldBe("i'm a quote")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("blockquote")
+        selector.shouldBe("blockquote")
     }
 
     @JsName("CanParseDdTag")
@@ -26,12 +25,12 @@ class TextContentSelectorsKtTest {
 	fun `can parse dd-tag`() {
         val selector = aValidDocument().dd {
             findAll {
-                expect(this.size).toEqual(2)
+                this.size.shouldBe(2)
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("dd")
+        selector.shouldBe("dd")
     }
 
     @JsName("CanParseDirTag")
@@ -39,12 +38,12 @@ class TextContentSelectorsKtTest {
 	fun `can parse dir-tag`() {
         val selector = aValidDocument().dir {
             findAll {
-                expect(this.size).toEqual(1)
+                this.size.shouldBe(1)
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("dir")
+        selector.shouldBe("dir")
     }
 
     @JsName("CanParseDlTag")
@@ -52,12 +51,12 @@ class TextContentSelectorsKtTest {
 	fun `can parse dl-tag`() {
         val selector = aValidDocument().dl {
             findAll {
-                expect(this.size).toEqual(1)
+                this.size.shouldBe(1)
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("dl")
+        selector.shouldBe("dl")
     }
 
     @JsName("CanParseDtTag")
@@ -65,12 +64,12 @@ class TextContentSelectorsKtTest {
 	fun `can parse dt-tag`() {
         val selector = aValidDocument().dt {
             findAll {
-                expect(this.size).toEqual(2)
+                this.size.shouldBe(2)
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("dt")
+        selector.shouldBe("dt")
     }
 
     @JsName("CanParseFigcaptionTag")
@@ -78,12 +77,12 @@ class TextContentSelectorsKtTest {
 	fun `can parse figcaption-tag`() {
         val selector = aValidDocument().figcaption {
             findAll {
-                expect(this.size).toEqual(1)
+                this.size.shouldBe(1)
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("figcaption")
+        selector.shouldBe("figcaption")
     }
 
     @JsName("CanParseFigureTag")
@@ -91,12 +90,12 @@ class TextContentSelectorsKtTest {
 	fun `can parse figure-tag`() {
         val selector = aValidDocument().figure {
             findAll {
-                expect(this.size).toEqual(1)
+                this.size.shouldBe(1)
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("figure")
+        selector.shouldBe("figure")
     }
 
     @JsName("CanParseHrTag")
@@ -104,12 +103,12 @@ class TextContentSelectorsKtTest {
 	fun `can parse hr-tag`() {
         val selector = aValidDocument().hr {
             findAll {
-                expect(this.size).toEqual(2)
+                this.size.shouldBe(2)
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("hr")
+        selector.shouldBe("hr")
     }
 
     @JsName("CanParseLiTag")
@@ -117,12 +116,12 @@ class TextContentSelectorsKtTest {
 	fun `can parse li-tag`() {
         val selector = aValidDocument().li {
             findAll {
-                expect(this.size).toEqual(11)
+                this.size.shouldBe(11)
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("li")
+        selector.shouldBe("li")
     }
 
     @JsName("CanParseOlTag")
@@ -130,12 +129,12 @@ class TextContentSelectorsKtTest {
 	fun `can parse ol-tag`() {
         val selector = aValidDocument().ol {
             findAll {
-                expect(this.size).toEqual(1)
+                this.size.shouldBe(1)
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("ol")
+        selector.shouldBe("ol")
     }
 
     @JsName("CanParseUlTag")
@@ -143,12 +142,12 @@ class TextContentSelectorsKtTest {
 	fun `can parse ul-tag`() {
         val selector = aValidDocument().ul {
             findAll {
-                expect(this.size).toEqual(1)
+                this.size.shouldBe(1)
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("ul")
+        selector.shouldBe("ul")
     }
 
     @JsName("CanParsePTag")
@@ -156,12 +155,12 @@ class TextContentSelectorsKtTest {
 	fun `can parse p-tag`() {
         val selector = aValidDocument().p {
             findLast {
-                expect(text).toEqual("i'm the last paragraph")
+                text.shouldBe("i'm the last paragraph")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("p")
+        selector.shouldBe("p")
     }
 
     @JsName("CanCascadePTag")
@@ -178,7 +177,7 @@ class TextContentSelectorsKtTest {
             }
         }
 
-        expect(selector).toEqual("p.first p.second p.third")
+        selector.shouldBe("p.first p.second p.third")
     }
 
     @JsName("CanParsePreTag")
@@ -186,11 +185,11 @@ class TextContentSelectorsKtTest {
 	fun `can parse pre-tag`() {
         val selector = aValidDocument().pre {
             findFirst {
-                expect(text).toEqual("i'm a pre")
+                text.shouldBe("i'm a pre")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("pre")
+        selector.shouldBe("pre")
     }
 }

@@ -2,8 +2,7 @@ package it.skrape.selects.html5
 
 import aStandardTag
 import aValidDocument
-import ch.tutteli.atrium.api.fluent.en_GB.toEqual
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 import kotlin.js.JsName
 
@@ -14,12 +13,12 @@ class InteractiveSelectorsKtTest {
 	fun `can parse details-tag`() {
         val selector = aValidDocument(aStandardTag("details")).details {
             findFirst {
-                expect(text).toEqual("i'm a details")
+                text.shouldBe("i'm a details")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("details")
+        selector.shouldBe("details")
     }
 
     @JsName("CanParseDialogTag")
@@ -27,12 +26,12 @@ class InteractiveSelectorsKtTest {
 	fun `can parse dialog-tag`() {
         val selector = aValidDocument(aStandardTag("dialog")).dialog {
             findFirst {
-                expect(text).toEqual("i'm a dialog")
+                text.shouldBe("i'm a dialog")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("dialog")
+        selector.shouldBe("dialog")
     }
 
     @JsName("CanParseMenuTag")
@@ -40,12 +39,12 @@ class InteractiveSelectorsKtTest {
 	fun `can parse menu-tag`() {
         val selector = aValidDocument(aStandardTag("menu")).menu {
             findFirst {
-                expect(text).toEqual("i'm a menu")
+                text.shouldBe("i'm a menu")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("menu")
+        selector.shouldBe("menu")
     }
 
     @JsName("CanParseMenuitemTag")
@@ -53,12 +52,12 @@ class InteractiveSelectorsKtTest {
 	fun `can parse menuitem-tag`() {
         val selector = aValidDocument(aStandardTag("menuitem")).menuitem {
             findFirst {
-                expect(text).toEqual("i'm a menuitem")
+                text.shouldBe("i'm a menuitem")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("menuitem")
+        selector.shouldBe("menuitem")
     }
 
     @JsName("CanParseSummaryTag")
@@ -66,11 +65,11 @@ class InteractiveSelectorsKtTest {
 	fun `can parse summary-tag`() {
         val selector = aValidDocument(aStandardTag("summary")).summary {
             findFirst {
-                expect(text).toEqual("i'm a summary")
+                text.shouldBe("i'm a summary")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("summary")
+        selector.shouldBe("summary")
     }
 }

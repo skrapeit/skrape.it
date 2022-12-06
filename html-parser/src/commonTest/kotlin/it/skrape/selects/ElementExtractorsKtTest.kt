@@ -1,9 +1,8 @@
 package it.skrape.selects
 
 import aValidDocument
-import ch.tutteli.atrium.api.fluent.en_GB.toContainExactly
-import ch.tutteli.atrium.api.fluent.en_GB.toEqual
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.shouldBe
 import it.skrape.selects.html5.*
 import kotlin.js.JsName
 import kotlin.test.Test
@@ -17,10 +16,10 @@ class ElementExtractorsKtTest {
 	fun `can pick elements firstOccurrence`() {
         val firstText = document.p {
             findFirst {
-                text.also { expect(it).toEqual("i'm a paragraph") }
+                text.also { it.shouldBe("i'm a paragraph") }
             }
         }
-        expect(firstText).toEqual("i'm a paragraph")
+        firstText.shouldBe("i'm a paragraph")
     }
 
     @JsName("CanPickOwnElementTextOnly")
@@ -29,10 +28,10 @@ class ElementExtractorsKtTest {
         val firstText = document.div {
             withClass = "with-children"
             findFirst {
-                ownText.also { expect(it).toEqual("i'm a parent div") }
+                ownText.also { it.shouldBe("i'm a parent div") }
             }
         }
-        expect(firstText).toEqual("i'm a parent div")
+        firstText.shouldBe("i'm a parent div")
     }
 
     @JsName("CanPickElementsSecondOccurrence")
@@ -40,10 +39,10 @@ class ElementExtractorsKtTest {
 	fun `can pick elements secondOccurrence`() {
         val secondText = document.p {
             findSecond {
-                text.also { expect(it).toEqual("i'm a second paragraph") }
+                text.also { it.shouldBe("i'm a second paragraph") }
             }
         }
-        expect(secondText).toEqual("i'm a second paragraph")
+        secondText.shouldBe("i'm a second paragraph")
     }
 
     @JsName("CanPickElementsByIndex")
@@ -51,10 +50,10 @@ class ElementExtractorsKtTest {
 	fun `can pick elements by index`() {
         val secondText = document.p {
             findByIndex(1) {
-                text.also { expect(it).toEqual("i'm a second paragraph") }
+                text.also { it.shouldBe("i'm a second paragraph") }
             }
         }
-        expect(secondText).toEqual("i'm a second paragraph")
+        secondText.shouldBe("i'm a second paragraph")
     }
 
     @JsName("CanPickElementsByIndexViaInvokeIndex")
@@ -62,10 +61,10 @@ class ElementExtractorsKtTest {
 	fun `can pick elements by index via invoke index`() {
         val secondText = document.p {
             1 {
-                text.also { expect(it).toEqual("i'm a second paragraph") }
+                text.also { it.shouldBe("i'm a second paragraph") }
             }
         }
-        expect(secondText).toEqual("i'm a second paragraph")
+        secondText.shouldBe("i'm a second paragraph")
     }
 
     @JsName("CanPickElementsThirdOccurrence")
@@ -73,10 +72,10 @@ class ElementExtractorsKtTest {
 	fun `can pick elements thirdOccurrence`() {
         val thirdText = document.p {
             findThird {
-                text.also { expect(it).toEqual("i'm a paragraph with word break") }
+                text.also { it.shouldBe("i'm a paragraph with word break") }
             }
         }
-        expect(thirdText).toEqual("i'm a paragraph with word break")
+        thirdText.shouldBe("i'm a paragraph with word break")
     }
 
     @JsName("CanPickElementsLastOccurrence")
@@ -84,10 +83,10 @@ class ElementExtractorsKtTest {
 	fun `can pick elements lastOccurrence`() {
         val lastText = document.p {
             findLast {
-                text.also { expect(it).toEqual("i'm the last paragraph") }
+                text.also { it.shouldBe("i'm the last paragraph") }
             }
         }
-        expect(lastText).toEqual("i'm the last paragraph")
+        lastText.shouldBe("i'm the last paragraph")
     }
 
     @JsName("CanPickElementsSecondlastOccurrence")
@@ -95,10 +94,10 @@ class ElementExtractorsKtTest {
 	fun `can pick elements secondlastOccurrence`() {
         val secondLastText = document.p {
             findSecondLast {
-                text.also { expect(it).toEqual("i'm a paragraph with word break") }
+                text.also { it.shouldBe("i'm a paragraph with word break") }
             }
         }
-        expect(secondLastText).toEqual("i'm a paragraph with word break")
+        secondLastText.shouldBe("i'm a paragraph with word break")
     }
 
     @JsName("CanPickElementWithCascadingSelectorOnTableFoot")
@@ -109,13 +108,13 @@ class ElementExtractorsKtTest {
                 tr {
                     td {
                         findSecond {
-                            text.also { expect(it).toEqual("second foot td") }
+                            text.also { it.shouldBe("second foot td") }
                         }
                     }
                 }
             }
         }
-        expect(pickedElementText).toEqual("second foot td")
+        pickedElementText.shouldBe("second foot td")
     }
 
     @JsName("CanPickElementWithCascadingSelectorOnTableHead")
@@ -126,13 +125,13 @@ class ElementExtractorsKtTest {
                 tr {
                     th {
                         findFirst {
-                            text.also { expect(it).toEqual("first th") }
+                            text.also { it.shouldBe("first th") }
                         }
                     }
                 }
             }
         }
-        expect(pickedElementText).toEqual("first th")
+        pickedElementText.shouldBe("first th")
     }
 
     @JsName("CanPickElementWithCascadingSelectorOnTableBody")
@@ -149,7 +148,7 @@ class ElementExtractorsKtTest {
                 }
             }
         }
-        expect(pickedElementText).toEqual("barfoo")
+        pickedElementText.shouldBe("barfoo")
     }
 
     @JsName("CanPickElementWithCascadingSelectorOnTableColgroup")
@@ -165,7 +164,7 @@ class ElementExtractorsKtTest {
                 }
             }
         }
-        expect(pickedElementText).toEqual("2")
+        pickedElementText.shouldBe("2")
     }
 
     @JsName("CanPickElementByCssSelectorMatchingRegex")
@@ -175,7 +174,7 @@ class ElementExtractorsKtTest {
 
         aValidDocument {
             findBySelectorMatching(someRegex) {
-                expect(map { it.toCssSelector }).toContainExactly(
+                map { it.toCssSelector }.shouldContainExactly(
                     "html > body > header > nav > ol.ordered-navigation",
                     "html > body > header > nav > ul.unordered-navigation"
                 )
@@ -190,7 +189,7 @@ class ElementExtractorsKtTest {
 
         aValidDocument {
             someRegex {
-                expect(map { it.toCssSelector }).toContainExactly(
+                map { it.toCssSelector }.shouldContainExactly(
                     "html > body > header > nav > ol.ordered-navigation",
                     "html > body > header > nav > ul.unordered-navigation"
                 )

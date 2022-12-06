@@ -1,8 +1,7 @@
 package it.skrape.selects.html5
 
 import a3TimesNestedTag
-import ch.tutteli.atrium.api.fluent.en_GB.toEqual
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.matchers.shouldBe
 import it.skrape.core.htmlDocument
 import it.skrape.selects.text
 import kotlin.js.JsName
@@ -16,20 +15,20 @@ class DemarcatingEditsSelectorsKtTest {
         htmlDocument(a3TimesNestedTag("del")) {
             del {
                 findAll {
-                    expect(text).toEqual("1 2 3 2 3 3")
+                    text.shouldBe("1 2 3 2 3 3")
                 }
                 findFirst {
-                    expect(text).toEqual("1 2 3")
+                    text.shouldBe("1 2 3")
                 }
                 del {
                     findAll {
-                        expect(text).toEqual("2 3 3")
+                        text.shouldBe("2 3 3")
                     }
                     findFirst {
-                        expect(text).toEqual("2 3")
+                        text.shouldBe("2 3")
                         del {
                             findAll {
-                                expect(text).toEqual("3")
+                                text.shouldBe("3")
                             }
                         }
                     }
@@ -44,20 +43,20 @@ class DemarcatingEditsSelectorsKtTest {
         htmlDocument(a3TimesNestedTag("ins")) {
             ins {
                 findAll {
-                    expect(text).toEqual("1 2 3 2 3 3")
+                    text.shouldBe("1 2 3 2 3 3")
                 }
                 findFirst {
-                    expect(text).toEqual("1 2 3")
+                    text.shouldBe("1 2 3")
                 }
                 ins {
                     findAll {
-                        expect(text).toEqual("2 3 3")
+                        text.shouldBe("2 3 3")
                     }
                     findFirst {
-                        expect(text).toEqual("2 3")
+                        text.shouldBe("2 3")
                         ins {
                             findAll {
-                                expect(text).toEqual("3")
+                                text.shouldBe("3")
                             }
                         }
                     }

@@ -2,11 +2,9 @@ package it.skrape.selects.html5
 
 import aStandardTag
 import aValidDocument
-import ch.tutteli.atrium.api.fluent.en_GB.message
-import ch.tutteli.atrium.api.fluent.en_GB.toContainExactly
-import ch.tutteli.atrium.api.fluent.en_GB.toEqual
-import ch.tutteli.atrium.api.fluent.en_GB.toThrow
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.assertions.throwables.shouldThrowWithMessage
+import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.shouldBe
 import it.skrape.selects.ElementNotFoundException
 import kotlin.js.JsName
 import kotlin.test.Test
@@ -21,20 +19,20 @@ class CustomTagSelectorsKtTest {
                 findFirst {
                     customTag("h1") {
                         findFirst {
-                            expect(text).toEqual("i'm the headline")
+                            text.shouldBe("i'm the headline")
                         }
                     }
                 }
             }
             customTag("custom-tag") {
                 findFirst {
-                    expect(text).toEqual("i'm a custom-tag")
+                    text.shouldBe("i'm a custom-tag")
                 }
                 toCssSelector
             }
         }
 
-        expect(selector).toEqual("custom-tag")
+        selector.shouldBe("custom-tag")
 
     }
 
@@ -44,12 +42,12 @@ class CustomTagSelectorsKtTest {
         val selector = aValidDocument(aStandardTag("custom-tag")) {
             "custom-tag" {
                 findFirst {
-                    expect(text).toEqual("i'm a custom-tag")
+                    text.shouldBe("i'm a custom-tag")
                 }
                 toCssSelector
             }
         }
-        expect(selector).toEqual("custom-tag")
+        selector.shouldBe("custom-tag")
     }
 
     @Test
@@ -64,13 +62,13 @@ class CustomTagSelectorsKtTest {
                 }
             }
         }
-        expect(selector).toEqual("div#schnitzel bar.foobar")
+        selector.shouldBe("div#schnitzel bar.foobar")
     }
 
     @Test
     @JsName("CanCascadeCustomSelectorFromInvokedString")
     fun `can cascade custom selector from invoked string`() {
-        expect {
+        shouldThrowWithMessage<ElementNotFoundException>("""Could not find element "div#schnitzel bar.foobar foo[xxx]"""") {
             aValidDocument {
                 "div" {
                     withId = "schnitzel"
@@ -84,7 +82,7 @@ class CustomTagSelectorsKtTest {
                     }
                 }
             }
-        }.toThrow<ElementNotFoundException> { message { toEqual("""Could not find element "div#schnitzel bar.foobar foo[xxx]"""") } }
+        }
     }
 
     @Test
@@ -102,6 +100,6 @@ class CustomTagSelectorsKtTest {
                 }
             }
         }
-        expect(selector).toContainExactly("div#schnitzel bar.foobar foo[xxx]")
+        selector.shouldContainExactly("div#schnitzel bar.foobar foo[xxx]")
     }
 }

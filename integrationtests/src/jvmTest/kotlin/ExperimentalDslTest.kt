@@ -1,4 +1,5 @@
 
+import io.ktor.client.request.*
 import io.ktor.http.*
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.HttpFetcher
@@ -30,7 +31,7 @@ class ExperimentalDslTest {
 
         val myText = skrape(HttpFetcher) {
             request {
-                url = "${wiremock.httpUrl}/example"
+                url("${wiremock.httpUrl}/example")
             }
 
             response {
@@ -81,12 +82,14 @@ class ExperimentalDslTest {
         print(myText)
     }
 
+    /*
+    TODO: Proxy currently not implemented
     @Disabled
     @Test
-    fun `can use proxy to fetch sites`() {
+    fun `can use proxy to fetch sites`() = runTest {
         skrape(HttpFetcher) {
             request {
-                url = "http://some.url"
+                url("http://some.url")
 
                 proxy = proxyBuilder {
                     http(Url("http://some.proxy:12345"))
@@ -98,4 +101,5 @@ class ExperimentalDslTest {
 
         }
     }
+    */
 }

@@ -42,7 +42,14 @@ function TestContainerMiddleware() {
                     }
                     //Fire up the container
                     //console.log("Starting container")
-                    container = await container.start()
+                    try {
+                        container = await container.start()
+                    } catch(error) {
+                        console.log("Error while creating Testcontainer")
+                        response.writeHead(500)
+                        response.end()
+                        break;
+                    }
                     //console.log("Fetching info")
                     //assemble info and return
                     const info = {

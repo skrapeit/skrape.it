@@ -9,6 +9,10 @@ plugins {
     id("buildsrc.convention.version-management")
 }
 
+repositories {
+    mavenCentral()
+}
+
 description =
     "Common build config that can be applied to all subprojects. This should typically be language-independent."
 

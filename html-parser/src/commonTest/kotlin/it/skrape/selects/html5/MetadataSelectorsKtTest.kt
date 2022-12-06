@@ -3,9 +3,8 @@ package it.skrape.selects.html5
 import aSelfClosingTag
 import aStandardTag
 import aValidDocument
-import ch.tutteli.atrium.api.fluent.en_GB.toContain
-import ch.tutteli.atrium.api.fluent.en_GB.toEqual
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldContain
 import it.skrape.selects.attribute
 import kotlin.test.Test
 import kotlin.js.JsName
@@ -17,12 +16,12 @@ class MetadataSelectorsKtTest {
 	fun `can parse base-tag`() {
         val selector = aValidDocument(aSelfClosingTag("base")).base {
             findFirst {
-                expect(attribute("custom-attr")).toEqual("base-attr")
+                attribute("custom-attr").shouldBe("base-attr")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("base")
+        selector.shouldBe("base")
     }
 
     @JsName("CanParseHeadTag")
@@ -32,13 +31,13 @@ class MetadataSelectorsKtTest {
             findFirst {
                 val myHtml = this.html
                 val myOuter = this.outerHtml
-                expect(myHtml).toContain("<title>i'm the title</title>")
-                expect(myOuter).toContain("<title>i'm the title</title>")
+                myHtml.shouldContain("<title>i'm the title</title>")
+                myOuter.shouldContain("<title>i'm the title</title>")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("head")
+        selector.shouldBe("head")
     }
 
 
@@ -47,12 +46,12 @@ class MetadataSelectorsKtTest {
 	fun `can parse link-tag`() {
         val selector = aValidDocument(aSelfClosingTag("link")).link {
             findAll {
-                expect(attribute("custom-attr")).toEqual("link-attr")
+                attribute("custom-attr").shouldBe("link-attr")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("link")
+        selector.shouldBe("link")
     }
 
     @JsName("CanParseMetaTag")
@@ -60,12 +59,12 @@ class MetadataSelectorsKtTest {
 	fun `can parse meta-tag`() {
         val selector = aValidDocument(aSelfClosingTag("meta")).meta {
             findAll {
-                expect(attribute("custom-attr")).toEqual("meta-attr")
+                attribute("custom-attr").shouldBe("meta-attr")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("meta")
+        selector.shouldBe("meta")
     }
 
     @JsName("CanParseStyleTag")
@@ -73,12 +72,12 @@ class MetadataSelectorsKtTest {
 	fun `can parse style-tag`() {
         val selector = aValidDocument().style {
             findFirst {
-                expect(toString()).toContain(".top-bar{margin-top")
+                toString().shouldContain(".top-bar{margin-top")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("style")
+        selector.shouldBe("style")
     }
 
     @JsName("CanParseTitleTag")
@@ -86,11 +85,11 @@ class MetadataSelectorsKtTest {
 	fun `can parse title-tag`() {
         val selector = aValidDocument(aStandardTag("title")).title {
             findFirst {
-                expect(text).toEqual("i'm the title")
+                text.shouldBe("i'm the title")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("title")
+        selector.shouldBe("title")
     }
 }

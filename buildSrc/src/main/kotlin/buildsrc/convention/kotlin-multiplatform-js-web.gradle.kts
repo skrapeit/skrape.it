@@ -6,7 +6,7 @@ plugins {
 }
 
 configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
-    js {
+    js(IR) {
         browser {
             //Setup webpack to use a common directory for it's configuration
             //TODO: Maybe write a task to enable per project configs additionally to a general webpack config
@@ -26,6 +26,7 @@ configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
                     useCoverage(html = true)
                 }
             }
+            binaries.executable()
         }
         useCommonJs()
     }
@@ -33,7 +34,7 @@ configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
     sourceSets {
         val jsTest by getting {
             dependencies {
-                implementation(Deps.Atrium.fluentJs)
+                implementation(devNpm("express","4.18.2"))
             }
         }
     }

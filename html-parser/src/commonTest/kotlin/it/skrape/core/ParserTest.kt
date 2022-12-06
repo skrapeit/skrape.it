@@ -1,7 +1,9 @@
 package it.skrape.core
 
-import ch.tutteli.atrium.api.fluent.en_GB.*
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.assertions.assertSoftly
+import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.maps.shouldContain
+import io.kotest.matchers.shouldBe
 import io.ktor.http.ContentDisposition.Companion.File
 import io.ktor.utils.io.charsets.*
 import io.ktor.utils.io.core.*
@@ -21,9 +23,9 @@ class ParserTest {
 
             val result = htmlDocument(html = htmlAsString)
 
-            expect(result) {
-                its { titleText }.toEqual("i'm the title")
-                its { result.findFirst("p").text }.toEqual("i'm a paragraph")
+            assertSoftly(result) {
+                titleText.shouldBe("i'm the title")
+                result.findFirst("p").text.shouldBe("i'm a paragraph")
             }
         }
     }
@@ -34,9 +36,9 @@ class ParserTest {
         val htmlAsString = getMarkupFromFile("example.html")
 
         htmlDocument(html = htmlAsString) {
-            expect(this) {
-                its { titleText }.toEqual("i'm the title")
-                its { findFirst("p").text }.toEqual("i'm a paragraph")
+            assertSoftly(this) {
+                titleText.shouldBe("i'm the title")
+                findFirst("p").text.shouldBe("i'm a paragraph")
             }
         }
     }
@@ -48,10 +50,10 @@ class ParserTest {
 
         val result = htmlDocument(html = htmlAsString, jsExecution = true)
 
-        expect(result) {
-            its { titleText }.toEqual("i'm the title")
-            its { findFirst("p").text }.toEqual("i'm a paragraph")
-            its { findFirst(".dynamic").text }.toEqual("I have been dynamically added via Javascript")
+        assertSoftly(result) {
+            titleText.shouldBe("i'm the title")
+            findFirst("p").text.shouldBe("i'm a paragraph")
+            findFirst(".dynamic").text.shouldBe("I have been dynamically added via Javascript")
         }
     }
 
@@ -61,10 +63,10 @@ class ParserTest {
         val htmlAsString = getMarkupFromFile("js.html")
 
         htmlDocument(html = htmlAsString, jsExecution = true) {
-            expect(this) {
-                its { titleText }.toEqual("i'm the title")
-                its { findFirst("p").text }.toEqual("i'm a paragraph")
-                its { findFirst(".dynamic").text }.toEqual("I have been dynamically added via Javascript")
+            assertSoftly(this) {
+                titleText.shouldBe("i'm the title")
+                findFirst("p").text.shouldBe("i'm a paragraph")
+                findFirst(".dynamic").text.shouldBe("I have been dynamically added via Javascript")
             }
         }
 
@@ -77,9 +79,9 @@ class ParserTest {
 
         val result = htmlDocument(html = htmlAsString, jsExecution = true)
 
-        expect(result) {
-            its { result.titleText }.toEqual("i'm the title")
-            its { result.findFirst("p").text }.toEqual("dynamically added")
+        assertSoftly(result) {
+            result.titleText.shouldBe("i'm the title")
+            result.findFirst("p").text.shouldBe("dynamically added")
         }
     }
 
@@ -89,9 +91,9 @@ class ParserTest {
         val htmlAsString = getMarkupFromFile("es6.html")
 
         htmlDocument(html = htmlAsString, jsExecution = true) {
-            expect(this) {
-                its { titleText }.toEqual("i'm the title")
-                its { findFirst("p").text }.toEqual("dynamically added")
+            assertSoftly(this) {
+                titleText.shouldBe("i'm the title")
+                findFirst("p").text.shouldBe("dynamically added")
             }
         }
 
@@ -107,7 +109,7 @@ class ParserTest {
                 withAttribute = "category" to "flowers"
                 "plant" {
                     findAll {
-                        expect(eachText).toContainExactly("rose", "tulip")
+                        eachText.shouldContainExactly("rose", "tulip")
                     }
                 }
             }
@@ -120,7 +122,7 @@ class ParserTest {
 	fun `can read html from input stream`() = runTest {
         val fileToParse = getInputFromFile("example.html")
         val parsedFile = htmlDocument(fileToParse)
-        expect(parsedFile.titleText).toEqual("i'm the title")
+        parsedFile.titleText.shouldBe("i'm the title")
     }
 
 
@@ -129,7 +131,7 @@ class ParserTest {
 	fun `can read html from input stream and invoke document lambda`() = runTest {
         val fileToParse = getInputFromFile("example.html")
         htmlDocument(fileToParse) {
-            expect(titleText).toEqual("i'm the title")
+            titleText.shouldBe("i'm the title")
         }
     }
 
@@ -138,7 +140,7 @@ class ParserTest {
 	fun `can read html from input stream with custom charset`() = runTest {
         val fileToParse = getInputFromFile("example.html")
         val parsedFile = htmlDocument(fileToParse, charset = Charsets.ISO_8859_1)
-        expect(parsedFile.titleText).toEqual("i'm the title")
+        parsedFile.titleText.shouldBe("i'm the title")
     }
 
     @Test
@@ -146,7 +148,7 @@ class ParserTest {
 	fun `can read html from input stream with custom charset and invoke document lambda`() = runTest {
         val fileToParse = getInputFromFile("example.html")
         htmlDocument(fileToParse, charset = Charsets.ISO_8859_1) {
-            expect(titleText).toEqual("i'm the title")
+            titleText.shouldBe("i'm the title")
         }
     }
 
@@ -156,7 +158,7 @@ class ParserTest {
         val markup = "<button disabled>submit</button>"
 
         with(htmlDocument(html = markup)) {
-            expect(button { findFirst { attributes } }).toContain("disabled" to "")
+            button { findFirst { attributes } }.shouldContain("disabled" to "")
         }
 
     }

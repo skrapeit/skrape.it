@@ -3,8 +3,17 @@ package it.skrape.selects
 import aValidDocument
 import aValidMarkupWithLinks
 import aValidMarkupWithPictures
-import ch.tutteli.atrium.api.fluent.en_GB.*
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.assertions.assertSoftly
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.inspectors.forAll
+import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.should
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.*
+import io.kotest.matchers.types.shouldBeInstanceOf
 import it.skrape.core.htmlDocument
 import it.skrape.selects.html5.*
 import it.skrape.selects.platform.Element
@@ -39,27 +48,27 @@ class DocElementKtTest {
     @Test
     fun `can get the element's tag name`() {
         val tagName = htmlDocument(aValidMarkup).findFirst(".fancy") { tagName }
-        expect(tagName).toEqual("p")
+        tagName.shouldBe("p")
     }
 
     @JsName("CanGetAllTagNamesOfAListOfElements")
     @Test
     fun `can get all tag names of a list of elements`() {
         val someElements = listOf(aValidElement, aValidElement)
-        expect(someElements.eachTagName).toContainExactly("div", "div")
+        someElements.eachTagName.shouldContainExactly("div", "div")
     }
 
     @JsName("CanGetTheElementsTextIncludingTextOfChildren")
     @Test
     fun `can get the element's text - including text of children`() {
-        expect(aValidElement.text).toEqual("divs text headline paragraph foo bar fizz buzz")
+        aValidElement.text.shouldBe("divs text headline paragraph foo bar fizz buzz")
     }
 
     @JsName("CanGetEachTextFromAListOfElements")
     @Test
     fun `can get each text from a list of elements`() {
         val someElements = listOf(aValidElement, aValidElement)
-        expect(someElements.eachText).toContainExactly(
+        someElements.eachText.shouldContainExactly(
             "divs text headline paragraph foo bar fizz buzz",
             "divs text headline paragraph foo bar fizz buzz"
         )
@@ -68,13 +77,13 @@ class DocElementKtTest {
     @JsName("CanGetTheElementsOwnTextExcludingTextOfChildren")
     @Test
     fun `can get the element's own text - excluding text of children`() {
-        expect(aValidElement.ownText).toEqual("divs text")
+        aValidElement.ownText.shouldBe("divs text")
     }
 
     @JsName("CanGetInnerHtmlOfAnElement")
     @Test
     fun `can get inner html of an element`() {
-        expect(aValidElement.html).toEqual(
+        aValidElement.html.shouldBe(
             """
             divs text 
             <h2 class="welcome" disabled>headline</h2> 
@@ -86,21 +95,21 @@ class DocElementKtTest {
     @JsName("CanGetOuterHtmlOfAnElement")
     @Test
     fun `can get outer html of an element`() {
-        expect(aValidElement.outerHtml) {
-            its { lines().first() }
-                .toStartWith("<div")
-                .toEndWith(">")
-                .and {
-                    its { " [\\w-]+(=\"[^\"]*\")?(?=\\s|>)".toRegex().findAll(this).map { it.value.trim() }.toList() }
-                        .toContain.inAnyOrder.only.values(
+        assertSoftly(aValidElement.outerHtml) {
+            lines().first()
+                .shouldStartWith("<div")
+                .shouldEndWith(">")
+                .should {
+                    " [\\w-]+(=\"[^\"]*\")?(?=\\s|>)".toRegex().findAll(it).map { it.value.trim() }.toList()
+                        .shouldContainExactlyInAnyOrder(
                             "class=\"clazz klass\"",
                             "foo=\"bar\"",
                             "fizz=\"buzz\"",
                             "data-foo=\"foobar\""
                         )
                 }
-            its { lines().drop(1) }
-                .toContainExactly(
+            lines().drop(1)
+                .shouldContainExactly(
                     " divs text ",
                     " <h2 class=\"welcome\" disabled>headline</h2> ",
                     " <p class=\"fancy\">paragraph <span>foo <b>bar</b></span> <span>fizz <b id=\"xxx\">buzz</b></span> </p>",
@@ -112,7 +121,7 @@ class DocElementKtTest {
     @JsName("isPresentWillReturnTrueIfElementIsPresent")
     @Test
     fun `'isPresent' will return true if element is present`() {
-        expect(aValidElement.isPresent).toEqual(true)
+        aValidElement.isPresent.shouldBe(true)
     }
 
     @JsName("isPresentWillReturnFalseIfElementIsNotPresent")
@@ -122,13 +131,13 @@ class DocElementKtTest {
             override fun getAllElements() = emptyElements()
         }
         val docElement = DocElement(element)
-        expect(docElement.isPresent).toEqual(false)
+        docElement.isPresent.shouldBe(false)
     }
 
     @JsName("isNotPresentWillReturnFalseIfElementIsPresent")
     @Test
     fun `'isNotPresent' will return false if element is present`() {
-        expect(aValidElement.isNotPresent).toEqual(false)
+        aValidElement.isNotPresent.shouldBe(false)
     }
 
     @JsName("isNotPresentWillReturnTrueIfElementIsNotPresent")
@@ -138,67 +147,67 @@ class DocElementKtTest {
             override fun getAllElements() = emptyElements()
         }
         val docElement = DocElement(element)
-        expect(docElement.isNotPresent).toEqual(true)
+        docElement.isNotPresent.shouldBe(true)
     }
 
     @JsName("isPresentWillReturnTrueIfListOfElementsArePresent")
     @Test
     fun `'isPresent' will return true if list of elements are present`() {
-        expect(aValidElement.allElements.isPresent).toEqual(true)
+        aValidElement.allElements.isPresent.shouldBe(true)
     }
 
     @JsName("isPresentWillReturnFalseIfListOfElementsAreNotPresent")
     @Test
     fun `'isPresent' will return false if list of elements are not present`() {
-        expect(emptyList<DocElement>().isPresent).toEqual(false)
+        emptyList<DocElement>().isPresent.shouldBe(false)
     }
 
     @JsName("isNotPresentWillReturnFalseIfListOfElementsArePresent")
     @Test
     fun `'isNotPresent' will return false if list of elements are present`() {
-        expect(aValidElement.allElements.isNotPresent).toEqual(false)
+        aValidElement.allElements.isNotPresent.shouldBe(false)
     }
 
     @JsName("isNotPresentWillReturnTrueIfListOfElementsAreNotPpresent")
     @Test
     fun `'isNotPresent' will return true if list of elements are not present`() {
-        expect(emptyList<DocElement>().isNotPresent).toEqual(true)
+        emptyList<DocElement>().isNotPresent.shouldBe(true)
     }
 
     @JsName("CanGetAllElementsUnderThisElementIncludingItself")
     @Test
     fun `can get all elements under this element including itself`() {
-        expect(aValidElement.allElements).toHaveSize(7)
-        expect(aValidElement.allElements[1].outerHtml).toEqual("""<h2 class="welcome" disabled>headline</h2>""")
+        aValidElement.allElements.shouldHaveSize(7)
+        aValidElement.allElements[1].outerHtml.shouldBe("""<h2 class="welcome" disabled>headline</h2>""")
     }
 
     @JsName("CanFindAllElementsWithinThisElementIncludingItselfAndInvokeThemToALambda")
     @Test
     fun `can find all elements within this element (including itself) and invoke them to a lambda`() {
         val text = aValidElement.findAll {
-            expect(size).toEqual(7)
-            expect(get(1).outerHtml).toEqual("""<h2 class="welcome" disabled>headline</h2>""")
+            size.shouldBe(7)
+            get(1).outerHtml.shouldBe("""<h2 class="welcome" disabled>headline</h2>""")
             get(1).text
         }
-        expect(text).toEqual("headline")
+        text.shouldBe("headline")
     }
 
     @JsName("CanFindAllElementsBySelectorFromWithinThisElementIncludingItself")
     @Test
     fun `can find all elements by selector from within this element (including itself)`() {
         val selection = aValidElement.findAll(".welcome")
-        expect(selection).toHaveSize(1)
-        expect(selection.text).toEqual("headline")
+        selection.shouldHaveSize(1)
+        selection.text.shouldBe("headline")
     }
 
     @JsName("CanFindAllElementsWithinThisElementBySelectorAndInvokeThemToLambdaThatWillReturnGenericValue")
     @Test
     fun `can find all elements within this element by selector and invoke them to lambda that will return generic value`() {
         val text = aValidElement.findAll(".welcome") {
-            expect(this).toHaveSize(1)
+            this.shouldHaveSize(1)
             text
         }
-        expect(text).toEqual("headline")
+        text.shouldBe("headline")
     }
 
     @JsName("CanFindFirstElementWithinThisElementBySelectorAndInvokeThemToLambdaThatWillReturnGenericValue")
@@ -207,33 +216,33 @@ class DocElementKtTest {
         val text = aValidElement.findFirst(".welcome") {
             text
         }
-        expect(text).toEqual("headline")
+        text.shouldBe("headline")
     }
 
     @JsName("CanFindFirstElementWithinThisElementBySelector")
     @Test
     fun `can find first element within this element by selector`() {
         val text = aValidElement.findFirst(".welcome").text
-        expect(text).toEqual("headline")
+        text.shouldBe("headline")
     }
 
     @JsName("CanGetTheCssClassNameOfAGivenElement")
     @Test
     fun `can get the css-class name of a given element`() {
-        expect(aValidElement.className).toEqual("clazz klass")
+        aValidElement.className.shouldBe("clazz klass")
     }
 
     @JsName("CanGetTheCssSelectorOfAGivenElement")
     @Test
     fun `can get the css-selector of a given element`() {
-        expect(aValidElement.toCssSelector).toEqual("div.clazz.klass")
+        aValidElement.toCssSelector.shouldBe("div.clazz.klass")
     }
 
     @JsName("WillReturnIdOnlyCssSelectorIfGivenElementHasAnIdAttribute")
     @Test
     fun `will return id only css-selector if given element has an id attribute`() {
         val elementWithId = DocElement(anElement.attr("id", "bazinga"))
-        expect(elementWithId.toCssSelector).toEqual("#bazinga")
+        elementWithId.toCssSelector.shouldBe("#bazinga")
     }
 
     @JsName("CanGetOwnCssSelector")
@@ -244,59 +253,65 @@ class DocElementKtTest {
             attr("key-only-attr", "")
         })
         //Complex expect since the order of the Attributes does not matter and might be different depending on the platform
-        expect(elementWithId.ownCssSelector).toStartWith("div#bazinga.clazz.klass").toContain.exactly(1).values(
+        val attributes = listOf(
             "div#bazinga.clazz.klass", "['key-only-attr']", "[foo='bar']", "[fizz='buzz']", "[data-foo='foobar']"
         )
+        assertSoftly(elementWithId) {
+            ownCssSelector.shouldStartWith("div#bazinga.clazz.klass")
+            attributes.forAll {
+                ownCssSelector.shouldContainOnlyOnce(it)
+            }
+        }
     }
 
     @JsName("OwnCssSelectorWillNotIncludeParentsIfAnyAvailable")
     @Test
     fun `ownCssSelector will not include parents if any available`() {
         val verboseCssSelector = htmlDocument(aValidMarkup) { b { findLast { ownCssSelector } } }
-        expect(verboseCssSelector).toEqual("b#xxx")
+        verboseCssSelector.shouldBe("b#xxx")
     }
 
     @JsName("CanGetParentsAsCssSelectorSyntaxIfAnyAvailable")
     @Test
     fun `can get parents as css selector syntax if any available`() {
         val verboseCssSelector = htmlDocument(aValidMarkup) { b { findLast { parentsCssSelector } } }
-        expect(verboseCssSelector).toEqual("html > body > p > span")
+        verboseCssSelector.shouldBe("html > body > p > span")
     }
 
     @JsName("ParentsAsCssSelectorSyntaxWillBeEmptyIfNoneExist")
     @Test
     fun `parents as css selector syntax will be empty if none exist`() {
-        expect(aValidElement.parentsCssSelector).toBeEmpty()
+        aValidElement.parentsCssSelector.shouldBeEmpty()
     }
 
     @JsName("WillReturnEmptyStringOnNonExistingAttribute")
     @Test
     fun `will return empty string on non existing attribute`() {
-        expect(aValidElement.attribute("non-existing")).toBeEmpty()
+        aValidElement.attribute("non-existing").shouldBeEmpty()
     }
 
     @JsName("WillReturnAttributeValueForAGivenAttributeKeyThatExists")
     @Test
     fun `will return attribute value for a given attribute key that exists`() {
-        expect(aValidElement.attribute("foo")).toEqual("bar")
+        aValidElement.attribute("foo").shouldBe("bar")
     }
 
     @JsName("WillReturnTrueIfAGivenAttributeKeyIsPresentAtGivenElement")
     @Test
     fun `will return true if a given attribute key is present at given element`() {
-        expect(aValidElement.hasAttribute("foo")).toEqual(true)
+        aValidElement.hasAttribute("foo").shouldBe(true)
     }
 
     @JsName("WillReturnFalseIfAGivenAttributeKeyIsNotPresentAtGivenElement")
     @Test
     fun `will return false if a given attribute key is not present at given element`() {
-        expect(aValidElement.hasAttribute("non-existing")).toEqual(false)
+        aValidElement.hasAttribute("non-existing").shouldBe(false)
     }
 
     @JsName("CanGetAllAttributesOfAnElement")
     @Test
     fun `can get all attributes of an element`() {
-        expect(aValidElement.attributes).toEqual(
+        aValidElement.attributes.shouldBe(
             mapOf(
                 "class" to "clazz klass",
                 "foo" to "bar",
@@ -309,7 +324,7 @@ class DocElementKtTest {
     @JsName("CanGetAllAttributeKeysOfAnElement")
     @Test
     fun `can get all attribute keys of an element`() {
-        expect(aValidElement.attributeKeys).toContain.inAnyOrder.exactly(1).values(
+        aValidElement.attributeKeys.shouldContainExactlyInAnyOrder(
             "class", "foo", "fizz", "data-foo"
         )
     }
@@ -317,7 +332,7 @@ class DocElementKtTest {
     @JsName("CanGetAllAttributeValuesOfAnElement")
     @Test
     fun `can get all attribute values of an element`() {
-        expect(aValidElement.attributeValues).toContain.inAnyOrder.exactly(1).values(
+        aValidElement.attributeValues.shouldContainExactlyInAnyOrder(
             "clazz klass", "bar", "buzz", "foobar"
         )
     }
@@ -326,7 +341,7 @@ class DocElementKtTest {
     @Test
     fun `can get all distinct attributes from a list of elements`() {
         val someElements = listOf(aValidElement, aValidElement)
-        expect(someElements.eachAttribute).toEqual(
+        someElements.eachAttribute.shouldBe(
             mapOf(
                 "class" to "clazz klass",
                 "foo" to "bar",
@@ -339,7 +354,7 @@ class DocElementKtTest {
     @JsName("CanGetAllDataAttributesOfAnElements")
     @Test
     fun `can get all data attributes of an elements`() {
-        expect(aValidElement.dataAttributes).toEqual(
+        aValidElement.dataAttributes.shouldBe(
             mapOf("data-foo" to "foobar")
         )
     }
@@ -348,7 +363,7 @@ class DocElementKtTest {
     @Test
     fun `can get all data attributes from a list of elements`() {
         val someElements = listOf(aValidElement, aValidElement)
-        expect(someElements.eachDataAttribute).toEqual(
+        someElements.eachDataAttribute.shouldBe(
             mapOf("data-foo" to "foobar")
         )
     }
@@ -356,21 +371,21 @@ class DocElementKtTest {
     @JsName("CanGetClassAttributeOfAnElements")
     @Test
     fun `can get class attribute of an elements`() {
-        expect(aValidElement.className).toEqual("clazz klass")
+        aValidElement.className.shouldBe("clazz klass")
     }
 
     @JsName("CanGetAllClassNamesAListOfElements")
     @Test
     fun `can get all class names a list of elements`() {
         val someElements = listOf(aValidElement, aValidElement)
-        expect(someElements.eachClassName).toContainExactly("clazz", "klass")
+        someElements.eachClassName.shouldContainExactly("clazz", "klass")
     }
 
     @JsName("CanCheckIfAnElementHasACertainClass")
     @Test
     fun `can check if an element has a certain class`() {
-        expect(aValidElement.hasClass("clazz")).toEqual(true)
-        expect(aValidElement.hasClass("invalid")).toEqual(false)
+        aValidElement.hasClass("clazz").shouldBe(true)
+        aValidElement.hasClass("invalid").shouldBe(false)
     }
 
     @JsName("CanInvokeACssSelectorAsStringToSearchChildrenOfGivenElement")
@@ -388,7 +403,7 @@ class DocElementKtTest {
             div {
                 withClass = "my-class"
                 findAll {
-                    expect(size).toEqual(2)
+                    size.shouldBe(2)
                     "h1" {
                         withClass = "welcome"
                         findFirst { text }
@@ -396,78 +411,78 @@ class DocElementKtTest {
                 }
             }
         }
-        expect(text).toEqual("first headline")
+        text.shouldBe("first headline")
     }
 
     @JsName("CanGetAllParentsOfAnElement")
     @Test
     fun `can get all parents of an element`() {
         val parents = htmlDocument(aValidMarkup).findFirst("b") { parents }
-        expect(parents.map { it.tagName }).toContainExactly("span", "p", "body", "html")
+        parents.map { it.tagName }.shouldContainExactly("span", "p", "body", "html")
     }
 
     @JsName("WillReturnEmptyListIfNoParentsExists")
     @Test
     fun `will return empty list if no parents exists`() {
         val parents = htmlDocument(aValidMarkup).findFirst("html") { parents }
-        expect(parents).toBeEmpty()
+        parents.shouldBeEmpty()
     }
 
     @JsName("CanGetAllParentsOfAnElementViaLambda")
     @Test
     fun `can get all parents of an element via lambda`() {
         val parents = htmlDocument(aValidMarkup).findFirst("b") { parents { this } }
-        expect(parents.map { it.tagName }).toContainExactly("span", "p", "body", "html")
+        parents.map { it.tagName }.shouldContainExactly("span", "p", "body", "html")
     }
 
     @JsName("CanGetParentOfAnElement")
     @Test
     fun `can get parent of an element`() {
         val parent = htmlDocument(aValidMarkup).findFirst("b") { parent }
-        expect(parent.tagName).toEqual("span")
+        parent.tagName.shouldBe("span")
     }
 
     @JsName("WillThrowExceptionIfTryingToGetParentButNoParentExists")
     @Test
     fun `will throw exception if trying to get parent but no parent exists`() {
-        expect {
+        shouldThrow<ElementNotFoundException> {
             htmlDocument(aValidMarkup).findFirst("html").parent
-        }.toThrow<ElementNotFoundException>()
+        }
     }
 
     @JsName("CanGetParentOfAnElementViaLambda")
     @Test
     fun `can get parent of an element via lambda`() {
         val parent = htmlDocument(aValidMarkup).findFirst("b") { parent { this } }
-        expect(parent.tagName).toEqual("span")
+        parent.tagName.shouldBe("span")
     }
 
     @JsName("CanGetAllChildrenOfAnElement")
     @Test
     fun `can get all children of an element`() {
         val children = htmlDocument(aValidMarkup).findFirst("p").children
-        expect(children.map { it.tagName }).toContainExactly("span", "span")
+        children.map { it.tagName }.shouldContainExactly("span", "span")
     }
 
     @JsName("CanGetAllChildrenOfAnElementViaLambda")
     @Test
     fun `can get all children of an element via lambda`() {
         val children = htmlDocument(aValidMarkup).findFirst("p").children { this }
-        expect(children.map { it.tagName }).toContainExactly("span", "span")
+        children.map { it.tagName }.shouldContainExactly("span", "span")
     }
 
     @JsName("CanGetAllSiblingsOfAnElement")
     @Test
     fun `can get all siblings of an element`() {
         val siblings = htmlDocument(aValidMarkup).findFirst("p").siblings
-        expect(siblings.map { it.tagName }).toContainExactly("h2")
+        siblings.map { it.tagName }.shouldContainExactly("h2")
     }
 
     @JsName("CanGetAllSiblingsOfAnElementViaLambda")
     @Test
     fun `can get all siblings of an element via lambda`() {
         val siblings = htmlDocument(aValidMarkup).findFirst("p").siblings { this }
-        expect(siblings.map { it.tagName }).toContainExactly("h2")
+        siblings.map { it.tagName }.shouldContainExactly("h2")
     }
 
     @JsName("StringRepresentationHasCertainFormat")
@@ -475,7 +490,7 @@ class DocElementKtTest {
     @Ignore
     //Ignored since it's the same as 'can get outer html of an element'
     fun `string representation has certain format`() {
-        expect(aValidElement.toString()).toEqual(
+        aValidElement.toString().shouldBe(
             """
             <div class="clazz klass" foo="bar" fizz="buzz" data-foo="foobar">
              divs text 
@@ -490,8 +505,8 @@ class DocElementKtTest {
     @Test
     fun `can select all elements by selector from within this element`() {
         val selection = aValidElement.findAll(".welcome")
-        expect(selection).toHaveSize(1)
-        expect(selection.text).toEqual("headline")
+        selection.shouldHaveSize(1)
+        selection.text.shouldBe("headline")
     }
 
     @JsName("CanConvenientlyIterateOverAllHrefValues")
@@ -518,7 +533,7 @@ class DocElementKtTest {
             }
         }
 
-        expect(links).toEqual(
+        links.shouldBe(
             mapOf(
                 "foobar" to "http://foo.bar",
                 "relative link" to "/relative",
@@ -544,7 +559,7 @@ class DocElementKtTest {
             }
         }
 
-        expect(links).toEqual(
+        links.shouldBe(
             mapOf(
                 "foobar" to "http://foo.bar",
                 "fizzbuzz" to "http://fizz.buzz",
@@ -567,7 +582,7 @@ class DocElementKtTest {
             }
         }
 
-        expect(links).toEqual(mapOf("foobar" to "http://foo.bar"))
+        links.shouldBe(mapOf("foobar" to "http://foo.bar"))
 
     }
 
@@ -578,7 +593,7 @@ class DocElementKtTest {
             eachLink
         }
 
-        expect(links).toEqual(
+        links.shouldBe(
             mapOf(
                 "" to "https://some.url/icon",
                 "foobar" to "http://foo.bar",
@@ -604,7 +619,7 @@ class DocElementKtTest {
                 }
             }
         }
-        expect(images.toMap()).toEqual(
+        images.toMap().shouldBe(
             mapOf(
                 "foobar" to "http://foo.bar",
                 "" to "http://fizz.buzz",
@@ -618,7 +633,7 @@ class DocElementKtTest {
     @Test
     fun `can conveniently get all values of href attributes`() {
         aValidDocument(aValidMarkupWithLinks) {
-            expect(eachHref).toContainExactly(
+            eachHref.shouldContainExactly(
                 "https://some.url/icon",
                 "http://foo.bar",
                 "/relative",
@@ -628,7 +643,7 @@ class DocElementKtTest {
             )
             a {
                 findAll {
-                    expect(eachHref).toContainExactly(
+                    eachHref.shouldContainExactly(
                         "http://foo.bar",
                         "/relative",
                         "#modal",
@@ -644,7 +659,7 @@ class DocElementKtTest {
     @Test
     fun `can conveniently get all values of src attributes`() {
         aValidDocument(aValidMarkupWithPictures) {
-            expect(eachSrc).toContainExactly(
+            eachSrc.shouldContainExactly(
                 "https://some.url/some-script.js",
                 "http://foo.bar",
                 "http://fizz.buzz",
@@ -653,7 +668,7 @@ class DocElementKtTest {
             )
             img {
                 findAll {
-                    expect(eachSrc).toContainExactly(
+                    eachSrc.shouldContainExactly(
                         "http://foo.bar",
                         "http://fizz.buzz",
                         "http://schnitzel.de",
@@ -668,19 +683,19 @@ class DocElementKtTest {
     @Test
     fun `can conveniently get all custom attributes`() {
         aValidDocument(aValidMarkupWithPictures) {
-            expect(eachAttribute("rel")).toContainExactly(
+            eachAttribute("rel").shouldContainExactly(
                 "shortcut icon"
             )
             link {
                 findAll {
-                    expect(eachAttribute("rel")).toContainExactly(
+                    eachAttribute("rel").shouldContainExactly(
                         "shortcut icon"
                     )
                 }
             }
             div {
                 findAll {
-                    expect(eachAttribute("rel")).toBeEmpty()
+                    eachAttribute("rel").shouldBeEmpty()
                 }
             }
         }
@@ -698,7 +713,7 @@ class DocElementKtTest {
             }
         }
 
-        expect(pictures).toEqual(
+        pictures.shouldBe(
             mapOf(
                 "foobar" to "http://foo.bar",
                 "" to "http://fizz.buzz",
@@ -722,7 +737,7 @@ class DocElementKtTest {
             }
         }
 
-        expect(pictures).toEqual(
+        pictures.shouldBe(
             mapOf(
                 "foobar" to "http://foo.bar",
                 "" to "http://fizz.buzz",
@@ -744,7 +759,7 @@ class DocElementKtTest {
             }
         }
 
-        expect(pictures).toEqual(mapOf("foobar" to "http://foo.bar"))
+        pictures.shouldBe(mapOf("foobar" to "http://foo.bar"))
 
     }
 
@@ -755,7 +770,7 @@ class DocElementKtTest {
             eachImage
         }
 
-        expect(pictures).toEqual(
+        pictures.shouldBe(
             mapOf(
                 "foobar" to "http://foo.bar",
                 "" to "http://fizz.buzz",
@@ -769,6 +784,6 @@ class DocElementKtTest {
     @JsName("CanConvertDocElementToJsoupElement")
     @Test
     fun `can convert DocElement to jsoup element`() {
-        expect(aValidElement.element).toBeAnInstanceOf<Element>()
+        aValidElement.element.shouldBeInstanceOf<Element>()
     }
 }

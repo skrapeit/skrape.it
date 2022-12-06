@@ -1,7 +1,6 @@
 package it.skrape.selects
 
-import ch.tutteli.atrium.api.fluent.en_GB.toEqual
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 import kotlin.js.JsName
 
@@ -13,7 +12,7 @@ class CssSelectorTest {
         val cssSelector = CssSelector(
                 rawCssSelector = "#foo.bar"
         ).toCssSelector
-        expect(cssSelector).toEqual("#foo.bar")
+        cssSelector.shouldBe("#foo.bar")
     }
 
     @JsName("CanCalculateSelectorFromRawCssSelectorParamWithSpaces")
@@ -22,7 +21,7 @@ class CssSelectorTest {
         val cssSelector = CssSelector(
                 rawCssSelector = "div #foo.bar"
         ).toCssSelector
-        expect(cssSelector).toEqual("div #foo.bar")
+        cssSelector.shouldBe("div #foo.bar")
     }
 
     @JsName("CanCalculateClassSelectorFromElement")
@@ -31,7 +30,7 @@ class CssSelectorTest {
         val cssSelector = CssSelector(
                 withClass = "foo"
         ).toCssSelector
-        expect(cssSelector).toEqual(".foo")
+        cssSelector.shouldBe(".foo")
     }
 
     @JsName("CanCalculateListOfClassesSelectorFromElement")
@@ -40,7 +39,7 @@ class CssSelectorTest {
         val cssSelector = CssSelector(
                 withClass = "foo" and "bar"
         ).toCssSelector
-        expect(cssSelector).toEqual(".foo.bar")
+        cssSelector.shouldBe(".foo.bar")
     }
 
     @JsName("WhitespacesInClassNamesWillBeKicked")
@@ -49,7 +48,7 @@ class CssSelectorTest {
         val cssSelector = CssSelector(
             withClass = "   foobar " and " foo " and " bar "
         ).toCssSelector
-        expect(cssSelector).toEqual(".foobar.foo.bar")
+        cssSelector.shouldBe(".foobar.foo.bar")
     }
 
     @JsName("CanCalculateSelectorAndBeRelaxedOnMissLeadingSpaces")
@@ -62,7 +61,7 @@ class CssSelectorTest {
                 withAttributes = "fizz" to "buzz" and Pair("skrape", "it"),
                 withAttributeKeys = listOf("key1", "key2")
         ).toCssSelector
-        expect(cssSelector).toEqual("div.foo span.foobar.foo.bar['key1']['key2'][foooo='  bar   '][fizz='buzz'][skrape='it']")
+        cssSelector.shouldBe("div.foo span.foobar.foo.bar['key1']['key2'][foooo='  bar   '][fizz='buzz'][skrape='it']")
     }
 
     @JsName("CanCalculateIdSelectorFromElement")
@@ -71,7 +70,7 @@ class CssSelectorTest {
         val cssSelector = CssSelector(
                 withId = "foo"
         ).toCssSelector
-        expect(cssSelector).toEqual("#foo")
+        cssSelector.shouldBe("#foo")
     }
 
     @JsName("WhitespacesInIdWillBeKicked")
@@ -80,7 +79,7 @@ class CssSelectorTest {
         val cssSelector = CssSelector(
             withId = " f o o  "
         ).toCssSelector
-        expect(cssSelector).toEqual("#foo")
+        cssSelector.shouldBe("#foo")
     }
 
     @JsName("CanCalculateAttributeKeySelectorFromElement")
@@ -89,7 +88,7 @@ class CssSelectorTest {
         val cssSelector = CssSelector(
             withAttributeKey = "foo"
         ).toCssSelector
-        expect(cssSelector).toEqual("[foo]")
+        cssSelector.shouldBe("[foo]")
     }
 
     @JsName("WhitespacesInAttributeKeyWillBeKickedWithoutValue")
@@ -98,7 +97,7 @@ class CssSelectorTest {
         val cssSelector = CssSelector(
             withAttributeKey = " f o o  "
         ).toCssSelector
-        expect(cssSelector).toEqual("[foo]")
+        cssSelector.shouldBe("[foo]")
     }
 
     @JsName("CanCalculateAttributeSelectorFromElement")
@@ -107,7 +106,7 @@ class CssSelectorTest {
         val cssSelector = CssSelector(
                 withAttribute = "foo" to "bar"
         ).toCssSelector
-        expect(cssSelector).toEqual("[foo='bar']")
+        cssSelector.shouldBe("[foo='bar']")
     }
 
     @JsName("CanCalculateAttributeSelectorWithAttributeValueContainingWhitespaces")
@@ -116,7 +115,7 @@ class CssSelectorTest {
         val cssSelector = CssSelector(
             withAttribute = "foo" to " bar foobar  "
         ).toCssSelector
-        expect(cssSelector).toEqual("[foo=' bar foobar  ']")
+        cssSelector.shouldBe("[foo=' bar foobar  ']")
     }
 
     @JsName("WhitespacesInAttributeKeyWillBeKickedWithValue")
@@ -125,7 +124,7 @@ class CssSelectorTest {
         val cssSelector = CssSelector(
             withAttribute = "   f o o  " to "bar"
         ).toCssSelector
-        expect(cssSelector).toEqual("[foo='bar']")
+        cssSelector.shouldBe("[foo='bar']")
     }
 
     @JsName("CanCalculateCombinationOfIdAndClassSelectorFromElement")
@@ -135,7 +134,7 @@ class CssSelectorTest {
                 withClass = "bar",
                 withId = "foo"
         ).toCssSelector
-        expect(cssSelector).toEqual("#foo.bar")
+        cssSelector.shouldBe("#foo.bar")
     }
 
     @JsName("CanCalculateCombinationOfIdAndAttributeKeySelectorFromElement")
@@ -145,7 +144,7 @@ class CssSelectorTest {
                 withAttributeKey = "bar",
                 withId = "foo"
         ).toCssSelector
-        expect(cssSelector).toEqual("#foo[bar]")
+        cssSelector.shouldBe("#foo[bar]")
     }
 
     @JsName("CanCalculateCombinationOfIdAndAttributeSelectorFromElement")
@@ -155,7 +154,7 @@ class CssSelectorTest {
                 withAttribute = "foo" to "bar",
                 withId = "foobar"
         ).toCssSelector
-        expect(cssSelector).toEqual("#foobar[foo='bar']")
+        cssSelector.shouldBe("#foobar[foo='bar']")
     }
 
     @JsName("CanCalculateCombinationOfAttributeAndClassSelectorFromElement")
@@ -165,7 +164,7 @@ class CssSelectorTest {
                 withClass = "foobar",
                 withAttribute = "foo" to "bar"
         ).toCssSelector
-        expect(cssSelector).toEqual(".foobar[foo='bar']")
+        cssSelector.shouldBe(".foobar[foo='bar']")
     }
 
     @JsName("CanCalculateCombinationOfAttributeAndAttributeKeySelectorFromElement")
@@ -175,7 +174,7 @@ class CssSelectorTest {
                 withAttributeKey = "foobar",
                 withAttribute = "foo" to "bar"
         ).toCssSelector
-        expect(cssSelector).toEqual("[foobar][foo='bar']")
+        cssSelector.shouldBe("[foobar][foo='bar']")
     }
 
     @JsName("CanCalculateCombinationOfIdAttributeKeyAndClassSelectorFromElement")
@@ -186,7 +185,7 @@ class CssSelectorTest {
                 withAttributeKey = "foo",
                 withClass = "bar"
         ).toCssSelector
-        expect(cssSelector).toEqual("#foobar.bar[foo]")
+        cssSelector.shouldBe("#foobar.bar[foo]")
     }
 
     @JsName("CanCalculateCombinationOfIdAttributeAndAttributeKeySelectorFromElement")
@@ -197,7 +196,7 @@ class CssSelectorTest {
                 withAttributeKey = "foobar",
                 withAttribute = "foo" to "bar"
         ).toCssSelector
-        expect(cssSelector).toEqual("#fb[foobar][foo='bar']")
+        cssSelector.shouldBe("#fb[foobar][foo='bar']")
     }
 
     @JsName("CanCalculateCombinationOfIdAttributeAndClassSelectorFromElement")
@@ -208,7 +207,7 @@ class CssSelectorTest {
                 withClass = "foobar",
                 withAttribute = "foo" to "bar"
         ).toCssSelector
-        expect(cssSelector).toEqual("#fb.foobar[foo='bar']")
+        cssSelector.shouldBe("#fb.foobar[foo='bar']")
     }
 
     @JsName("CanCalculateCombinationOfAttributeKeyAndClassSelectorFromElement")
@@ -218,7 +217,7 @@ class CssSelectorTest {
                 withAttributeKey = "foo",
                 withClass = "bar"
         ).toCssSelector
-        expect(cssSelector).toEqual(".bar[foo]")
+        cssSelector.shouldBe(".bar[foo]")
     }
 
     @JsName("CanCalculateComplexCssSelectorFromElement")
@@ -231,7 +230,7 @@ class CssSelectorTest {
                 withAttributeKey = "foobar",
                 withAttribute = "fizz" to "buzz"
         ).toCssSelector
-        expect(cssSelector).toEqual("div span a#foo.bar[foobar][fizz='buzz']")
+        cssSelector.shouldBe("div span a#foo.bar[foobar][fizz='buzz']")
     }
 
     @JsName("ParameterSelectorWillBeMergedWithElementSelector")
@@ -241,7 +240,7 @@ class CssSelectorTest {
                 withClass = "bar",
                 rawCssSelector = "foo"
         ).toCssSelector
-        expect(cssSelector).toEqual("foo.bar")
+        cssSelector.shouldBe("foo.bar")
     }
 
     @JsName("ToStringImplementationReturnsCalculatedCssSelector")
@@ -254,6 +253,6 @@ class CssSelectorTest {
             withAttributeKey = "foobar",
             withAttribute = "fizz" to "buzz"
         )}"
-        expect(cssSelector).toEqual("div span a#foo.bar[foobar][fizz='buzz']")
+        cssSelector.shouldBe("div span a#foo.bar[foobar][fizz='buzz']")
     }
 }

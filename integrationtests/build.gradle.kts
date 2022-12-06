@@ -11,10 +11,7 @@ kotlin {
                 implementation(projects.testUtils)
                 implementation(projects.htmlParser)
                 implementation(projects.assertions)
-                implementation(projects.fetcher.baseFetcher)
-                implementation(projects.fetcher.httpFetcher)
-                implementation(projects.fetcher.browserFetcher)
-                implementation(projects.fetcher.asyncFetcher)
+                implementation(projects.fetcher)
             }
         }
     }

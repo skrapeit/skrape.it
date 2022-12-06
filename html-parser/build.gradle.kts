@@ -6,12 +6,6 @@ plugins {
     buildsrc.convention.`publish-multiplatform`
 }
 
-/*java {
-    registerFeature("jsExecution") {
-        usingSourceSet(sourceSets["main"])
-    }
-}*/
-
 kotlin {
     sourceSets {
         val commonMain by getting {
@@ -19,12 +13,12 @@ kotlin {
                 implementation(Deps.Ktor.client)
                 implementation(projects.dsl)
                 implementation("com.benasher44:uuid:0.4.1")
-                api(projects.fetcher.baseFetcher)
+                api(projects.fetcher)
             }
         }
         val commonTest by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.2")
+                implementation(Deps.KotlinX.Coroutines.test)
                 implementation(projects.testUtils)
             }
         }
@@ -45,7 +39,6 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-                implementation(projects.dsl)
                 api(Deps.htmlUnit)
                 api(Deps.jsoup)
             }

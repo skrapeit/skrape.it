@@ -2,8 +2,7 @@ package it.skrape.selects.html5
 
 import aStandardTag
 import aValidDocument
-import ch.tutteli.atrium.api.fluent.en_GB.toEqual
-import ch.tutteli.atrium.api.verbs.expect
+import io.kotest.matchers.shouldBe
 import kotlin.js.JsName
 import kotlin.test.Test
 
@@ -14,12 +13,12 @@ class WebComponentsSelectorsKtTest {
 	fun `can parse content-tag`() {
         val selector = aValidDocument(aStandardTag("content")).content {
             findFirst {
-                expect(text).toEqual("i'm a content")
+                text.shouldBe("i'm a content")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("content")
+        selector.shouldBe("content")
     }
 
     @JsName("CanParseShadowTag")
@@ -27,12 +26,12 @@ class WebComponentsSelectorsKtTest {
 	fun `can parse shadow-tag`() {
         val selector = aValidDocument(aStandardTag("shadow")).shadow {
             findFirst {
-                expect(text).toEqual("i'm a shadow")
+                text.shouldBe("i'm a shadow")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("shadow")
+        selector.shouldBe("shadow")
     }
 
     @JsName("CanParseSlotTag")
@@ -40,12 +39,12 @@ class WebComponentsSelectorsKtTest {
 	fun `can parse slot-tag`() {
         val selector = aValidDocument(aStandardTag("slot")).slot {
             findFirst {
-                expect(text).toEqual("i'm a slot")
+                text.shouldBe("i'm a slot")
             }
             toCssSelector
         }
 
-        expect(selector).toEqual("slot")
+        selector.shouldBe("slot")
     }
 
     @JsName("CanParseTemplateTag")
@@ -54,10 +53,10 @@ class WebComponentsSelectorsKtTest {
         val selector = aValidDocument(aStandardTag("template")).template {
             findFirst {
                 //println("${this.element.text()}")
-                expect(html).toEqual("i'm a template")
+                html.shouldBe("i'm a template")
             }
             toCssSelector
         }
-        expect(selector).toEqual("template")
+        selector.shouldBe("template")
     }
 }
