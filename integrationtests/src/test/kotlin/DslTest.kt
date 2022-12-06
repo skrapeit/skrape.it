@@ -6,6 +6,7 @@ import it.skrape.matchers.*
 import it.skrape.matchers.ContentTypes.*
 import it.skrape.selects.*
 import it.skrape.selects.html5.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.intellij.lang.annotations.Language
@@ -868,8 +869,10 @@ class DslTest {
         wiremock.setupRedirect()
 
         val body2 = fetcher.apply {
-            request {
-                followRedirects = true
+            runBlocking {
+                request {
+                    followRedirects = true
+                }
             }
         }.extractBlocking {
             status {
@@ -1132,6 +1135,21 @@ class DslTest {
             "some.crazy selectorThat[doesnt] exists" {
                 // in none relaxed mode it would throw an ElementNotFoundException when trying to find element without success
                 findAll { toBeEmpty }
+            }
+        }
+    }
+
+    @Test
+    fun `dsl can can suspend in request and response methods`() {
+        wiremock.setupStub()
+
+        skrape(HttpFetcher) {
+            request {
+                url = "${wiremock.httpUrl}/"
+                delay(10)
+            }
+            response {
+                delay(10)
             }
         }
     }

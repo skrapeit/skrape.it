@@ -8,8 +8,8 @@ public class Scraper<R>(public val fetcher: NonBlockingFetcher<R>, public val pr
     public constructor(client: NonBlockingFetcher<R>) : this(client, client.requestBuilder)
 
     @SkrapeItDsl
-    public fun request(init: R.() -> Unit): Scraper<R> {
-        this.preparedRequest.run(init)
+    public suspend fun request(init: suspend R.() -> Unit): Scraper<R> {
+        init(preparedRequest)
         return this
     }
 
@@ -56,7 +56,7 @@ public suspend fun <R, T> skrape(fetcher: NonBlockingFetcher<R>, init: suspend S
  */
 @SkrapeItDsl
 @Deprecated(message = "Please use 'response' instead", replaceWith = ReplaceWith("response(result)"))
-public suspend fun Scraper<*>.expect(result: Result.() -> Unit) {
+public suspend fun Scraper<*>.expect(result: suspend Result.() -> Unit) {
     response(result)
 }
 
@@ -65,7 +65,7 @@ public suspend fun Scraper<*>.expect(result: Result.() -> Unit) {
  * @return T
  */
 @SkrapeItDsl
-public fun Scraper<*>.expectBlocking(result: Result.() -> Unit) {
+public fun Scraper<*>.expectBlocking(result: suspend Result.() -> Unit) {
     runBlocking { response(result) }
 }
 
@@ -75,7 +75,7 @@ public fun Scraper<*>.expectBlocking(result: Result.() -> Unit) {
  */
 @SkrapeItDsl
 @Deprecated(message = "Please use 'response' instead", replaceWith = ReplaceWith("response(result)"))
-public suspend fun <T> Scraper<*>.extract(result: Result.() -> T): T =
+public suspend fun <T> Scraper<*>.extract(result: suspend Result.() -> T): T =
     response(result)
 
 /**
@@ -83,7 +83,7 @@ public suspend fun <T> Scraper<*>.extract(result: Result.() -> T): T =
  * @return T
  */
 @SkrapeItDsl
-public suspend fun <T> Scraper<*>.response(result: Result.() -> T): T =
+public suspend fun <T> Scraper<*>.response(result: suspend Result.() -> T): T =
     scrape().result()
 
 /**
@@ -91,7 +91,7 @@ public suspend fun <T> Scraper<*>.response(result: Result.() -> T): T =
  * @return T
  */
 @SkrapeItDsl
-public fun <T> Scraper<*>.extractBlocking(result: Result.() -> T): T =
+public fun <T> Scraper<*>.extractBlocking(result: suspend Result.() -> T): T =
     runBlocking { response(result) }
 
 /**
