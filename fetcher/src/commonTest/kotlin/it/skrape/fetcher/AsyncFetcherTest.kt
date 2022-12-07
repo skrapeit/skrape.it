@@ -1,7 +1,7 @@
 package it.skrape.fetcher
 
 import Testcontainer
-import io.kotest.inspectors.forOne
+import io.kotest.matchers.collections.shouldBeOneOf
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -226,19 +226,17 @@ class AsyncFetcherTest {
         wiremock.setupStub(path = "/delayed", delay = 6000)
         try {
             Scraper(baseRequest.copy(url = "${wiremock.httpUrl}/delayed", timeout = 10)).scrape()
-        }  catch (ex: Exception) {
+        } catch (ex: Exception) {
             //JS wraps the actual exception in a CancellaionException
             val tEx = if (ex is CancellationException) ex.cause else ex
             //This expectation is weird since the timeout can be either of 3 exceptions which are all valid
             tEx.shouldBeInstanceOf<IOException>()
-            val possibleErrors = listOf(
+            println(tEx::class)
+            tEx::class.shouldBeOneOf(
                 SocketTimeoutException::class,
                 ConnectTimeoutException::class,
                 HttpRequestTimeoutException::class
             )
-            possibleErrors.forOne {
-                tEx.instanceOf(it)
-            }
         }
     }
 }
