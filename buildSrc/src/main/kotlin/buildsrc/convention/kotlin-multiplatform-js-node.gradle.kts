@@ -12,11 +12,11 @@ configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
             testTask {
                 environment("PROJECT_PATH", projectDir.absolutePath)
                 environment("ROOT_PROJECT_PATH", rootProject.projectDir.absolutePath)
-                useMocha {
+                /*useMocha {
                     this.timeout = "100000"
-                }
+                }*/
             }
-            binaries.executable()
+            binaries.library()
         }
         useCommonJs()
     }

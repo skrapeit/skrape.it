@@ -22,6 +22,7 @@ val gradleVersionsPlugin = "0.39.0"
 val kotlinDokkaPlugin = "1.7.20"
 val kotlinxKoverPlugin = "0.6.1"
 val useLatestVersionsPlugin = "0.2.18"
+val kotestVersion = "5.5.4"
 
 dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:$kotlinVersion"))
@@ -29,7 +30,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable")
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-
+    implementation("io.kotest:kotest-framework-multiplatform-plugin-gradle:$kotestVersion")
     implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektPlugin")
     implementation("io.github.gradle-nexus:publish-plugin:$gradleNexusPublishPlugin")
     implementation("com.adarshr:gradle-test-logger-plugin:$gradleTestLoggerPlugin")

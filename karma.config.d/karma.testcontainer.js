@@ -67,6 +67,26 @@ function TestContainerMiddleware() {
                     response.end(JSON.stringify(info))
                     break;
                 }
+            case "/containers/available":
+                console.log("Test available")
+                if (request.method.toUpperCase() == "POST") {
+                    console.log("Testing...")
+                    try {
+                        console.log("Trying to start container")
+                        var container = new GenericContainer("alpine")
+                        console.log("Starting container")
+                        container = await container.start()
+                        console.log("Started container")
+                        response.writeHead(200)
+                        console.log("available")
+                        container.stop()
+                    } catch (exception) {
+                        console.log("Not available! "+exception)
+                        response.writeHead(500)
+                    }
+                    response.end()
+                }
+                break;
             default:
                 next();
         }

@@ -1,6 +1,7 @@
 package it.skrape.fetcher
 
 import Testcontainer
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldBeOneOf
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
@@ -9,10 +10,8 @@ import io.ktor.client.network.sockets.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import io.ktor.util.reflect.*
 import io.ktor.utils.io.*
 import io.ktor.utils.io.errors.*
-import kotlinx.coroutines.test.TestScope
 import setupCookiesStub
 import setupDeleteStub
 import setupHeadStub
@@ -21,42 +20,22 @@ import setupPostStub
 import setupPutStub
 import setupRedirect
 import setupStub
-import kotlin.js.JsName
-import kotlin.test.Test
 
 
 //@DisabledOnOs(OS.WINDOWS)
-class AsyncFetcherTest {
+class AsyncFetcherTest : FunSpec({
 
     lateinit var wiremock: Testcontainer.Wiremock
     lateinit var httpBin: String
 
-    private suspend fun initWiremock() {
-        if (!this::wiremock.isInitialized) wiremock = Testcontainer.getWiremock()
-        //return wiremock
+    val baseRequest by lazy { KtorRequestBuilder().apply { url(wiremock.httpUrl) } }
+
+    beforeTest {
+        wiremock = Testcontainer.getWiremock()
+        httpBin = Testcontainer.getHttpBin()
     }
 
-    private suspend fun initHttpBin() {
-        if (!this::httpBin.isInitialized) httpBin = Testcontainer.getHttpBin()
-        //return httpBin
-    }
-
-    //Helper to ensure wiremock and httpbin are initialized
-    private fun runTest(block: suspend TestScope.() -> Unit) = runTestWith(::initWiremock, ::initHttpBin, block = block)
-
-    private fun runTestWith(vararg init: suspend () -> Unit, block: suspend TestScope.() -> Unit) =
-        kotlinx.coroutines.test.runTest {
-            for (func in init) {
-                func()
-            }
-            block()
-        }
-
-    private val baseRequest by lazy { KtorRequestBuilder().apply { url(wiremock.httpUrl) } }
-
-    @Test
-    @JsName("canfetchhttpsurlanduseHTTPverbGETbydefault")
-    fun `can fetch https url and use HTTP verb GET by default`() = runTest {
+    test("can fetch https url and use HTTP verb GET by default") {
         wiremock.setupStub(path = "/example")
         val request = baseRequest.copy(
             url = "${wiremock.httpsUrl}/example",
@@ -71,9 +50,7 @@ class AsyncFetcherTest {
 
     }
 
-    @Test
-    @JsName("willnotthrowexceptiononnonexistingurl")
-    fun `will not throw exception on non existing url`() = runTest {
+    test("will not throw exception on non existing url") {
         val request = baseRequest.copy(url = "${wiremock.httpUrl}/not-existing", timeout = 9999999)
 
         val fetched = Scraper(request).scrape()
@@ -81,9 +58,7 @@ class AsyncFetcherTest {
         fetched.status { code }.shouldBe(404)
     }
 
-    @Test
-    @JsName("willnotfollowredirectsifconfigured")
-    fun `will not follow redirects if configured`() = runTest {
+    test("will not follow redirects if configured") {
         wiremock.setupRedirect()
         val request = baseRequest.copy(followRedirects = false)
 
@@ -93,9 +68,7 @@ class AsyncFetcherTest {
 
     }
 
-    @Test
-    @JsName("willfollowredirectbydefault")
-    fun `will follow redirect by default`() = runTest {
+    test("will follow redirect by default") {
         wiremock.setupRedirect()
 
         val fetched = Scraper(baseRequest).scrape()
@@ -103,9 +76,7 @@ class AsyncFetcherTest {
         fetched.status { code }.shouldBe(404)
     }
 
-    @Test
-    @JsName("canfetchcookies")
-    fun `can fetch cookies`() = runTest {
+    test("can fetch cookies") {
         wiremock.setupCookiesStub(path = "/cookies")
         val request = baseRequest.copy(
             url = "${wiremock.httpsUrl}/cookies",
@@ -138,9 +109,7 @@ class AsyncFetcherTest {
         )
     }
 
-    @Test
-    @JsName("canfetchurlanduseHTTPverbPOST")
-    fun `can fetch url and use HTTP verb POST`() = runTest {
+    test("can fetch url and use HTTP verb POST") {
         wiremock.setupPostStub()
         val request = baseRequest.copy(method = HttpMethod.Post)
 
@@ -151,9 +120,7 @@ class AsyncFetcherTest {
         fetched.responseBody.shouldBe("""{"data":"some value"}""")
     }
 
-    @Test
-    @JsName("canPOSTbody")
-    fun `can POST body`() = runTest {
+    test("can POST body") {
 
         val request = KtorRequestBuilder().apply {
             url("$httpBin/post")
@@ -169,9 +136,7 @@ class AsyncFetcherTest {
         fetched.responseBody.shouldContain(""""data": "{\"foo\":\"bar\"}"""")
     }
 
-    @Test
-    @JsName("canfetchurlanduseHTTPverbPUT")
-    fun `can fetch url and use HTTP verb PUT`() = runTest {
+    test("can fetch url and use HTTP verb PUT") {
         wiremock.setupPutStub()
         val request = baseRequest.copy(method = HttpMethod.Put)
 
@@ -181,9 +146,7 @@ class AsyncFetcherTest {
         fetched.responseBody.shouldBe("i'm a PUT stub")
     }
 
-    @Test
-    @JsName("canfetchurlanduseHTTPverbDELETE")
-    fun `can fetch url and use HTTP verb DELETE`() = runTest {
+    test("can fetch url and use HTTP verb DELETE") {
         wiremock.setupDeleteStub()
         val request = baseRequest.copy(method = HttpMethod.Delete)
 
@@ -193,9 +156,7 @@ class AsyncFetcherTest {
         fetched.responseBody.shouldBe("i'm a DELETE stub")
     }
 
-    @Test
-    @JsName("canfetchurlanduseHTTPverbPATCH")
-    fun `can fetch url and use HTTP verb PATCH`() = runTest {
+    test("can fetch url and use HTTP verb PATCH") {
         wiremock.setupPatchStub()
         val request = baseRequest.copy(method = HttpMethod.Patch)
 
@@ -205,9 +166,7 @@ class AsyncFetcherTest {
         fetched.responseBody.shouldBe("i'm a PATCH stub")
     }
 
-    @Test
-    @JsName("canfetchurlanduseHTTPverbHEAD")
-    fun `can fetch url and use HTTP verb HEAD`() = runTest {
+    test("can fetch url and use HTTP verb HEAD") {
         wiremock.setupHeadStub()
         val request = baseRequest.copy(method = HttpMethod.Head)
 
@@ -220,9 +179,7 @@ class AsyncFetcherTest {
         //fetched.httpHeader("result").shouldBe("i'm a HEAD stub")
     }
 
-    @Test
-    @JsName("willthrowexceptionontimeout")
-    fun `will throw exception on timeout`() = runTest {
+    test("will throw exception on timeout") {
         wiremock.setupStub(path = "/delayed", delay = 6000)
         try {
             Scraper(baseRequest.copy(url = "${wiremock.httpUrl}/delayed", timeout = 10)).scrape()
@@ -239,4 +196,4 @@ class AsyncFetcherTest {
             )
         }
     }
-}
+})

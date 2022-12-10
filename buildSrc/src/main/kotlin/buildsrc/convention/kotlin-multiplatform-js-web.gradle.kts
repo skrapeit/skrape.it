@@ -26,7 +26,7 @@ configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
                     useCoverage(html = true)
                 }
             }
-            binaries.executable()
+            binaries.library()
         }
         useCommonJs()
     }

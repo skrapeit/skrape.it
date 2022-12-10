@@ -60,6 +60,7 @@ object Deps {
         version = Versions.kotest
     ) {
         val engine = dependency("kotest-framework-engine")
+        val junit = dependency("kotest-runner-junit5")
         val assertions = dependency("kotest-assertions-core")
     }
 

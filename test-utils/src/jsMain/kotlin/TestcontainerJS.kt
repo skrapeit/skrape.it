@@ -13,4 +13,6 @@ external class GenericContainer(image: String) {
 external class StartedContainer {
     fun getMappedPort(port: Int): Int
     fun getHost(): String
+
+    fun stop(): Promise<dynamic>
 }

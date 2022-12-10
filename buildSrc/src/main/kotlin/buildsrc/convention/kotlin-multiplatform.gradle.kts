@@ -6,6 +6,7 @@ plugins {
 
     id("buildsrc.convention.base")
     id("buildsrc.convention.detekt")
+    id("io.kotest.multiplatform")
 }
 
 configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
@@ -20,6 +21,7 @@ configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(Deps.Kotest.assertions)
+                implementation(Deps.Kotest.engine)
                 implementation(Deps.KotlinX.Coroutines.test)
             }
         }

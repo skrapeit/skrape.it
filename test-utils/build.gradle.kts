@@ -17,6 +17,7 @@ kotlin {
                 implementation(Deps.Ktor.clientContentNegotiation)
                 implementation(Deps.Ktor.serializationJson)
                 implementation(Deps.uuid)
+                implementation(Deps.Kotest.engine)
             }
         }
         val jsMain by getting {

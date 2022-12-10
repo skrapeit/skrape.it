@@ -39,6 +39,7 @@ configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
                 implementation(Deps.strikt)
                 implementation(Deps.Mockk.mockk)
                 implementation(Deps.Mockk.dslJvm)
+                implementation(Deps.Kotest.junit)
             }
         }
     }
