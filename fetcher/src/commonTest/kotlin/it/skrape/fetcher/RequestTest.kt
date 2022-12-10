@@ -1,26 +1,19 @@
 package it.skrape.fetcher
 
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.booleans.shouldBeTrue
-import io.kotest.matchers.maps.shouldContainKey
 import io.kotest.matchers.shouldBe
 import io.ktor.client.request.*
 import io.ktor.client.utils.*
 import io.ktor.http.*
-import it.skrape.fetcher.request.UrlBuilder
-import kotlin.js.JsName
-import kotlin.test.Test
 
-internal class RequestTest {
+internal class RequestTest: FunSpec({
 
-    @Test
-    @JsName("BodyIsNullByDefault")
-    internal fun `body is null by default`() {
+    test("body is null by default") {
         KtorRequestBuilder().body.shouldBe(EmptyContent)
     }
 
-    @Test
-    @JsName("BodyDefaultsToPlainTextMimeTypeAsContentTypeAndEmptyBody")
-    internal fun `body defaults to plain text mime type as contentType and empty body`() {
+    test("body defaults to plain text mime type as contentType and empty body") {
         val request = KtorRequestBuilder().apply {
             body {}
         }
@@ -29,9 +22,7 @@ internal class RequestTest {
         request.body.shouldBe("")
     }
 
-    @Test
-    @JsName("CanSetContentTypeAndData")
-    internal fun `can set content-type and data`() {
+    test("can set content-type and data") {
         val request = KtorRequestBuilder().apply {
             body {
                 contentType = "text/plain"
@@ -42,9 +33,7 @@ internal class RequestTest {
         request.body.shouldBe("bar")
     }
 
-    @Test
-    @JsName("JsonHelperMethodWillSetProperContentTypeAndBody")
-    internal fun `json helper method will set proper content-type and body`() {
+    test("json helper method will set proper content-type and body") {
         val request = KtorRequestBuilder().apply {
             body {
                 contentType = "foo"
@@ -55,9 +44,7 @@ internal class RequestTest {
         request.body.shouldBe("""{ "foo": "bar" }""")
     }
 
-    @Test
-    @JsName("XmlHelperMethodWillSetProperContenTypeAndBody")
-    internal fun `xml helper method will set proper content-type and body`() {
+    test("xml helper method will set proper content-type and body") {
         val request = KtorRequestBuilder().apply {
             body {
                 contentType = "foo"
@@ -68,9 +55,7 @@ internal class RequestTest {
         request.body.shouldBe("""<foo>bar</foo>""")
     }
 
-    @Test
-    @JsName("CanBuildAndPassJsonOnTheFly")
-    internal fun `can build and pass json on the fly`() {
+    test("can build and pass json on the fly") {
         val request = KtorRequestBuilder().apply {
             body {
                 json {
@@ -86,9 +71,7 @@ internal class RequestTest {
         request.body.shouldBe("""{"foo":"bar","xxx":{"a":"b","c":[1,"d"]}}""")
     }
 
-    @Test
-    @JsName("FormHelperMethodWillSetProperContentTypeAndBody")
-    internal fun `form helper method will set proper content-type and body`() {
+    test("form helper method will set proper content-type and body") {
         val request = KtorRequestBuilder().apply {
             body {
                 contentType = "foo"
@@ -99,9 +82,7 @@ internal class RequestTest {
         request.body.shouldBe("foo=bar&fizz=buzz")
     }
 
-    @Test
-    @JsName("CanBuildFormBody")
-    internal fun `can build form body`() {
+    test("can build form body") {
         val request = KtorRequestBuilder().apply {
             body {
                 form {
@@ -116,9 +97,7 @@ internal class RequestTest {
         request.body.shouldBe("foo=bar&xxx=true&bar=1.6&yyy=42")
     }
 
-    @Test
-    @JsName("CanBuildUrl")
-    internal fun `can build url`() {
+    test("can build url") {
         val request = KtorRequestBuilder().apply {
             url {
                 protocol = URLProtocol("ftp", 53)
@@ -128,9 +107,7 @@ internal class RequestTest {
         request.url.buildString().shouldBe("ftp://localhost:8080")
     }
 
-    @Test
-    @JsName("UrlBuilderWillRespectRawUrlString")
-    internal fun `url builder will respect raw url string`() {
+    test("url builder will respect raw url string") {
         val request = KtorRequestBuilder().apply {
             url("http://www.skrape.it")
             url {
@@ -140,9 +117,7 @@ internal class RequestTest {
         request.url.buildString().shouldBe("https://www.skrape.it")
     }
 
-    @Test
-    @JsName("UrlBuilderWillRespectRawUrlsQueryParams")
-    internal fun `url builder will respect raw urls query params`() {
+    test("url builder will respect raw urls query params") {
         val request = KtorRequestBuilder().apply {
             url("http://www.skrape.it:1234?foo=bar&xxx")
             url {
@@ -152,4 +127,4 @@ internal class RequestTest {
         }
         request.url.buildString().shouldBe("https://www.skrape.it:4321?foo=bar&xxx")
     }
-}
+})

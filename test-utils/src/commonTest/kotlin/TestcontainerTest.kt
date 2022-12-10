@@ -1,20 +1,8 @@
 import io.kotest.assertions.assertSoftly
-import io.kotest.assertions.print.print
-import io.kotest.core.annotation.AutoScan
-import io.kotest.core.config.AbstractProjectConfig
-import io.kotest.core.config.LogLevel
-import io.kotest.core.descriptors.Descriptor
-import io.kotest.core.extensions.Extension
-import io.kotest.core.extensions.SpecExtension
-import io.kotest.core.extensions.TestCaseExtension
-import io.kotest.core.filter.TestFilter
-import io.kotest.core.filter.TestFilterResult
-import io.kotest.core.listeners.BeforeSpecListener
-import io.kotest.core.listeners.PrepareSpecListener
 import io.kotest.core.spec.Spec
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.core.test.TestCase
-import io.kotest.core.test.TestResult
+import io.kotest.core.test.TestScope
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldStartWith
@@ -24,51 +12,12 @@ import io.ktor.http.*
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject
-import kotlin.reflect.KClass
 
-@AutoScan
-class Config : AbstractProjectConfig() {
-
-    override val logLevel: LogLevel = LogLevel.Trace
-
-    override suspend fun beforeProject() {
-        DockerProjectConfig.beforeProject()
-    }
-
-    override fun extensions(): List<Extension> = listOf(MySpecExtension)
-}
-
-object MySpecExtension : SpecExtension,TestCaseExtension, TestFilter {
-
-    override suspend fun intercept(spec: Spec, execute: suspend (Spec) -> Unit) {
-        println(spec.rootTests())
-        super.intercept(spec, execute)
-    }
-
-    override suspend fun intercept(testCase: TestCase, execute: suspend (TestCase) -> TestResult): TestResult {
-        println("Intercept $testCase")
-        val res = execute(testCase)
-        println("Res: $res")
-        return res
-    }
-
-    override fun filter(descriptor: Descriptor): TestFilterResult {
-        println("Filter: $descriptor")
-        return TestFilterResult.Include
-    }
-
-
-}
-
-//@Execution(ExecutionMode.SAME_THREAD)
-//@DisabledOnOs(OS.WINDOWS)
 class TestcontainerTest : FunSpec() {
 
-    val wiremockInstance: Testcontainer.Wiremock by lazy { DockerProjectConfig.wiremock }
-
-    suspend fun callWiremock(baseUri: String? = null, path: String): HttpResponse {
-        val uri = baseUri ?: wiremockInstance.httpUrl
-        return wiremockInstance.ktorClient.get {
+    suspend fun TestScope.callWiremock(baseUri: String? = null, path: String): HttpResponse {
+        val uri = baseUri ?: wiremock.httpUrl
+        return wiremock.ktorClient.get {
             url {
                 takeFrom(uri)
                 path(path)
@@ -79,29 +28,29 @@ class TestcontainerTest : FunSpec() {
 
     init {
 
+        extension(DockerExtension)
+        extension(TestcontainerExtension)
+
         test("wiremock as testcontainer returns corresponding urls")
             .config(
-                enabledOrReasonIf = DockerProjectConfig.enabledOrReasonIf,
-                coroutineTestScope = true,
-                testCoroutineDispatcher = true
+                enabledOrReasonIf = DockerExtension.isAvailable
             ) {
-                println("Ran")
-                assertSoftly(wiremockInstance) {
+                assertSoftly(wiremock) {
                     httpUrl.shouldStartWith("http://localhost:")
                     httpsUrl.shouldStartWith("https://localhost:")
                 }
             }
 
-        test("wiremock is running and admin page is available under http port").config(enabledOrReasonIf = DockerProjectConfig.enabledOrReasonIf) {
+        test("wiremock is running and admin page is available under http port").config(enabledOrReasonIf = DockerExtension.isAvailable) {
             callWiremock(path = "/__admin/").status.shouldBe(HttpStatusCode.OK)
         }
 
-        test("wiremock is running and admin page is available under https port").config(enabledOrReasonIf = DockerProjectConfig.enabledOrReasonIf) {
-            callWiremock(baseUri = wiremockInstance.httpsUrl, path = "/__admin/").status.shouldBe(HttpStatusCode.OK)
+        test("wiremock is running and admin page is available under https port").config(enabledOrReasonIf = DockerExtension.isAvailable) {
+            callWiremock(baseUri = wiremock.httpsUrl, path = "/__admin/").status.shouldBe(HttpStatusCode.OK)
         }
 
-        test("can add file for stub").config(enabledOrReasonIf = DockerProjectConfig.enabledOrReasonIf) {
-            wiremockInstance.setupStub()
+        test("can add file for stub").config(enabledOrReasonIf = DockerExtension.isAvailable) {
+            wiremock.setupStub()
             val call = callWiremock(path = "/__files/example.html")
             assertSoftly(call) {
                 status.shouldBe(HttpStatusCode.OK)
@@ -110,9 +59,9 @@ class TestcontainerTest : FunSpec() {
             call.bodyAsText().shouldContain("<title>i'm the title</title>")
         }
 
-        test("can override stubs").config(enabledOrReasonIf = DockerProjectConfig.enabledOrReasonIf) {
-            wiremockInstance.ktorClient.post {
-                url("${wiremockInstance.httpUrl}/__admin/mappings")
+        test("can override stubs").config(enabledOrReasonIf = DockerExtension.isAvailable) {
+            wiremock.ktorClient.post {
+                url("${wiremock.httpUrl}/__admin/mappings")
                 contentType(ContentType.Application.Json)
                 setBody(buildJsonObject {
                     putJsonObject("request") {
@@ -128,8 +77,8 @@ class TestcontainerTest : FunSpec() {
             callWiremock(path = "/abc").status.shouldBe(HttpStatusCode.fromValue(418))
 
 
-            wiremockInstance.ktorClient.post {
-                url("${wiremockInstance.httpUrl}/__admin/mappings")
+            wiremock.ktorClient.post {
+                url("${wiremock.httpUrl}/__admin/mappings")
                 contentType(ContentType.Application.Json)
                 setBody(buildJsonObject {
                     putJsonObject("request") {
@@ -144,19 +93,12 @@ class TestcontainerTest : FunSpec() {
             callWiremock(path = "/abc").status.shouldBe(HttpStatusCode.fromValue(201))
         }
 
-        test("can override convenient stubs").config(enabledOrReasonIf = DockerProjectConfig.enabledOrReasonIf) {
-            wiremockInstance.setupStub(path = "/xyz", statusCode = 418)
+        test("can override convenient stubs").config(enabledOrReasonIf = DockerExtension.isAvailable) {
+            wiremock.setupStub(path = "/xyz", statusCode = 418)
             callWiremock(path = "/xyz").status.shouldBe(HttpStatusCode.fromValue(418))
 
-            wiremockInstance.setupStub(path = "/abc", statusCode = 201)
+            wiremock.setupStub(path = "/abc", statusCode = 201)
             callWiremock(path = "/abc").status.shouldBe(HttpStatusCode.fromValue(201))
         }
-    }
-    override suspend fun beforeSpec(spec: Spec) {
-        println("Before spec called")
-    }
-
-    override suspend fun beforeAny(testCase: TestCase) {
-        println("Before any")
     }
 }

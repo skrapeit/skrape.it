@@ -3,15 +3,12 @@ package it.skrape.selects.html5
 import aSelfClosingTag
 import aStandardTag
 import aValidDocument
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import kotlin.test.Test
-import kotlin.js.JsName
 
-class MediaSelectorsKtTest {
+class MediaSelectorsKtTest: FunSpec({
 
-    @JsName("CanParseAreaTag")
-	@Test
-	fun `can parse area-tag`() {
+    test("can parse area-tag") {
         val selector = aValidDocument(aStandardTag("area")).area {
             findFirst {
                 className.shouldBe("area-class")
@@ -22,9 +19,7 @@ class MediaSelectorsKtTest {
         selector.shouldBe("area")
     }
 
-    @JsName("CanParseAudioTag")
-	@Test
-	fun `can parse audio-tag`() {
+    test("can parse audio-tag") {
         val selector = aValidDocument(aStandardTag("audio")).audio {
             findFirst {
                 text.shouldBe("i'm a audio")
@@ -35,9 +30,7 @@ class MediaSelectorsKtTest {
         selector.shouldBe("audio")
     }
 
-    @JsName("CanParseImgTag")
-	@Test
-	fun `can parse img-tag`() {
+    test("can parse img-tag") {
         val selector = aValidDocument(aSelfClosingTag("img")).img {
             findFirst {
                 attribute("custom-attr").shouldBe("img-attr")
@@ -48,9 +41,7 @@ class MediaSelectorsKtTest {
         selector.shouldBe("img")
     }
 
-    @JsName("CanParseMapTag")
-	@Test
-	fun `can parse map-tag`() {
+    test("can parse map-tag") {
         val selector = aValidDocument(aStandardTag("map")).map {
             findFirst {
                 text.shouldBe("i'm a map")
@@ -61,9 +52,7 @@ class MediaSelectorsKtTest {
         selector.shouldBe("map")
     }
 
-    @JsName("CanParseTrackTag")
-	@Test
-	fun `can parse track-tag`() {
+    test("can parse track-tag") {
         val selector = aValidDocument(aSelfClosingTag("track")).track {
             findFirst {
                 attribute("custom-attr").shouldBe("track-attr")
@@ -74,9 +63,7 @@ class MediaSelectorsKtTest {
         selector.shouldBe("track")
     }
 
-    @JsName("CanParseVideoTag")
-	@Test
-	fun `can parse video-tag`() {
+    test("can parse video-tag") {
         val selector = aValidDocument(aStandardTag("video")).video {
             findFirst {
                 text.shouldBe("i'm a video")
@@ -86,4 +73,4 @@ class MediaSelectorsKtTest {
 
         selector.shouldBe("video")
     }
-}
+})

@@ -1,6 +1,5 @@
-
+import io.kotest.core.spec.style.FunSpec
 import io.ktor.client.request.*
-import io.ktor.http.*
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.HttpFetcher
 import it.skrape.fetcher.response
@@ -10,23 +9,13 @@ import it.skrape.matchers.toBePresentExactlyOnce
 import it.skrape.selects.and
 import it.skrape.selects.html5.customTag
 import it.skrape.selects.html5.div
-import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Disabled
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.condition.DisabledOnOs
-import org.junit.jupiter.api.condition.OS
-import org.junit.jupiter.api.parallel.Execution
-import org.junit.jupiter.api.parallel.ExecutionMode
-import java.net.Proxy
 
-private val wiremock = Testcontainer.wiremock
+class ExperimentalDslTest: FunSpec({
 
-@Execution(ExecutionMode.SAME_THREAD)
-@DisabledOnOs(OS.WINDOWS)
-class ExperimentalDslTest {
+    extension(DockerExtension)
+    extension(TestcontainerExtension)
 
-    @Test
-    fun `can use latest features`() = runTest {
+    test("can use latest features").config(enabledOrReasonIf = DockerExtension.isAvailable) {
         wiremock.setupStub(path = "/example")
 
         val myText = skrape(HttpFetcher) {
@@ -85,8 +74,7 @@ class ExperimentalDslTest {
     /*
     TODO: Proxy currently not implemented
     @Disabled
-    @Test
-    fun `can use proxy to fetch sites`() = runTest {
+    test("can use proxy to fetch sites") {
         skrape(HttpFetcher) {
             request {
                 url("http://some.url")
@@ -102,4 +90,4 @@ class ExperimentalDslTest {
         }
     }
     */
-}
+})

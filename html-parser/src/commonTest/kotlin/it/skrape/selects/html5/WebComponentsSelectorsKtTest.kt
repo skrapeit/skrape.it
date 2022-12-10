@@ -2,15 +2,12 @@ package it.skrape.selects.html5
 
 import aStandardTag
 import aValidDocument
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import kotlin.js.JsName
-import kotlin.test.Test
 
-class WebComponentsSelectorsKtTest {
+class WebComponentsSelectorsKtTest: FunSpec({
 
-    @JsName("CanParseContentTag")
-	@Test
-	fun `can parse content-tag`() {
+    test("can parse content-tag") {
         val selector = aValidDocument(aStandardTag("content")).content {
             findFirst {
                 text.shouldBe("i'm a content")
@@ -21,9 +18,7 @@ class WebComponentsSelectorsKtTest {
         selector.shouldBe("content")
     }
 
-    @JsName("CanParseShadowTag")
-	@Test
-	fun `can parse shadow-tag`() {
+    test("can parse shadow-tag") {
         val selector = aValidDocument(aStandardTag("shadow")).shadow {
             findFirst {
                 text.shouldBe("i'm a shadow")
@@ -34,9 +29,7 @@ class WebComponentsSelectorsKtTest {
         selector.shouldBe("shadow")
     }
 
-    @JsName("CanParseSlotTag")
-	@Test
-	fun `can parse slot-tag`() {
+    test("can parse slot-tag") {
         val selector = aValidDocument(aStandardTag("slot")).slot {
             findFirst {
                 text.shouldBe("i'm a slot")
@@ -47,9 +40,7 @@ class WebComponentsSelectorsKtTest {
         selector.shouldBe("slot")
     }
 
-    @JsName("CanParseTemplateTag")
-	@Test
-	fun `can parse template-tag`() {
+    test("can parse template-tag") {
         val selector = aValidDocument(aStandardTag("template")).template {
             findFirst {
                 //println("${this.element.text()}")
@@ -59,4 +50,4 @@ class WebComponentsSelectorsKtTest {
         }
         selector.shouldBe("template")
     }
-}
+})

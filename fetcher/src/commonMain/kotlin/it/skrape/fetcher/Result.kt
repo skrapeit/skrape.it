@@ -1,5 +1,7 @@
 package it.skrape.fetcher
 
+import io.ktor.client.statement.*
+import io.ktor.http.*
 import it.skrape.SkrapeItDsl
 
 /**
@@ -16,9 +18,11 @@ public class Result(
     public val responseBody: String,
     public val responseStatus: Status,
     public val contentType: ContentType,
-    public val headers: Map<String, String>,
+    public val headers: Headers,
     public val baseUri: String = "",
-    public val cookies: List<Cookie>
+    public val cookies: List<Cookie>,
+    public val jsExecution: Boolean = false,
+    public val response: HttpResponse? = null
 ) {
     /**
      * Will return a certain response headers value
@@ -28,7 +32,7 @@ public class Result(
      */
     public infix fun httpHeader(name: String): String? = this.headers[name]
 
-    public fun httpHeaders(init: Map<String, String>.() -> Unit): Map<String, String> {
+    public fun httpHeaders(init: Headers.() -> Unit): Headers {
         headers.apply(init)
         return headers
     }

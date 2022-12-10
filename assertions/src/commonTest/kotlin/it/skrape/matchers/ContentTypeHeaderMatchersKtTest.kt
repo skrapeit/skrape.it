@@ -1,31 +1,26 @@
 package it.skrape.matchers
 
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.datatest.withData
 import io.kotest.matchers.shouldBe
-import kotlin.js.JsName
-import kotlin.test.Test
 
-class ContentTypeHeaderMatchersKtTest {
+class ContentTypeHeaderMatchersKtTest : FunSpec({
 
-    @JsName("CanMatchExactContentTypesFromString")
-	@Test
-	fun `can match exact content types from string`() {
-        ContentTypes.values().forEach(::testExactMatch)
-    }
-    
-    fun testExactMatch(contentType:ContentTypes) {
+    withData(
+        nameFn = { "can match exact content type ${it.name} from string" },
+        ContentTypes.values().toList()
+    ) { contentType ->
         val returnedContentTypeValue = contentType.value toBe contentType
         "${contentType.value}foo" toBeNot contentType
         returnedContentTypeValue.shouldBe(contentType.value)
     }
 
-    @JsName("CanMatchPartialContentTypesFromString")
-	@Test
-	fun `can match partial content types from string`() {
-        ContentTypes.values().forEach(::testPartialMatch)
-    }
-    
-    fun testPartialMatch(contentType: ContentTypes) {
+    withData(
+        nameFn = { "can match partial content type ${it.name} from string" },
+        ContentTypes.values().toList()
+    ) { contentType ->
         "${contentType.value}foo" toContain contentType
         "${contentType.value}bar" toContain contentType
     }
-}
+
+})

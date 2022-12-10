@@ -31,18 +31,6 @@ actual val platformConfig: KtorClientPlatformConfig<*> = object : KtorClientPlat
 
 }
 
-//Provide default configurations similar to the old fetchers
-@Deprecated("")
-val BrowserFetcher: HttpClientConfig<*>.()->Unit = {
-    useBrowserUserAgent()
-}
-@Deprecated("")
-val HttpFetcher: HttpClientConfig<*>.()->Unit = Scraper.EMPTY_CONFIG
-@Deprecated("")
-val AsyncFetcher: HttpClientConfig<*>.()->Unit = {
-    expectSuccess = false
-}
-
 /**
  * Create a scraper config with given parameters or defaults.
  * @return Result

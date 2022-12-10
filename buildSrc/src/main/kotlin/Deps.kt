@@ -59,9 +59,11 @@ object Deps {
         group = "io.kotest",
         version = Versions.kotest
     ) {
+        val api = dependency("kotest-framework-api")
         val engine = dependency("kotest-framework-engine")
         val junit = dependency("kotest-runner-junit5")
         val assertions = dependency("kotest-assertions-core")
+        val datatest = dependency("kotest-framework-datatest")
     }
 
     object Ktor : DependencyGroup(

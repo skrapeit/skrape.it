@@ -1,44 +1,32 @@
 package it.skrape.fetcher
 
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import it.skrape.fetcher.request.UrlBuilder
-import kotlin.js.JsName
-import kotlin.test.Test
-import kotlin.test.Ignore
 
-class UrlBuilderTest {
+class UrlBuilderTest: FunSpec({
 
-    @Test
-    @JsName("CanBuildValidUrlByDefault")
-	fun `can build valid url by default`() {
+    test("can build valid url by default") {
         val url = UrlBuilder().toString()
         url.shouldBe("http://localhost:8080")
     }
 
-    @Test
-    @JsName("CanBuildValidUrlWithDefinedHostname")
-	fun `can build valid url with defined hostname`() {
+    test("can build valid url with defined hostname") {
         val url = UrlBuilder(host = "skrape.it").toString()
         url.shouldBe("http://skrape.it:8080")
     }
 
-    @Test
-    @JsName("CanBuildValidUrlWithDefinedPort")
-	fun `can build valid url with defined port`() {
+    test("can build valid url with defined port") {
         val url = UrlBuilder(port = 8181).toString()
         url.shouldBe("http://localhost:8181")
     }
 
-    @Test
-    @JsName("CanBuildValidUrlWithDefinedPath")
-	fun `can build valid url with defined path`() {
+    test("can build valid url with defined path") {
         val url = UrlBuilder(path = "/foo").toString()
         url.shouldBe("http://localhost:8080/foo")
     }
 
-    @Test
-    @JsName("CanBuildValidUrlByTheUseOfSeveralOptions")
-	fun `can build valid url by the use of several options`() {
+    test("can build valid url by the use of several options") {
         val url = UrlBuilder().apply {
             protocol = UrlBuilder.Protocol.HTTPS
             path = "/my-path"
@@ -51,9 +39,7 @@ class UrlBuilderTest {
         url.shouldBe("https://skrape.it:12345/my-path?skrape=it")
     }
 
-    @Test
-    @JsName("CanBuildValidUrlWithONEQueryParameter")
-	fun `can build valid url with ONE query parameter`() {
+    test("can build valid url with ONE query parameter") {
         val url = UrlBuilder().apply {
             queryParam {
                 "foo" to "bar"
@@ -62,9 +48,7 @@ class UrlBuilderTest {
         url.shouldBe("http://localhost:8080?foo=bar")
     }
 
-    @Test
-    @JsName("CanBuildValidUrlWithABunchOfQueryParameters")
-	fun `can build valid url with a bunch of query parameters`() {
+    test("can build valid url with a bunch of query parameters") {
         val url = UrlBuilder().apply {
             queryParam {
                 "aaa" to "zzz"
@@ -76,9 +60,7 @@ class UrlBuilderTest {
         url.shouldBe("http://localhost:8080?aaa=zzz&bbb=yyy&ccc=xxx&ddd=www")
     }
 
-    @Test
-    @JsName("CanBuildValidUrlWithListParameter")
-	fun `can build valid url with list parameter`() {
+    test("can build valid url with list parameter") {
         val url = UrlBuilder().apply {
             queryParam {
                 "aaa" to listOf("1", 2, .4711, true, null)
@@ -88,9 +70,7 @@ class UrlBuilderTest {
         url.shouldBe("http://localhost:8080?aaa=1,2,0.4711,true,null&bbb=yyy")
     }
 
-    @Test
-    @JsName("CanBuildValidUrlWithKeyOnlyParameterShortcut")
-	fun `can build valid url with key only parameter shortcut`() {
+    test("can build valid url with key only parameter shortcut") {
         val url = UrlBuilder().apply {
             queryParam {
                 +"aaa"
@@ -102,10 +82,7 @@ class UrlBuilderTest {
         url.shouldBe("http://localhost:8080?yyy=zzz&aaa&bbb&ccc")
     }
 
-    @Test
-    @Ignore
-    @JsName("CanBuildValidUrlWithKeyOnlyParameter")
-	fun `can build valid url with key only parameter`() {
+    xtest("can build valid url with key only parameter") {
         val url = UrlBuilder().apply {
             queryParam {
                 "aaa" to null
@@ -115,20 +92,16 @@ class UrlBuilderTest {
         url.shouldBe("http://localhost:8080?aaa")
     }
 
-    @Test
-    @JsName("CanBuildValidUrlWithFragment")
-	fun `can build valid url with fragment`() {
+    test("can build valid url with fragment") {
         val url = UrlBuilder(fragment = "modal").toString()
         url.shouldBe("http://localhost:8080#modal")
     }
 
-    @Test
-    @JsName("CanBuildValidUrlWithDefinedProtocol")
-	fun `can build valid url with defined protocol`() {
+    test("can build valid url with defined protocol") {
         UrlBuilder.Protocol.values().forEach { protocol ->
             val url = UrlBuilder(protocol = protocol).toString()
             url.shouldBe("${protocol.value}://localhost:8080")
         }
 
     }
-}
+})

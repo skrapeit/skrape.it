@@ -5,11 +5,11 @@ import kotlinx.browser.document
 import kotlinx.dom.addClass
 import org.w3c.dom.*
 import parseHTML
+import Node as LinkedomNode
 import org.w3c.dom.Attr as WC3Attribute
 import org.w3c.dom.Document as WC3Document
 import org.w3c.dom.Element as WC3Element
 import org.w3c.dom.Node as WC3Node
-import Node as LinkedomNode
 
 val printer = PrettyPrinter()
 

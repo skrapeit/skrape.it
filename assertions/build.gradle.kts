@@ -15,5 +15,10 @@ kotlin {
                 api(projects.fetcher)
             }
         }
+        val commonTest by getting {
+            dependencies {
+                implementation(Deps.Kotest.datatest)
+            }
+        }
     }
 }

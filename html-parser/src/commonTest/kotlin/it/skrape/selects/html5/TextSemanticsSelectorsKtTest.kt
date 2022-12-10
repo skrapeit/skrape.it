@@ -1,17 +1,15 @@
 package it.skrape.selects.html5
 
 
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import it.skrape.core.htmlDocument
 import it.skrape.selects.attribute
 import it.skrape.selects.text
-import kotlin.js.JsName
-import kotlin.test.Test
-class TextSemanticsSelectorsKtTest {
 
-    @JsName("CanParseATag")
-	@Test
-	fun `can parse a-tag`() {
+class TextSemanticsSelectorsKtTest: FunSpec({
+
+    test("can parse a-tag") {
         htmlDocument("<div><a>hello</a></div>") {
             a {
                 findAll {
@@ -35,9 +33,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseAbbrTag")
-	@Test
-	fun `can parse abbr-tag`() {
+    test("can parse abbr-tag") {
         htmlDocument("<div><abbr>hello</abbr></div>") {
             abbr {
                 findAll { text.shouldBe("hello") }
@@ -53,9 +49,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseBTag")
-	@Test
-	fun `can parse b-tag`() {
+    test("can parse b-tag") {
         htmlDocument("<div><b>hello</b></div>") {
             b {
                 findAll { text.shouldBe("hello") }
@@ -71,9 +65,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseBdiTag")
-	@Test
-	fun `can parse bdi-tag`() {
+    test("can parse bdi-tag") {
         htmlDocument("<div><bdi>hello</bdi></div>") {
             bdi {
                 findAll { text.shouldBe("hello") }
@@ -89,9 +81,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseBdoTag")
-	@Test
-	fun `can parse bdo-tag`() {
+    test("can parse bdo-tag") {
         htmlDocument("<div><bdo>hello</bdo></div>") {
             bdo {
                 findAll { text.shouldBe("hello") }
@@ -107,9 +97,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseBrTag")
-	@Test
-	fun `can parse br-tag`() {
+    test("can parse br-tag") {
         htmlDocument("<div><br class='foo'/></div>") {
             br {
                 findAll {
@@ -133,9 +121,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseCiteTag")
-	@Test
-	fun `can parse cite-tag`() {
+    test("can parse cite-tag") {
         htmlDocument("<div><cite>hello</cite></div>") {
             cite {
                 findAll { text.shouldBe("hello") }
@@ -151,9 +137,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseCodeTag")
-	@Test
-	fun `can parse code-tag`() {
+    test("can parse code-tag") {
         htmlDocument("<div><code>hello</code></div>") {
             code {
                 findAll { text.shouldBe("hello") }
@@ -169,9 +153,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseDataTag")
-	@Test
-	fun `can parse data-tag`() {
+    test("can parse data-tag") {
         htmlDocument("<div><data>hello</data></div>") {
             data {
                 findAll { text.shouldBe("hello") }
@@ -187,9 +169,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseDfnTag")
-	@Test
-	fun `can parse dfn-tag`() {
+    test("can parse dfn-tag") {
         htmlDocument("<div><dfn>hello</dfn></div>") {
             dfn {
                 findAll { text.shouldBe("hello") }
@@ -205,9 +185,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseEmTag")
-	@Test
-	fun `can parse em-tag`() {
+    test("can parse em-tag") {
         htmlDocument("<div><em>hello</em></div>") {
             em {
                 findAll { text.shouldBe("hello") }
@@ -223,9 +201,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseITag")
-	@Test
-	fun `can parse i-tag`() {
+    test("can parse i-tag") {
         htmlDocument("<div><i>hello</i></div>") {
             i {
                 findAll { text.shouldBe("hello") }
@@ -241,9 +217,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseKbdTag")
-	@Test
-	fun `can parse kbd-tag`() {
+    test("can parse kbd-tag") {
         htmlDocument("<div><kbd>hello</kbd></div>") {
             kbd {
                 findAll { text.shouldBe("hello") }
@@ -259,9 +233,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseMarkTag")
-	@Test
-	fun `can parse mark-tag`() {
+    test("can parse mark-tag") {
         htmlDocument("<div><mark>hello</mark></div>") {
             mark {
                 findAll { text.shouldBe("hello") }
@@ -277,9 +249,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseQTag")
-	@Test
-	fun `can parse q-tag`() {
+    test("can parse q-tag") {
         htmlDocument("<div><q>hello</q></div>") {
             q {
                 findAll { text.shouldBe("hello") }
@@ -295,9 +265,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseRbTag")
-	@Test
-	fun `can parse rb-tag`() {
+    test("can parse rb-tag") {
         htmlDocument("<div><rb>hello</rb></div>") {
             rb {
                 findAll { text.shouldBe("hello") }
@@ -313,9 +281,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseRtcTag")
-	@Test
-	fun `can parse rtc-tag`() {
+    test("can parse rtc-tag") {
         htmlDocument("<div><rtc>hello</rtc></div>") {
             rtc {
                 findAll { text.shouldBe("hello") }
@@ -331,9 +297,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseRubyTag")
-	@Test
-	fun `can parse ruby-tag`() {
+    test("can parse ruby-tag") {
         htmlDocument("<div><ruby>hello</ruby></div>") {
             ruby {
                 findAll { text.shouldBe("hello") }
@@ -349,9 +313,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseSTag")
-	@Test
-	fun `can parse s-tag`() {
+    test("can parse s-tag") {
         htmlDocument("<div><s>hello</s></div>") {
             s {
                 findAll { text.shouldBe("hello") }
@@ -367,9 +329,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseSampTag")
-	@Test
-	fun `can parse samp-tag`() {
+    test("can parse samp-tag") {
         htmlDocument("<div><samp>hello</samp></div>") {
             samp {
                 findAll { text.shouldBe("hello") }
@@ -385,9 +345,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseSmallTag")
-	@Test
-	fun `can parse small-tag`() {
+    test("can parse small-tag") {
         htmlDocument("<div><small>hello</small></div>") {
             small {
                 findAll { text.shouldBe("hello") }
@@ -403,9 +361,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseSpanTag")
-	@Test
-	fun `can parse span-tag`() {
+    test("can parse span-tag") {
         htmlDocument("<div><span>hello</span></div>") {
             span {
                 findAll { text.shouldBe("hello") }
@@ -421,9 +377,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseStrongTag")
-	@Test
-	fun `can parse strong-tag`() {
+    test("can parse strong-tag") {
         htmlDocument("<div><strong>hello</strong></div>") {
             strong {
                 findAll { text.shouldBe("hello") }
@@ -439,9 +393,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseSubTag")
-	@Test
-	fun `can parse sub-tag`() {
+    test("can parse sub-tag") {
         htmlDocument("<div><sub>hello</sub></div>") {
             sub {
                 findAll { text.shouldBe("hello") }
@@ -457,9 +409,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseSupTag")
-	@Test
-	fun `can parse sup-tag`() {
+    test("can parse sup-tag") {
         htmlDocument("<div><sup>hello</sup></div>") {
             sup {
                 findAll { text.shouldBe("hello") }
@@ -475,9 +425,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseTimeTag")
-	@Test
-	fun `can parse time-tag`() {
+    test("can parse time-tag") {
         htmlDocument("<div><time>hello</time></div>") {
             time {
                 findAll { text.shouldBe("hello") }
@@ -493,9 +441,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseTtTag")
-	@Test
-	fun `can parse tt-tag`() {
+    test("can parse tt-tag") {
         htmlDocument("<div><tt>hello</tt></div>") {
             tt {
                 findAll { text.shouldBe("hello") }
@@ -511,9 +457,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseUTag")
-	@Test
-	fun `can parse u-tag`() {
+    test("can parse u-tag") {
         htmlDocument("<div><u>hello</u></div>") {
             u {
                 findAll { text.shouldBe("hello") }
@@ -529,9 +473,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseVarTag")
-	@Test
-	fun `can parse var-tag`() {
+    test("can parse var-tag") {
         htmlDocument("<div><var>hello</var></div>") {
             `var` {
                 findAll { text.shouldBe("hello") }
@@ -547,9 +489,7 @@ class TextSemanticsSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseWbrTag")
-	@Test
-	fun `can parse wbr-tag`() {
+    test("can parse wbr-tag") {
         htmlDocument("<div><wbr class='foo'/></div>") {
             wbr {
                 findAll {
@@ -572,4 +512,4 @@ class TextSemanticsSelectorsKtTest {
             }
         }
     }
-}
+})

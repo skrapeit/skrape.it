@@ -3,15 +3,12 @@ package it.skrape.selects.html5
 import aSelfClosingTag
 import aStandardTag
 import aValidDocument
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import kotlin.test.Test
-import kotlin.js.JsName
 
-class FormSelectorsKtTest {
+class FormSelectorsKtTest: FunSpec({
 
-    @JsName("CanParseButtonTag")
-	@Test
-	fun `can parse button-tag`() {
+    test("can parse button-tag") {
         val selector = aValidDocument(aStandardTag("button")).button {
             findFirst {
                 text.shouldBe("i'm a button")
@@ -22,9 +19,7 @@ class FormSelectorsKtTest {
         selector.shouldBe("button")
     }
 
-    @JsName("CanParseDatalistTag")
-	@Test
-	fun `can parse datalist-tag`() {
+    test("can parse datalist-tag") {
         val selector = aValidDocument(aStandardTag("datalist")).datalist {
             findFirst {
                 text.shouldBe("i'm a datalist")
@@ -35,9 +30,7 @@ class FormSelectorsKtTest {
         selector.shouldBe("datalist")
     }
 
-    @JsName("CanParseFieldsetTag")
-	@Test
-	fun `can parse fieldset-tag`() {
+    test("can parse fieldset-tag") {
         val selector = aValidDocument(aStandardTag("fieldset")).fieldset {
             findFirst {
                 text.shouldBe("i'm a fieldset")
@@ -48,9 +41,7 @@ class FormSelectorsKtTest {
         selector.shouldBe("fieldset")
     }
 
-    @JsName("CanParseFormTag")
-	@Test
-	fun `can parse form-tag`() {
+    test("can parse form-tag") {
         val selector = aValidDocument(aStandardTag("form")).form {
             findFirst {
                 text.shouldBe("i'm a form")
@@ -61,9 +52,7 @@ class FormSelectorsKtTest {
         selector.shouldBe("form")
     }
 
-    @JsName("CanParseInputTag")
-	@Test
-	fun `can parse input-tag`() {
+    test("can parse input-tag") {
         val selector = aValidDocument(aSelfClosingTag("input")).input {
             findFirst {
                 attribute("custom-attr").shouldBe("input-attr")
@@ -74,9 +63,7 @@ class FormSelectorsKtTest {
         selector.shouldBe("input")
     }
 
-    @JsName("CanParseLabelTag")
-	@Test
-	fun `can parse label-tag`() {
+    test("can parse label-tag") {
         val selector = aValidDocument(aStandardTag("label")).label {
             findFirst {
                 text.shouldBe("i'm a label")
@@ -87,9 +74,7 @@ class FormSelectorsKtTest {
         selector.shouldBe("label")
     }
 
-    @JsName("CanParseLegendTag")
-	@Test
-	fun `can parse legend-tag`() {
+    test("can parse legend-tag") {
         val selector = aValidDocument(aStandardTag("legend")).legend {
             findFirst {
                 text.shouldBe("i'm a legend")
@@ -100,9 +85,7 @@ class FormSelectorsKtTest {
         selector.shouldBe("legend")
     }
 
-    @JsName("CanParseMeterTag")
-	@Test
-	fun `can parse meter-tag`() {
+    test("can parse meter-tag") {
         val selector = aValidDocument(aStandardTag("meter")).meter {
             findFirst {
                 text.shouldBe("i'm a meter")
@@ -113,9 +96,7 @@ class FormSelectorsKtTest {
         selector.shouldBe("meter")
     }
 
-    @JsName("CanParseOptgroupTag")
-	@Test
-	fun `can parse optgroup-tag`() {
+    test("can parse optgroup-tag") {
         val selector = aValidDocument(aStandardTag("optgroup")).optgroup {
             findFirst {
                 text.shouldBe("i'm a optgroup")
@@ -126,9 +107,7 @@ class FormSelectorsKtTest {
         selector.shouldBe("optgroup")
     }
 
-    @JsName("CanParseOptionTag")
-	@Test
-	fun `can parse option-tag`() {
+    test("can parse option-tag") {
         val selector = aValidDocument(aStandardTag("option")).option {
             findFirst {
                 text.shouldBe("i'm a option")
@@ -139,9 +118,7 @@ class FormSelectorsKtTest {
         selector.shouldBe("option")
     }
 
-    @JsName("CanParseOutputTag")
-	@Test
-	fun `can parse output-tag`() {
+    test("can parse output-tag") {
         val selector = aValidDocument(aStandardTag("output")).output {
             findFirst {
                 text.shouldBe("i'm a output")
@@ -152,9 +129,7 @@ class FormSelectorsKtTest {
         selector.shouldBe("output")
     }
 
-    @JsName("CanParseProgressTag")
-	@Test
-	fun `can parse progress-tag`() {
+    test("can parse progress-tag") {
         val selector = aValidDocument(aStandardTag("progress")).progress {
             findFirst {
                 text.shouldBe("i'm a progress")
@@ -165,9 +140,7 @@ class FormSelectorsKtTest {
         selector.shouldBe("progress")
     }
 
-    @JsName("CanParseSelectTag")
-	@Test
-	fun `can parse select-tag`() {
+    test("can parse select-tag") {
         val selector = aValidDocument(aStandardTag("select")).select {
             findFirst {
                 text.shouldBe("i'm a select")
@@ -178,9 +151,7 @@ class FormSelectorsKtTest {
         selector.shouldBe("select")
     }
 
-    @JsName("CanParseTextareaTag")
-	@Test
-	fun `can parse textarea-tag`() {
+    test("can parse textarea-tag") {
         val selector = aValidDocument(aStandardTag("textarea")).textarea {
             findFirst {
                 text.shouldBe("i'm a textarea")
@@ -190,4 +161,4 @@ class FormSelectorsKtTest {
 
         selector.shouldBe("textarea")
     }
-}
+})

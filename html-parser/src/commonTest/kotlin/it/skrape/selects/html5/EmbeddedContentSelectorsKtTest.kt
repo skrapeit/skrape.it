@@ -1,17 +1,14 @@
 package it.skrape.selects.html5
 
 import a3TimesNestedTag
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import it.skrape.core.htmlDocument
 import it.skrape.selects.text
-import kotlin.js.JsName
-import kotlin.test.Test
 
-class EmbeddedContentSelectorsKtTest {
+class EmbeddedContentSelectorsKtTest: FunSpec({
 
-    @JsName("CanParseAppletTag")
-	@Test
-	fun `can parse applet-tag`() {
+	test("can parse applet-tag") {
         htmlDocument(a3TimesNestedTag("applet")) {
             applet {
                 findAll {
@@ -37,9 +34,7 @@ class EmbeddedContentSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseEmbedTag")
-	@Test
-	fun `can parse embed-tag`() {
+	test("can parse embed-tag") {
         htmlDocument("<div><embed src='helloworld.swf'></div>") {
             embed {
                 findFirst {
@@ -63,9 +58,7 @@ class EmbeddedContentSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseIframeTag")
-	@Test
-	fun `can parse iframe-tag`() {
+	test("can parse iframe-tag") {
         htmlDocument("<div><iframe>hello</iframe></div>") {
             iframe {
                 findAll {
@@ -89,9 +82,7 @@ class EmbeddedContentSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseNoembedTag")
-	@Test
-	fun `can parse noembed-tag`() {
+	test("can parse noembed-tag") {
         htmlDocument("<div><noembed src='helloworld.swf'></div>") {
             noembed {
                 findFirst {
@@ -115,9 +106,7 @@ class EmbeddedContentSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseObjectTag")
-	@Test
-	fun `can parse object-tag`() {
+	test("can parse object-tag") {
         htmlDocument(a3TimesNestedTag("object")) {
             `object` {
                 findAll {
@@ -143,9 +132,7 @@ class EmbeddedContentSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseParamTag")
-	@Test
-	fun `can parse param-tag`() {
+	test("can parse param-tag") {
         htmlDocument("<div><param name='autoplay' value='true'></div>") {
             param {
                 findFirst {
@@ -169,9 +156,7 @@ class EmbeddedContentSelectorsKtTest {
         }
     }
 
-    @JsName("CanParsePictureTag")
-	@Test
-	fun `can parse picture-tag`() {
+	test("can parse picture-tag") {
         htmlDocument(a3TimesNestedTag("picture")) {
             picture {
                 findAll {
@@ -197,9 +182,7 @@ class EmbeddedContentSelectorsKtTest {
         }
     }
 
-    @JsName("CanParseSourceTag")
-	@Test
-	fun `can parse source-tag`() {
+	test("can parse source-tag") {
         htmlDocument("<div><source src='horse.ogg' type='audio/ogg'></div>") {
             source {
                 findFirst {
@@ -222,4 +205,4 @@ class EmbeddedContentSelectorsKtTest {
             }
         }
     }
-}
+})

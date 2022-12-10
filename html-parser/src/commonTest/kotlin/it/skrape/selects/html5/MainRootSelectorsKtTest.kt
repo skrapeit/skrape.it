@@ -1,15 +1,12 @@
 package it.skrape.selects.html5
 
 import aValidDocument
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import kotlin.test.Test
-import kotlin.js.JsName
 
-class MainRootSelectorsKtTest {
+class MainRootSelectorsKtTest: FunSpec({
 
-    @JsName("CanPickHtmlTag")
-	@Test
-	fun `can pick html-tag`() {
+    test("can pick html-tag") {
         val selector = aValidDocument().html("") {
             findFirst {
                 attribute("lang").shouldBe("en")
@@ -19,4 +16,4 @@ class MainRootSelectorsKtTest {
 
         selector.shouldBe("html")
     }
-}
+})

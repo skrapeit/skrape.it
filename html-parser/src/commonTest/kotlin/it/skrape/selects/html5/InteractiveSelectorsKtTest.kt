@@ -2,15 +2,12 @@ package it.skrape.selects.html5
 
 import aStandardTag
 import aValidDocument
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import kotlin.test.Test
-import kotlin.js.JsName
 
-class InteractiveSelectorsKtTest {
+class InteractiveSelectorsKtTest: FunSpec({
 
-    @JsName("CanParseDetailsTag")
-	@Test
-	fun `can parse details-tag`() {
+    test("can parse details-tag") {
         val selector = aValidDocument(aStandardTag("details")).details {
             findFirst {
                 text.shouldBe("i'm a details")
@@ -21,9 +18,7 @@ class InteractiveSelectorsKtTest {
         selector.shouldBe("details")
     }
 
-    @JsName("CanParseDialogTag")
-	@Test
-	fun `can parse dialog-tag`() {
+    test("can parse dialog-tag") {
         val selector = aValidDocument(aStandardTag("dialog")).dialog {
             findFirst {
                 text.shouldBe("i'm a dialog")
@@ -34,9 +29,7 @@ class InteractiveSelectorsKtTest {
         selector.shouldBe("dialog")
     }
 
-    @JsName("CanParseMenuTag")
-	@Test
-	fun `can parse menu-tag`() {
+    test("can parse menu-tag") {
         val selector = aValidDocument(aStandardTag("menu")).menu {
             findFirst {
                 text.shouldBe("i'm a menu")
@@ -47,9 +40,7 @@ class InteractiveSelectorsKtTest {
         selector.shouldBe("menu")
     }
 
-    @JsName("CanParseMenuitemTag")
-	@Test
-	fun `can parse menuitem-tag`() {
+    test("can parse menuitem-tag") {
         val selector = aValidDocument(aStandardTag("menuitem")).menuitem {
             findFirst {
                 text.shouldBe("i'm a menuitem")
@@ -60,9 +51,7 @@ class InteractiveSelectorsKtTest {
         selector.shouldBe("menuitem")
     }
 
-    @JsName("CanParseSummaryTag")
-	@Test
-	fun `can parse summary-tag`() {
+    test("can parse summary-tag") {
         val selector = aValidDocument(aStandardTag("summary")).summary {
             findFirst {
                 text.shouldBe("i'm a summary")
@@ -72,4 +61,4 @@ class InteractiveSelectorsKtTest {
 
         selector.shouldBe("summary")
     }
-}
+})

@@ -19,17 +19,11 @@ function ResourceLoaderMiddleware() {
     return function (request, response, next) {
         console.log("Trying to load resource " + decodeURI(request.originalUrl))
         try {
-            const content = fs.readFileSync(PROJECT_PATH + '/build/processedResources/js/test' + decodeURI(request.originalUrl));
+            const content = fs.readFileSync(PROJECT_PATH + '/build/processedResources/js/combined' + decodeURI(request.originalUrl));
             response.writeHead(200);
             response.end(content);
         } catch (ignored) {
-            try {
-                const content = fs.readFileSync(PROJECT_PATH + '/build/processedResources/js/main' + decodeURI(request.originalUrl));
-                response.writeHead(200);
-                response.end(content);
-            } catch (ignored) {
-                next();
-            }
+            next();
         }
     }
 }

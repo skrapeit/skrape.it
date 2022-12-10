@@ -19,32 +19,9 @@ configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
 
         val commonTest by getting {
             dependencies {
-                implementation(kotlin("test"))
                 implementation(Deps.Kotest.assertions)
                 implementation(Deps.Kotest.engine)
-                implementation(Deps.KotlinX.Coroutines.test)
             }
-        }
-    }
-}
-
-afterEvaluate {
-    configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
-        sourceSets {
-            val commonTest by getting
-            //Find all test sourceSets (every one should depend on commonTest) to enable ExperimentalCoroutinesApi
-            val testSourceSets = matching {
-                if (it == commonTest) return@matching true
-                if (it.dependsOn.isEmpty()) return@matching false
-                val toCheck = it.dependsOn.toMutableList()
-                while (toCheck.isNotEmpty()) {
-                    val check = toCheck.removeAt(0)
-                    if (check == commonTest) return@matching true
-                    toCheck += check.dependsOn
-                }
-                return@matching false
-            }
-            testSourceSets.forEach { it.languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi") }
         }
     }
 }

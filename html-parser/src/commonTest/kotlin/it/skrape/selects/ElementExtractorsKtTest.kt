@@ -1,19 +1,16 @@
 package it.skrape.selects
 
 import aValidDocument
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import it.skrape.selects.html5.*
-import kotlin.js.JsName
-import kotlin.test.Test
 
-class ElementExtractorsKtTest {
+class ElementExtractorsKtTest: FunSpec({
 
-    private val document = aValidDocument { this }
+    val document = aValidDocument { this }
 
-    @JsName("CanPickElementsFirstOccurrence")
-	@Test
-	fun `can pick elements firstOccurrence`() {
+    test("can pick elements firstOccurrence") {
         val firstText = document.p {
             findFirst {
                 text.also { it.shouldBe("i'm a paragraph") }
@@ -22,9 +19,7 @@ class ElementExtractorsKtTest {
         firstText.shouldBe("i'm a paragraph")
     }
 
-    @JsName("CanPickOwnElementTextOnly")
-	@Test
-	fun `can pick own element text only`() {
+    test("can pick own element text only") {
         val firstText = document.div {
             withClass = "with-children"
             findFirst {
@@ -34,9 +29,7 @@ class ElementExtractorsKtTest {
         firstText.shouldBe("i'm a parent div")
     }
 
-    @JsName("CanPickElementsSecondOccurrence")
-	@Test
-	fun `can pick elements secondOccurrence`() {
+    test("can pick elements secondOccurrence") {
         val secondText = document.p {
             findSecond {
                 text.also { it.shouldBe("i'm a second paragraph") }
@@ -45,9 +38,7 @@ class ElementExtractorsKtTest {
         secondText.shouldBe("i'm a second paragraph")
     }
 
-    @JsName("CanPickElementsByIndex")
-	@Test
-	fun `can pick elements by index`() {
+    test("can pick elements by index") {
         val secondText = document.p {
             findByIndex(1) {
                 text.also { it.shouldBe("i'm a second paragraph") }
@@ -56,9 +47,7 @@ class ElementExtractorsKtTest {
         secondText.shouldBe("i'm a second paragraph")
     }
 
-    @JsName("CanPickElementsByIndexViaInvokeIndex")
-	@Test
-	fun `can pick elements by index via invoke index`() {
+    test("can pick elements by index via invoke index") {
         val secondText = document.p {
             1 {
                 text.also { it.shouldBe("i'm a second paragraph") }
@@ -67,9 +56,7 @@ class ElementExtractorsKtTest {
         secondText.shouldBe("i'm a second paragraph")
     }
 
-    @JsName("CanPickElementsThirdOccurrence")
-	@Test
-	fun `can pick elements thirdOccurrence`() {
+    test("can pick elements thirdOccurrence") {
         val thirdText = document.p {
             findThird {
                 text.also { it.shouldBe("i'm a paragraph with word break") }
@@ -78,9 +65,7 @@ class ElementExtractorsKtTest {
         thirdText.shouldBe("i'm a paragraph with word break")
     }
 
-    @JsName("CanPickElementsLastOccurrence")
-	@Test
-	fun `can pick elements lastOccurrence`() {
+    test("can pick elements lastOccurrence") {
         val lastText = document.p {
             findLast {
                 text.also { it.shouldBe("i'm the last paragraph") }
@@ -89,9 +74,7 @@ class ElementExtractorsKtTest {
         lastText.shouldBe("i'm the last paragraph")
     }
 
-    @JsName("CanPickElementsSecondlastOccurrence")
-	@Test
-	fun `can pick elements secondlastOccurrence`() {
+    test("can pick elements secondlastOccurrence") {
         val secondLastText = document.p {
             findSecondLast {
                 text.also { it.shouldBe("i'm a paragraph with word break") }
@@ -100,9 +83,7 @@ class ElementExtractorsKtTest {
         secondLastText.shouldBe("i'm a paragraph with word break")
     }
 
-    @JsName("CanPickElementWithCascadingSelectorOnTableFoot")
-	@Test
-	fun `can pick element with cascading selector on table - foot`() {
+    test("can pick element with cascading selector on table - foot") {
         val pickedElementText = document.table {
             tfoot {
                 tr {
@@ -117,9 +98,7 @@ class ElementExtractorsKtTest {
         pickedElementText.shouldBe("second foot td")
     }
 
-    @JsName("CanPickElementWithCascadingSelectorOnTableHead")
-	@Test
-	fun `can pick element with cascading selector on table - head`() {
+    test("can pick element with cascading selector on table - head") {
         val pickedElementText = document.table {
             thead {
                 tr {
@@ -134,9 +113,7 @@ class ElementExtractorsKtTest {
         pickedElementText.shouldBe("first th")
     }
 
-    @JsName("CanPickElementWithCascadingSelectorOnTableBody")
-	@Test
-	fun `can pick element with cascading selector on table - body`() {
+    test("can pick element with cascading selector on table - body") {
         val pickedElementText = document.table {
             tbody {
                 tr {
@@ -151,9 +128,7 @@ class ElementExtractorsKtTest {
         pickedElementText.shouldBe("barfoo")
     }
 
-    @JsName("CanPickElementWithCascadingSelectorOnTableColgroup")
-	@Test
-	fun `can pick element with cascading selector on table - colgroup`() {
+    test("can pick element with cascading selector on table - colgroup") {
         val pickedElementText = document.table {
             colgroup {
                 col {
@@ -167,9 +142,7 @@ class ElementExtractorsKtTest {
         pickedElementText.shouldBe("2")
     }
 
-    @JsName("CanPickElementByCssSelectorMatchingRegex")
-	@Test
-	fun `can pick element by css selector matching regex`() {
+    test("can pick element by css selector matching regex") {
         val someRegex = "^(ol|ul).*navigation$".toRegex()
 
         aValidDocument {
@@ -182,9 +155,7 @@ class ElementExtractorsKtTest {
         }
     }
 
-    @JsName("CanPickElementByCssSelectorMatchingRegexDSLInvoke")
-	@Test
-	fun `can pick element by css selector matching regex DSL invoke`() {
+    test("can pick element by css selector matching regex DSL invoke") {
         val someRegex = "^(ol|ul).*navigation$".toRegex()
 
         aValidDocument {
@@ -196,4 +167,4 @@ class ElementExtractorsKtTest {
             }
         }
     }
-}
+})

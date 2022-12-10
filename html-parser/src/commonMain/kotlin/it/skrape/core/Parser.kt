@@ -1,12 +1,10 @@
 package it.skrape.core
 
-import io.ktor.util.*
-import io.ktor.utils.io.*
 import io.ktor.utils.io.charsets.*
 import io.ktor.utils.io.core.*
 import it.skrape.SkrapeItDsl
-import it.skrape.selects.Doc
 import it.skrape.fetcher.Result
+import it.skrape.selects.Doc
 
 internal expect class Parser {
 
@@ -73,4 +71,4 @@ public val Result.document: Doc
     get() = htmlDocument { this }
 
 @SkrapeItDsl
-public fun <T> Result.htmlDocument(init: Doc.() -> T): T = htmlDocument(html = responseBody, baseUri = baseUri).init()
+public fun <T> Result.htmlDocument(init: Doc.() -> T): T = htmlDocument(html = responseBody, baseUri = baseUri, jsExecution = jsExecution).init()

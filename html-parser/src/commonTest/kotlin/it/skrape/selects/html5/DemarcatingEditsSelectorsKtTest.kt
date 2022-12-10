@@ -1,17 +1,14 @@
 package it.skrape.selects.html5
 
 import a3TimesNestedTag
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import it.skrape.core.htmlDocument
 import it.skrape.selects.text
-import kotlin.js.JsName
-import kotlin.test.Test
 
-class DemarcatingEditsSelectorsKtTest {
+class DemarcatingEditsSelectorsKtTest: FunSpec({
 
-    @Test
-    @JsName("CanParseDelTag")
-	fun `can parse del-tag`() {
+    test("can parse del-tag") {
         htmlDocument(a3TimesNestedTag("del")) {
             del {
                 findAll {
@@ -37,9 +34,7 @@ class DemarcatingEditsSelectorsKtTest {
         }
     }
 
-    @Test
-    @JsName("CanParseInsTag")
-	fun `can parse ins-tag`() {
+    test("can parse ins-tag") {
         htmlDocument(a3TimesNestedTag("ins")) {
             ins {
                 findAll {
@@ -64,4 +59,4 @@ class DemarcatingEditsSelectorsKtTest {
             }
         }
     }
-}
+})

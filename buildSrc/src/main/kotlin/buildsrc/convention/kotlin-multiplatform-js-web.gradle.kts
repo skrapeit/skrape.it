@@ -1,7 +1,7 @@
 package buildsrc.convention
 
 plugins {
-    id("buildsrc.convention.kotlin-multiplatform")
+    id("buildsrc.convention.kotlin-multiplatform-js")
     kotlin("multiplatform")
 }
 

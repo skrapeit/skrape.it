@@ -2,32 +2,37 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.await
 
-actual enum class Platform(actual val value:Boolean) {
-    JVM(false),
-    JS(true),
-    WEB(js(
+internal actual val supportedPlatforms: List<Platform> by lazy {
+    val platforms = mutableListOf(Platform.JS)
+    val isWeb = js(
         "typeof window !== 'undefined' && typeof window.document !== 'undefined' || typeof self !== 'undefined' && typeof self.location !== 'undefined'" // ktlint-disable max-line-length
-    ) as Boolean),
-    NODE(js(
+    ) as Boolean
+    val isNode = js(
         "typeof process !== 'undefined' && process.versions != null && process.versions.node != null"
-    ) as Boolean),
-    WINDOWS(NODE.value && js("process.platfrom == \"win32\"") as Boolean),
-    LINUX(NODE.value && js("process.platfrom == \"linux\"") as Boolean);
+    ) as Boolean
+    if (isNode) {
+        platforms.add(Platform.NODE)
+        if (js("process.platform == \"win32\"") as Boolean)
+            platforms.add(Platform.WINDOWS)
+        else if (js("process.platform == \"linux\"") as Boolean)
+            platforms.add(Platform.LINUX)
+    } else if (isWeb) {
+        platforms.add(Platform.WEB)
+    } else {
+        error("Unsupported JS platform")
+    }
+    platforms
 }
 
 actual suspend fun testDockerAvailable(): Boolean {
-    return if (Platform.NODE.value) {
-        println("Trying to start node container")
+    return if (+Platform.NODE) {
         try {
-            val container = GenericContainer("alpine").start().await()
-            container.stop()
+            GenericContainer("alpine").start().await().stop().await()
             true
         } catch (e: Throwable) {
-            println("Caught exception $e")
             false
         }
-    } else if (Platform.WEB.value) {
-        println("Testing container availability")
+    } else if (+Platform.WEB) {
         val resp = Testcontainer.client.post("http://localhost:9876/containers/available")
         println("Status was ${resp.status}")
         resp.status == HttpStatusCode.OK

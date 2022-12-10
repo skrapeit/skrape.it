@@ -1,25 +1,20 @@
 package it.skrape.fetcher.request
 
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import kotlin.js.JsName
-import kotlin.test.Test
 
-internal class FormKtTest {
+internal class FormKtTest : FunSpec({
 
-    private fun form(init: Form.() -> Unit): Form = Form().also(init)
+    fun form(init: Form.() -> Unit): Form = Form().also(init)
 
-    @Test
-    @JsName("CanCreateStringOnePairForm")
-	fun `can create string one pair form`() {
+    test("can create string one pair form") {
         val form = form {
             "a" to "1"
         }
         "$form".shouldBe("a=1")
     }
 
-    @Test
-    @JsName("CanCreateNullableStringOneFieldForm")
-	fun `can create nullable string one field form`() {
+    test("can create nullable string one field form") {
         val nullString: String? = null
         val form = form {
             "a" to nullString
@@ -27,9 +22,7 @@ internal class FormKtTest {
         "$form".shouldBe("a=null")
     }
 
-    @Test
-    @JsName("CanCreateTwoFieldsForm")
-	fun `can create two fields form`() {
+    test("can create two fields form") {
         val form = form {
             "a" to "1"
             "b" to 2
@@ -37,9 +30,7 @@ internal class FormKtTest {
         "$form".shouldBe("a=1&b=2")
     }
 
-    @Test
-    @JsName("CanCreateNullableNumberForm")
-	fun `can create nullable number form`() {
+    test("can create nullable number form") {
         val nullNumber: Number? = null
         val form = form {
             "a" to nullNumber
@@ -47,18 +38,14 @@ internal class FormKtTest {
         "$form".shouldBe("a=null")
     }
 
-    @Test
-    @JsName("CanCreateFormWithBoolean")
-	fun `can create form with boolean`() {
+    test("can create form with boolean") {
         val form = form {
             "a" to true
         }
         "$form".shouldBe("a=true")
     }
 
-    @Test
-    @JsName("CanCreateFormWithNullableBoolean")
-	fun `can create form with nullable boolean`() {
+    test("can create form with nullable boolean") {
         val nullBoolean: Boolean? = null
         val form = form {
             "a" to nullBoolean
@@ -66,4 +53,4 @@ internal class FormKtTest {
         "$form".shouldBe("a=null")
     }
 
-}
+})

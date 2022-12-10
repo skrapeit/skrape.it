@@ -37,7 +37,7 @@ public class CssSelector(
     private fun String?.toAttributeKeySelector() = this?.let { "[$it]" }.orEmpty().withoutSpaces()
 
     private fun List<String>?.toAttributesKeysSelector() =
-        this?.joinToString(prefix = "['", separator = "']['", postfix = "']").orEmpty().withoutSpaces()
+        this?.joinToString(prefix = "[", separator = "][", postfix = "]").orEmpty().withoutSpaces()
 
     private fun Pair<String, String>?.toAttributeSelector() =
         this?.let { "[${it.first.withoutSpaces()}='${it.second}']" }.orEmpty()

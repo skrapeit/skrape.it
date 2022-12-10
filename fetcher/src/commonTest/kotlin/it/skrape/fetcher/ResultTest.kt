@@ -1,13 +1,13 @@
 package it.skrape.fetcher
 
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import kotlin.js.JsName
-import kotlin.test.Test
+import io.ktor.http.*
 
-class ResultTest {
+class ResultTest: FunSpec({
 
-    private val aValidResult = Result(
-            headers = mapOf("X-Foo" to "bar"),
+    val aValidResult = Result(
+            headers = headersOf("X-Foo" to listOf("bar")),
             responseBody = "",
             responseStatus = Result.Status(0, ""),
             contentType = "foo",
@@ -17,9 +17,7 @@ class ResultTest {
             )
     )
 
-    @Test
-    @JsName("CanGetCookiesFromResultHeaderAsLambda")
-	fun `can get cookies from result header as lambda`() {
+    test("can get cookies from result header as lambda") {
         aValidResult.cookies {
             this.size.shouldBe(2)
         }
@@ -34,4 +32,4 @@ class ResultTest {
 //            }
 //        }
 //    }
-}
+})

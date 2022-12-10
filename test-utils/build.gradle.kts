@@ -23,7 +23,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation(Deps.Ktor.clientJS)
-                implementation(npm("testcontainers","8.15.0"))
+                implementation(npm("testcontainers", "8.15.0"))
             }
         }
         val jvmMain by getting {

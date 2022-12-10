@@ -1,7 +1,13 @@
 package it.skrape.fetcher
 
-import Testcontainer
+import DockerExtension
+import Platform
+import TestcontainerExtension
+import and
+import dontRunOnPlatform
+import httpBin
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.core.test.TestScope
 import io.kotest.matchers.collections.shouldBeOneOf
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
@@ -20,22 +26,16 @@ import setupPostStub
 import setupPutStub
 import setupRedirect
 import setupStub
+import wiremock
 
 
 //@DisabledOnOs(OS.WINDOWS)
 class AsyncFetcherTest : FunSpec({
 
-    lateinit var wiremock: Testcontainer.Wiremock
-    lateinit var httpBin: String
+    extension(DockerExtension)
+    extension(TestcontainerExtension)
 
-    val baseRequest by lazy { KtorRequestBuilder().apply { url(wiremock.httpUrl) } }
-
-    beforeTest {
-        wiremock = Testcontainer.getWiremock()
-        httpBin = Testcontainer.getHttpBin()
-    }
-
-    test("can fetch https url and use HTTP verb GET by default") {
+    test("can fetch https url and use HTTP verb GET by default").config(enabledOrReasonIf = (DockerExtension.isAvailable and dontRunOnPlatform(Platform.JS))) {
         wiremock.setupStub(path = "/example")
         val request = baseRequest.copy(
             url = "${wiremock.httpsUrl}/example",
@@ -50,7 +50,7 @@ class AsyncFetcherTest : FunSpec({
 
     }
 
-    test("will not throw exception on non existing url") {
+    test("will not throw exception on non existing url").config(enabledOrReasonIf = DockerExtension.isAvailable) {
         val request = baseRequest.copy(url = "${wiremock.httpUrl}/not-existing", timeout = 9999999)
 
         val fetched = Scraper(request).scrape()
@@ -58,7 +58,7 @@ class AsyncFetcherTest : FunSpec({
         fetched.status { code }.shouldBe(404)
     }
 
-    test("will not follow redirects if configured") {
+    test("will not follow redirects if configured").config(enabledOrReasonIf = (DockerExtension.isAvailable and dontRunOnPlatform(Platform.WEB))) {
         wiremock.setupRedirect()
         val request = baseRequest.copy(followRedirects = false)
 
@@ -68,7 +68,7 @@ class AsyncFetcherTest : FunSpec({
 
     }
 
-    test("will follow redirect by default") {
+    test("will follow redirect by default").config(enabledOrReasonIf = DockerExtension.isAvailable) {
         wiremock.setupRedirect()
 
         val fetched = Scraper(baseRequest).scrape()
@@ -76,7 +76,7 @@ class AsyncFetcherTest : FunSpec({
         fetched.status { code }.shouldBe(404)
     }
 
-    test("can fetch cookies") {
+    test("can fetch cookies").config(enabledOrReasonIf = (DockerExtension.isAvailable and dontRunOnPlatform(Platform.JS))) {
         wiremock.setupCookiesStub(path = "/cookies")
         val request = baseRequest.copy(
             url = "${wiremock.httpsUrl}/cookies",
@@ -109,7 +109,7 @@ class AsyncFetcherTest : FunSpec({
         )
     }
 
-    test("can fetch url and use HTTP verb POST") {
+    test("can fetch url and use HTTP verb POST").config(enabledOrReasonIf = DockerExtension.isAvailable) {
         wiremock.setupPostStub()
         val request = baseRequest.copy(method = HttpMethod.Post)
 
@@ -120,7 +120,7 @@ class AsyncFetcherTest : FunSpec({
         fetched.responseBody.shouldBe("""{"data":"some value"}""")
     }
 
-    test("can POST body") {
+    test("can POST body").config(enabledOrReasonIf = DockerExtension.isAvailable) {
 
         val request = KtorRequestBuilder().apply {
             url("$httpBin/post")
@@ -136,7 +136,7 @@ class AsyncFetcherTest : FunSpec({
         fetched.responseBody.shouldContain(""""data": "{\"foo\":\"bar\"}"""")
     }
 
-    test("can fetch url and use HTTP verb PUT") {
+    test("can fetch url and use HTTP verb PUT").config(enabledOrReasonIf = DockerExtension.isAvailable) {
         wiremock.setupPutStub()
         val request = baseRequest.copy(method = HttpMethod.Put)
 
@@ -146,7 +146,7 @@ class AsyncFetcherTest : FunSpec({
         fetched.responseBody.shouldBe("i'm a PUT stub")
     }
 
-    test("can fetch url and use HTTP verb DELETE") {
+    test("can fetch url and use HTTP verb DELETE").config(enabledOrReasonIf = DockerExtension.isAvailable) {
         wiremock.setupDeleteStub()
         val request = baseRequest.copy(method = HttpMethod.Delete)
 
@@ -156,7 +156,7 @@ class AsyncFetcherTest : FunSpec({
         fetched.responseBody.shouldBe("i'm a DELETE stub")
     }
 
-    test("can fetch url and use HTTP verb PATCH") {
+    test("can fetch url and use HTTP verb PATCH").config(enabledOrReasonIf = DockerExtension.isAvailable) {
         wiremock.setupPatchStub()
         val request = baseRequest.copy(method = HttpMethod.Patch)
 
@@ -166,7 +166,7 @@ class AsyncFetcherTest : FunSpec({
         fetched.responseBody.shouldBe("i'm a PATCH stub")
     }
 
-    test("can fetch url and use HTTP verb HEAD") {
+    test("can fetch url and use HTTP verb HEAD").config(enabledOrReasonIf = DockerExtension.isAvailable) {
         wiremock.setupHeadStub()
         val request = baseRequest.copy(method = HttpMethod.Head)
 
@@ -179,7 +179,7 @@ class AsyncFetcherTest : FunSpec({
         //fetched.httpHeader("result").shouldBe("i'm a HEAD stub")
     }
 
-    test("will throw exception on timeout") {
+    test("will throw exception on timeout").config(enabledOrReasonIf = DockerExtension.isAvailable) {
         wiremock.setupStub(path = "/delayed", delay = 6000)
         try {
             Scraper(baseRequest.copy(url = "${wiremock.httpUrl}/delayed", timeout = 10)).scrape()
@@ -197,3 +197,6 @@ class AsyncFetcherTest : FunSpec({
         }
     }
 })
+
+val TestScope.baseRequest
+    get() = KtorRequestBuilder().apply { url(wiremock.httpUrl) }

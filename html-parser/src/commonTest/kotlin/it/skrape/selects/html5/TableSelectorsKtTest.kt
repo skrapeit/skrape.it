@@ -1,14 +1,12 @@
 package it.skrape.selects.html5
 
 import aValidDocument
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import kotlin.js.JsName
-import kotlin.test.Test
-class TableSelectorsKtTest {
 
-    @JsName("CanParseCaptionTag")
-	@Test
-	fun `can parse caption-tag`() {
+class TableSelectorsKtTest: FunSpec({
+
+    test("can parse caption-tag") {
         val selector = aValidDocument().caption {
             findFirst {
                 text.shouldBe("i'm the caption")
@@ -19,9 +17,7 @@ class TableSelectorsKtTest {
         selector.shouldBe("caption")
     }
 
-    @JsName("CanParseColTag")
-	@Test
-	fun `can parse col-tag`() {
+    test("can parse col-tag") {
         val selector = aValidDocument().col {
             findAll {
                 this.size.shouldBe(2)
@@ -32,9 +28,7 @@ class TableSelectorsKtTest {
         selector.shouldBe("col")
     }
 
-    @JsName("CanParseColgroupTag")
-	@Test
-	fun `can parse colgroup-tag`() {
+    test("can parse colgroup-tag") {
         val selector = aValidDocument().colgroup {
             findAll {
                 this.size.shouldBe(1)
@@ -45,9 +39,7 @@ class TableSelectorsKtTest {
         selector.shouldBe("colgroup")
     }
 
-    @JsName("CanParseTableTag")
-	@Test
-	fun `can parse table-tag`() {
+    test("can parse table-tag") {
         val selector = aValidDocument().table {
             findAll {
                 this.size.shouldBe(1)
@@ -58,9 +50,7 @@ class TableSelectorsKtTest {
         selector.shouldBe("table")
     }
 
-    @JsName("CanParseTbodyTag")
-	@Test
-	fun `can parse tbody-tag`() {
+    test("can parse tbody-tag") {
         val selector = aValidDocument().tbody {
             findAll {
                 this.size.shouldBe(1)
@@ -71,9 +61,7 @@ class TableSelectorsKtTest {
         selector.shouldBe("tbody")
     }
 
-    @JsName("CanParseTdTag")
-	@Test
-	fun `can parse td-tag`() {
+    test("can parse td-tag") {
         val selector = aValidDocument().td {
             findAll {
                 this.size.shouldBe(6)
@@ -84,9 +72,7 @@ class TableSelectorsKtTest {
         selector.shouldBe("td")
     }
 
-    @JsName("CanParseTfootTag")
-	@Test
-	fun `can parse tfoot-tag`() {
+    test("can parse tfoot-tag") {
         val selector = aValidDocument().tfoot {
             findAll {
                 this.size.shouldBe(1)
@@ -97,9 +83,7 @@ class TableSelectorsKtTest {
         selector.shouldBe("tfoot")
     }
 
-    @JsName("CanParseThTag")
-	@Test
-	fun `can parse th-tag`() {
+    test("can parse th-tag") {
         val selector = aValidDocument().th {
             findAll {
                 this.size.shouldBe(2)
@@ -110,9 +94,7 @@ class TableSelectorsKtTest {
         selector.shouldBe("th")
     }
 
-    @JsName("CanParseTheadTag")
-	@Test
-	fun `can parse thead-tag`() {
+    test("can parse thead-tag") {
         val selector = aValidDocument().thead {
             findAll {
                 this.size.shouldBe(1)
@@ -123,9 +105,7 @@ class TableSelectorsKtTest {
         selector.shouldBe("thead")
     }
 
-    @JsName("CanParseTrTag")
-	@Test
-	fun `can parse tr-tag`() {
+    test("can parse tr-tag") {
         val selector = aValidDocument().tr {
             findAll {
                 this.size.shouldBe(4)
@@ -135,4 +115,4 @@ class TableSelectorsKtTest {
 
         selector.shouldBe("tr")
     }
-}
+})

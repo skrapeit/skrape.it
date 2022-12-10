@@ -3,17 +3,14 @@ package it.skrape.selects.html5
 import aStandardTag
 import aValidDocument
 import io.kotest.assertions.throwables.shouldThrowWithMessage
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import it.skrape.selects.ElementNotFoundException
-import kotlin.js.JsName
-import kotlin.test.Test
 
-class CustomTagSelectorsKtTest {
+class CustomTagSelectorsKtTest: FunSpec({
 
-    @Test
-    @JsName("CanPickHtml5CustomTag")
-    fun `can pick html5 custom-tag`() {
+    test("can pick html5 custom-tag") {
         val selector = aValidDocument(aStandardTag("custom-tag")) {
             customTag("header") {
                 findFirst {
@@ -36,9 +33,7 @@ class CustomTagSelectorsKtTest {
 
     }
 
-    @Test
-    @JsName("CanPickHtml5CustomSelectorViaInvokedString")
-    fun `can pick html5 custom selector via invoked string`() {
+    test("can pick html5 custom selector via invoked string") {
         val selector = aValidDocument(aStandardTag("custom-tag")) {
             "custom-tag" {
                 findFirst {
@@ -50,9 +45,7 @@ class CustomTagSelectorsKtTest {
         selector.shouldBe("custom-tag")
     }
 
-    @Test
-    @JsName("CanCascadeCustomTagSelectors")
-    fun `can cascade custom tag selectors`() {
+    test("can cascade custom tag selectors") {
         val selector = aValidDocument {
             customTag("div") {
                 withId = "schnitzel"
@@ -65,9 +58,7 @@ class CustomTagSelectorsKtTest {
         selector.shouldBe("div#schnitzel bar.foobar")
     }
 
-    @Test
-    @JsName("CanCascadeCustomSelectorFromInvokedString")
-    fun `can cascade custom selector from invoked string`() {
+    test("can cascade custom selector from invoked string") {
         shouldThrowWithMessage<ElementNotFoundException>("""Could not find element "div#schnitzel bar.foobar foo[xxx]"""") {
             aValidDocument {
                 "div" {
@@ -85,9 +76,7 @@ class CustomTagSelectorsKtTest {
         }
     }
 
-    @Test
-    @JsName("CascadingCustomSelectorWillReturnGenericType")
-    fun `cascading custom selector will return generic type`() {
+    test("cascading custom selector will return generic type") {
         val selector = aValidDocument {
             "div" {
                 withId = "schnitzel"
@@ -102,4 +91,4 @@ class CustomTagSelectorsKtTest {
         }
         selector.shouldContainExactly("div#schnitzel bar.foobar foo[xxx]")
     }
-}
+})

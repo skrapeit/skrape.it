@@ -1,13 +1,12 @@
 package it.skrape.selects
 
 import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import it.skrape.core.htmlDocument
 import it.skrape.selects.html5.p
-import kotlin.test.Test
-import kotlin.js.JsName
 
-class ResultExtractorsTest {
+class ResultExtractorsTest: FunSpec({
 
     val expectedValue = "i'm a paragraph"
 
@@ -16,9 +15,7 @@ class ResultExtractorsTest {
         <p>foo</p>
     """.trimIndent()
 
-    @JsName("WillThrowCustomExceptionIfElementCouldNotBeFoundViaElementFunction")
-	@Test
-	fun `will throw custom exception if element could not be found via element function`() {
+    test("will throw custom exception if element could not be found via element function") {
 
         shouldThrow<ElementNotFoundException> {
             htmlDocument(htmlSnippet) {
@@ -27,9 +24,7 @@ class ResultExtractorsTest {
         }
     }
 
-    @JsName("CanPickElementsViaSelectFunctions")
-	@Test
-	fun `can pick elements via select functions`() {
+    test("can pick elements via select functions") {
 
         htmlDocument(htmlSnippet) {
             p {
@@ -39,4 +34,4 @@ class ResultExtractorsTest {
             }
         }
     }
-}
+})

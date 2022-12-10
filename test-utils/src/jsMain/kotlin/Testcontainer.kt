@@ -46,7 +46,7 @@ actual object Testcontainer {
             val internalPorts = intArrayOf(httpPort, httpsPort)
             val commands = arrayOf("--https-port", "8443", "--enable-stub-cors", "--verbose")
             val fileMappings = arrayOf(FileMapping("/__files", "/home/wiremock/__files"))
-            if (Platform.WEB.value) {
+            if (+Platform.WEB) {
                 val containerInfo = client.post("http://localhost:9876/containers/create") {
                     contentType(ContentType.Application.Json)
                     setBody(buildJsonObject {
@@ -76,14 +76,14 @@ actual object Testcontainer {
                     httpsUrl = "https://$address:${ports[httpsPort.toString()]}",
                     ports[httpPort.toString()].toString().toInt()
                 )
-            } else if (Platform.NODE.value) {
-                val rootProjectPath = js("process.env[\"ROOT_PROJECT_PATH\"]")
+            } else if (+Platform.NODE) {
+                val projectPath = js("process.env[\"PROJECT_PATH\"]")
                 var container = GenericContainer(wiremockImage)
                     .withExposedPorts(*internalPorts)
                     .withCmd(commands)
                 fileMappings.forEach { (from, to) ->
                     container =
-                        container.withBindMount("$rootProjectPath/test-utils/src/commonMain/resources$from", to, "ro")
+                        container.withBindMount("$projectPath/build/processedResources/js/combined$from", to, "ro")
                 }
                 val startedContainer = container.start().await()
                 wiremockInstance = Wiremock(
@@ -102,7 +102,7 @@ actual object Testcontainer {
         if (!this::httpBinInstance.isInitialized) {
             val httpBinImage = "kennethreitz/httpbin:latest"
             val httpBinPort = 80
-            if (Platform.WEB.value) {
+            if (+Platform.WEB) {
                 val containerInfo = client.post("http://localhost:9876/containers/create") {
                     contentType(ContentType.Application.Json)
                     setBody(buildJsonObject {
@@ -117,7 +117,7 @@ actual object Testcontainer {
                 val address = jsonResponse.getValue("address").jsonPrimitive.content
                 val ports = jsonResponse["ports"]?.unsafeCast<JsonObject>() ?: emptyMap<String, String>()
                 httpBinInstance = "http://$address:${ports["80"]}"
-            } else if (Platform.NODE.value) {
+            } else if (+Platform.NODE) {
                 val container = GenericContainer(httpBinImage)
                     .withExposedPorts(httpBinPort)
                 val startedContainer = container.start().await()

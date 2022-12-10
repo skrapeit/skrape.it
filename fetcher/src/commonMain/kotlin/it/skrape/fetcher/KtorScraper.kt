@@ -4,6 +4,7 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.*
 import io.ktor.client.plugins.*
+import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -32,9 +33,12 @@ class Scraper(
         get() = requestBuilder
 
     companion object {
+        internal val KEY_JS_EXECUTION = AttributeKey<Boolean>("it.skrape.fetcher.jsExecution")
+
         val defaultClientConfig: HttpClientConfig<*>.() -> Unit = {
             followRedirects = false //We handle those ourselves
             install(KtorDynamicPlugin)
+            install(HttpCookies)
             install(HttpTimeout) {
                 requestTimeoutMillis = 5000
                 socketTimeoutMillis = 5000
@@ -97,14 +101,29 @@ internal fun Int.toMaxAge(): Int? = when (this) {
     else -> this
 }
 
+//Provide default configurations similar to the old fetchers
+@Deprecated("")
+val BrowserFetcher: HttpClientConfig<*>.()->Unit = {
+    useBrowserUserAgent()
+    withJsExecution()
+}
+@Deprecated("")
+val HttpFetcher: HttpClientConfig<*>.()->Unit = Scraper.EMPTY_CONFIG
+@Deprecated("")
+val AsyncFetcher: HttpClientConfig<*>.()->Unit = {
+    expectSuccess = false
+}
+
 //TODO a lot of this could be done using KTOR components.
 private suspend fun HttpResponse.toResult(): Result = Result(
     responseBody = bodyAsText(),
     responseStatus = Result.Status(status.value, status.description),
     contentType = contentType()?.toString(),
-    headers = headers.flattenEntries().associateBy({ it.first }, { it.second }),
+    headers = headers,
     baseUri = request.url.toString(),
-    cookies = setCookie().map { cookie -> cookie.toDomainCookie(this.request.url.toString().urlOrigin) }
+    cookies = setCookie().map { cookie -> cookie.toDomainCookie(this.request.url.toString().urlOrigin) },
+    jsExecution = this.call.request.jsExecution,
+    response = this
 )
 
 /*
@@ -127,8 +146,11 @@ class KtorDynamicPlugin {
         override fun install(plugin: KtorDynamicPlugin, scope: HttpClient) {
             scope.plugin(HttpSend).intercept { context ->
                 //If the request has a defined UserAgent set it
-                val userAgent = context.attributes.getOrNull(KEY_USERAGENT) ?: defaultUserAgent
-                context.headers.appendMissing(HttpHeaders.UserAgent, listOf(userAgent))
+                if (!context.headers.contains(HttpHeaders.UserAgent) && context.attributes.contains(KEY_USERAGENT)) {
+                    context.headers.appendMissing(HttpHeaders.UserAgent, listOf(context.attributes[KEY_USERAGENT]))
+                } else if (!context.headers.contains(HttpHeaders.UserAgent)) {
+                    context.headers.appendMissing(HttpHeaders.UserAgent, listOf(defaultUserAgent))
+                }
                 //If we set authentication apply it
                 if (context.attributes.contains(KEY_AUTHENTICATION)) {
                     context.headers.appendMissing(
@@ -232,7 +254,24 @@ var KtorRequestBuilder.timeout: Int
         connectTimeoutMillis = value.toLong()
     }
 
-fun URLBuilder.queryParam(block: SkrapeItQueryBuilder.()->Unit) {
+val HttpRequest.jsExecution: Boolean
+    get() = attributes.getOrNull(Scraper.KEY_JS_EXECUTION)
+        ?: call.client.jsExecution
+
+var KtorRequestBuilder.jsExecution: Boolean
+    get() = attributes.getOrNull(Scraper.KEY_JS_EXECUTION) ?: false
+    set(value) = attributes.put(Scraper.KEY_JS_EXECUTION, value)
+
+val HttpClient.jsExecution: Boolean
+    get() = attributes.getOrNull(Scraper.KEY_JS_EXECUTION) ?: false
+
+fun HttpClientConfig<*>.withJsExecution() {
+    this.install("jsExecution") {
+        attributes.put(Scraper.KEY_JS_EXECUTION, true)
+    }
+}
+
+fun URLBuilder.queryParam(block: SkrapeItQueryBuilder.() -> Unit) {
     SkrapeItQueryBuilder(parameters).block()
 }
 

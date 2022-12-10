@@ -1,14 +1,11 @@
 package it.skrape.fetcher
 
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import kotlin.js.JsName
-import kotlin.test.Test
 
-class AuthenticationKtTest {
+class AuthenticationKtTest: FunSpec({
 
-    @Test
-    @JsName("CanCreateAuthorizationHeaderForBasicAuthViaDSL")
-    fun `can create Authorization header for Basic-Auth via DSL`() {
+    test("can create Authorization header for Basic-Auth via DSL") {
         val authenticationHeader = basic {
             username = "user"
             password = "secret"
@@ -16,4 +13,4 @@ class AuthenticationKtTest {
 
         authenticationHeader.shouldBe("Basic dXNlcjpzZWNyZXQ=")
     }
-}
+})

@@ -9,7 +9,7 @@ external interface Handler {
 
 external class Proxy(obj: dynamic, handler: Handler)
 
-actual fun MatchersKtTest.mockDocElementListOfSize(mockSize: Int): List<DocElement> {
+actual fun mockDocElementListOfSize(mockSize: Int): List<DocElement> {
     val proxy = Proxy(emptyList<DocElement>(), object : Handler {
         override val get: (obj: dynamic, prop: String) -> dynamic = ::getFun
         override val set = { obj: dynamic, prop: String ->
@@ -27,7 +27,7 @@ actual fun MatchersKtTest.mockDocElementListOfSize(mockSize: Int): List<DocEleme
     return proxy
 }
 
-actual fun MatchersKtTest.mockDocElement(mockIsPresent: Boolean, mockCssSelector: String): DocElement =
+actual fun mockDocElement(mockIsPresent: Boolean, mockCssSelector: String): DocElement =
     Proxy(Any(), object : Handler {
         override val get: (obj: dynamic, prop: String) -> dynamic = ::getFun
         override val set = { obj: dynamic, prop: String ->

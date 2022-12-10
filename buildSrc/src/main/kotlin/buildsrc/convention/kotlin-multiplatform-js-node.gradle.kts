@@ -1,7 +1,7 @@
 package buildsrc.convention
 
 plugins {
-    id("buildsrc.convention.kotlin-multiplatform")
+    id("buildsrc.convention.kotlin-multiplatform-js")
     kotlin("multiplatform")
 }
 
@@ -12,9 +12,7 @@ configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
             testTask {
                 environment("PROJECT_PATH", projectDir.absolutePath)
                 environment("ROOT_PROJECT_PATH", rootProject.projectDir.absolutePath)
-                /*useMocha {
-                    this.timeout = "100000"
-                }*/
+                useMocha()
             }
             binaries.library()
         }
