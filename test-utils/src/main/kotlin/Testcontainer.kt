@@ -41,7 +41,7 @@ public object Testcontainer {
 }
 
 private class WireMockContainer(
-    version: String = "2.9.0-alpine",
+    version: String = "2.35.0",
     val httpPort: Int = 8080,
     val httpsPort: Int = 8443,
 ) : GenericContainer<WireMockContainer>(DockerImageName.parse("wiremock/wiremock:$version")) {
