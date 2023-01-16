@@ -10,11 +10,11 @@ typealias SkrapeItContentType = String
 
 val RESPONSE_BODY_TEXT = AttributeKey<String>("it.skrape.response.body.text")
 
-@Deprecated("Use Ktor Types", replaceWith = ReplaceWith("value"))
+@Deprecated("Use Ktor Types", replaceWith = ReplaceWith("this.value"))
 val HttpStatusCode.code: Int
     get() = this.value
 
-@Deprecated("Use Ktor Types", replaceWith = ReplaceWith("description"))
+@Deprecated("Use Ktor Types", replaceWith = ReplaceWith("this.description"))
 val HttpStatusCode.message: String
     get() = this.description
 
@@ -48,22 +48,22 @@ val ScrapingResult.cookies
         }
     }
 
-@Deprecated("Use bodyAsText()", ReplaceWith(expression = "bodyAsText()"))
+@Deprecated("Use bodyAsText()", ReplaceWith(expression = "this.bodyAsText()", "io.ktor.client.statement.bodyAsText"))
 val ScrapingResult.responseBody
     get() = this.call.attributes.getOrNull(RESPONSE_BODY_TEXT) ?: error("Response was not initialized!")
 
-@Deprecated(message = "Use Ktor ContentType", ReplaceWith(expression = "contentType()"))
+@Deprecated(message = "Use Ktor ContentType", ReplaceWith(expression = "this.contentType()"))
 val ScrapingResult.contentType: SkrapeItContentType
     get() = this.contentType().toString()
 
 val ScrapingResult.jsExecution: Boolean
     get() = request.jsExecution
 
-@Deprecated("Use Ktor fields", ReplaceWith("request.url.toString()"))
+@Deprecated("Use Ktor fields", ReplaceWith("this.request.url.toString()"))
 val ScrapingResult.baseUri: String
     get() = request.url.toString()
 
-@Deprecated("Use Ktor fields", ReplaceWith(expression = "status"))
+@Deprecated("Use Ktor fields", ReplaceWith(expression = "this.status"))
 val ScrapingResult.responseStatus
     get() = status
 

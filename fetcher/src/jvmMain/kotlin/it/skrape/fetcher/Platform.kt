@@ -40,7 +40,7 @@ fun <R, T> skrapeBlocking(
  * @return T
  */
 @SkrapeItDsl
-fun <T> Scraper.extractBlocking(scrapingResult: ScrapingResult.() -> T): T =
+fun <T> Scraper.extractBlocking(scrapingResult: suspend ScrapingResult.() -> T): T =
     runBlocking { response(scrapingResult) }
 
 /**
@@ -49,7 +49,7 @@ fun <T> Scraper.extractBlocking(scrapingResult: ScrapingResult.() -> T): T =
  * @return T
  */
 @SkrapeItDsl
-suspend inline fun <reified T : Any> Scraper.extractIt(crossinline scrapingResult: ScrapingResult.(T) -> Unit): T =
+suspend inline fun <reified T : Any> Scraper.extractIt(crossinline scrapingResult: suspend ScrapingResult.(T) -> Unit): T =
     with(T::class) {
         response { createInstance().also { scrapingResult(it) } }
     }
@@ -59,7 +59,7 @@ suspend inline fun <reified T : Any> Scraper.extractIt(crossinline scrapingResul
  * @return T
  */
 @SkrapeItDsl
-inline fun <reified T : Any> Scraper.extractItBlocking(crossinline scrapingResult: ScrapingResult.(T) -> Unit): T =
+inline fun <reified T : Any> Scraper.extractItBlocking(crossinline scrapingResult: suspend ScrapingResult.(T) -> Unit): T =
     runBlocking { extractIt(scrapingResult) }
 
 /**
@@ -67,6 +67,6 @@ inline fun <reified T : Any> Scraper.extractItBlocking(crossinline scrapingResul
  * @return T
  */
 @SkrapeItDsl
-fun Scraper.expectBlocking(scrapingResult: ScrapingResult.() -> Unit) {
+fun Scraper.expectBlocking(scrapingResult: suspend ScrapingResult.() -> Unit) {
     runBlocking { response(scrapingResult) }
 }

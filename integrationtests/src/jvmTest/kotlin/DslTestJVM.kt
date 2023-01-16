@@ -3,12 +3,13 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import io.kotest.matchers.types.instanceOf
 import io.kotest.matchers.types.shouldBeInstanceOf
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.*
-import it.skrape.matchers.HttpStatus
+import it.skrape.matchers.ClientError
 import it.skrape.matchers.toBe
 import it.skrape.selects.eachHref
 import it.skrape.selects.eachText
@@ -41,7 +42,7 @@ class DslTestJVM : FunSpec({
             }
 
             extractIt<MyOtherObject> {
-                it.message = status { message }
+                it.message = status { description }
             }
         }
         extracted.message.shouldBe("OK")
@@ -57,7 +58,7 @@ class DslTestJVM : FunSpec({
             }
 
             extractIt<MyObject> {
-                it.message = status { message }
+                it.message = status { description }
                 htmlDocument {
                     it.allParagraphs = p { findAll { eachText } }
                     it.paragraph = findFirst("p").text
@@ -94,8 +95,8 @@ class DslTestJVM : FunSpec({
             }
 
             extractIt<MyDataClass> {
-                it.httpStatusCode = status { code }
-                it.httpStatusMessage = status { message }
+                it.httpStatusCode = status { value }
+                it.httpStatusMessage = status { description }
                 htmlDocument {
                     it.allParagraphs = p { findAll { eachText } }
                     it.paragraph = p { findFirst { text } }
@@ -129,10 +130,10 @@ class DslTestJVM : FunSpec({
         // TODO: add possibility to call extract / expect outside of a coroutine scoope
         val body1 = fetcher.extractBlocking {
             status {
-                code toBe 302
-                message toBe "Found"
+                value toBe 302
+                description toBe "Found"
             }
-            responseBody
+            bodyAsText()
         }
         wiremock.setupRedirect()
 
@@ -142,26 +143,26 @@ class DslTestJVM : FunSpec({
             }
         }.extractBlocking {
             status {
-                code toBe 404
-                message toBe "Not Found"
+                value toBe 404
+                description toBe "Not Found"
             }
-            responseStatus toBe HttpStatus.`4xx_Client_error`
-            responseStatus toBe HttpStatus.`404_Not_Found`
+            status toBe HttpStatusCode.ClientError
+            status toBe HttpStatusCode.NotFound
 
-            responseBody
+            bodyAsText()
         }
 
         body1.shouldNotBe(body2)
 
         fetcher.expectBlocking {
             status {
-                code toBe 404
+                value toBe 404
             }
         }
 
         val statusCode = fetcher.extractBlocking {
             status {
-                code
+                value
             }
         }
 
@@ -171,7 +172,7 @@ class DslTestJVM : FunSpec({
             var statusCode: Int = 0
         )
 
-        val myResult = fetcher.extractItBlocking<MyResult> { it.statusCode = status { code } }
+        val myResult = fetcher.extractItBlocking<MyResult> { it.statusCode = status { value } }
         myResult.statusCode.shouldBe(404)
 
     }

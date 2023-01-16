@@ -14,7 +14,7 @@ import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.utils.io.charsets.Charsets
+import io.ktor.utils.io.charsets.*
 import io.ktor.utils.io.errors.*
 import it.skrape.core.document
 import it.skrape.core.htmlDocument
@@ -43,12 +43,12 @@ class DslTest : FunSpec() {
                 response {
 
                     status {
-                        println("Code is $code")
-                        code toBe 200
-                        message toBe "OK"
+                        println("Code is $value")
+                        value toBe 200
+                        description toBe "OK"
                     }
 
-                    contentType toBe ContentTypes.TEXT_HTML_UTF8
+                    contentType() toBeExactly ContentType.Text.Html.withParameter("charset", "UTF-8")
 
                     htmlDocument {
 
@@ -90,7 +90,7 @@ class DslTest : FunSpec() {
                     sslRelaxed = true
                 }
 
-                response { status { code toBe 200 } }
+                response { status { value toBe 200 } }
             }
 
         }
@@ -104,23 +104,21 @@ class DslTest : FunSpec() {
                 }
 
                 response {
-                    contentType toContain ContentTypes.TEXT_HTML
-                    contentType toBe ContentTypes.TEXT_HTML_UTF8
-                    contentType toBeNot ContentTypes.APPLICATION_XHTML
-                    contentType toBeNot ContentTypes.APPLICATION_GZIP
-                    contentType toBeNot ContentTypes.APPLICATION_JSON
-                    contentType toBeNot ContentTypes.APPLICATION_TAR
-                    contentType toBeNot ContentTypes.APPLICATION_XML
-                    contentType toBeNot ContentTypes.APPLICATION_XUL
-                    contentType toBeNot ContentTypes.APPLICATION_ZIP
+                    contentType() toMatch ContentType.Text.Html
+                    contentType() toBeExactly ContentType.Text.Html.withParameter("charset", "UTF-8")
+                    contentType() notToBe ContentType.Application.Xml
 
-                    contentType.shouldBe("text/html; charset=UTF-8")
+                    contentType().shouldBe(ContentType.Text.Html.withParameter("charset", "UTF-8"))
                 }
             }
         }
 
         //Don't run in the browser since fetch limitations prevent custom handling of redirects
-        test("dsl will not follow redirects if configured").config(enabledOrReasonIf = (DockerExtension.isAvailable and dontRunOnPlatform(Platform.WEB))) {
+        test("dsl will not follow redirects if configured").config(
+            enabledOrReasonIf = (DockerExtension.isAvailable and dontRunOnPlatform(
+                Platform.WEB
+            ))
+        ) {
             wiremock.setupRedirect()
 
             skrape(HttpFetcher) {
@@ -131,8 +129,8 @@ class DslTest : FunSpec() {
 
                 response {
                     status {
-                        code toBe 302
-                        message toBe "Found"
+                        value toBe 302
+                        description toBe "Found"
                     }
                 }
             }
@@ -168,9 +166,9 @@ class DslTest : FunSpec() {
                 }
                 response {
                     val headers = httpHeaders {
-                        this["Content-Type"].shouldBe( "text/html; charset=UTF-8")
+                        this["Content-Type"].shouldBe("text/html; charset=UTF-8")
                     }
-                    headers["Content-Type"].shouldBe( "text/html; charset=UTF-8")
+                    headers["Content-Type"].shouldBe("text/html; charset=UTF-8")
                 }
             }
         }
@@ -203,8 +201,8 @@ class DslTest : FunSpec() {
                 }
                 response {
                     status {
-                        code toBe 404
-                        message toBe "Not Found"
+                        value toBe 404
+                        description toBe "Not Found"
                     }
                 }
             }
@@ -223,19 +221,19 @@ class DslTest : FunSpec() {
                     //request.method.shouldBe(Method.POST)
 
                     status {
-                        code toBe 200
-                        message toBe "OK"
+                        value toBe 200
+                        description toBe "OK"
                     }
 
-                    responseStatus toBe HttpStatus.`2xx_Successful`
-                    responseStatus toBe HttpStatus.`200_OK`
-                    responseStatus toBeNot HttpStatus.`1xx_Informational_response`
-                    responseStatus toBeNot HttpStatus.`3xx_Redirection`
-                    responseStatus toBeNot HttpStatus.`4xx_Client_error`
-                    responseStatus toBeNot HttpStatus.`5xx_Server_error`
+                    status toBe HttpStatusCode.Successful
+                    status toBe HttpStatusCode.OK
+                    status notToBe HttpStatusCode.InformationalResponse
+                    status notToBe HttpStatusCode.Redirection
+                    status notToBe HttpStatusCode.ClientError
+                    status notToBe HttpStatusCode.ServerError
 
-                    contentType toBe ContentTypes.APPLICATION_JSON_UTF8
-                    contentType toBe "application/json; charset=UTF-8"
+                    contentType() toBeExactly ContentType.Application.Json.withParameter("charset", "UTF-8")
+                    contentType() toBeExactly "application/json; charset=UTF-8"
                 }
             }
         }
@@ -282,7 +280,7 @@ class DslTest : FunSpec() {
 
                 val extracted = response {
                     status {
-                        MyObject(message, "", emptyList())
+                        MyObject(description, "", emptyList())
                     }
                 }
                 extracted.message.shouldBe("OK")
@@ -307,8 +305,8 @@ class DslTest : FunSpec() {
 
                 response {
                     MySimpleDataClass(
-                        httpStatusCode = status { code },
-                        httpStatusMessage = status { message },
+                        httpStatusCode = status { value },
+                        httpStatusMessage = status { description },
                         allParagraphs = document.p { findAll { eachText } },
                         paragraph = document.p { findFirst { text } },
                         allLinks = document.a { findAll { eachHref } }
@@ -702,8 +700,8 @@ class DslTest : FunSpec() {
                             }
                             response {
                                 status {
-                                    code toBe 200
-                                    message toBe "OK"
+                                    value toBe 200
+                                    description toBe "OK"
                                 }
                                 htmlDocument {
                                     title {
@@ -727,8 +725,8 @@ class DslTest : FunSpec() {
                         }
                         response {
                             status {
-                                code toBe 200
-                                message toBe "OK"
+                                value toBe 200
+                                description toBe "OK"
                             }
                             htmlDocument {
                                 title {
@@ -767,7 +765,7 @@ class DslTest : FunSpec() {
             }
 
             client.requestBuilder.url.buildString()
-                .shouldBe("https://foo.com:12345/foo?foo=bar&fizz=buzz&someKey&afew=1&afew=2&afew=0.4711&afew=null#modal")
+                .shouldBe("https://foo.com:12345/foo?foo=bar&fizz=buzz&someKey&bar=null&afew=1&afew=2&afew=0.4711&afew=null#modal")
         }
 
         //TODO The website causes an error with node-fetch for some reason
@@ -809,8 +807,8 @@ class DslTest : FunSpec() {
 
                 response {
                     status {
-                        code toBe 401
-                        message toBe "UNAUTHORIZED"
+                        value toBe 401
+                        description toBe "UNAUTHORIZED"
                     }
                 }
             }
@@ -830,10 +828,10 @@ class DslTest : FunSpec() {
 
                 response {
                     status {
-                        code toBe 200
+                        value toBe 200
                     }
-                    responseBody toContain """authenticated": true"""
-                    responseBody toContain """user": "cr1z"""
+                    bodyAsText() toContain """authenticated": true"""
+                    bodyAsText() toContain """user": "cr1z"""
                 }
             }
         }

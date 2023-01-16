@@ -80,26 +80,6 @@ class Scraper(
 
 }
 
-/*
-Cookie {
-    val path = this.path ?: "/"
-    val expires = this.expires?.toHttpDate().toExpires()
-    val domain = when (val domainUrl = this.domain) {
-        null -> Domain(origin, false)
-        else -> Domain(domainUrl.urlOrigin, true)
-    }
-    val sameSite = this.extensions["SameSite"].toSameSite()
-    val maxAge = this.maxAge.toMaxAge()
-
-    return Cookie(this.name, this.value, expires, maxAge, domain, path, sameSite, this.secure, this.httpOnly)
-}
- */
-
-internal fun Int.toMaxAge(): Int? = when (this) {
-    0 -> null
-    else -> this
-}
-
 //Provide default configurations similar to the old fetchers
 @Deprecated("")
 val BrowserFetcher: HttpClientConfig<*>.()->Unit = {
@@ -227,9 +207,8 @@ fun URLBuilder.queryParam(block: SkrapeItQueryBuilder.() -> Unit) {
     SkrapeItQueryBuilder(parameters).block()
 }
 
-@Deprecated(message = "Use ParametersBuilder directly", replaceWith = ReplaceWith("parameters"))
-class SkrapeItQueryBuilder(private val parameters: ParametersBuilder) {
-    infix fun String.to(value: Any) {
+class SkrapeItQueryBuilder internal constructor(private val parameters: ParametersBuilder) {
+    infix fun String.to(value: Any?) {
         when (value) {
             null -> parameters.append(this, "null")
             is List<*> -> parameters.appendAll(this, value.map { it.toString() })

@@ -15,8 +15,8 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 import io.ktor.client.network.sockets.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.util.date.*
 import io.ktor.utils.io.*
 import io.ktor.utils.io.errors.*
 import setupCookiesStub
@@ -49,9 +49,9 @@ class AsyncFetcherTest : FunSpec({
 
         val fetched = Scraper(request).scrape()
 
-        fetched.status { code }.shouldBe(200)
-        fetched.contentType.shouldBe("text/html; charset=UTF-8")
-        fetched.responseBody.shouldContain("i'm the title")
+        fetched.status { value }.shouldBe(200)
+        fetched.contentType().shouldBe(ContentType.Text.Html.withParameter("charset", "UTF-8"))
+        fetched.bodyAsText().shouldContain("i'm the title")
 
     }
 
@@ -60,7 +60,7 @@ class AsyncFetcherTest : FunSpec({
 
         val fetched = Scraper(request).scrape()
 
-        fetched.status { code }.shouldBe(404)
+        fetched.status { value }.shouldBe(404)
     }
 
     test("will not follow redirects if configured").config(
@@ -72,7 +72,7 @@ class AsyncFetcherTest : FunSpec({
         val request = baseRequest.copy(followRedirects = false)
 
         val fetched = Scraper(request).scrape()
-        fetched.status { code }.shouldBe(302)
+        fetched.status { value }.shouldBe(302)
 
     }
 
@@ -81,7 +81,7 @@ class AsyncFetcherTest : FunSpec({
 
         val fetched = Scraper(baseRequest).scrape()
 
-        fetched.status { code }.shouldBe(404)
+        fetched.status { value }.shouldBe(404)
     }
 
     test("can fetch cookies").config(enabledOrReasonIf = (DockerExtension.isAvailable and dontRunOnPlatform(Platform.JS))) {
@@ -132,9 +132,9 @@ class AsyncFetcherTest : FunSpec({
 
         val fetched = Scraper(request).scrape()
 
-        fetched.status { code }.shouldBe(200)
-        fetched.contentType.shouldBe("application/json; charset=UTF-8")
-        fetched.responseBody.shouldBe("""{"data":"some value"}""")
+        fetched.status { value }.shouldBe(200)
+        fetched.contentType().shouldBe(ContentType.Application.Json.withParameter("charset", "UTF-8"))
+        fetched.bodyAsText().shouldBe("""{"data":"some value"}""")
     }
 
     test("can POST body").config(enabledOrReasonIf = DockerExtension.isAvailable) {
@@ -150,7 +150,7 @@ class AsyncFetcherTest : FunSpec({
         }
 
         val fetched = Scraper(request).scrape()
-        fetched.responseBody.shouldContain(""""data": "{\"foo\":\"bar\"}"""")
+        fetched.bodyAsText().shouldContain(""""data": "{\"foo\":\"bar\"}"""")
     }
 
     test("can fetch url and use HTTP verb PUT").config(enabledOrReasonIf = DockerExtension.isAvailable) {
@@ -159,8 +159,8 @@ class AsyncFetcherTest : FunSpec({
 
         val fetched = Scraper(request).scrape()
 
-        fetched.status { code }.shouldBe(201)
-        fetched.responseBody.shouldBe("i'm a PUT stub")
+        fetched.status { value }.shouldBe(201)
+        fetched.bodyAsText().shouldBe("i'm a PUT stub")
     }
 
     test("can fetch url and use HTTP verb DELETE").config(enabledOrReasonIf = DockerExtension.isAvailable) {
@@ -169,8 +169,8 @@ class AsyncFetcherTest : FunSpec({
 
         val fetched = Scraper(request).scrape()
 
-        fetched.status { code }.shouldBe(201)
-        fetched.responseBody.shouldBe("i'm a DELETE stub")
+        fetched.status { value }.shouldBe(201)
+        fetched.bodyAsText().shouldBe("i'm a DELETE stub")
     }
 
     test("can fetch url and use HTTP verb PATCH").config(enabledOrReasonIf = DockerExtension.isAvailable) {
@@ -179,8 +179,8 @@ class AsyncFetcherTest : FunSpec({
 
         val fetched = Scraper(request).scrape()
 
-        fetched.status { code }.shouldBe(201)
-        fetched.responseBody.shouldBe("i'm a PATCH stub")
+        fetched.status { value }.shouldBe(201)
+        fetched.bodyAsText().shouldBe("i'm a PATCH stub")
     }
 
     test("can fetch url and use HTTP verb HEAD").config(enabledOrReasonIf = DockerExtension.isAvailable) {
@@ -189,7 +189,7 @@ class AsyncFetcherTest : FunSpec({
 
         val fetched = Scraper(request).scrape()
 
-        fetched.status { code }.shouldBe(201)
+        fetched.status { value }.shouldBe(201)
         /* Removed this check since HTTP HEAD responses should have their body ignored
         *  See https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/HEAD
         */

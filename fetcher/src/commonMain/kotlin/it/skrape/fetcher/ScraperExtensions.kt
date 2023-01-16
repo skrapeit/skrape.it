@@ -13,7 +13,7 @@ suspend fun <T> skrape(
 ): T =
     Scraper(config = config).init()
 
-suspend fun <T> Scraper.response(scrapingResult: ScrapingResult.() -> T): T =
+suspend fun <T> Scraper.response(scrapingResult: suspend ScrapingResult.() -> T): T =
     scrape().scrapingResult()
 
 /**
@@ -21,7 +21,7 @@ suspend fun <T> Scraper.response(scrapingResult: ScrapingResult.() -> T): T =
  */
 @SkrapeItDsl
 @Deprecated(message = "Please use 'response' instead", replaceWith = ReplaceWith("response(result)"))
-suspend fun Scraper.expect(scrapingResult: ScrapingResult.() -> Unit) {
+suspend fun Scraper.expect(scrapingResult: suspend ScrapingResult.() -> Unit) {
     response(scrapingResult)
 }
 
@@ -31,5 +31,5 @@ suspend fun Scraper.expect(scrapingResult: ScrapingResult.() -> Unit) {
  */
 @SkrapeItDsl
 @Deprecated(message = "Please use 'response' instead", replaceWith = ReplaceWith("response(result)"))
-suspend fun <T> Scraper.extract(scrapingResult: ScrapingResult.() -> T): T =
+suspend fun <T> Scraper.extract(scrapingResult: suspend ScrapingResult.() -> T): T =
     response(scrapingResult)
