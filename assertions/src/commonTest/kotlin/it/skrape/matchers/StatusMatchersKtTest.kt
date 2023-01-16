@@ -4,37 +4,36 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.datatest.withData
 import io.kotest.matchers.shouldBe
-import it.skrape.fetcher.Result
+import io.ktor.http.*
 
 class StatusMatchersKtTest : FunSpec({
 
-    fun filteredHttpStatus(filter: String) = HttpStatus.values().filter { it.name.matches(filter.toRegex()) }
 
-    withData(nameFn = { "Can match exact ${it.name}" }, filteredHttpStatus("^((?!xx).)*\$")) { httpStatus ->
-        val returnedContentTypeValue = Result.Status(httpStatus.code, httpStatus.message) toBe httpStatus
-        returnedContentTypeValue.copy(code = 999) toBeNot httpStatus
-        returnedContentTypeValue.copy(message = "xxx") toBeNot httpStatus
-        returnedContentTypeValue.shouldBe(httpStatus.toStatus())
+    withData(nameFn = { "Can match exact ${it.description}" }, HttpStatusCode.allStatusCodes) { httpStatus ->
+        val returnedContentTypeValue = HttpStatusCode(httpStatus.value, httpStatus.description) toBe httpStatus
+        returnedContentTypeValue.copy(value = 999) notToBeExactly  httpStatus
+        returnedContentTypeValue.copy(description = "xxx") notToBeExactly httpStatus
+        returnedContentTypeValue.shouldBe(httpStatus)
     }
 
-    withData(nameFn = { "will throw exception for non matching ${it.name} status code" },
-        filteredHttpStatus("^((?!xx).)*\$")) { httpStatus ->
+    withData(nameFn = { "will throw exception for non matching ${it.description} status code" },
+        HttpStatusCode.allStatusCodes) { httpStatus ->
         shouldThrow<AssertionError> {
-            Result.Status(httpStatus.code + 1, httpStatus.message) toBe httpStatus
+            HttpStatusCode(httpStatus.value + 1, httpStatus.description) toBe httpStatus
         }
     }
 
-    withData(nameFn = { "will throw exception for non matching ${it.name} status message" },
-        filteredHttpStatus("^((?!xx).)*\$")) { httpStatus ->
+    withData(nameFn = { "will throw exception for non matching ${it.description} status message" },
+        HttpStatusCode.allStatusCodes) { httpStatus ->
         shouldThrow<AssertionError> {
-            Result.Status(httpStatus.code, httpStatus.message + "foo") toBe httpStatus
+            HttpStatusCode(httpStatus.value, httpStatus.description + "foo") toBe httpStatus
         }
     }
 
-    withData(nameFn = { "can match ${it.name} status code by first digit and ignoring message" },
-        filteredHttpStatus(".xx.*")) { httpStatus ->
-        Result.Status(httpStatus.code * 101, "xxx") toBe httpStatus
-        Result.Status(httpStatus.code * -1, "xxx") toBeNot httpStatus
+    withData(nameFn = { "can match ${it.description} status code by first digit and ignoring message" },
+        HttpStatusCode.allGroupStatusCodes) { httpStatus ->
+        HttpStatusCode(httpStatus.value * 101, "xxx") toBe httpStatus
+        HttpStatusCode(httpStatus.value * -1, "xxx") notToBeExactly httpStatus
     }
 
 })

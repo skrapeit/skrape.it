@@ -13,16 +13,16 @@ suspend fun <T> skrape(
 ): T =
     Scraper(config = config).init()
 
-suspend fun <T> Scraper.response(result: Result.() -> T): T =
-    scrape().result()
+suspend fun <T> Scraper.response(scrapingResult: ScrapingResult.() -> T): T =
+    scrape().scrapingResult()
 
 /**
  * Execute http call with a given Fetcher implementation and invoke the fetching result.
  */
 @SkrapeItDsl
 @Deprecated(message = "Please use 'response' instead", replaceWith = ReplaceWith("response(result)"))
-suspend fun Scraper.expect(result: Result.() -> Unit) {
-    response(result)
+suspend fun Scraper.expect(scrapingResult: ScrapingResult.() -> Unit) {
+    response(scrapingResult)
 }
 
 /**
@@ -31,5 +31,5 @@ suspend fun Scraper.expect(result: Result.() -> Unit) {
  */
 @SkrapeItDsl
 @Deprecated(message = "Please use 'response' instead", replaceWith = ReplaceWith("response(result)"))
-suspend fun <T> Scraper.extract(result: Result.() -> T): T =
-    response(result)
+suspend fun <T> Scraper.extract(scrapingResult: ScrapingResult.() -> T): T =
+    response(scrapingResult)

@@ -1,17 +1,11 @@
 package it.skrape.fetcher
 
 import io.ktor.client.*
-import io.ktor.client.call.*
 import io.ktor.client.engine.*
 import io.ktor.client.engine.cio.*
-import io.ktor.util.*
 import it.skrape.SkrapeItDsl
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import java.security.cert.X509Certificate
-import java.util.concurrent.atomic.AtomicInteger
-import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 import kotlin.reflect.full.createInstance
 
@@ -46,8 +40,8 @@ fun <R, T> skrapeBlocking(
  * @return T
  */
 @SkrapeItDsl
-fun <T> Scraper.extractBlocking(result: Result.() -> T): T =
-    runBlocking { response(result) }
+fun <T> Scraper.extractBlocking(scrapingResult: ScrapingResult.() -> T): T =
+    runBlocking { response(scrapingResult) }
 
 /**
  * Execute http call with a given Fetcher implementation and invoke the fetching result as this and any given generic as it.
@@ -55,9 +49,9 @@ fun <T> Scraper.extractBlocking(result: Result.() -> T): T =
  * @return T
  */
 @SkrapeItDsl
-suspend inline fun <reified T : Any> Scraper.extractIt(crossinline result: Result.(T) -> Unit): T =
+suspend inline fun <reified T : Any> Scraper.extractIt(crossinline scrapingResult: ScrapingResult.(T) -> Unit): T =
     with(T::class) {
-        response { createInstance().also { result(it) } }
+        response { createInstance().also { scrapingResult(it) } }
     }
 
 /**
@@ -65,14 +59,14 @@ suspend inline fun <reified T : Any> Scraper.extractIt(crossinline result: Resul
  * @return T
  */
 @SkrapeItDsl
-inline fun <reified T : Any> Scraper.extractItBlocking(crossinline result: Result.(T) -> Unit): T =
-    runBlocking { extractIt(result) }
+inline fun <reified T : Any> Scraper.extractItBlocking(crossinline scrapingResult: ScrapingResult.(T) -> Unit): T =
+    runBlocking { extractIt(scrapingResult) }
 
 /**
  * Blocking implementation of 'expect' as convenience function to call it outside of an coroutine.
  * @return T
  */
 @SkrapeItDsl
-fun Scraper.expectBlocking(result: Result.() -> Unit) {
-    runBlocking { response(result) }
+fun Scraper.expectBlocking(scrapingResult: ScrapingResult.() -> Unit) {
+    runBlocking { response(scrapingResult) }
 }

@@ -3,7 +3,10 @@ package it.skrape.core
 import io.ktor.utils.io.charsets.*
 import io.ktor.utils.io.core.*
 import it.skrape.SkrapeItDsl
-import it.skrape.fetcher.Result
+import it.skrape.fetcher.ScrapingResult
+import it.skrape.fetcher.baseUri
+import it.skrape.fetcher.jsExecution
+import it.skrape.fetcher.responseBody
 import it.skrape.selects.Doc
 
 internal expect class Parser {
@@ -67,8 +70,8 @@ public fun htmlDocument(
     baseUri: String = ""
 ): Doc = htmlDocument(file.readText(charset = charset), charset, jsExecution, baseUri)
 
-public val Result.document: Doc
+public val ScrapingResult.document: Doc
     get() = htmlDocument { this }
 
 @SkrapeItDsl
-public fun <T> Result.htmlDocument(init: Doc.() -> T): T = htmlDocument(html = responseBody, baseUri = baseUri, jsExecution = jsExecution).init()
+public fun <T> ScrapingResult.htmlDocument(init: Doc.() -> T): T = htmlDocument(html = responseBody, baseUri = baseUri, jsExecution = jsExecution).init()

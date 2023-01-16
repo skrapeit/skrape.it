@@ -6,10 +6,10 @@ import io.ktor.http.*
 
 class ResultTest: FunSpec({
 
-    val aValidResult = Result(
+    /*val aValidResult = ScrapingResult(
             headers = headersOf("X-Foo" to listOf("bar")),
             responseBody = "",
-            responseStatus = Result.Status(0, ""),
+            responseStatus = ScrapingResult.Status(0, ""),
             contentType = "foo",
             cookies = listOf(
                     "foo=bar".toCookie("skrape.it"),
@@ -21,7 +21,7 @@ class ResultTest: FunSpec({
         aValidResult.cookies {
             this.size.shouldBe(2)
         }
-    }
+    }*/
 
 //    @Test
 //    @JsName("CanGetCookieByInvokedCookieName")

@@ -2,10 +2,11 @@
 
 package it.skrape.matchers
 
-import it.skrape.fetcher.Result
+import io.ktor.http.*
 import kotlin.js.JsName
 
 @Suppress("EnumNaming", "MagicNumber", "unused")
+@Deprecated("Use Ktor types", ReplaceWith("HttpStatusCode", "io.ktor.http.HttpStatusCode"))
 public enum class HttpStatus(public val code: Int, public val message: String) {
     @JsName("_1xxInformationalResponse")
 	`1xx_Informational_response`(1, "Informational response"),
@@ -150,21 +151,73 @@ public enum class HttpStatus(public val code: Int, public val message: String) {
     @JsName("_511NetworkAuthenticationRequired")
 	`511_Network_Authentication_Required`(511, "Network Authentication Required");
 
-    public fun toStatus(): Result.Status = Result.Status(code, message)
+    public fun toStatus(): HttpStatusCode = HttpStatusCode(code, message)
 }
 
-public infix fun Result.Status.toBe(expected: HttpStatus): Result.Status {
+private val informationalResponse = HttpStatusCode(1, "Informational Response")
+private val successful = HttpStatusCode(2, "Successful")
+private val redirection = HttpStatusCode(3, "Redirection")
+private val clientError = HttpStatusCode(4, "Client Error")
+private val serverError = HttpStatusCode(5, "Server Error")
+private val groupStatusCodes = listOf(informationalResponse, successful, redirection, clientError, serverError)
+
+val HttpStatusCode.Companion.InformationalResponse
+    get() = informationalResponse
+val HttpStatusCode.Companion.Successful
+    get() = successful
+val HttpStatusCode.Companion.Redirection
+    get() = redirection
+val HttpStatusCode.Companion.ClientError
+    get() = clientError
+val HttpStatusCode.Companion.ServerError
+    get() = serverError
+
+val HttpStatusCode.Companion.allGroupStatusCodes
+    get() = groupStatusCodes
+
+@Deprecated("Use Ktor Types", ReplaceWith("toBeExactly"))
+public infix fun HttpStatusCode.toBe(expected: HttpStatus): HttpStatusCode {
     @Suppress("MagicNumber")
     if (expected.code <= 5) {
-        return statusAssertion(this.code.toString().startsWith(expected.code.toString()), expected.toStatus())
+        return statusAssertion(this.value / 100 == expected.code, expected.toStatus())
     }
     return statusAssertion(this == expected.toStatus(), expected.toStatus())
 }
 
-public infix fun Result.Status.toBeNot(expected: HttpStatus): Result.Status {
+public infix fun HttpStatusCode.toBe(expected: HttpStatusCode): HttpStatusCode {
+    @Suppress("MagicNumber")
+    if (expected.value <= 5) {
+        return statusAssertion(this.value / 100 == expected.value, expected)
+    }
+    return statusAssertion(this == expected && this.description == expected.description, expected)
+}
+
+public infix fun HttpStatusCode.toBeExactly(expected: HttpStatusCode): HttpStatusCode {
+    if (expected.value > 5) statusAssertion(description == expected.description, expected)
+    return toBe(expected)
+}
+
+@Deprecated("Use Ktor Types", ReplaceWith("notToBeExactly"))
+public infix fun HttpStatusCode.toBeNot(expected: HttpStatus): HttpStatusCode {
     @Suppress("MagicNumber")
     if (expected.code <= 5) {
-        return statusAssertion(!this.code.toString().startsWith(expected.code.toString()), expected.toStatus())
+        return statusAssertion(this.value / 100 != expected.code, expected.toStatus())
     }
     return statusAssertion(this != expected.toStatus(), expected.toStatus())
+}
+
+public infix fun HttpStatusCode.notToBe(expected: HttpStatusCode): HttpStatusCode {
+    @Suppress("MagicNumber")
+    if (expected.value <= 5) {
+        return statusAssertion(this.value / 100 != expected.value, expected)
+    }
+    return statusAssertion(this != expected, expected)
+}
+
+public infix fun HttpStatusCode.notToBeExactly(expected: HttpStatusCode): HttpStatusCode {
+    @Suppress("MagicNumber")
+    if (expected.value <= 5) {
+        return statusAssertion(this.value / 100 != expected.value || this.description != expected.description, expected)
+    }
+    return statusAssertion(this.value != expected.value || this.description != expected.description, expected)
 }

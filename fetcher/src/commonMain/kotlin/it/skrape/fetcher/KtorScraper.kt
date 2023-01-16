@@ -11,9 +11,6 @@ import io.ktor.http.*
 import io.ktor.util.*
 import io.ktor.util.reflect.*
 import it.skrape.SkrapeItDsl
-import it.skrape.fetcher.request.BodyBuilder
-
-typealias KtorRequestBuilder = HttpRequestBuilder
 
 interface KtorClientPlatformConfig<T : HttpClientEngineConfig> {
     val engine: HttpClientEngineFactory<T>
@@ -74,16 +71,17 @@ class Scraper(
         return this
     }
 
-    suspend fun scrape(): Result = (
+    suspend fun scrape(): ScrapingResult = (
             if (requestBuilder.sslRelaxed)
                 relaxedClient.request(requestBuilder)
             else
                 client.request(requestBuilder)
-            ).toResult()
+            ).readBody()
 
 }
 
-internal fun io.ktor.http.Cookie.toDomainCookie(origin: String): Cookie {
+/*
+Cookie {
     val path = this.path ?: "/"
     val expires = this.expires?.toHttpDate().toExpires()
     val domain = when (val domainUrl = this.domain) {
@@ -95,6 +93,7 @@ internal fun io.ktor.http.Cookie.toDomainCookie(origin: String): Cookie {
 
     return Cookie(this.name, this.value, expires, maxAge, domain, path, sameSite, this.secure, this.httpOnly)
 }
+ */
 
 internal fun Int.toMaxAge(): Int? = when (this) {
     0 -> null
@@ -113,18 +112,6 @@ val HttpFetcher: HttpClientConfig<*>.()->Unit = Scraper.EMPTY_CONFIG
 val AsyncFetcher: HttpClientConfig<*>.()->Unit = {
     expectSuccess = false
 }
-
-//TODO a lot of this could be done using KTOR components.
-private suspend fun HttpResponse.toResult(): Result = Result(
-    responseBody = bodyAsText(),
-    responseStatus = Result.Status(status.value, status.description),
-    contentType = contentType()?.toString(),
-    headers = headers,
-    baseUri = request.url.toString(),
-    cookies = setCookie().map { cookie -> cookie.toDomainCookie(this.request.url.toString().urlOrigin) },
-    jsExecution = this.call.request.jsExecution,
-    response = this
-)
 
 /*
  * Custom client plugin to handle redirects and user agent on a per-request basis
@@ -227,41 +214,6 @@ private fun HttpStatusCode.isRedirect(): Boolean = when (value) {
     else -> false
 }
 
-var KtorRequestBuilder.userAgent: String
-    get() = this.attributes.getOrNull(KtorDynamicPlugin.KEY_USERAGENT) ?: KtorDynamicPlugin.defaultUserAgent
-    set(value) = this.attributes.put(KtorDynamicPlugin.KEY_USERAGENT, value)
-
-var KtorRequestBuilder.followRedirects: Boolean
-    get() = attributes.getOrNull(KtorDynamicPlugin.KEY_FOLLOW_REDIRECT) ?: false
-    set(value) = attributes.put(KtorDynamicPlugin.KEY_FOLLOW_REDIRECT, value)
-
-var KtorRequestBuilder.authentication: Authentication?
-    get() = attributes.getOrNull(KtorDynamicPlugin.KEY_AUTHENTICATION)
-    set(value) = if (value == null) attributes.remove(KtorDynamicPlugin.KEY_AUTHENTICATION) else attributes.put(
-        KtorDynamicPlugin.KEY_AUTHENTICATION,
-        value
-    )
-
-var KtorRequestBuilder.sslRelaxed: Boolean
-    get() = attributes.getOrNull(KtorDynamicPlugin.KEY_SSL_RELAXED) ?: false
-    set(value) = attributes.put(KtorDynamicPlugin.KEY_SSL_RELAXED, value)
-
-var KtorRequestBuilder.timeout: Int
-    get() = getCapabilityOrNull(HttpTimeout)?.requestTimeoutMillis?.toInt() ?: 5000
-    set(value) = timeout {
-        requestTimeoutMillis = value.toLong()
-        socketTimeoutMillis = value.toLong()
-        connectTimeoutMillis = value.toLong()
-    }
-
-val HttpRequest.jsExecution: Boolean
-    get() = attributes.getOrNull(Scraper.KEY_JS_EXECUTION)
-        ?: call.client.jsExecution
-
-var KtorRequestBuilder.jsExecution: Boolean
-    get() = attributes.getOrNull(Scraper.KEY_JS_EXECUTION) ?: false
-    set(value) = attributes.put(Scraper.KEY_JS_EXECUTION, value)
-
 val HttpClient.jsExecution: Boolean
     get() = attributes.getOrNull(Scraper.KEY_JS_EXECUTION) ?: false
 
@@ -288,36 +240,6 @@ class SkrapeItQueryBuilder(private val parameters: ParametersBuilder) {
     operator fun String.unaryPlus() {
         if (this.isNotBlank()) parameters.appendAll(this, emptyList())
     }
-}
-
-fun KtorRequestBuilder.copy(
-    url: String = "",
-    method: HttpMethod = this.method,
-    headers: HeadersBuilder = HeadersBuilder(),
-    body: Any = this.body,
-    attributes: Attributes = Attributes(),
-    userAgent: String = this.userAgent,
-    followRedirects: Boolean = this.followRedirects,
-    authentication: Authentication? = this.authentication,
-    sslRelaxed: Boolean = this.sslRelaxed,
-    timeout: Int = this.timeout
-) = KtorRequestBuilder().takeFrom(this).also {
-    it.url.takeFrom(url)
-    it.method = method
-    it.headers.appendAll(headers)
-    it.setBody(body)
-    it.attributes.putAll(attributes)
-    it.userAgent = userAgent
-    it.followRedirects = followRedirects
-    it.authentication = authentication
-    it.sslRelaxed = sslRelaxed
-    it.timeout = timeout
-}
-
-fun KtorRequestBuilder.body(block: BodyBuilder.() -> Unit) {
-    val builder = BodyBuilder().apply(block)
-    contentType(io.ktor.http.ContentType.parse(builder.contentType))
-    setBody(builder.data)
 }
 
 

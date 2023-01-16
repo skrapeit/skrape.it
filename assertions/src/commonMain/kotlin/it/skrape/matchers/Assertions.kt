@@ -1,8 +1,8 @@
 package it.skrape.matchers
 
-import it.skrape.fetcher.Result
+import io.ktor.http.*
 
-public fun Result.Status.statusAssertion(value: Boolean, status: Result.Status): Result.Status {
+public fun HttpStatusCode.statusAssertion(value: Boolean, status: HttpStatusCode): HttpStatusCode {
     return this.also { generalAssertion(value, status) }
 }
 

@@ -1,60 +1,84 @@
 package it.skrape.fetcher
 
+import io.ktor.client.plugins.cookies.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import it.skrape.SkrapeItDsl
+import io.ktor.util.*
 
-/**
- * This object is representing the result of an request
- * @param responseBody - the response responseBody
- * @param responseStatus - the http responses status code and message
- * @param contentType - the http responses content type
- * @param headers - the http responses headers
- * @param cookies - the http response's cookies
- */
-@Suppress("LongParameterList")
-@SkrapeItDsl
-public class Result(
-    public val responseBody: String,
-    public val responseStatus: Status,
-    public val contentType: ContentType,
-    public val headers: Headers,
-    public val baseUri: String = "",
-    public val cookies: List<Cookie>,
-    public val jsExecution: Boolean = false,
-    public val response: HttpResponse? = null
-) {
-    /**
-     * Will return a certain response headers value
-     * @see <a href="https://developer.mozilla.org/en-US/docs/Glossary/Response_header">Explanation about response headers.</a>
-     * @param name that represents the
-     * @return String with value of a certain response header or null
-     */
-    public infix fun httpHeader(name: String): String? = this.headers[name]
+typealias ScrapingResult = HttpResponse
+typealias SkrapeItContentType = String
 
-    public fun httpHeaders(init: Headers.() -> Unit): Headers {
-        headers.apply(init)
-        return headers
-    }
+val RESPONSE_BODY_TEXT = AttributeKey<String>("it.skrape.response.body.text")
 
-    public fun httpHeader(name: String, init: String?.() -> Unit): String? {
-        val header = headers[name]
-        header.apply(init)
-        return header
-    }
+@Deprecated("Use Ktor Types", replaceWith = ReplaceWith("value"))
+val HttpStatusCode.code: Int
+    get() = this.value
 
-    public fun <T> status(init: Status.() -> T): T {
-        return responseStatus.init()
-    }
+@Deprecated("Use Ktor Types", replaceWith = ReplaceWith("description"))
+val HttpStatusCode.message: String
+    get() = this.description
 
-    public fun cookies(init: List<Cookie>.() -> Unit): List<Cookie> =
-            cookies.apply(init)
+fun <T> ScrapingResult.status(block: HttpStatusCode.()->T) : T = status.block()
 
-    @SkrapeItDsl
-    public data class Status(
-            val code: Int,
-            val message: String
-    )
+infix fun ScrapingResult.httpHeader(name: String): String? = this.headers[name]
+
+fun ScrapingResult.httpHeader(name: String, init: String?.() -> Unit): String? {
+    val header = headers[name]
+    header.apply(init)
+    return header
 }
 
-public typealias ContentType = String?
+fun ScrapingResult.httpHeaders(init: Headers.() -> Unit): Headers {
+    headers.apply(init)
+    return headers
+}
+
+internal suspend fun ScrapingResult.readBody(): ScrapingResult {
+    val bodyText = bodyAsText()
+    this.call.attributes.put(RESPONSE_BODY_TEXT, bodyText)
+    return this
+}
+
+//setCookie() doesn't set the domain by itself. Ensure that it's set
+val ScrapingResult.cookies
+    get() = this.setCookie().map {
+        when (it.domain) {
+            null -> it.copy(domain = this.request.url.host)
+            else -> it
+        }
+    }
+
+@Deprecated("Use bodyAsText()", ReplaceWith(expression = "bodyAsText()"))
+val ScrapingResult.responseBody
+    get() = this.call.attributes.getOrNull(RESPONSE_BODY_TEXT) ?: error("Response was not initialized!")
+
+@Deprecated(message = "Use Ktor ContentType", ReplaceWith(expression = "contentType()"))
+val ScrapingResult.contentType: SkrapeItContentType
+    get() = this.contentType().toString()
+
+val ScrapingResult.jsExecution: Boolean
+    get() = request.jsExecution
+
+@Deprecated("Use Ktor fields", ReplaceWith("request.url.toString()"))
+val ScrapingResult.baseUri: String
+    get() = request.url.toString()
+
+@Deprecated("Use Ktor fields", ReplaceWith(expression = "status"))
+val ScrapingResult.responseStatus
+    get() = status
+
+public enum class SameSite {
+    STRICT,
+    LAX,
+    NONE
+}
+
+val Cookie.sameSite : SameSite
+    get() = when(this.extensions["samesite"]?.lowercase()) {
+        "lax" -> SameSite.LAX
+        "strict" -> SameSite.STRICT
+        "none" -> SameSite.NONE
+        else -> SameSite.LAX
+    }
+
+

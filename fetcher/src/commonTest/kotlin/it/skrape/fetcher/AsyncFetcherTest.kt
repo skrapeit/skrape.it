@@ -16,6 +16,7 @@ import io.ktor.client.network.sockets.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import io.ktor.util.date.*
 import io.ktor.utils.io.*
 import io.ktor.utils.io.errors.*
 import setupCookiesStub
@@ -35,7 +36,11 @@ class AsyncFetcherTest : FunSpec({
     extension(DockerExtension)
     extension(TestcontainerExtension)
 
-    test("can fetch https url and use HTTP verb GET by default").config(enabledOrReasonIf = (DockerExtension.isAvailable and dontRunOnPlatform(Platform.JS))) {
+    test("can fetch https url and use HTTP verb GET by default").config(
+        enabledOrReasonIf = (DockerExtension.isAvailable and dontRunOnPlatform(
+            Platform.JS
+        ))
+    ) {
         wiremock.setupStub(path = "/example")
         val request = baseRequest.copy(
             url = "${wiremock.httpsUrl}/example",
@@ -58,12 +63,15 @@ class AsyncFetcherTest : FunSpec({
         fetched.status { code }.shouldBe(404)
     }
 
-    test("will not follow redirects if configured").config(enabledOrReasonIf = (DockerExtension.isAvailable and dontRunOnPlatform(Platform.WEB))) {
+    test("will not follow redirects if configured").config(
+        enabledOrReasonIf = (DockerExtension.isAvailable and dontRunOnPlatform(
+            Platform.WEB
+        ))
+    ) {
         wiremock.setupRedirect()
         val request = baseRequest.copy(followRedirects = false)
 
         val fetched = Scraper(request).scrape()
-
         fetched.status { code }.shouldBe(302)
 
     }
@@ -86,24 +94,33 @@ class AsyncFetcherTest : FunSpec({
 
         fetched.cookies.shouldBe(
             listOf(
-                Cookie("basic", "value", Expires.Session, null, Domain("localhost", false)),
+                Cookie(
+                    "basic",
+                    "value",
+                    expires = null,
+                    maxAge = 0,
+                    domain = "localhost",
+                    encoding = CookieEncoding.RAW
+                ),
                 Cookie(
                     "advanced",
                     "advancedValue",
-                    Expires.Session,
-                    null,
-                    Domain("localhost", true),
-                    "/cookies",
-                    SameSite.STRICT,
-                    true,
-                    httpOnly = true
+                    expires = null,
+                    maxAge = 0,
+                    domain = "localhost",
+                    path = "/cookies",
+                    secure = true,
+                    httpOnly = true,
+                    extensions = mapOf("SameSite" to "Strict"),
+                    encoding = CookieEncoding.RAW
                 ),
                 Cookie(
                     "expireTest",
                     "value",
-                    Expires.Date("Wed, 21 Oct 2015 07:28:00 GMT"),
-                    2592000,
-                    Domain("localhost", false)
+                    expires = "Wed, 21 Oct 2015 07:28:00 GMT".fromCookieToGmtDate(),
+                    maxAge = 2592000,
+                    domain = "localhost",
+                    encoding = CookieEncoding.RAW
                 )
             )
         )
