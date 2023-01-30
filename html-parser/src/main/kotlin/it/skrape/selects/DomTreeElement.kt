@@ -10,7 +10,7 @@ public abstract class DomTreeElement : CssSelectable() {
     /**
      * Gets the combined text of this element and all its children. Whitespace is normalized and trimmed.
      * <p>
-     * For example, given HTML {@code <p>Hello <b>there</b> now! </p>}, {@code p.text()} returns {@code "Hello there now!"}
+     * For example, given HTML `<p>Hello <b>there</b> now! </p>`, `p.text()` returns `"Hello there now!"`
      *
      * @return unencoded, normalized text, or empty string if none.
      * @see #wholeText() if you don't want the text to be normalized.
@@ -20,15 +20,15 @@ public abstract class DomTreeElement : CssSelectable() {
     public val text: String by lazy { element.text() }
 
     /**
-     * Retrieves the element's inner HTML. E.g. on a {@code <div>} with one empty {@code <p>}, would return
-     * {@code <p></p>}. (Whereas {@link outerHtml} would return {@code <div><p></p></div>}.)
+     * Retrieves the element's inner HTML. E.g. on a `<div>` with one empty `<p>`, would return
+     * `<p></p>`. (Whereas [outerHtml] would return `<div><p></p></div>`.)
      * @return String of HTML.
      * @see outerHtml
      */
     public val html: String by lazy { element.html() }
 
     /**
-     * Get the outer HTML of this node. For example, on a {@code p} element, may return {@code <p>Para</p>}.
+     * Get the outer HTML of this node. For example, on a `p` element, may return `<p>Para</p>`.
      * @return outer HTML
      * @see html
      * @see text

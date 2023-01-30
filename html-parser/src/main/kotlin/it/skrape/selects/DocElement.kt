@@ -12,7 +12,7 @@ public class DocElement internal constructor(
     public constructor(element: Element) : this(element, false)
 
     /**
-     * Get the name of the tag for this element. E.g. {@code div}.
+     * Get the name of the tag for this element. E.g. `div`.
      *
      * @return String of the tag's name
      */
@@ -20,9 +20,9 @@ public class DocElement internal constructor(
 
     /**
      * Gets the text owned by this element only; does not get the combined text of all children.
-     * For example, given HTML `<p>Hello <b>there</b> now!</p>`, `p.ownText()` returns `"Hello now!",
+     * For example, given HTML `<p>Hello <b>there</b> now!</p>`, `p.ownText()` returns `"Hello now!"`,
      * whereas `text` returns `"Hello there now!"`.
-     * Note that the text within the {@code b} element is not returned, as it is not a direct child of the {@code p} element.
+     * Note that the text within the `b` element is not returned, as it is not a direct child of the `p` element.
      *
      * @return unencoded text, or empty string if none.
      * @see text
