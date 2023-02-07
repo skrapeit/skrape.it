@@ -13,10 +13,6 @@ concurrency:
 
 jobs:
   build:
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
     strategy:
       matrix:
         java-version:
@@ -53,16 +49,6 @@ jobs:
         run: |
           ./gradlew build
 
-      - name: Run static code analysis
-        uses: JetBrains/qodana-action@v2022.3.2
-        with:
-          linter: jetbrains/qodana-jvm
-
-      - name: Upload static code analysis results
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json
-
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         if: ${{ matrix.java-version == '8' && matrix.os == 'ubuntu-latest' }}
@@ -87,3 +73,25 @@ jobs:
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{secrets.ORG_GRADLE_PROJECT_SONATYPEUSERNAME}}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{secrets.ORG_GRADLE_PROJECT_SONATYPEPASSWORD}}
         run: ./gradlew publishToSonatype
+
+  qodana:
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Run static code analysis
+        uses: JetBrains/qodana-action@v2022.3.2
+        with:
+          linter: jetbrains/qodana-jvm
+
+      - name: Upload static code analysis results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json
