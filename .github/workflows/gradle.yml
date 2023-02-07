@@ -13,6 +13,10 @@ concurrency:
 
 jobs:
   build:
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
     strategy:
       matrix:
         java-version:
