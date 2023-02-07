@@ -49,10 +49,15 @@ jobs:
         run: |
           ./gradlew build
 
-      - name: Static code scanning
+      - name: Run static code analysis
         uses: JetBrains/qodana-action@v2022.3.2
         with:
           linter: jetbrains/qodana-jvm
+
+      - name: Upload static code analysis results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
