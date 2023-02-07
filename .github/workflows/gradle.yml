@@ -49,6 +49,11 @@ jobs:
         run: |
           ./gradlew build
 
+      - name: Static code scanning
+        uses: JetBrains/qodana-action@v2022.3.2
+        with:
+          linter: jetbrains/qodana-jvm
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         if: ${{ matrix.java-version == '8' && matrix.os == 'ubuntu-latest' }}
