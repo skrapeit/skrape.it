@@ -4,6 +4,10 @@
 
 	./gradlew clean check
 
+### local static analysis with qodana
+
+    docker run --rm -it -v $(pwd)/:/data/project/ -v $(pwd)/qodana/results:/data/results/ -p 8080:8080 jetbrains/qodana-jvm:latest --show-report
+
 ## Maintenance
 ### check if all dependencies are up-to-date
 
