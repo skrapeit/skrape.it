@@ -4,12 +4,14 @@ import it.skrape.core.htmlDocument
 import org.jsoup.nodes.Element
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import strikt.api.expectCatching
 import strikt.api.expectThat
 import strikt.api.expectThrows
 import strikt.assertions.containsExactly
 import strikt.assertions.isA
 import strikt.assertions.isEmpty
 import strikt.assertions.isEqualTo
+import strikt.assertions.isFailure
 
 class DocTest {
 
@@ -86,6 +88,20 @@ class DocTest {
     fun `will return empty element in relaxed mode if element could not be found`() {
         val doc = Doc(aValidDocument().document, relaxed = true)
         expectThat(doc.findFirst(".non-existent").text).isEmpty()
+    }
+
+    @Test
+    fun `will throw exception when non relaxed and finding over defaulted element`() {
+        val doc = Doc(aValidDocument().document, relaxed = false)
+        expectCatching { doc.findFirst(".non-existent").findFirst(".non-existing") }
+            .isFailure()
+            .isA<ElementNotFoundException>()
+    }
+
+    @Test
+    fun `will return a default element when relaxed and finding over a defaulted element`() {
+        val doc = Doc(aValidDocument().document, relaxed = true)
+        expectThat(doc.findFirst(".non-existent").findFirst(".non-existing").text).isEmpty()
     }
 
     @Test
