@@ -75,10 +75,10 @@ public abstract class DomTreeElement : CssSelectable() {
                     .associate { it.attribute("alt") to it.attribute("src") }
 
     public open fun makeDefaultElement(cssSelector: String): DocElement {
-        return super.makeDefault(cssSelector)
+        return super.makeDefault(cssSelector, this.relaxed)
     }
 
-    override fun makeDefault(cssSelector: String): DocElement {
+    override fun makeDefault(cssSelector: String, relaxed: Boolean): DocElement {
         return if (relaxed) makeDefaultElement(cssSelector) else throw ElementNotFoundException(cssSelector)
     }
 

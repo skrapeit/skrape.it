@@ -24,6 +24,10 @@ public class Doc(public val document: Document, override var relaxed: Boolean = 
     override val toCssSelector: String = ""
 
     override fun makeDefaultElement(cssSelector: String): DocElement {
-        return DocElement(Element(cssSelector), relaxed)
+        return DocElement(Element(cssSelector), this.relaxed)
+    }
+
+    override fun makeDefault(cssSelector: String, relaxed: Boolean): DocElement {
+        return super.makeDefault(cssSelector, this.relaxed)
     }
 }

@@ -22,8 +22,8 @@ public abstract class CssSelectable {
     public operator fun <T> String.invoke(init: CssSelector.() -> T): T =
             this@CssSelectable.selection(this, init)
 
-    public open fun makeDefault(cssSelector: String): DocElement {
-        return DocElement(Element("${UUID.randomUUID()}"))
+    public open fun makeDefault(cssSelector: String, relaxed: Boolean = false): DocElement {
+        return DocElement(Element("${UUID.randomUUID()}"), relaxed)
     }
 
     /**

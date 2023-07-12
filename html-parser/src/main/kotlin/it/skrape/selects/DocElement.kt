@@ -185,6 +185,10 @@ public class DocElement internal constructor(
             withAttributeKeys = attributes.filterValues { it.isBlank() }.map { it.key }.orNull()
         ).toString()
     }
+
+    override fun makeDefault(cssSelector: String, relaxed: Boolean): DocElement {
+        return super.makeDefault(cssSelector, this.relaxed)
+    }
 }
 
 public val List<DocElement>.text: String
