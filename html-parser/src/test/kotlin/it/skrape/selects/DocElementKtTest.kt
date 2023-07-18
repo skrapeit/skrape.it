@@ -697,4 +697,24 @@ class DocElementKtTest {
     fun `can convert DocElement to jsoup element`() {
         expectThat(aValidElement.element).isA<Element>()
     }
+
+
+    @Test
+    fun `children, parents, siblings and allElements of relaxed element are also relaxed`() {
+        htmlDocument("<div><a>skrape.it</a></div><div>sibling</div>") {
+            findFirst("div") {
+                expectThat(
+                    children[0].relaxed || parents[0].relaxed || siblings[0].relaxed || allElements[0].relaxed
+                ).isEqualTo(false)
+            }
+
+            relaxed = true
+
+            findFirst("div") {
+                expectThat(
+                    children[0].relaxed && parents[0].relaxed && siblings[0].relaxed && allElements[0].relaxed
+                ).isEqualTo(true)
+            }
+        }
+    }
 }
