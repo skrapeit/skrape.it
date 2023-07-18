@@ -102,7 +102,7 @@ public class DocElement internal constructor(
      * Get this element's parent and ancestors, up to the document root.
      * @return List<DocElement> of parents, closest first.
      */
-    public val parents: List<DocElement> by lazy { element.parents().map { DocElement(it) } }
+    public val parents: List<DocElement> by lazy { element.parents().map { DocElement(it, this.relaxed) } }
 
     /**
      * Get this element's parent and ancestors, up to the document root as lambda.
@@ -132,7 +132,7 @@ public class DocElement internal constructor(
      * Get all elements that are siblings of this element.
      * @return List<DocElement> of all siblings.
      */
-    public val siblings: List<DocElement> by lazy { element.siblingElements().map { DocElement(it) } }
+    public val siblings: List<DocElement> by lazy { element.siblingElements().map { DocElement(it, this.relaxed) } }
 
     /**
      * Get all elements that are siblings of this element as lambda.
