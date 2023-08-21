@@ -46,14 +46,6 @@ internal fun HttpClientConfig<ApacheEngineConfig>.installBasicAuth() {
     }
 }
 
-internal fun HttpClientConfig<ApacheEngineConfig>.installTokenAuth(token: String) {
-    defaultRequest {
-        headers {
-            append("Authorization", "token $token")
-        }
-    }
-}
-
 internal fun Method.toHttpMethod(): HttpMethod = when (this) {
     Method.GET -> HttpMethod.Get
     Method.POST -> HttpMethod.Post
