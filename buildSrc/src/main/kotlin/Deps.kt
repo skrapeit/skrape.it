@@ -3,7 +3,6 @@ object Versions {
     const val coroutines = "1.6.1"
     const val ktor = "2.0.3" //2.0.1
     const val serialization = "1.0.1"
-    const val datetime = "0.1.1"
     const val jsoup = "1.13.1" // 1.14.3
     const val htmlUnit = "2.63.0"
     const val testContainers = "1.16.2"
@@ -55,7 +54,6 @@ object Deps {
         version = Versions.ktor
     ) {
         val client = dependency("ktor-client-core")
-        val clientJson = dependency("ktor-client-json")
         val clientApache = dependency("ktor-client-apache")
         val clientLogging = dependency("ktor-client-logging")
         val serverNetty = dependency("ktor-server-netty")
@@ -65,7 +63,6 @@ object Deps {
     }
 
     object KotlinX {
-        const val dateTime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.datetime}"
         const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.serialization}"
 
         object Coroutines : DependencyGroup(
