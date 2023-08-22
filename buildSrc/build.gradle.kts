@@ -11,7 +11,7 @@ val gradleNexusPublishPlugin = "1.1.0"
 val gradleTestLoggerPlugin = "3.1.0"
 val gradleVersionsPlugin = "0.39.0"
 val kotlinDokkaPlugin = "1.6.21"
-val kotlinxKoverPlugin = "0.5.0"
+val kotlinxKoverPlugin = "0.7.3"
 val useLatestVersionsPlugin = "0.2.18"
 
 dependencies {
@@ -26,6 +26,6 @@ dependencies {
     implementation("com.adarshr:gradle-test-logger-plugin:$gradleTestLoggerPlugin")
     implementation("com.github.ben-manes:gradle-versions-plugin:$gradleVersionsPlugin")
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:$kotlinDokkaPlugin")
-    implementation("org.jetbrains.kotlinx:kover:$kotlinxKoverPlugin")
+    implementation("org.jetbrains.kotlinx:kover-gradle-plugin:$kotlinxKoverPlugin")
     implementation("se.patrikerdes:gradle-use-latest-versions-plugin:$useLatestVersionsPlugin")
 }

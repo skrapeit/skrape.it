@@ -1,5 +1,6 @@
 plugins {
     buildsrc.convention.`kotlin-jvm`
+    buildsrc.convention.kover
 }
 
 dependencies {

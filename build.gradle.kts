@@ -1,10 +1,8 @@
 plugins {
     buildsrc.convention.base
+    buildsrc.convention.kover
     buildsrc.convention.`kotlin-jvm`
     buildsrc.convention.`publish-jvm`
-
-    id("org.jetbrains.kotlinx.kover")
-
     id("io.github.gradle-nexus.publish-plugin")
 }
 
@@ -18,17 +16,20 @@ dependencies {
     api(projects.fetcher.asyncFetcher)
     api(projects.fetcher.baseFetcher)
     api(projects.fetcher.browserFetcher)
-    api(projects.dsl)
     api(projects.fetcher.httpFetcher)
+    api(projects.dsl)
     api(projects.htmlParser)
-}
 
-tasks.withType<Test>().configureEach {
-    finalizedBy(tasks.koverReport, tasks.koverCollectReports)
-}
-
-kover {
-    coverageEngine.set(kotlinx.kover.api.CoverageEngine.INTELLIJ)
+    kover(projects.assertions)
+    kover(projects.fetcher.asyncFetcher)
+    kover(projects.fetcher.baseFetcher)
+    kover(projects.fetcher.browserFetcher)
+    kover(projects.fetcher.httpFetcher)
+    kover(projects.dsl)
+    kover(projects.htmlParser)
+    kover(projects.ktorExtension)
+    kover(projects.mockMvcExtension)
+    kover(projects.testUtils)
 }
 
 nexusPublishing {
