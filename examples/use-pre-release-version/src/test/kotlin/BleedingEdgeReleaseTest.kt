@@ -1,4 +1,3 @@
-
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.*
 import it.skrape.selects.html5.span
@@ -8,9 +7,7 @@ import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import strikt.assertions.isGreaterThanOrEqualTo
 
-
 class BleedingEdgeReleaseTest {
-
     @Test
     internal fun `can use latest aggregator version from maven central and scrape page without JS`() {
         val projectsGithubStars = skrape(HttpFetcher) {
@@ -35,7 +32,6 @@ class BleedingEdgeReleaseTest {
                 }
             }
         }
-
         expectThat(projectsGithubStars).isGreaterThanOrEqualTo("449")
     }
 
@@ -81,7 +77,6 @@ class BleedingEdgeReleaseTest {
                 }
             }
         }
-
         expectThat(projectsGithubStars).isGreaterThanOrEqualTo("239")
     }
 }

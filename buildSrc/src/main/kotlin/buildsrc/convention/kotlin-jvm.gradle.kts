@@ -22,7 +22,7 @@ dependencies {
 kotlin {
     explicitApi()
     jvmToolchain {
-        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of("8"))
+        languageVersion.set(JavaLanguageVersion.of("8"))
     }
 }
 
@@ -39,8 +39,8 @@ tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.apply {
         jvmTarget = "1.8"
         freeCompilerArgs += listOf("-Xjsr305=strict")
-        apiVersion = "1.4"
-        languageVersion = "1.4"
+        apiVersion = "1.6"
+        languageVersion = "1.6"
     }
 }
 

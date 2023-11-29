@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package it.skrape.fetcher
 
 import io.ktor.client.*
@@ -13,6 +15,7 @@ import org.apache.http.conn.ssl.NoopHostnameVerifier
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy
 import org.apache.http.ssl.SSLContextBuilder
 import java.net.Proxy
+import java.util.*
 
 internal fun Request.toHttpRequest(): HttpRequestBuilder {
     val request = this
@@ -80,7 +83,7 @@ internal fun String?.toExpires(): Expires {
     }
 }
 
-internal fun String?.toSameSite(): SameSite = when (this?.toLowerCase()) {
+internal fun String?.toSameSite(): SameSite = when (this?.lowercase(Locale.getDefault())) {
     "strict" -> SameSite.STRICT
     "lax" -> SameSite.LAX
     "none" -> SameSite.NONE

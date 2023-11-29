@@ -7,16 +7,12 @@ import org.junit.jupiter.api.Test
 import strikt.api.expectCatching
 import strikt.api.expectThat
 import strikt.api.expectThrows
-import strikt.assertions.containsExactly
-import strikt.assertions.isA
-import strikt.assertions.isEmpty
-import strikt.assertions.isEqualTo
-import strikt.assertions.isFailure
+import strikt.assertions.*
 
 class DocTest {
 
     private fun aValidDocument(suffix: String = "") =
-            htmlDocument("<p>Hello <b> there </b> now! </p> $suffix")
+        htmlDocument("<p>Hello <b> there </b> now! </p> $suffix")
 
     @Test
     fun `can get text`() {
@@ -30,23 +26,28 @@ class DocTest {
 
     @Test
     fun `can get html`() {
-        expectThat(aValidDocument().html).isEqualTo("""<html>
+        expectThat(aValidDocument().html).isEqualTo(
+            """<html>
               | <head></head>
               | <body>
               |  <p>Hello <b> there </b> now! </p> 
               | </body>
-              |</html>""".trimMargin()
+              |</html>
+            """.trimMargin(),
         )
     }
 
     @Test
     fun `can get outer html`() {
-        expectThat(aValidDocument().html).isEqualTo("""<html>
+        expectThat(aValidDocument().html).isEqualTo(
+            """<html>
               | <head></head>
               | <body>
               |  <p>Hello <b> there </b> now! </p> 
               | </body>
-              |</html>""".trimMargin())
+              |</html>
+            """.trimMargin(),
+        )
     }
 
     @Test
@@ -109,7 +110,7 @@ class DocTest {
     fun `can get all children of document`() {
         val children = aValidDocument().children
         expectThat(children.map { it.tagName }).containsExactly("html")
-        expectThat(children.first().children.map { it.tagName } ).containsExactly("head", "body")
+        expectThat(children.first().children.map { it.tagName }).containsExactly("head", "body")
     }
 
     @Test

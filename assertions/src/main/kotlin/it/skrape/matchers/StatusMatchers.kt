@@ -1,4 +1,4 @@
-@file:Suppress("FunctionName", "EnumEntryName")
+@file:Suppress("FunctionName", "EnumEntryName", "MatchingDeclarationName")
 
 package it.skrape.matchers
 
@@ -78,7 +78,8 @@ public enum class HttpStatus(public val code: Int, public val message: String) {
     `508_Loop_Detected`(508, "Loop Detected"),
     `509_Not_Extended`(509, "Not Extended"),
     `510_Gone`(510, "Gone"),
-    `511_Network_Authentication_Required`(511, "Network Authentication Required");
+    `511_Network_Authentication_Required`(511, "Network Authentication Required"),
+    ;
 
     public fun toStatus(): Result.Status = Result.Status(code, message)
 }

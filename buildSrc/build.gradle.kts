@@ -1,15 +1,15 @@
 plugins {
     `kotlin-dsl`
-    kotlin("jvm") version "1.6.21"
+    kotlin("jvm") version "1.9.10"
 }
 
 // set the versions of Gradle plugins that the subprojects will use here
-val kotlinVersion = "1.6.21"
+val kotlinVersion = "1.9.10"
 
-val detektPlugin = "1.19.0"
+val detektPlugin = "1.23.4"
 val gradleNexusPublishPlugin = "1.3.0"
-val gradleTestLoggerPlugin = "3.1.0"
-val gradleVersionsPlugin = "0.39.0"
+val gradleTestLoggerPlugin = "4.0.0"
+val gradleVersionsPlugin = "0.50.0"
 val kotlinDokkaPlugin = "1.9.10"
 val kotlinxKoverPlugin = "0.7.5"
 val useLatestVersionsPlugin = "0.2.18"

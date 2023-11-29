@@ -7,7 +7,7 @@ import it.skrape.selects.CssSelector
 
 /**
  * Will define a <body>-tags css query selector.
- * By default it will just be the specific tag-name.
+ * By default, it will just be the specific tag-name.
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
@@ -20,7 +20,7 @@ public fun <T> CssSelectable.body(cssSelector: String = "", init: CssSelector.()
 
 /**
  * Will define a <div>-tags css query selector.
- * By default it will just be the specific tag-name.
+ * By default, it will just be the specific tag-name.
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
@@ -33,7 +33,7 @@ public fun <T> CssSelectable.div(cssSelector: String = "", init: CssSelector.() 
 
 /**
  * Will define a <section>-tags css query selector.
- * By default it will just be the specific tag-name.
+ * By default, it will just be the specific tag-name.
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
@@ -46,7 +46,7 @@ public fun <T> CssSelectable.section(cssSelector: String = "", init: CssSelector
 
 /**
  * Will define a <nav>-tags css query selector.
- * By default it will just be the specific tag-name.
+ * By default, it will just be the specific tag-name.
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
@@ -59,7 +59,7 @@ public fun <T> CssSelectable.nav(cssSelector: String = "", init: CssSelector.() 
 
 /**
  * Will define a <article>-tags css query selector.
- * By default it will just be the specific tag-name.
+ * By default, it will just be the specific tag-name.
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
@@ -72,7 +72,7 @@ public fun <T> CssSelectable.article(cssSelector: String = "", init: CssSelector
 
 /**
  * Will define a <aside>-tags css query selector.
- * By default it will just be the specific tag-name.
+ * By default, it will just be the specific tag-name.
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
@@ -85,7 +85,7 @@ public fun <T> CssSelectable.aside(cssSelector: String = "", init: CssSelector.(
 
 /**
  * Will define a <h1>-tags css query selector.
- * By default it will just be the specific tag-name.
+ * By default, it will just be the specific tag-name.
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
@@ -98,7 +98,7 @@ public fun <T> CssSelectable.h1(cssSelector: String = "", init: CssSelector.() -
 
 /**
  * Will define a <h2>-tags css query selector.
- * By default it will just be the specific tag-name.
+ * By default, it will just be the specific tag-name.
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
@@ -111,7 +111,7 @@ public fun <T> CssSelectable.h2(cssSelector: String = "", init: CssSelector.() -
 
 /**
  * Will define a <h3>-tags css query selector.
- * By default it will just be the specific tag-name.
+ * By default, it will just be the specific tag-name.
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
@@ -124,7 +124,7 @@ public fun <T> CssSelectable.h3(cssSelector: String = "", init: CssSelector.() -
 
 /**
  * Will define a <h4>-tags css query selector.
- * By default it will just be the specific tag-name.
+ * By default, it will just be the specific tag-name.
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
@@ -137,7 +137,7 @@ public fun <T> CssSelectable.h4(cssSelector: String = "", init: CssSelector.() -
 
 /**
  * Will define a <h5>-tags css query selector.
- * By default it will just be the specific tag-name.
+ * By default, it will just be the specific tag-name.
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
@@ -150,7 +150,7 @@ public fun <T> CssSelectable.h5(cssSelector: String = "", init: CssSelector.() -
 
 /**
  * Will define a <h6>-tags css query selector.
- * By default it will just be the specific tag-name.
+ * By default, it will just be the specific tag-name.
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
@@ -163,7 +163,7 @@ public fun <T> CssSelectable.h6(cssSelector: String = "", init: CssSelector.() -
 
 /**
  * Will define a <header>-tags css query selector.
- * By default it will just be the specific tag-name.
+ * By default, it will just be the specific tag-name.
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
@@ -176,7 +176,7 @@ public fun <T> CssSelectable.header(cssSelector: String = "", init: CssSelector.
 
 /**
  * Will define a <footer>-tags css query selector.
- * By default it will just be the specific tag-name.
+ * By default, it will just be the specific tag-name.
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
@@ -189,7 +189,7 @@ public fun <T> CssSelectable.footer(cssSelector: String = "", init: CssSelector.
 
 /**
  * Will define a <address>-tags css query selector.
- * By default it will just be the specific tag-name.
+ * By default, it will just be the specific tag-name.
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.
@@ -202,7 +202,7 @@ public fun <T> CssSelectable.address(cssSelector: String = "", init: CssSelector
 
 /**
  * Will define a <main>-tags css query selector.
- * By default it will just be the specific tag-name.
+ * By default, it will just be the specific tag-name.
  * It is possible to define a more concrete selector by using the provided fields of the CssSelector object or
  * by passing a raw css query selector as parameter.
  * If a selector is passed as parameter as well as be defined via CssSelector fields, they will be merged.

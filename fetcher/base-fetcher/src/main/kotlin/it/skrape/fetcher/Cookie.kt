@@ -1,4 +1,8 @@
+@file:Suppress("MaxLineLength")
+
 package it.skrape.fetcher
+
+import java.util.*
 
 /**
  * Object representing a web cookie
@@ -54,8 +58,8 @@ public fun String.toCookie(origin: String): Cookie {
         else -> Domain(domainUrl, true)
     }
     val sameSite = attributes.getAttribute("samesite").toSameSite()
-    val secure = attributes.any { it.toLowerCase() == "secure" }
-    val httpOnly = attributes.any { it.toLowerCase() == "httponly" }
+    val secure = attributes.any { it.lowercase(Locale.getDefault()) == "secure" }
+    val httpOnly = attributes.any { it.lowercase(Locale.getDefault()) == "httponly" }
     return Cookie(name, value, expires, maxAge, domain, path, sameSite, secure, httpOnly)
 }
 
@@ -63,7 +67,7 @@ private fun List<String>.getAttribute(attributeName: String) =
     this.find { it.startsWith("${attributeName}=", ignoreCase = true) }?.takeLastWhile { it != '=' }
 
 private fun String?.toSameSite(): SameSite {
-    return when (this?.toLowerCase()) {
+    return when (this?.lowercase(Locale.getDefault())) {
         "strict" -> SameSite.STRICT
         "lax" -> SameSite.LAX
         "none" -> SameSite.NONE

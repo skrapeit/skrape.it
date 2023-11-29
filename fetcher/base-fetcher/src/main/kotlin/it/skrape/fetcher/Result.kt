@@ -18,8 +18,9 @@ public class Result(
     public val contentType: ContentType,
     public val headers: Map<String, String>,
     public val baseUri: String = "",
-    public val cookies: List<Cookie>
+    public val cookies: List<Cookie>,
 ) {
+    @Suppress("MaxLineLength")
     /**
      * Will return a certain response headers value
      * @see <a href="https://developer.mozilla.org/en-US/docs/Glossary/Response_header">Explanation about response headers.</a>
@@ -44,12 +45,12 @@ public class Result(
     }
 
     public fun cookies(init: List<Cookie>.() -> Unit): List<Cookie> =
-            cookies.apply(init)
+        cookies.apply(init)
 
     @SkrapeItDsl
     public data class Status(
-            val code: Int,
-            val message: String
+        val code: Int,
+        val message: String,
     )
 }
 

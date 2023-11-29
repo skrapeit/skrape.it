@@ -1,3 +1,5 @@
+@file:Suppress("InvalidPackageDeclaration")
+
 package it.skrape.mockmvc
 
 import it.skrape.core.htmlDocument

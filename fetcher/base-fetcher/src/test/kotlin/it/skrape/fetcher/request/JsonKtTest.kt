@@ -60,7 +60,6 @@ internal class JsonKtTest {
         expectThat("$json").isEqualTo("""{"a":[1,2.0,null,3],"b":2}""")
     }
 
-
     @Test
     fun `can create json with list of String`() {
         val json = Json().json {
@@ -101,7 +100,6 @@ internal class JsonKtTest {
         expectThat("$json").isEqualTo("""{"a":null}""")
     }
 
-
     @Test
     fun `can create json with inner list of any`() {
         val json = Json().json {
@@ -138,5 +136,4 @@ internal class JsonKtTest {
         }
         expectThat("$json").isEqualTo("""{"a":null}""")
     }
-
 }

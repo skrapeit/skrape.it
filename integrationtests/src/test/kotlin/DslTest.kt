@@ -31,6 +31,7 @@ private val httpBin = Testcontainer.httpBin
 
 @Execution(ExecutionMode.SAME_THREAD)
 @DisabledOnOs(OS.WINDOWS)
+@Suppress("LargeClass")
 class DslTest {
 
     @Test
@@ -42,7 +43,6 @@ class DslTest {
             }
 
             response {
-
                 status {
                     code toBe 200
                     message toBe "OK"
@@ -51,7 +51,6 @@ class DslTest {
                 contentType toBe TEXT_HTML_UTF8
 
                 htmlDocument {
-
                     title {
                         findFirst {
                             text toBe "i'm the title"
@@ -74,7 +73,6 @@ class DslTest {
                 }
             }
         }
-
     }
 
     @Test
@@ -89,7 +87,6 @@ class DslTest {
 
             response { status { code toBe 200 } }
         }
-
     }
 
     @Test
@@ -222,8 +219,7 @@ class DslTest {
                 method = Method.POST
             }
             response {
-
-                //expectThat(request.method).isEqualTo(Method.POST)
+                // expectThat(request.method).isEqualTo(Method.POST)
 
                 status {
                     code toBe 200
@@ -262,7 +258,7 @@ class DslTest {
         var message: String? = null,
         var paragraph: String = "",
         var allParagraphs: List<String> = emptyList(),
-        var allLinks: List<String> = emptyList()
+        var allLinks: List<String> = emptyList(),
     )
 
     @Test
@@ -334,9 +330,10 @@ class DslTest {
         var httpStatusMessage: String = "",
         var paragraph: String = "",
         var allParagraphs: List<String> = emptyList(),
-        var allLinks: List<String> = emptyList()
+        var allLinks: List<String> = emptyList(),
     )
 
+    @Suppress("ForbiddenComment")
     /**
      * TODO: fix Class should have a single no-arg constructor: class MyDataClass
      * for classes or data classes that have none default values
@@ -377,7 +374,7 @@ class DslTest {
         val httpStatusMessage: String,
         val paragraph: String,
         val allParagraphs: List<String>,
-        val allLinks: List<String>
+        val allLinks: List<String>,
     )
 
     @Test
@@ -395,7 +392,7 @@ class DslTest {
                     httpStatusMessage = status { message },
                     allParagraphs = document.p { findAll { eachText } },
                     paragraph = document.p { findFirst { text } },
-                    allLinks = document.a { findAll { eachHref } }
+                    allLinks = document.a { findAll { eachHref } },
                 )
             }
         }
@@ -411,7 +408,6 @@ class DslTest {
 
     @Test
     fun `will throw custom exception if element could not be found via lambda`() {
-
         expectThrows<ElementNotFoundException> {
             skrape(HttpFetcher) {
                 request {
@@ -426,11 +422,8 @@ class DslTest {
         }
     }
 
-
     @Test
     fun `will return empty list if element could not be found and Doc mode is relaxed`() {
-
-
         skrape(HttpFetcher) {
             request {
                 url = "${wiremock.httpUrl}/"
@@ -447,12 +440,10 @@ class DslTest {
                 }
             }
         }
-
     }
 
     @Test
     fun `will throw custom exception if element called by dsl could not be found`() {
-
         expectThrows<ElementNotFoundException> {
             skrape(HttpFetcher) {
                 request {
@@ -490,7 +481,7 @@ class DslTest {
                         message = "",
                         allParagraphs = p { findAll { eachText } },
                         paragraph = findFirst("p").text,
-                        allLinks = selection("[href]") { findAll { eachHref } }
+                        allLinks = selection("[href]") { findAll { eachHref } },
                     )
                 }
             }
@@ -539,9 +530,8 @@ class DslTest {
                         <p class="foo">last p-element</p>
                     </div>
                 </body>
-            </html>"""
+            </html>""",
         ) {
-
             h1 {
                 findFirst {
                     text toBe "welcome"
@@ -555,7 +545,8 @@ class DslTest {
                 }
                 findAll {
                     size toBe 2
-                    expectThat(this.toString()).isEqualTo("[<p class=\"foo\">some p-element</p>, <p class=\"foo\">last p-element</p>]")
+                    expectThat(toString())
+                        .isEqualTo("[<p class=\"foo\">some p-element</p>, <p class=\"foo\">last p-element</p>]")
                 }
             }
             p {
@@ -587,7 +578,7 @@ class DslTest {
                         <p class="foo">last p-element</p>
                     </div>
                 </body>
-            </html>"""
+            </html>""",
         ) {
             val paragraphsParent: List<DocElement> = p {
                 findAll {
@@ -644,7 +635,7 @@ class DslTest {
                         <p class="foo">last p-element</p>
                     </div>
                 </body>
-            </html>"""
+            </html>""",
         ) {
             val divsSiblings: List<DocElement> = div {
                 findAll {
@@ -690,7 +681,7 @@ class DslTest {
                         <p class="foo">last p-element</p>
                     </div>
                 </body>
-            </html>"""
+            </html>""",
         ) {
             val divsChildren: List<DocElement> = div {
                 findAll {
@@ -717,7 +708,7 @@ class DslTest {
             expectThat(divChildren.eachText).containsExactly(
                 "first p-element",
                 "some p-element",
-                "last p-element"
+                "last p-element",
             )
         }
     }
@@ -842,13 +833,12 @@ class DslTest {
             }
         }
 
-
         expectThat(sequentialExecTimeInMillis).isGreaterThan(25000)
     }
 
     @Test
+    @Suppress("ForbiddenComment")
     fun `can use preconfigured client`() {
-
         val fetcher: Scraper<Request> = skrape(HttpFetcher) {
             request {
                 url = "${wiremock.httpUrl}/"
@@ -902,12 +892,11 @@ class DslTest {
         expectThat(statusCode).isEqualTo(404)
 
         data class MyResult(
-            var statusCode: Int = 0
+            var statusCode: Int = 0,
         )
 
         val myResult = fetcher.extractItBlocking<MyResult> { it.statusCode = status { code } }
         expectThat(myResult.statusCode).isEqualTo(404)
-
     }
 
     @Test
@@ -974,7 +963,6 @@ class DslTest {
     @ParameterizedTest(name = "can NOT scrape basic auth protected websites without credentials in {0}-mode")
     @EnumSource(FetchersTestEnum::class)
     fun `can NOT scrape basic auth protected websites without credentials`(fetcherMode: FetchersTestEnum) {
-
         skrape(fetcherMode.fetcher) {
             request {
                 url = "$httpBin/basic-auth/cr1z/secure"
@@ -992,7 +980,6 @@ class DslTest {
     @ParameterizedTest(name = "can scrape basic auth protected websites in {0}-mode")
     @EnumSource(FetchersTestEnum::class)
     fun `can scrape basic auth protected websites`(fetcherMode: FetchersTestEnum) {
-
         skrape(fetcherMode.fetcher) {
             request {
                 url = "$httpBin/basic-auth/cr1z/secure"
@@ -1015,7 +1002,8 @@ class DslTest {
 
     @Test
     fun `can invoke a raw nested css-selector`() {
-        @Language("HTML") val myMarkUp = """
+        @Language("HTML")
+        val myMarkUp = """
             <div class="CollapsiblePanelTab" tabindex="0">Today's Interest (1)</div>
                 <div class="CollapsiblePanelContent">
                 <table width="667px" class="tabularData">
@@ -1038,13 +1026,12 @@ class DslTest {
         expectThat(tdsWithLink)
             .hasSize(1)
             .get { attribute("href") }.isEqualTo("link info i need in here")
-
-
     }
 
     @Test
     fun `can nest selection via css selectors`() {
-        @Language("HTML") val myMarkUp = """
+        @Language("HTML")
+        val myMarkUp = """
             <div class="foo">
                 <div class="bar">
                     <div>first nested div</div>
@@ -1059,7 +1046,6 @@ class DslTest {
         """.trimIndent()
 
         htmlDocument(myMarkUp) {
-
             div {
                 withClass = "foo"
 
@@ -1080,7 +1066,8 @@ class DslTest {
 
     @Test
     fun `can handle attributes with spaces in the value`() {
-        @Language("HTML") val myMarkUp = """
+        @Language("HTML")
+        val myMarkUp = """
             <div data-status="Important Value">
                 Text1
             </div>
@@ -1093,7 +1080,6 @@ class DslTest {
         """.trimIndent()
 
         htmlDocument(myMarkUp) {
-
             div {
                 withAttribute = Pair("data-status", "NoSpaceInThisOne")
                 findAll {
@@ -1128,12 +1114,14 @@ class DslTest {
             }
             span {
                 withClass = "yyy"
-                // in none relaxed mode it would throw an ElementNotFoundException when trying to find element without success
+                /** in none relaxed mode it would throw an ElementNotFoundException
+                 when trying to find element without success **/
                 findAll { toBeEmpty }
                 findFirst { text toBe "" }
             }
             "some.crazy selectorThat[doesnt] exists" {
-                // in none relaxed mode it would throw an ElementNotFoundException when trying to find element without success
+                /** in none relaxed mode it would throw an ElementNotFoundException
+                 * when trying to find element without success */
                 findAll { toBeEmpty }
             }
         }

@@ -20,10 +20,11 @@ public class Scraper<R>(public val fetcher: NonBlockingFetcher<R>, public val pr
 /**
  * Decorator that Implements a non-blocking fetcher with a given blocking Fetcher.
  * Hint: The thereby created NonBlockingFetcher will still behave like a BlockingFetcher.
- * It will only be converted to reduce library internal code duplication by handling everything as a coroutine internally.
+ * It will only be converted to reduce library internal code duplication
+ * by handling everything as a coroutine internally.
  */
 private class FetcherConverter<T>(
-    val blockingFetcher: BlockingFetcher<T>
+    val blockingFetcher: BlockingFetcher<T>,
 ) : NonBlockingFetcher<T> {
 
     override suspend fun fetch(request: T): Result {
@@ -87,7 +88,7 @@ public suspend fun <T> Scraper<*>.response(result: suspend Result.() -> T): T =
     scrape().result()
 
 /**
- * Blocking implementation of 'extract' as convenience function to call it outside of an coroutine.
+ * Blocking implementation of 'extract' as convenience function to call it outside coroutine.
  * @return T
  */
 @SkrapeItDsl
@@ -95,7 +96,8 @@ public fun <T> Scraper<*>.extractBlocking(result: suspend Result.() -> T): T =
     runBlocking { response(result) }
 
 /**
- * Execute http call with a given Fetcher implementation and invoke the fetching result as this and any given generic as it.
+ * Execute http call with a given Fetcher implementation
+ * and invoke the fetching result as this and any given generic as it.
  * Attention: extract to class is only supported for classes where all parameters have default values
  * @return T
  */
@@ -106,7 +108,7 @@ public suspend inline fun <reified T : Any> Scraper<*>.extractIt(crossinline res
     }
 
 /**
- * Blocking implementation of 'extractIt' as convenience function to call it outside of an coroutine.
+ * Blocking implementation of 'extractIt' as convenience function to call it outside coroutine.
  * @return T
  */
 @SkrapeItDsl

@@ -16,16 +16,19 @@ internal class Parser(
     var html: String,
     val charset: Charset,
     val jsExecution: Boolean,
-    val baseUri: String
+    val baseUri: String,
 ) {
 
     fun parse(): Doc {
         return if (jsExecution) {
             checkBrowserFetcherIsPresent()
             jSoupParser(BrowserFetcher.render(html), baseUri).toDocWrapper()
-        } else jSoupParser(html, baseUri).toDocWrapper()
+        } else {
+            jSoupParser(html, baseUri).toDocWrapper()
+        }
     }
 
+    @Suppress("SwallowedException")
     private fun checkBrowserFetcherIsPresent() {
         try {
             Class.forName("it.skrape.fetcher.BrowserFetcherKt")
@@ -35,7 +38,7 @@ internal class Parser(
                 ⚠️ You need to add browser-fetcher dependency to execute Javascript.
                 💡 Please add 'it.skrape:skrapeit-browser-fetcher' dependency to your project.
                 🧐 Find overview of latest releases: https://search.maven.org/artifact/it.skrape/skrapeit-browser-fetcher
-                """.trimIndent()
+                """.trimIndent(),
             )
         }
     }
@@ -58,7 +61,7 @@ public fun <T> htmlDocument(
     charset: Charset = Charsets.UTF_8,
     jsExecution: Boolean = false,
     baseUri: String = "",
-    init: Doc.() -> T
+    init: Doc.() -> T,
 ): T = htmlDocument(html, charset, jsExecution, baseUri).init()
 
 /**
@@ -73,7 +76,7 @@ public fun <T> htmlDocument(
     charset: Charset = Charsets.UTF_8,
     jsExecution: Boolean = false,
     baseUri: String = "",
-    init: Doc.() -> T
+    init: Doc.() -> T,
 ): T = htmlDocument(file, charset, jsExecution, baseUri).init()
 
 /**
@@ -88,7 +91,7 @@ public fun <T> htmlDocument(
     charset: Charset = Charsets.UTF_8,
     jsExecution: Boolean = false,
     baseUri: String = "",
-    init: Doc.() -> T
+    init: Doc.() -> T,
 ): T = htmlDocument(bytes, charset, jsExecution, baseUri).init()
 
 @SkrapeItDsl
@@ -96,21 +99,21 @@ public fun htmlDocument(
     @Language("HTML") html: String,
     charset: Charset = Charsets.UTF_8,
     jsExecution: Boolean = false,
-    baseUri: String = ""
+    baseUri: String = "",
 ): Doc = Parser(html, charset, jsExecution, baseUri).parse()
 
 public fun htmlDocument(
     file: File,
     charset: Charset = Charsets.UTF_8,
     jsExecution: Boolean = false,
-    baseUri: String = ""
+    baseUri: String = "",
 ): Doc = htmlDocument(file.readText(charset), charset, jsExecution, baseUri)
 
 public fun htmlDocument(
     bytes: InputStream,
     charset: Charset = Charsets.UTF_8,
     jsExecution: Boolean = false,
-    baseUri: String = ""
+    baseUri: String = "",
 ): Doc = htmlDocument(bytes.bufferedReader().use(BufferedReader::readText), charset, jsExecution, baseUri)
 
 public val Result.document: Doc

@@ -2,12 +2,13 @@ package it.skrape.selects
 
 import it.skrape.SkrapeItDsl
 import org.jsoup.nodes.Element
+import java.util.*
 
 @Suppress("TooManyFunctions")
 @SkrapeItDsl
 public class DocElement internal constructor(
     override val element: Element,
-    override val relaxed: Boolean
+    override val relaxed: Boolean,
 ) : DomTreeElement() {
     public constructor(element: Element) : this(element, false)
 
@@ -39,7 +40,7 @@ public class DocElement internal constructor(
     public val wholeText: String by lazy { element.wholeText() }
 
     /**
-     * Get all of the element's attributes.
+     * Get all the element's attributes.
      * @return Map<String, String>> of attribute key value pairs
      */
     public val attributes: Map<String, String> by lazy { element.attributes().associate { it.key to it.value } }
@@ -71,25 +72,26 @@ public class DocElement internal constructor(
     public val dataAttributes: Map<String, String> by lazy { attributes.filter { it.key.startsWith("data-") } }
 
     /**
-     * Gets the literal value of this element's "class" attribute, which may include multiple class names, space separated.
+     * Gets the literal value of this element's "class" attribute,
+     * which may include multiple class names, space separated.
      * (E.g. on <div class="header gray"> returns, "header gray")
      * @return String of the literal class attribute, or empty string if no class attribute set.
      */
     public val className: String by lazy { attribute("class").trim() }
 
     /**
-     * Get all of the element's class names. E.g. on element <div class="header gray">,
+     * Get all the element's class names. E.g. on element <div class="header gray">,
      * returns a set of two elements "header", "gray".
      * @return Set<String> distinct classnames, empty if no class attribute
      */
     public val classNames: Set<String> by lazy { className.split(" ").filter { it.isNotBlank() }.toSet() }
 
     /**
-     * Case insensitive check if this element has a class.
+     * Case-insensitive check if this element has a class.
      * @return Boolean
      */
     public fun hasClass(className: String): Boolean =
-        classNames.map { it.toLowerCase() }.contains(className.toLowerCase())
+        classNames.map { it.lowercase(Locale.getDefault()) }.contains(className.lowercase(Locale.getDefault()))
 
     /**
      * Gets the literal value of this element's "id" attribute.
@@ -114,6 +116,7 @@ public class DocElement internal constructor(
      * Get this element's parent element.
      * @return DocElement
      */
+    @Suppress("SwallowedException")
     public val parent: DocElement by lazy {
         try {
             parents.first()
@@ -147,7 +150,8 @@ public class DocElement internal constructor(
     public val isPresent: Boolean by lazy { allElements.isNotEmpty() }
 
     /**
-     * Check if the element is NOT present thereby it will return true if the given node can not be found otherwise false.
+     * Check if the element is NOT present thereby it will
+     * return true if the given node can not be found otherwise false.
      * @return Boolean
      */
     public val isNotPresent: Boolean by lazy { !isPresent }
@@ -182,7 +186,7 @@ public class DocElement internal constructor(
                 .filterNot { it.key == "class" }
                 .filterNot { it.value.isBlank() }
                 .toList(),
-            withAttributeKeys = attributes.filterValues { it.isBlank() }.map { it.key }.orNull()
+            withAttributeKeys = attributes.filterValues { it.isBlank() }.map { it.key }.orNull(),
         ).toString()
     }
 

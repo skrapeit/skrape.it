@@ -163,7 +163,7 @@ class ElementExtractorsKtTest {
             findBySelectorMatching(someRegex) {
                 expectThat(map { it.toCssSelector }).containsExactly(
                     "html > body > header > nav > ol.ordered-navigation",
-                    "html > body > header > nav > ul.unordered-navigation"
+                    "html > body > header > nav > ul.unordered-navigation",
                 )
             }
         }
@@ -177,7 +177,7 @@ class ElementExtractorsKtTest {
             someRegex {
                 expectThat(map { it.toCssSelector }).containsExactly(
                     "html > body > header > nav > ol.ordered-navigation",
-                    "html > body > header > nav > ul.unordered-navigation"
+                    "html > body > header > nav > ul.unordered-navigation",
                 )
             }
         }

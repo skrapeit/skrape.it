@@ -1,7 +1,10 @@
+@file:Suppress("MatchingDeclarationName")
+
 package it.skrape.matchers
 
 import it.skrape.SkrapeItDsl
 import it.skrape.fetcher.ContentType
+import java.util.*
 
 @SkrapeItDsl
 public enum class ContentTypes(public val value: String) {
@@ -28,14 +31,14 @@ public enum class ContentTypes(public val value: String) {
 }
 
 public infix fun ContentType.toBe(expected: ContentTypes): ContentType /* = kotlin.String? */ =
-        this.apply { generalAssertion(raw() == expected.value, expected) }
+    this.apply { generalAssertion(raw() == expected.value, expected) }
 
 public infix fun ContentType.toBeNot(expected: ContentTypes): ContentType /* = kotlin.String? */ =
-        this.apply { generalAssertion(raw() != expected.value, expected) }
+    this.apply { generalAssertion(raw() != expected.value, expected) }
 
 public infix fun ContentType.toContain(expected: ContentTypes): ContentType /* = kotlin.String? */ =
-        this.apply { generalAssertion(raw().contains(expected.value), expected) }
+    this.apply { generalAssertion(raw().contains(expected.value), expected) }
 
 private fun ContentType.raw() = (this as String)
-        .toLowerCase()
-        .replace("\\s".toRegex(), "")
+    .lowercase(Locale.getDefault())
+    .replace("\\s".toRegex(), "")

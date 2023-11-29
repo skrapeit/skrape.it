@@ -1,18 +1,17 @@
 package buildsrc.convention
 
-import io.gitlab.arturbosch.detekt.extensions.DetektExtension.Companion.DEFAULT_SRC_DIR_KOTLIN
-
 plugins {
     base
     id("io.gitlab.arturbosch.detekt")
 }
 
 detekt {
-    toolVersion = "1.19.0"
+    toolVersion = "1.23.4"
     autoCorrect = true
     buildUponDefaultConfig = true
-    source = files(DEFAULT_SRC_DIR_KOTLIN)
-    config = files("$rootDir/detekt.yml")
+    parallel = true
+    config.setFrom("$rootDir/detekt.yml")
+    buildUponDefaultConfig = true
 }
 
 tasks.check {

@@ -1,4 +1,3 @@
-
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.HttpFetcher
 import it.skrape.fetcher.response
@@ -64,7 +63,6 @@ class ExperimentalDslTest {
                     }
 
                     "div.foo" {
-
                         withClass = "bar" and "fizz" and "buzz"
 
                         findFirst {
@@ -95,7 +93,6 @@ class ExperimentalDslTest {
             response {
                 // do something with the result
             }
-
         }
     }
 }

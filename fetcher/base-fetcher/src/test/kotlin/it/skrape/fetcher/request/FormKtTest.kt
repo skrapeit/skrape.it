@@ -59,5 +59,4 @@ internal class FormKtTest {
         }
         expectThat("$form").isEqualTo("a=null")
     }
-
 }

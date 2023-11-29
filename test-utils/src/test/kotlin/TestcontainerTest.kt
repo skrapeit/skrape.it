@@ -50,8 +50,8 @@ internal class TestcontainerTest {
             WireMock.get(WireMock.urlEqualTo("/abc"))
                 .willReturn(
                     WireMock.aResponse()
-                        .withStatus(418)
-                )
+                        .withStatus(418),
+                ),
         )
         expectThat(callWiremock(path = "/abc").statusCode()).isEqualTo(418)
 
@@ -59,8 +59,8 @@ internal class TestcontainerTest {
             WireMock.get(WireMock.urlEqualTo("/abc"))
                 .willReturn(
                     WireMock.aResponse()
-                        .withStatus(201)
-                )
+                        .withStatus(201),
+                ),
         )
         expectThat(callWiremock(path = "/abc").statusCode()).isEqualTo(201)
     }

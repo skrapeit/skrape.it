@@ -36,7 +36,6 @@ class MetadataSelectorsKtTest {
         expectThat(selector).isEqualTo("head")
     }
 
-
     @Test
     fun `can parse link-tag`() {
         val selector = aValidDocument(aSelfClosingTag("link")).link {

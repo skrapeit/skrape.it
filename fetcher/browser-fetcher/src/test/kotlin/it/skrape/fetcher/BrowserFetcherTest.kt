@@ -31,13 +31,15 @@ class BrowserFetcherTest {
     fun `can render from string`() {
         val renderedHtml = BrowserFetcher.render(getMarkupFromFile("es6.html"))
 
-        expectThat(renderedHtml).contains("""
+        expectThat(renderedHtml).contains(
+            """
              |    <p>
              |      <span>
              |        dynamically added
              |      </span>
              |    </p>
-        """.trimMargin().replace("\n", "\r\n"))
+            """.trimMargin().replace("\n", "\r\n"),
+        )
     }
 
     @Test
@@ -58,7 +60,7 @@ class BrowserFetcherTest {
 
         val request = baseRequest.copy(
             url = "${wiremock.httpsUrl}/example",
-            sslRelaxed = true
+            sslRelaxed = true,
         )
 
         val fetched = BrowserFetcher.fetch(request)
@@ -103,7 +105,7 @@ class BrowserFetcherTest {
 
         val request = baseRequest.copy(
             url = "${wiremock.httpsUrl}/cookies",
-            sslRelaxed = true
+            sslRelaxed = true,
         )
         val fetched = BrowserFetcher.fetch(request)
 
@@ -119,16 +121,16 @@ class BrowserFetcherTest {
                     "/cookies",
                     SameSite.STRICT,
                     true,
-                    httpOnly = true
+                    httpOnly = true,
                 ),
                 Cookie(
                     "expireTest",
                     "value",
                     Expires.Date("Wed, 21 Oct 2015 07:28:00 GMT"),
                     2592000,
-                    Domain("localhost", false)
-                )
-            )
+                    Domain("localhost", false),
+                ),
+            ),
         )
     }
 
@@ -145,10 +147,9 @@ class BrowserFetcherTest {
 
     @Test
     fun `can POST body`() {
-
         val request = Request(
             url = "$httpBin/post",
-            method = Method.POST
+            method = Method.POST,
         ).apply {
             body {
                 json {
@@ -175,7 +176,7 @@ class BrowserFetcherTest {
         wiremock.setupStub(fileName = "js.html")
         val request = baseRequest.copy(
             url = wiremock.httpsUrl,
-            sslRelaxed = true
+            sslRelaxed = true,
         )
 
         val fetched = BrowserFetcher.fetch(request)
@@ -202,10 +203,9 @@ class BrowserFetcherTest {
 
     @Test
     fun `will extract headers to map`() {
-
         val htmlUnitHeaders = listOf(
             NameValuePair("first-name", "first-value"),
-            NameValuePair("second-name", "second-value")
+            NameValuePair("second-name", "second-value"),
         )
         val result = htmlUnitHeaders.toMap()
         expectThat(result).isEqualTo(mapOf("first-name" to "first-value", "second-name" to "second-value"))
@@ -213,10 +213,9 @@ class BrowserFetcherTest {
 
     @Test
     fun `will create raw cookie syntax representation of map`() {
-
         val cookiesAsMap = mapOf(
             "first-name" to "first-value",
-            "second-name" to "second-value"
+            "second-name" to "second-value",
         )
         val result = cookiesAsMap.asRawCookieSyntax()
         expectThat(result).isEqualTo("first-name=first-value;second-name=second-value;")

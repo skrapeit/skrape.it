@@ -42,7 +42,8 @@ public data class UrlBuilder(
         HTTP("http"),
         HTTPS("https"),
         FTP("ftp"),
-        FILE("file");
+        FILE("file"),
+        ;
 
         internal fun findOrDefault(value: String): Protocol = values().find { it.value == value } ?: HTTP
     }
@@ -60,6 +61,8 @@ public data class UrlBuilder(
 @SkrapeItDsl
 public class QueryParam {
     private val params: MutableMap<String, String> = mutableMapOf()
+
+    @Suppress("ForbiddenComment")
     public infix fun String.to(value: Any?) {
         // TODO: do not ignore entries with value null
         params.computeIfAbsent(this) {

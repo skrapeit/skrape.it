@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package it.skrape.fetcher
 
 import io.ktor.client.*
@@ -14,7 +16,7 @@ import org.apache.http.conn.ssl.NoopHostnameVerifier
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy
 import org.apache.http.ssl.SSLContextBuilder
 import java.net.Proxy
-
+import java.util.*
 
 internal fun Request.toHttpRequest(): HttpRequestBuilder {
     val request = this
@@ -82,7 +84,7 @@ private fun String?.toExpires(): Expires {
     }
 }
 
-private fun String?.toSameSite(): SameSite = when (this?.toLowerCase()) {
+private fun String?.toSameSite(): SameSite = when (this?.lowercase(Locale.getDefault())) {
     "strict" -> SameSite.STRICT
     "lax" -> SameSite.LAX
     "none" -> SameSite.NONE
@@ -96,7 +98,7 @@ internal fun HttpClientConfig<ApacheEngineConfig>.trustSelfSignedClient() {
                 SSLContextBuilder
                     .create()
                     .loadTrustMaterial(TrustSelfSignedStrategy())
-                    .build()
+                    .build(),
             )
             setSSLHostnameVerifier(NoopHostnameVerifier())
         }
@@ -111,7 +113,7 @@ internal fun HttpResponse.toResult(): Result =
         headers = headers.flattenEntries()
             .associateBy({ item -> item.first }, { item -> headers[item.first]!! }),
         cookies = setCookie().map { cookie -> cookie.toDomainCookie(request.url.toString().urlOrigin) },
-        baseUri = request.url.toString()
+        baseUri = request.url.toString(),
     )
 
 private fun HttpResponse.toStatus() = Result.Status(this.status.value, this.status.description)

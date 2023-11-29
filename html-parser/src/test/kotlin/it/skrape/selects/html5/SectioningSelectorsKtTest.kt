@@ -24,7 +24,6 @@ class SectioningSelectorsKtTest {
 
     @Test
     fun `can parse div-tag`() {
-
         htmlDocument(a3TimesNestedTag("div")) {
             div {
                 findAll {
