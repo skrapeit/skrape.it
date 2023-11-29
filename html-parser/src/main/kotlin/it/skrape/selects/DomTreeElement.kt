@@ -56,8 +56,8 @@ public abstract class DomTreeElement : CssSelectable() {
     public fun <T> children(init: List<DocElement>.() -> T): T = children.init()
 
     public fun eachAttribute(attributeKey: String): List<String> =
-            allElements.map { it attribute attributeKey }
-                    .filter { it.isNotEmpty() }
+        allElements.map { it attribute attributeKey }
+            .filter { it.isNotEmpty() }
 
     public val eachHref: List<String> by lazy { eachAttribute("href").filter { it.isNotEmpty() } }
 
@@ -66,13 +66,13 @@ public abstract class DomTreeElement : CssSelectable() {
     public val eachLink: Map<String, String>
         get(): Map<String, String> =
             allElements.filter { it.hasAttribute("href") }
-                    .associate { it.text to it.attribute("href") }
+                .associate { it.text to it.attribute("href") }
 
     public val eachImage: Map<String, String>
         get(): Map<String, String> =
             allElements.filter { it.tagName == "img" }
-                    .filter { it.hasAttribute("src") }
-                    .associate { it.attribute("alt") to it.attribute("src") }
+                .filter { it.hasAttribute("src") }
+                .associate { it.attribute("alt") to it.attribute("src") }
 
     public open fun makeDefaultElement(cssSelector: String): DocElement {
         return super.makeDefault(cssSelector, this.relaxed)

@@ -1,9 +1,9 @@
 object Versions {
     const val kotlin = "1.6.21"
     const val coroutines = "1.6.1"
-    const val ktor = "2.0.3" //2.0.1
+    const val ktor = "2.0.3"
     const val serialization = "1.0.1"
-    const val jsoup = "1.13.1" // 1.14.3
+    const val jsoup = "1.13.1"
     const val htmlUnit = "2.63.0"
     const val testContainers = "1.16.2"
     const val wireMock = "2.28.0"
@@ -20,12 +20,12 @@ object Versions {
 
 abstract class DependencyGroup(
     val group: String,
-    val version: String
+    val version: String,
 ) {
     fun dependency(
         name: String,
         group: String = this.group,
-        version: String = this.version
+        version: String = this.version,
     ) = "$group:$name:$version"
 }
 
@@ -44,14 +44,14 @@ object Deps {
 
     object Kotlin : DependencyGroup(
         group = "org.jetbrains.kotlin",
-        version = Versions.kotlin
+        version = Versions.kotlin,
     ) {
         val reflect = dependency("kotlin-reflect")
     }
 
     object Ktor : DependencyGroup(
         group = "io.ktor",
-        version = Versions.ktor
+        version = Versions.ktor,
     ) {
         val client = dependency("ktor-client-core")
         val clientApache = dependency("ktor-client-apache")
@@ -67,7 +67,7 @@ object Deps {
 
         object Coroutines : DependencyGroup(
             group = "org.jetbrains.kotlinx",
-            version = Versions.coroutines
+            version = Versions.coroutines,
         ) {
             val test = dependency("kotlinx-coroutines-test")
             val core = dependency("kotlinx-coroutines-core")
@@ -77,7 +77,7 @@ object Deps {
 
     object TestContainers : DependencyGroup(
         group = "org.testcontainers",
-        version = Versions.testContainers
+        version = Versions.testContainers,
     ) {
         val testContainers = dependency("testcontainers")
         val jUnit = dependency("junit-jupiter")
@@ -85,7 +85,7 @@ object Deps {
 
     object Mockk : DependencyGroup(
         group = "io.mockk",
-        version = Versions.mockk
+        version = Versions.mockk,
     ) {
         val mockk = dependency("mockk")
         val dslJvm = dependency("mockk-dsl-jvm")
@@ -93,7 +93,7 @@ object Deps {
 
     object Spring : DependencyGroup(
         group = "org.springframework",
-        version = Versions.spring
+        version = Versions.spring,
     ) {
         val webMvc = dependency("spring-webmvc")
         val test = dependency("spring-test")

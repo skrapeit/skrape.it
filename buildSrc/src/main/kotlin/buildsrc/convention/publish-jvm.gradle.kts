@@ -1,7 +1,6 @@
 package buildsrc.convention
 
 import buildsrc.config.createSkrapeItPom
-import buildsrc.config.credentialsAction
 
 plugins {
     `maven-publish`

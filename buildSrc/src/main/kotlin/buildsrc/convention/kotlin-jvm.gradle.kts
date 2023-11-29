@@ -1,7 +1,6 @@
 package buildsrc.convention
 
 import Deps
-import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -50,7 +49,7 @@ tasks.withType<Test>().configureEach {
     systemProperties = mapOf(
         "junit.jupiter.execution.parallel.enabled" to true,
         "junit.jupiter.execution.parallel.mode.default" to "concurrent",
-        "junit.jupiter.execution.parallel.mode.classes.default" to "concurrent"
+        "junit.jupiter.execution.parallel.mode.classes.default" to "concurrent",
     )
 }
 

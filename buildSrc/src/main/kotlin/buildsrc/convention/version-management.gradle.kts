@@ -32,7 +32,7 @@ tasks.withType<DependencyUpdatesTask>().configureEach {
                 "dev",
                 "M1",
                 "M2",
-                "M3"
+                "M3",
             ).any { candidate.version.contains(it) }
                 .not()
         val isSemanticVersion = "^[0-9,.v-]+(-r)?$".toRegex().matches(candidate.version)
