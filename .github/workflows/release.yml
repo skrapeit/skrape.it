@@ -67,16 +67,6 @@ jobs:
           replace: ${{ github.event.inputs.version }}
           include: "README.md" # Will match all README.md files in any nested directory
 
-# deactivate for now since commit action is not able to push changes in workflow files because of missing permission
-#      - name: Update github action release workflow default version
-#        uses: fjogeleit/yaml-update-action@v0.3.0
-#        with:
-#          valueFile: '.github/workflows/release.yml'
-#          propertyPath: 'on.workflow_dispatch.inputs.version.default'
-#          commitChange: 'false'
-#          updateFile: 'true'
-#          value: ${{ github.event.inputs.version }}
-
       - name: Publish to Maven Central
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
@@ -94,21 +84,3 @@ jobs:
           commit_author: skrapeit <page.content.tester@gmail.com>
           commit_message: bump version ${{ steps.current_version.outputs.value }} --> ${{ github.event.inputs.version }}
           tagging_message: ${{ github.event.inputs.version }}
-
-#      - name: Create Tag
-#        uses: negz/create-tag@v1
-#        with:
-#          version: ${{ github.event.inputs.version }}
-#          message: ${{ github.event.inputs.version.description }}
-#          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: send tweet
-        uses: ethomson/send-tweet-action@v1
-        with:
-          status: |
-              🥳🪒📄 skrape{it} version ${{ github.event.inputs.version }} has just been released! 📢🙆🏻‍
-              ${{ github.event.inputs.tweet }}
-          consumer-key: ${{ secrets.TWITTER_CONSUMER_API_KEY_SKRAPE_IT }}
-          consumer-secret: ${{ secrets.TWITTER_CONSUMER_API_SECRET_SKRAPE_IT }}
-          access-token: ${{ secrets.TWITTER_ACCESS_TOKEN_SKRAPE_IT }}
-          access-token-secret: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET_SKRAPE_IT }}
