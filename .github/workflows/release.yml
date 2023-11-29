@@ -86,20 +86,21 @@ jobs:
           ORG_GRADLE_PROJECT_sonatypePassword: ${{secrets.ORG_GRADLE_PROJECT_SONATYPEPASSWORD}}
         run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
 
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: master
           commit_user_name: skrapeit
           commit_user_email: page.content.tester@gmail.com
           commit_author: skrapeit <page.content.tester@gmail.com>
           commit_message: bump version ${{ steps.current_version.outputs.value }} --> ${{ github.event.inputs.version }}
+          tagging_message: ${{ github.event.inputs.version }}
 
-      - name: Create Tag
-        uses: negz/create-tag@v1
-        with:
-          version: ${{ github.event.inputs.version }}
-          message: ${{ github.event.inputs.version.description }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Create Tag
+#        uses: negz/create-tag@v1
+#        with:
+#          version: ${{ github.event.inputs.version }}
+#          message: ${{ github.event.inputs.version.description }}
+#          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: send tweet
         uses: ethomson/send-tweet-action@v1
