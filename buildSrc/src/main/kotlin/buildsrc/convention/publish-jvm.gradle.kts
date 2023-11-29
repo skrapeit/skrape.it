@@ -31,7 +31,12 @@ publishing {
     }
     publications.create<MavenPublication>("mavenJava") {
         from(components["java"])
-
+        artifactId =
+            if (project.name == project.rootProject.name) {
+                project.name
+            } else {
+                "${project.rootProject.name}-${project.name}"
+            }
         createSkrapeItPom {
             name.set("skrape{it} ${project.name}")
         }
