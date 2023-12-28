@@ -18,7 +18,8 @@
 [skrape{it}](https://docs.skrape.it)
 ====================================
 
-:bellhop_bell: :rotating_light: Looking for Co-Maintainer(s), please contact chris@draeger.codes if you are interested in helping to maintain and evolve skrape{it} :heart:
+
+| :bellhop_bell: :rotating_light: Looking for Co-Maintainer(s), please contact chris@draeger.codes if you are interested in helping to maintain and evolve skrape{it} :heart: |
 
 _**[skrape{it}](http://www.skrape.it)**_ is a Kotlin-based HTML/XML testing and web scraping library
 that can be used seamlessly in Spring-Boot, Ktor, Android or other Kotlin-JVM projects.
