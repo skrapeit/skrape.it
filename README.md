@@ -18,6 +18,8 @@
 [skrape{it}](https://docs.skrape.it)
 ====================================
 
+:bellhop_bell: :rotating_light: Looking for Co-Maintainer(s), please contact chris@draeger.codes if you are interested in helping to maintain and evolve skrape{it} :heart:
+
 _**[skrape{it}](http://www.skrape.it)**_ is a Kotlin-based HTML/XML testing and web scraping library
 that can be used seamlessly in Spring-Boot, Ktor, Android or other Kotlin-JVM projects.
 The ability to analyze and extract HTML including client-side rendered DOM trees and all other XML-related markup specifications such as SVG, UML, RSS,... makes it unique.
