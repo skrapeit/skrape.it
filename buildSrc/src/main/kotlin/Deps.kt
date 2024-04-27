@@ -1,7 +1,7 @@
 object Versions {
     const val kotlin = "1.9.10"
     const val coroutines = "1.6.1"
-    const val ktor = "2.0.3"
+    const val ktor = "3.0.0-beta-1"
     const val serialization = "1.0.1"
     const val jsoup = "1.13.1"
     const val htmlUnit = "2.63.0"
@@ -59,7 +59,7 @@ object Deps {
         val serverNetty = dependency("ktor-server-netty")
         val serverTestHost = dependency("ktor-server-test-host")
         val freemarker = dependency("ktor-server-freemarker")
-        val locations = dependency("ktor-server-locations")
+        val resources = dependency("ktor-server-resources")
     }
 
     object KotlinX {
