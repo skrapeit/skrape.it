@@ -66,7 +66,7 @@ internal fun io.ktor.http.Cookie.toDomainCookie(origin: String): Cookie {
         else -> Domain(domainUrl.urlOrigin, true)
     }
     val sameSite = this.extensions["SameSite"].toSameSite()
-    val maxAge = this.maxAge.toMaxAge()
+    val maxAge = this.maxAge?.toMaxAge()
 
     return Cookie(this.name, this.value, expires, maxAge, domain, path, sameSite, this.secure, this.httpOnly)
 }

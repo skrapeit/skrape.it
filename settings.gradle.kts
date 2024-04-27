@@ -25,4 +25,8 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
 }
 
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version ("0.4.0")
+}
+
 // Gradle Plugin versions are defined in ./buildSrc/build.gradle.kts

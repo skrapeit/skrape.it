@@ -9,7 +9,7 @@ dependencies {
     provided(Deps.Ktor.serverTestHost)
     provided(Deps.Ktor.serverNetty)
     provided(Deps.Ktor.freemarker)
-    provided(Deps.Ktor.locations)
+    provided(Deps.Ktor.resources)
 }
 
 // TODO: use https://github.com/nebula-plugins/gradle-extra-configurations-plugin to get provided configuration in gradle

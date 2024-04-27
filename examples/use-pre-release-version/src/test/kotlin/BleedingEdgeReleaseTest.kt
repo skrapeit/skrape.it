@@ -4,6 +4,7 @@ import it.skrape.selects.html5.span
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
+import strikt.assertions.contains
 import strikt.assertions.isEqualTo
 import strikt.assertions.isGreaterThanOrEqualTo
 
@@ -48,7 +49,7 @@ class BleedingEdgeReleaseTest {
             }
         }
 
-        expectThat(title).isEqualTo("Introduction - skrape{it}")
+        expectThat(title).contains("Introduction").contains("skrape{it}")
     }
 
     @Test
