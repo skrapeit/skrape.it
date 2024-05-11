@@ -9,6 +9,7 @@ include(
     ":fetcher:http-fetcher",
     ":fetcher:async-fetcher",
     ":fetcher:browser-fetcher",
+    ":fetcher:chrome-fetcher",
     ":html-parser",
     ":integrationtests",
     ":ktor-extension",
@@ -17,6 +18,7 @@ include(
 )
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 
 apply(from = "./buildSrc/repositories.settings.gradle.kts")
 
