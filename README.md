@@ -63,7 +63,7 @@ All our official/stable releases will be published to [mavens central repository
 
 ```kotlin
 dependencies {
-    implementation("it.skrape:skrapeit-core:1.0.0-alpha6")
+    implementation("it.skrape:skrapeit-core:1.0.0-alpha8")
 }
 ```
 </details>
