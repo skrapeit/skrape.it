@@ -39,6 +39,6 @@ nexusPublishing {
 }
 
 tasks.wrapper {
-    gradleVersion = "8.4"
+    gradleVersion = "9.5.0"
     distributionType = Wrapper.DistributionType.ALL
 }

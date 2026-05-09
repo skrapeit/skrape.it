@@ -1,6 +1,8 @@
 package buildsrc.convention
 
 import Deps
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -14,6 +16,7 @@ plugins {
 
 dependencies {
     testImplementation(Deps.jUnit)
+    testRuntimeOnly(Deps.jUnitPlatformLauncher)
     testImplementation(Deps.strikt)
     testImplementation(Deps.Mockk.mockk)
     testImplementation(Deps.Mockk.dslJvm)
@@ -36,11 +39,11 @@ tasks.withType<JavaCompile>().configureEach {
 }
 
 tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions.apply {
-        jvmTarget = "1.8"
-        freeCompilerArgs += listOf("-Xjsr305=strict")
-        apiVersion = "1.6"
-        languageVersion = "1.6"
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_1_8)
+        freeCompilerArgs.add("-Xjsr305=strict")
+        apiVersion.set(KotlinVersion.KOTLIN_2_1)
+        languageVersion.set(KotlinVersion.KOTLIN_2_1)
     }
 }
 

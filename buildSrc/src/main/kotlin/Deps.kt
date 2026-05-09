@@ -5,7 +5,7 @@ object Versions {
     const val serialization = "1.0.1"
     const val jsoup = "1.13.1"
     const val htmlUnit = "2.63.0"
-    const val testContainers = "1.16.2"
+    const val testContainers = "2.0.5"
     const val wireMock = "2.28.0"
     const val log4jOverSlf4j = "2.0.7"
     const val logback = "1.3.11"
@@ -38,6 +38,7 @@ object Deps {
     const val log4jOverSlf4j = "org.slf4j:log4j-over-slf4j:${Versions.log4jOverSlf4j}"
     const val strikt = "io.strikt:strikt-core:${Versions.strikt}"
     const val jUnit = "org.junit.jupiter:junit-jupiter:${Versions.jUnit}"
+    const val jUnitPlatformLauncher = "org.junit.platform:junit-platform-launcher"
     const val javaxServlet = "javax.servlet:javax.servlet-api:${Versions.javaxServlet}"
     const val jetbrainsAnnotations = "org.jetbrains:annotations:${Versions.jetbrainsAnnotations}"
     const val restAssured = "io.rest-assured:kotlin-extensions:${Versions.restAssured}"
@@ -80,7 +81,7 @@ object Deps {
         version = Versions.testContainers,
     ) {
         val testContainers = dependency("testcontainers")
-        val jUnit = dependency("junit-jupiter")
+        val jUnit = dependency("testcontainers-junit-jupiter")
     }
 
     object Mockk : DependencyGroup(

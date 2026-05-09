@@ -4,13 +4,21 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
     base
-    id("com.github.ben-manes.versions")
-    id("se.patrikerdes.use-latest-versions")
+}
+
+val isPrecompiledScriptPluginAccessorsProject =
+    project.path.contains("generatePrecompiledScriptPluginAccessors")
+
+if (!isPrecompiledScriptPluginAccessorsProject) {
+    apply(plugin = "com.github.ben-manes.versions")
+    apply(plugin = "se.patrikerdes.use-latest-versions")
 }
 
 val updateDependencies by tasks.registering {
     group = LifecycleBasePlugin.BUILD_GROUP
-    dependsOn(tasks.useLatestVersions)
+    if (!isPrecompiledScriptPluginAccessorsProject) {
+        dependsOn("useLatestVersions")
+    }
     dependsOn(tasks.withType<Test>())
 }
 
