@@ -17,10 +17,11 @@ public object Testcontainer {
                 start()
             }
         }) {
+            val host = host
             Wiremock(
-                client = WireMock(containerIpAddress, getMappedPort(httpPort)),
-                httpUrl = "http://$containerIpAddress:${getMappedPort(httpPort)}",
-                httpsUrl = "https://$containerIpAddress:${getMappedPort(httpsPort)}",
+                client = WireMock(host, getMappedPort(httpPort)),
+                httpUrl = "http://$host:${getMappedPort(httpPort)}",
+                httpsUrl = "https://$host:${getMappedPort(httpsPort)}",
             )
         }
     }
@@ -31,7 +32,7 @@ public object Testcontainer {
                 start()
             }
         }) {
-            "http://$containerIpAddress:${getMappedPort(internalPort)}"
+            "http://$host:${getMappedPort(internalPort)}"
         }
     }
 
@@ -62,4 +63,3 @@ private class HttpBinContainer(
         withExposedPorts(internalPort)
     }
 }
-
