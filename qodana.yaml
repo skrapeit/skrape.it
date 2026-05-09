@@ -1,3 +1,5 @@
 version: "1.0"
+linter: qodana-jvm-community
+projectJDK: 17
 profile:
   name: qodana.recommended
