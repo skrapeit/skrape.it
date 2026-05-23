@@ -1,0 +1,18 @@
+<configuration debug="false">
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <withJansi>false</withJansi>
+
+        <encoder>
+            <pattern>%highlight(%.-1level) %date{HH:mm:ss.SSS} [%30.30logger] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- turning down htmlunit logging -->
+    <logger name="com.gargoylesoftware.htmlunit" level="OFF"/>
+    <logger name="org.apache.http" level="ERROR"/>
+
+    <root level="INFO">
+        <appender-ref ref="console"/>
+    </root>
+</configuration>
