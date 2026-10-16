@@ -10,48 +10,36 @@ import java.net.URL
 public object BrowserFetcher : BlockingFetcher<Request> {
     override val requestBuilder: Request get() = Request()
 
-    override fun fetch(request: Request): Result {
-        val client = WebClient(BrowserVersion.BEST_SUPPORTED).withOptions(request)
+    override fun fetch(request: Request): Result = WebClient(BrowserVersion.BEST_SUPPORTED).use { client ->
+        client.withOptions(request)
         val webRequest = WebRequest(URL(request.url), request.method.toHttpMethod()).apply {
-            request.body?.run { requestBody = this }
+            request.body?.let { requestBody = it }
         }
-
         val page: Page = client.getPage(client.currentWindow.topWindow, webRequest)
         val httpResponse = page.webResponse
-        val document = when {
-            page.isHtmlPage -> (page as HtmlPage).asXml()
-            else -> httpResponse.contentAsString
-        }
-        val headers = httpResponse.responseHeaders.toMap()
 
-        val result = Result(
-                responseBody = document,
-                responseStatus = httpResponse.toStatus(),
-                contentType = httpResponse.contentType,
-                headers = headers,
-                baseUri = request.url,
-                cookies = httpResponse.responseHeaders
-                        .filter { it.name == "Set-Cookie" }
-                        .map { it.value.toCookie(request.url.urlOrigin) }
+        Result(
+            responseBody = if (page.isHtmlPage) (page as HtmlPage).asXml() else httpResponse.contentAsString,
+            responseStatus = Result.Status(httpResponse.statusCode, httpResponse.statusMessage),
+            contentType = httpResponse.contentType,
+            headers = httpResponse.responseHeaders.toMap(),
+            baseUri = request.url,
+            cookies = httpResponse.responseHeaders
+                .filter { it.name == "Set-Cookie" }
+                .map { it.value.toCookie(request.url.urlOrigin) }
         )
-
-        client.javaScriptEngine.shutdown()
-        client.close()
-        client.cache.clear()
-        return result
     }
 
-    public fun render(html: String): String =
-        WebClient(BrowserVersion.BEST_SUPPORTED).loadHtmlCodeIntoCurrentWindow(html).asXml()
+    public fun render(html: String): String = WebClient(BrowserVersion.BEST_SUPPORTED).use { client ->
+        client.loadHtmlCodeIntoCurrentWindow(html).asXml()
+    }
 
     private fun WebClient.withOptions(request: Request) = apply {
         cssErrorHandler = SilentCssErrorHandler()
         ajaxController = NicelyResynchronizingAjaxController()
         createCookies(request)
         addRequestHeader("User-Agent", request.userAgent)
-        if (request.authentication != null) {
-            addRequestHeader("Authorization", request.authentication!!.toHeaderValue())
-        }
+        request.authentication?.let { addRequestHeader("Authorization", it.toHeaderValue()) }
         request.headers.forEach {
             addRequestHeader(it.key, it.value)
         }
@@ -73,28 +61,16 @@ public object BrowserFetcher : BlockingFetcher<Request> {
         }
     }
 
-    private fun WebClientOptions.withProxySettings(request: Request): WebClientOptions {
-        if (request.proxy != null) {
-            this.proxyConfig = ProxyConfig(
-                    request.proxy!!.host,
-                    request.proxy!!.port,
-                    "http",
-                    request.proxy!!.type == Proxy.Type.SOCKS
-            )
+    private fun WebClientOptions.withProxySettings(request: Request) {
+        request.proxy?.let { proxy ->
+            proxyConfig = ProxyConfig(proxy.host, proxy.port, "http", proxy.type == Proxy.Type.SOCKS)
         }
-        return this
     }
 
     private fun WebClient.createCookies(request: Request) {
-        request.cookies.forEach { cookieManager.addCookie(createCookie(request.url, it.key, it.value)) }
+        val domain = URL(request.url).host
+        request.cookies.forEach { (name, value) -> cookieManager.addCookie(Cookie(domain, name, value)) }
     }
-
-    private fun createCookie(url: String, name: String, value: String): Cookie {
-        val domain = URL(url).host
-        return Cookie(domain, name, value)
-    }
-
-    private fun WebResponse.toStatus() = Result.Status(statusCode, statusMessage)
 
 }
 

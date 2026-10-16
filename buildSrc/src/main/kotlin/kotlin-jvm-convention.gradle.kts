@@ -19,28 +19,30 @@ dependencies {
     testRuntimeOnly(libs.findLibrary("junit-platform-launcher").get())
     testImplementation(libs.findLibrary("strikt-core").get())
     testImplementation(libs.findLibrary("mockk").get())
-    testImplementation(libs.findLibrary("mockk-dsl-jvm").get())
 }
 
 kotlin {
     explicitApi()
-    jvmToolchain(17)
+    jvmToolchain(25)
 }
 
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
-    sourceCompatibility = "1.8"
-    targetCompatibility = "1.8"
+    options.release.set(17)
 }
 
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_1_8)
+        jvmTarget.set(JvmTarget.JVM_17)
         freeCompilerArgs.add("-Xjsr305=strict")
+        freeCompilerArgs.add("-Xjdk-release=17")
     }
 }
 
 tasks.withType<Test>().configureEach {
+    javaLauncher.set(javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(providers.gradleProperty("testJavaVersion").getOrElse("25")))
+    })
     useJUnitPlatform()
     systemProperties = mapOf(
         "junit.jupiter.execution.parallel.enabled" to true,

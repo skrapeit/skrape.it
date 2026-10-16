@@ -1,6 +1,7 @@
 name: CI
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "master" ]
     paths-ignore:
@@ -20,8 +21,7 @@ jobs:
   build:
     strategy:
       matrix:
-        java-version:
-          - "21"
+        test-java-version: ["17", "25"]
         os:
           - ubuntu-latest
           - windows-latest
@@ -35,10 +35,13 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Set up JDK
+      - name: Set up build and test JDKs
         uses: actions/setup-java@v5
         with:
-          java-version: ${{ matrix.java-version }}
+          # The last entry runs Gradle; testJavaVersion selects the actual test JVM.
+          java-version: |
+            17
+            25
           distribution: "liberica"
 
       - name: Setup Gradle
@@ -46,13 +49,14 @@ jobs:
 
       - name: Build with Gradle Wrapper
         # Docker-backed tests are skipped on Windows, so its coverage is not comparable to Ubuntu.
-        run: ./gradlew build dokkaJavadocJar --stacktrace "-Pkover.verify.warn=${{ runner.os == 'Windows' }}"
+        run: ./gradlew build dokkaJavadocJar --stacktrace "-PtestJavaVersion=${{ matrix.test-java-version }}" "-Pkover.verify.warn=${{ runner.os == 'Windows' }}"
 
       - name: Add coverage report
         id: kover
         uses: mi-kas/kover-report@v1.9
         if: >-
           matrix.os == 'ubuntu-latest' &&
+          matrix.test-java-version == '25' &&
           github.event_name == 'pull_request' &&
           github.event.pull_request.head.repo.full_name == github.repository
         with:
@@ -64,14 +68,77 @@ jobs:
           coverage-counter-type: LINE
 
       - name: Upload coverage to Codecov
-        if: github.event_name == 'push' && matrix.os == 'ubuntu-latest'
+        if: github.event_name == 'push' && matrix.os == 'ubuntu-latest' && matrix.test-java-version == '25'
         uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./build/reports/kover/report.xml
 
+  android:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up build JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: "25"
+          distribution: liberica
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v5
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Publish current library for the Android consumer
+        run: ./gradlew publishToMavenLocal "-Dmaven.repo.local=$PWD/build/maven-smoke-test" --stacktrace
+
+      - name: Build and lint the R8-optimized Android consumer
+        run: ./gradlew -p examples/android :app:lintRelease :app:assembleRelease :app:assembleReleaseAndroidTest --stacktrace
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Test published artifacts on Android
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 36
+          target: google_apis
+          arch: x86_64
+          script: ./gradlew -p examples/android :app:connectedReleaseAndroidTest --stacktrace
+
+      - name: Require executed Android tests
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from xml.etree import ElementTree as ET
+          reports = Path("examples/android/app/build/outputs/androidTest-results/connected/release").glob("TEST-*.xml")
+          suites = [ET.parse(path).getroot() for path in reports]
+          count = sum(int(suite.get("tests", 0)) for suite in suites)
+          assert count >= 4, f"Expected at least 4 Android tests, found {count}"
+          assert all(int(suite.get(key, 0)) == 0 for suite in suites for key in ("failures", "errors", "skipped"))
+          print(f"Verified {count} Android tests")
+          PY
+
+      - name: Upload Android reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-reports
+          path: |
+            examples/android/app/build/reports/
+            examples/android/app/build/outputs/androidTest-results/
+            examples/android/app/build/outputs/mapping/release/
+
   snapshot_release:
-    needs: build
+    needs: [build, android]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     env:
@@ -102,7 +169,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v5
         with:
-          java-version: "21"
+          java-version: "25"
           distribution: "liberica"
 
       - name: Setup Gradle
@@ -127,7 +194,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v5
         with:
-          java-version: "21"
+          java-version: "25"
           distribution: "liberica"
 
       - name: Generate and submit dependency graph
@@ -146,7 +213,7 @@ jobs:
           fetch-depth: 0
 
       - name: Run static code analysis
-        uses: JetBrains/qodana-action@v2025.2.2
+        uses: JetBrains/qodana-action@v2026.2.2
 
       - name: Upload static code analysis results
         if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository

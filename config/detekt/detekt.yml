@@ -1,12 +1,6 @@
-build:
-  maxIssues: 0
-  weights:
-  # complexity: 2
-  # LongParameterList: 1
-  # style: 1
-  # comments: 1
-
 style:
+  AbstractClassCanBeInterface:
+    ignoreSealedClasses: true
   UseOrEmpty:
     active: false
   WildcardImport:

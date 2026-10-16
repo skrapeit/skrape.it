@@ -14,11 +14,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import coil.transform.CircleCropTransformation
-import com.google.accompanist.coil.rememberCoilPainter
-import com.google.accompanist.imageloading.ImageLoadState
+import coil.compose.SubcomposeAsyncImage
 import it.skrape.skrapeitexample.R
 import it.skrape.skrapeitexample.User
 
@@ -53,26 +53,19 @@ internal fun StargazerTile(data: User) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            val painter = rememberCoilPainter(
-                request = data.imageUrl,
-                requestBuilder = {
-                    transformations(CircleCropTransformation())
-                },
-                fadeIn = true
-            )
             val linearGradientBrush = Brush.linearGradient(
                 colors = listOf(Color(0xFFcae7f7), Color(0xFFeeb8e1))
             )
-            Image(
+            SubcomposeAsyncImage(
+                model = data.imageUrl,
                 modifier = Modifier
                     .size(80.dp)
-                    .border(10.dp, linearGradientBrush, CircleShape),
-                painter = painter,
+                    .border(10.dp, linearGradientBrush, CircleShape)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop,
+                loading = { CircularProgressIndicator() },
                 contentDescription = ""
             )
-            if (painter.loadState is ImageLoadState.Loading) {
-                CircularProgressIndicator()
-            }
 
             Text(
                 text = data.name,

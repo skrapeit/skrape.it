@@ -8,7 +8,7 @@
 [![master build status](https://github.com/skrapeit/skrape.it/actions/workflows/build.yml/badge.svg)](https://github.com/skrapeit/skrape.it/actions)
 ![last commit](https://img.shields.io/github/last-commit/skrapeit/skrape.it)
 [![Codecov](https://img.shields.io/codecov/c/github/skrapeit/skrape.it.svg)](https://codecov.io/gh/skrapeit/skrape.it)
-[![JDK](https://img.shields.io/badge/jdk-8-green.svg)](#)
+[![JDK](https://img.shields.io/badge/jdk-17-green.svg)](#)
 
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/skrapeit/skrape.it/issues)
 [![GitHub contributors](https://img.shields.io/github/contributors/skrapeit/skrape.it)](https://github.com/skrapeit/skrape.it/graphs/contributors)
@@ -137,7 +137,8 @@ configurations.all {
 > You can find further examples in the [projects integration tests](https://github.com/skrapeit/skrape.it/blob/master/integrationtests/src/test/kotlin/DslTest.kt).
 
 ### Android
-We have a working [Android sample](https://github.com/skrapeit/skrape.it/tree/master/examples/android) using jetpack-compose in our example projects as living documentation.
+The [Android sample](examples/android) uses Jetpack Compose, AGP 9.4 and Kotlin 2.4. CI tests locally
+published artifacts in an R8-optimized release on Android API 36. See its README for setup and testing.
 
 ### Parse and verify HTML from String
 ```kotlin

@@ -2,41 +2,23 @@ package it.skrape.fetcher
 
 import io.ktor.client.*
 import io.ktor.client.engine.apache.*
-import io.ktor.client.network.sockets.*
 import io.ktor.client.plugins.*
-import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 
 public object AsyncFetcher : NonBlockingFetcher<Request> {
 
     override val requestBuilder: Request get() = Request()
 
-    override suspend fun fetch(request: Request): Result = configuredClient(request).toResult()
+    override suspend fun fetch(request: Request): Result =
+        configuredClient(request).use { client -> client.request(request.toHttpRequest()).toResult() }
 
-    @Suppress("MagicNumber")
-    private suspend fun configuredClient(request: Request): HttpResponse =
+    private fun configuredClient(request: Request): HttpClient =
         HttpClient(Apache) {
             expectSuccess = false
             followRedirects = request.followRedirects
             install(HttpTimeout)
-            install(Logging) {
-                level = LogLevel.NONE
-            }
-            request.authentication?.let { authentication: Authentication ->
-                if (authentication is BasicAuth) {
-                    installBasicAuth()
-                }
-            }
-            HttpResponseValidator {
-
-                handleResponseExceptionWithRequest { cause: Throwable, _: HttpRequest ->
-                    when (cause) {
-                        is SocketTimeoutException -> {
-                            throw cause
-                        }
-                    }
-                }
+            if (request.authentication is BasicAuth) {
+                installBasicAuth()
             }
             engine {
                 request.proxy?.toProxy()?.toHttpHost()?.let {
@@ -51,7 +33,5 @@ public object AsyncFetcher : NonBlockingFetcher<Request> {
             if (request.sslRelaxed) {
                 trustSelfSignedClient()
             }
-        }.use {
-            it.request(request.toHttpRequest())
         }
 }
