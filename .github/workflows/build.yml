@@ -93,6 +93,9 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          # The legacy 'tools' package is no longer available from Google's SDK repository.
+          packages: platform-tools
 
       - name: Publish current library for the Android consumer
         run: ./gradlew publishToMavenLocal "-Dmaven.repo.local=$PWD/build/maven-smoke-test" --stacktrace
@@ -210,10 +213,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
+
+      - name: Set up analysis JDKs
+        uses: actions/setup-java@v5
+        with:
+          java-version: |
+            17
+            25
+          distribution: liberica
 
       - name: Run static code analysis
         uses: JetBrains/qodana-action@v2026.2.2
+        with:
+          # Keep both JDKs available while Qodana analyzes the PR base and head.
+          args: --within-docker false
+          upload-result: true
 
       - name: Upload static code analysis results
         if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
