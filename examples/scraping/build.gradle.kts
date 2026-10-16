@@ -1,5 +1,5 @@
 plugins {
-    buildsrc.convention.`kotlin-jvm`
+    id("kotlin-jvm-convention")
 }
 
 dependencies {

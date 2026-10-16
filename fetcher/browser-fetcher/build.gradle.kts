@@ -1,16 +1,14 @@
 plugins {
-    buildsrc.convention.`kotlin-jvm`
-    buildsrc.convention.`publish-jvm`
-    buildsrc.convention.kover
+    id("kotlin-library-convention")
 }
 
 dependencies {
     api(projects.fetcher.baseFetcher)
-    api(Deps.htmlUnit) {
+    api(libs.htmlunit.android) {
         exclude("org.eclipse.jetty.websocket") // avoid android crash; see #93
     }
-    api(Deps.logback)
-    api(Deps.log4jOverSlf4j)
+    api(libs.logback.classic)
+    api(libs.log4j.over.slf4j)
 
     testImplementation(projects.testUtils)
 }

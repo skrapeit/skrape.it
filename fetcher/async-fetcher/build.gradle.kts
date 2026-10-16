@@ -1,16 +1,14 @@
 plugins {
-    buildsrc.convention.`kotlin-jvm`
-    buildsrc.convention.`publish-jvm`
-    buildsrc.convention.kover
+    id("kotlin-library-convention")
 }
 
 dependencies {
     implementation(projects.fetcher.baseFetcher)
-    implementation(Deps.Ktor.client)
-    implementation(Deps.Ktor.clientApache)
-    implementation(Deps.Ktor.clientLogging)
-    implementation(Deps.logback)
-    implementation(Deps.log4jOverSlf4j)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.apache)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.logback.classic)
+    implementation(libs.log4j.over.slf4j)
 
     testImplementation(projects.testUtils)
 }

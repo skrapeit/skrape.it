@@ -1,15 +1,13 @@
 plugins {
-    buildsrc.convention.`kotlin-jvm`
-    buildsrc.convention.`publish-jvm`
-    buildsrc.convention.kover
+    id("kotlin-library-convention")
 }
 
 dependencies {
     provided(projects.htmlParser)
-    provided(Deps.Ktor.serverTestHost)
-    provided(Deps.Ktor.serverNetty)
-    provided(Deps.Ktor.freemarker)
-    provided(Deps.Ktor.resources)
+    provided(libs.ktor.server.test.host)
+    provided(libs.ktor.server.netty)
+    provided(libs.ktor.server.freemarker)
+    provided(libs.ktor.server.resources)
 }
 
 // TODO: use https://github.com/nebula-plugins/gradle-extra-configurations-plugin to get provided configuration in gradle

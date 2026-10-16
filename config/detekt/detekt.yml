@@ -1,6 +1,3 @@
-# autoCorrect: true
-# moved to top-level Gradle invocation, see https://github.com/detekt/detekt/pull/1654
-
 build:
   maxIssues: 0
   weights:
@@ -10,5 +7,11 @@ build:
   # comments: 1
 
 style:
+  UseOrEmpty:
+    active: false
   WildcardImport:
+    active: false
+
+potential-bugs:
+  UnsafeCallOnNullableType:
     active: false

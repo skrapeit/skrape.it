@@ -533,7 +533,7 @@ class DocElementKtTest {
 
     @Test
     fun `can conveniently iterate over all images values`() {
-        var images = mutableMapOf<String, String>()
+        val images = mutableMapOf<String, String>()
         aValidDocument(aValidMarkupWithPictures) {
             img {
                 findAll {

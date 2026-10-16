@@ -1,9 +1,9 @@
 plugins {
-    buildsrc.convention.`kotlin-jvm`
+    id("kotlin-jvm-convention")
 }
 
 dependencies {
-    testImplementation(Deps.jetbrainsAnnotations)
+    testImplementation(libs.jetbrains.annotations)
     testImplementation(projects.testUtils)
     testImplementation(projects.htmlParser)
     testImplementation(projects.assertions)
