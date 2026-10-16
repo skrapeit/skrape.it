@@ -1,21 +1,15 @@
-@file:Suppress("PropertyName")
-
-val kotlin_version: String by project
-
 plugins {
-    buildsrc.convention.`kotlin-jvm`
-    buildsrc.convention.`publish-jvm`
-    buildsrc.convention.kover
+    id("kotlin-library-convention")
 }
 
 dependencies {
     implementation(projects.dsl)
-    implementation(Deps.Kotlin.reflect) {
+    implementation(libs.kotlin.reflect) {
         because("to support Result#extractIt by creating instance of a class")
     }
-    api(Deps.KotlinX.Coroutines.jdk8)
+    api(libs.kotlinx.coroutines.jdk8)
 
     testImplementation(projects.testUtils)
-    testImplementation(Deps.Ktor.client)
-    testImplementation(Deps.Ktor.clientApache)
+    testImplementation(libs.ktor.client.core)
+    testImplementation(libs.ktor.client.apache)
 }

@@ -1,0 +1,65 @@
+[versions]
+detekt = "1.23.8"
+dokka = "2.2.0"
+htmlunit = "2.63.0"
+javaxServlet = "4.0.1"
+jetbrainsAnnotations = "23.0.0"
+jsoup = "1.13.1"
+junit = "5.8.2"
+kotlin = "2.2.21"
+kotlinxCoroutines = "1.6.1"
+ktor = "3.0.0-beta-1"
+log4jOverSlf4j = "2.0.7"
+logback = "1.3.11"
+mavenPublishPlugin = "0.34.0"
+mockk = "1.12.1"
+restAssured = "4.4.0"
+spring = "5.3.13"
+strikt = "0.33.0"
+testContainers = "2.0.5"
+testLogger = "4.0.0"
+versionCatalogUpdate = "1.0.1"
+versionsFilterPlugin = "0.1.16"
+versionsPlugin = "0.53.0"
+wireMock = "2.28.0"
+
+[plugins]
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+mavenPublishPlugin = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublishPlugin" }
+testLogger = { id = "com.adarshr.test-logger", version.ref = "testLogger" }
+versionCatalogUpdate = { id = "nl.littlerobots.version-catalog-update", version.ref = "versionCatalogUpdate" }
+versionsFilterPlugin = { id = "se.ascp.gradle.gradle-versions-filter", version.ref = "versionsFilterPlugin" }
+versionsPlugin = { id = "com.github.ben-manes.versions", version.ref = "versionsPlugin" }
+
+[libraries]
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+htmlunit-android = { module = "net.sourceforge.htmlunit:htmlunit-android", version.ref = "htmlunit" }
+javax-servlet-api = { module = "javax.servlet:javax.servlet-api", version.ref = "javaxServlet" }
+jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotations" }
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+ktor-client-apache = { module = "io.ktor:ktor-client-apache", version.ref = "ktor" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-server-freemarker = { module = "io.ktor:ktor-server-freemarker", version.ref = "ktor" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
+ktor-server-resources = { module = "io.ktor:ktor-server-resources", version.ref = "ktor" }
+ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
+log4j-over-slf4j = { module = "org.slf4j:log4j-over-slf4j", version.ref = "log4jOverSlf4j" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk-dsl-jvm = { module = "io.mockk:mockk-dsl-jvm", version.ref = "mockk" }
+rest-assured-kotlin-extensions = { module = "io.rest-assured:kotlin-extensions", version.ref = "restAssured" }
+spring-test = { module = "org.springframework:spring-test", version.ref = "spring" }
+spring-webmvc = { module = "org.springframework:spring-webmvc", version.ref = "spring" }
+strikt-core = { module = "io.strikt:strikt-core", version.ref = "strikt" }
+testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testContainers" }
+testcontainers-junit-jupiter = { module = "org.testcontainers:testcontainers-junit-jupiter", version.ref = "testContainers" }
+wiremock-jre8 = { module = "com.github.tomakehurst:wiremock-jre8", version.ref = "wireMock" }

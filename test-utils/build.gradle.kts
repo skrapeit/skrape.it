@@ -1,15 +1,14 @@
 plugins {
-    buildsrc.convention.`kotlin-jvm`
-    buildsrc.convention.kover
+    id("kotlin-jvm-convention")
 }
 
 dependencies {
     compileOnly(projects.htmlParser)
 
-    api(Deps.wireMock)
+    api(libs.wiremock.jre8)
 
-    implementation(Deps.TestContainers.testContainers)
-    implementation(Deps.TestContainers.jUnit)
+    implementation(libs.testcontainers)
+    implementation(libs.testcontainers.junit.jupiter)
 
-    testImplementation(Deps.restAssured)
+    testImplementation(libs.rest.assured.kotlin.extensions)
 }

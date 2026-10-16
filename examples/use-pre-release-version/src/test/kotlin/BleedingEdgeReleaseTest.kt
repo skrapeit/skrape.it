@@ -1,83 +1,78 @@
+import com.sun.net.httpserver.HttpServer
 import it.skrape.core.htmlDocument
-import it.skrape.fetcher.*
-import it.skrape.selects.html5.span
+import it.skrape.fetcher.AsyncFetcher
+import it.skrape.fetcher.BrowserFetcher
+import it.skrape.fetcher.HttpFetcher
+import it.skrape.fetcher.response
+import it.skrape.fetcher.skrape
 import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import strikt.api.expectThat
-import strikt.assertions.contains
 import strikt.assertions.isEqualTo
-import strikt.assertions.isGreaterThanOrEqualTo
+import java.net.InetSocketAddress
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BleedingEdgeReleaseTest {
-    @Test
-    internal fun `can use latest aggregator version from maven central and scrape page without JS`() {
-        val projectsGithubStars = skrape(HttpFetcher) {
-            request {
-                url = "https://github.com/skrapeit/skrape.it"
+    private lateinit var server: HttpServer
+    private val url: String get() = "http://127.0.0.1:${server.address.port}/"
+
+    @BeforeAll
+    internal fun startServer() {
+        val fixture = checkNotNull(javaClass.getResource("/project.html")).readBytes()
+        server = HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0).apply {
+            createContext("/") { exchange ->
+                exchange.responseHeaders.add("Content-Type", "text/html; charset=UTF-8")
+                exchange.sendResponseHeaders(200, fixture.size.toLong())
+                exchange.responseBody.use { it.write(fixture) }
             }
-            response {
-                htmlDocument {
-                    ".pagehead-actions" {
-                        0 {
-                            val star = children.first {
-                                it.text.contains("Star")
-                            }
-                            star.span {
-                                withClass = "Counter"
-                                0 {
-                                    text
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            start()
         }
-        expectThat(projectsGithubStars).isGreaterThanOrEqualTo("449")
+    }
+
+    @AfterAll
+    internal fun stopServer() {
+        server.stop(0)
     }
 
     @Test
-    internal fun `can use latest aggregator version from maven central and scrape page with JS`() {
-        val title = skrape(BrowserFetcher) {
-            request {
-                url = "https://docs.skrape.it"
-            }
+    internal fun `published pre-release can fetch and parse HTML`() {
+        val stars = skrape(HttpFetcher) {
+            request { url = this@BleedingEdgeReleaseTest.url }
             response {
                 htmlDocument {
-                    titleText
+                    ".project-stars" { findFirst { text } }
                 }
             }
         }
-
-        expectThat(title).contains("Introduction").contains("skrape{it}")
+        expectThat(stars).isEqualTo("1234")
     }
 
     @Test
-    internal fun `can use latest aggregator version from maven central and scrape page async`() {
-        val projectsGithubStars = runBlocking {
-            skrape(AsyncFetcher) {
-                request {
-                    url = "https://github.com/skrapeit/skrape.it"
-                }
-                response {
-                    htmlDocument {
-                        ".pagehead-actions" {
-                            0 {
-                                val star = children.first {
-                                    it.text.contains("Star")
-                                }
-                                star.span {
-                                    withClass = "Counter"
-                                    0 {
-                                        text
-                                    }
-                                }
-                            }
-                        }
-                    }
+    internal fun `published pre-release can render JavaScript`() {
+        val renderedText = skrape(BrowserFetcher) {
+            request { url = this@BleedingEdgeReleaseTest.url }
+            response {
+                htmlDocument {
+                    "#rendered" { findFirst { text } }
                 }
             }
         }
-        expectThat(projectsGithubStars).isGreaterThanOrEqualTo("239")
+        expectThat(renderedText).isEqualTo("Rendered by JavaScript")
+    }
+
+    @Test
+    internal fun `published pre-release can fetch and parse HTML asynchronously`(): Unit = runBlocking {
+        val stars = skrape(AsyncFetcher) {
+            request { url = this@BleedingEdgeReleaseTest.url }
+            response {
+                htmlDocument {
+                    ".project-stars" { findFirst { text } }
+                }
+            }
+        }
+        expectThat(stars).isEqualTo("1234")
     }
 }

@@ -5,7 +5,7 @@
 [![skrape-it @ kotlinlang.slack.com](https://img.shields.io/static/v1?label=kotlinlang&message=skrape-it&color=blue&logo=slack)](https://kotlinlang.slack.com/archives/CSPDWD4R4)
 [![License](https://img.shields.io/github/license/skrapeit/skrape.it.svg)](https://github.com/skrapeit/skrape.it/blob/master/LICENSE)
 
-[![master build status](https://github.com/skrapeit/skrape.it/actions/workflows/gradle.yml/badge.svg)](https://github.com/skrapeit/skrape.it/actions)
+[![master build status](https://github.com/skrapeit/skrape.it/actions/workflows/build.yml/badge.svg)](https://github.com/skrapeit/skrape.it/actions)
 ![last commit](https://img.shields.io/github/last-commit/skrapeit/skrape.it)
 [![Codecov](https://img.shields.io/codecov/c/github/skrapeit/skrape.it.svg)](https://codecov.io/gh/skrapeit/skrape.it)
 [![JDK](https://img.shields.io/badge/jdk-8-green.svg)](#)
@@ -17,10 +17,6 @@
 
 [skrape{it}](https://docs.skrape.it)
 ====================================
-
-| :bellhop_bell: :rotating_light:  Help wanted :rotating_light: :bellhop_bell: |
-|-------------|
-| Looking for Co-Maintainer(s), please contact christian.draeger1@gmail.com if you are interested in helping to maintain and evolve skrape{it} :heart: |
 
 _**[skrape{it}](http://www.skrape.it)**_ is a Kotlin-based HTML/XML testing and web scraping library
 that can be used seamlessly in Spring-Boot, Ktor, Android or other Kotlin-JVM projects.
@@ -87,7 +83,9 @@ dependencies {
 </details>
 
 #### using bleeding edge features before official release
-We are offering snapshot releases by publishing every successful build of a commit that has been pushed to master branch. Thereby you can just install the latest implementation of skrape{it}.
+Every successful CI build on `master` publishes a snapshot to the Central Portal snapshot repository.
+The version is the next minor version after the latest tag plus `-SNAPSHOT`: for example, `1.3.0-alpha.2` produces `1.4.0-SNAPSHOT`.
+Use the version shown in the snapshot job summary of the latest [successful CI run](https://github.com/skrapeit/skrape.it/actions/workflows/build.yml); `1.4.0-SNAPSHOT` below is an example, not a permanent version alias.
 Be careful since these are non-official releases and may be unstable as well as breaking changes can occur at any time.
 
 ##### Add experimental stuff
@@ -96,10 +94,10 @@ Be careful since these are non-official releases and may be unstable as well as 
 
 ```kotlin
 repositories {
-    maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots/") }
+    maven { url = uri("https://central.sonatype.com/repository/maven-snapshots/") }
 }
 dependencies {
-    implementation("it.skrape:skrapeit:0-SNAPSHOT") { isChanging = true } // version number will stay - implementation may change ...
+    implementation("it.skrape:skrapeit:1.4.0-SNAPSHOT") { isChanging = true }
 }
 
 // optional
@@ -117,7 +115,9 @@ configurations.all {
 <repositories>
     <repository>
         <id>snapshot</id>
-        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+        <releases><enabled>false</enabled></releases>
+        <snapshots><enabled>true</enabled></snapshots>
     </repository>
 </repositories>
 
@@ -126,7 +126,7 @@ configurations.all {
 <dependency>
     <groupId>it.skrape</groupId>
     <artifactId>skrapeit</artifactId>
-    <version>0-SNAPSHOT</version>
+    <version>1.4.0-SNAPSHOT</version>
 </dependency>
 ```
 </details>

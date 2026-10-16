@@ -1,32 +1,21 @@
 plugins {
     `kotlin-dsl`
-    kotlin("jvm") version "1.9.10"
 }
 
-// set the versions of Gradle plugins that the subprojects will use here
-val kotlinVersion = "1.9.10"
-
-val detektPlugin = "1.23.4"
-val gradleNexusPublishPlugin = "2.0.0"
-val gradleTestLoggerPlugin = "4.0.0"
-val gradleVersionsPlugin = "0.51.0"
-val kotlinDokkaPlugin = "1.9.10"
-val kotlinxKoverPlugin = "0.7.5"
-val useLatestVersionsPlugin = "0.2.19"
+repositories {
+    gradlePluginPortal()
+    mavenCentral()
+}
 
 dependencies {
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:$kotlinVersion"))
-    implementation("org.jetbrains.kotlin:kotlin-serialization")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-
-    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektPlugin")
-    implementation("io.github.gradle-nexus:publish-plugin:$gradleNexusPublishPlugin")
-    implementation("com.adarshr:gradle-test-logger-plugin:$gradleTestLoggerPlugin")
-    implementation("com.github.ben-manes:gradle-versions-plugin:$gradleVersionsPlugin")
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:$kotlinDokkaPlugin")
-    implementation("org.jetbrains.kotlinx:kover-gradle-plugin:$kotlinxKoverPlugin")
-    implementation("se.patrikerdes:gradle-use-latest-versions-plugin:$useLatestVersionsPlugin")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlin.get()}")
+    implementation("com.vanniktech:gradle-maven-publish-plugin:${libs.versions.mavenPublishPlugin.get()}")
+    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${libs.versions.detekt.get()}")
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:${libs.versions.dokka.get()}")
+    implementation("com.adarshr:gradle-test-logger-plugin:${libs.versions.testLogger.get()}")
+    implementation("com.github.ben-manes:gradle-versions-plugin:${libs.versions.versionsPlugin.get()}")
+    implementation("se.ascp.gradle:gradle-versions-filter:${libs.versions.versionsFilterPlugin.get()}")
+    implementation("nl.littlerobots.vcu:plugin:${libs.versions.versionCatalogUpdate.get()}")
 }
 
 kotlin {

@@ -1,15 +1,9 @@
-plugins {
-    buildsrc.convention.base
-    buildsrc.convention.kover
-    buildsrc.convention.`kotlin-jvm`
-    buildsrc.convention.`publish-jvm`
-    id("io.github.gradle-nexus.publish-plugin")
-}
+import io.gitlab.arturbosch.detekt.Detekt
 
-@Suppress("PropertyName")
-val release_version: String by project
-version = release_version
-group = "it.skrape"
+plugins {
+    id("version-management-convention")
+    id("kotlin-library-convention")
+}
 
 dependencies {
     api(projects.assertions)
@@ -20,25 +14,26 @@ dependencies {
     api(projects.dsl)
     api(projects.htmlParser)
 
-    kover(projects.assertions)
-    kover(projects.fetcher.asyncFetcher)
-    kover(projects.fetcher.baseFetcher)
-    kover(projects.fetcher.browserFetcher)
-    kover(projects.fetcher.httpFetcher)
-    kover(projects.dsl)
-    kover(projects.htmlParser)
-    kover(projects.ktorExtension)
-    kover(projects.mockMvcExtension)
-    kover(projects.testUtils)
+    dokka(projects.assertions)
+    dokka(projects.fetcher.asyncFetcher)
+    dokka(projects.fetcher.baseFetcher)
+    dokka(projects.fetcher.browserFetcher)
+    dokka(projects.fetcher.httpFetcher)
+    dokka(projects.dsl)
+    dokka(projects.htmlParser)
+    dokka(projects.ktorExtension)
+    dokka(projects.mockMvcExtension)
 }
 
-nexusPublishing {
-    repositories {
-        sonatype()
+tasks {
+    val detektAll by registering {
+        allprojects {
+            this@registering.dependsOn(tasks.withType<Detekt>())
+        }
     }
-}
 
-tasks.wrapper {
-    gradleVersion = "9.5.0"
-    distributionType = Wrapper.DistributionType.ALL
+    build {
+        dependsOn(detektAll)
+        finalizedBy(koverXmlReport, koverHtmlReport)
+    }
 }

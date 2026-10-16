@@ -3,75 +3,118 @@ name: Release
 on:
   workflow_dispatch:
     inputs:
-      version:
-        description: Bump Version
-        default: 1.0.0
+      release_type:
+        description: 'Determine the next version from conventional commits or select a release type.'
+        type: choice
         required: true
-      tweet:
-        description: extra text for tweet
-        required: false
+        default: automatic
+        options:
+          - automatic
+          - major
+          - minor
+          - patch
+          - alpha
+          - beta
+          - pre
+          - rc
+          - stable
 
-# This allows a subsequently queued workflow run to interrupt previous runs
 concurrency:
-  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
-  cancel-in-progress: true
+  group: release
+  cancel-in-progress: false
 
 jobs:
-  build:
+  release:
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-
+    permissions:
+      contents: write
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Get latest tag
+        id: previous_tag
+        uses: WyriHaximus/github-action-get-previous-tag@v1
+        with:
+          fallback: 0.0.0
+
+      - name: Get next version from conventional commits
+        if: inputs.release_type == 'automatic'
+        id: version_by_conventional_commit
+        uses: ietf-tools/semver-action@v1.9.0
+        with:
+          token: ${{ github.token }}
+          branch: ${{ github.sha }}
+          fromTag: ${{ steps.previous_tag.outputs.tag != '0.0.0' && steps.previous_tag.outputs.tag || '' }}
+          noNewCommitBehavior: warn
+          noVersionBumpBehavior: warn
+          skipInvalidTags: true
+          fallbackTag: 0.0.0
+
+      - name: Get next version from selected release type
+        if: inputs.release_type != 'automatic'
+        id: version_by_fragment
+        uses: christian-draeger/increment-semantic-version@1.2.3
+        with:
+          current-version: ${{ steps.previous_tag.outputs.tag }}
+          version-fragment: ${{ inputs.release_type }}
+
+      - name: Validate release version before publishing
+        id: release_version
+        env:
+          PREVIOUS_VERSION: ${{ steps.previous_tag.outputs.tag }}
+          NEXT_VERSION: ${{ steps.version_by_conventional_commit.outputs.nextStrict || steps.version_by_fragment.outputs.next-version }}
+        run: |
+          if [[ -z "$NEXT_VERSION" || "$NEXT_VERSION" == "${PREVIOUS_VERSION#v}" ]]; then
+            echo "No new release version; nothing will be published." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          if [[ ! "$NEXT_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo "Invalid release version: $NEXT_VERSION" >&2
+            exit 1
+          fi
+          if git show-ref --verify --quiet "refs/tags/$NEXT_VERSION" || git show-ref --verify --quiet "refs/tags/v$NEXT_VERSION"; then
+            echo "A tag already exists for $NEXT_VERSION" >&2
+            exit 1
+          fi
+          echo "version=$NEXT_VERSION" >> "$GITHUB_OUTPUT"
+          echo "Release $NEXT_VERSION from commit $GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Set up JDK
+        if: steps.release_version.outputs.version != ''
         uses: actions/setup-java@v5
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          java-version: "21"
+          distribution: liberica
 
       - name: Set up Gradle
+        if: steps.release_version.outputs.version != ''
         uses: gradle/actions/setup-gradle@v5
 
-      - name: Build with Gradle
-        run: |
-          ./gradlew build
-
-      - name: Identify current version
-        id: current_version
-        uses: christian-draeger/read-properties@1.0.1
-        with:
-          path: './gradle.properties'
-          property: 'release_version'
-
-      - name: Write new version
-        uses: christian-draeger/write-properties@1.0.1
-        with:
-          path: './gradle.properties'
-          property: 'release_version'
-          value: ${{ github.event.inputs.version }}
-
-      - name: Find and Replace version reference in all readme files of the repo
-        uses: jacobtomlinson/gha-find-replace@v2
-        with:
-          find: ${{ steps.current_version.outputs.value }}
-          replace: ${{ github.event.inputs.version }}
-          include: "README.md" # Will match all README.md files in any nested directory
-
-      - name: Publish to Maven Central
+      - name: Build, test and generate API documentation
+        if: steps.release_version.outputs.version != ''
         env:
-          ORG_GRADLE_PROJECT_signingKey: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
-          ORG_GRADLE_PROJECT_signingKeyId: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEYID}}
-          ORG_GRADLE_PROJECT_signingPassword: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
-          ORG_GRADLE_PROJECT_sonatypeUsername: ${{secrets.ORG_GRADLE_PROJECT_SONATYPEUSERNAME}}
-          ORG_GRADLE_PROJECT_sonatypePassword: ${{secrets.ORG_GRADLE_PROJECT_SONATYPEPASSWORD}}
-        run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
+          RELEASE_VERSION: ${{ steps.release_version.outputs.version }}
+        run: ./gradlew build dokkaJavadocJar "-PVERSION_NAME=$RELEASE_VERSION" --stacktrace
 
-      - uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          branch: master
-          commit_user_name: skrapeit
-          commit_user_email: page.content.tester@gmail.com
-          commit_author: skrapeit <page.content.tester@gmail.com>
-          commit_message: bump version ${{ steps.current_version.outputs.value }} --> ${{ github.event.inputs.version }}
-          tagging_message: ${{ github.event.inputs.version }}
+      - name: Publish release to Maven Central
+        if: steps.release_version.outputs.version != ''
+        env:
+          RELEASE_VERSION: ${{ steps.release_version.outputs.version }}
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_IN_MEMORY_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_IN_MEMORY_KEY_ID }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_IN_MEMORY_KEY_PASSWORD }}
+        run: ./gradlew publishToMavenCentral "-PVERSION_NAME=$RELEASE_VERSION" -PsignAllPublications=true --no-configuration-cache --stacktrace
+
+      - name: Tag the published commit
+        if: steps.release_version.outputs.version != ''
+        env:
+          RELEASE_VERSION: ${{ steps.release_version.outputs.version }}
+        run: |
+          git tag "$RELEASE_VERSION" "$GITHUB_SHA"
+          git push origin "refs/tags/$RELEASE_VERSION"
