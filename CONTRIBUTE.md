@@ -8,6 +8,11 @@
 
 Gradle runs on JDK 17 or newer. The build uses a JDK 17 toolchain and targets Java 8 bytecode.
 
+The full Ubuntu CI test run enforces at least 80% line coverage. Windows CI still builds, tests
+and generates documentation, but reports coverage violations as warnings because Docker-backed
+tests are disabled on Windows. To use the same coverage behavior locally, pass
+`-Pkover.verify.warn=true` to Gradle.
+
 ### generate API documentation
 
 ```shell

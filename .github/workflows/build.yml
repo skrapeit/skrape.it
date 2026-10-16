@@ -45,7 +45,8 @@ jobs:
         uses: gradle/actions/setup-gradle@v5
 
       - name: Build with Gradle Wrapper
-        run: ./gradlew build dokkaJavadocJar --stacktrace
+        # Docker-backed tests are skipped on Windows, so its coverage is not comparable to Ubuntu.
+        run: ./gradlew build dokkaJavadocJar --stacktrace "-Pkover.verify.warn=${{ runner.os == 'Windows' }}"
 
       - name: Add coverage report
         id: kover
