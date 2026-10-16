@@ -1,15 +1,13 @@
 plugins {
-    buildsrc.convention.`kotlin-jvm`
-    buildsrc.convention.`publish-jvm`
-    buildsrc.convention.kover
+    id("kotlin-library-convention")
 }
 
 dependencies {
     provided(projects.htmlParser)
     provided(projects.assertions)
-    provided(Deps.Spring.webMvc)
-    provided(Deps.Spring.test)
-    provided(Deps.javaxServlet)
+    provided(libs.spring.webmvc)
+    provided(libs.spring.test)
+    provided(libs.javax.servlet.api)
 }
 
 // TODO: use https://github.com/nebula-plugins/gradle-extra-configurations-plugin to get provided configuration in gradle

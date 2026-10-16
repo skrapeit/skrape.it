@@ -1,49 +1,42 @@
-package buildsrc.convention
-
-import Deps
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `java-library`
-    kotlin("jvm")
-    id("org.jetbrains.dokka")
-
-    id("buildsrc.convention.base")
-    id("buildsrc.convention.detekt")
+    id("org.jetbrains.kotlin.jvm")
+    id("detekt-convention")
+    id("test-logger-convention")
 }
 
+val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+
+group = providers.gradleProperty("GROUP").get()
+version = providers.gradleProperty("VERSION_NAME").get()
+
 dependencies {
-    testImplementation(Deps.jUnit)
-    testRuntimeOnly(Deps.jUnitPlatformLauncher)
-    testImplementation(Deps.strikt)
-    testImplementation(Deps.Mockk.mockk)
-    testImplementation(Deps.Mockk.dslJvm)
+    testImplementation(libs.findLibrary("junit-jupiter").get())
+    testRuntimeOnly(libs.findLibrary("junit-platform-launcher").get())
+    testImplementation(libs.findLibrary("strikt-core").get())
+    testImplementation(libs.findLibrary("mockk").get())
+    testImplementation(libs.findLibrary("mockk-dsl-jvm").get())
 }
 
 kotlin {
     explicitApi()
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of("8"))
-    }
-}
-
-java {
-    withJavadocJar()
-    withSourcesJar()
+    jvmToolchain(17)
 }
 
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
+    sourceCompatibility = "1.8"
+    targetCompatibility = "1.8"
 }
 
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_1_8)
         freeCompilerArgs.add("-Xjsr305=strict")
-        apiVersion.set(KotlinVersion.KOTLIN_2_1)
-        languageVersion.set(KotlinVersion.KOTLIN_2_1)
     }
 }
 
@@ -54,8 +47,4 @@ tasks.withType<Test>().configureEach {
         "junit.jupiter.execution.parallel.mode.default" to "concurrent",
         "junit.jupiter.execution.parallel.mode.classes.default" to "concurrent",
     )
-}
-
-tasks.named<Jar>("javadocJar") {
-    from(tasks.dokkaJavadoc)
 }

@@ -1,0 +1,47 @@
+name: Update Version Catalog
+
+on:
+  schedule:
+    - cron: "0 2 1 * *"
+  workflow_dispatch:
+
+concurrency:
+  group: update-version-catalog
+  cancel-in-progress: false
+
+jobs:
+  update-version-catalog:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: "21"
+          distribution: "liberica"
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+
+      - name: Run Gradle versionCatalogUpdate
+        run: ./gradlew versionCatalogUpdate
+
+      - name: Validate updated dependencies and documentation
+        run: ./gradlew build dokkaJavadocJar --stacktrace
+
+      - name: Push changes and create PR
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: auto-update/version-catalog
+          commit-message: "Update version catalog"
+          title: "Update version catalog"
+          body: |
+            This PR updates the `libs.versions.toml` file by running the Gradle `versionCatalogUpdate` task.
+            The updated dependencies were checked with `./gradlew build dokkaJavadocJar`.
+            Approve any pending GitHub Actions workflows to run the PR checks.
+          labels: "maintenance"

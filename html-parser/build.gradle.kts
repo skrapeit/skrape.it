@@ -1,7 +1,5 @@
 plugins {
-    buildsrc.convention.`kotlin-jvm`
-    buildsrc.convention.`publish-jvm`
-    buildsrc.convention.kover
+    id("kotlin-library-convention")
 }
 
 java {
@@ -13,7 +11,7 @@ java {
 dependencies {
     implementation(projects.dsl)
     api(projects.fetcher.baseFetcher)
-    api(Deps.jsoup)
+    api(libs.jsoup)
 
     "jsExecutionImplementation"(projects.fetcher.browserFetcher)
 
