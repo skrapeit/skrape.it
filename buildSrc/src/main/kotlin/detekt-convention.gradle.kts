@@ -1,9 +1,9 @@
-import io.gitlab.arturbosch.detekt.Detekt
+import dev.detekt.gradle.Detekt
 import org.gradle.language.base.plugins.LifecycleBasePlugin
 import org.gradle.api.artifacts.VersionCatalogsExtension
 
 plugins {
-    id("io.gitlab.arturbosch.detekt")
+    id("dev.detekt")
 }
 
 val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
@@ -19,8 +19,8 @@ detekt {
 tasks.withType<Detekt>().configureEach {
     reports {
         html.required.set(true)
-        xml.required.set(true)
-        txt.required.set(true)
+        checkstyle.required.set(true)
+        markdown.required.set(true)
         sarif.required.set(true)
     }
 }

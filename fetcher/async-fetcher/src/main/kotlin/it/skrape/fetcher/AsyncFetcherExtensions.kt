@@ -1,5 +1,3 @@
-@file:Suppress("TooManyFunctions")
-
 package it.skrape.fetcher
 
 import io.ktor.client.*
@@ -8,14 +6,12 @@ import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.util.*
 import io.ktor.util.network.*
 import org.apache.http.HttpHost
 import org.apache.http.conn.ssl.NoopHostnameVerifier
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy
 import org.apache.http.ssl.SSLContextBuilder
 import java.net.Proxy
-import java.util.*
 
 internal fun Request.toHttpRequest(): HttpRequestBuilder {
     val request = this
@@ -49,7 +45,7 @@ internal fun HttpClientConfig<ApacheEngineConfig>.installBasicAuth() {
     }
 }
 
-internal fun Method.toHttpMethod(): HttpMethod = when (this) {
+private fun Method.toHttpMethod(): HttpMethod = when (this) {
     Method.GET -> HttpMethod.Get
     Method.POST -> HttpMethod.Post
     Method.HEAD -> HttpMethod.Head
@@ -58,35 +54,22 @@ internal fun Method.toHttpMethod(): HttpMethod = when (this) {
     Method.PUT -> HttpMethod.Put
 }
 
-internal fun io.ktor.http.Cookie.toDomainCookie(origin: String): Cookie {
+private fun io.ktor.http.Cookie.toDomainCookie(origin: String): Cookie {
     val path = this.path ?: "/"
-    val expires = this.expires?.toHttpDate().toExpires()
+    val expires = this.expires?.toHttpDate()?.let(Expires::Date) ?: Expires.Session
     val domain = when (val domainUrl = this.domain) {
         null -> Domain(origin, false)
         else -> Domain(domainUrl.urlOrigin, true)
     }
     val sameSite = this.extensions["SameSite"].toSameSite()
-    val maxAge = this.maxAge?.toMaxAge()
+    val maxAge = this.maxAge?.takeUnless { it == 0 }
 
     return Cookie(this.name, this.value, expires, maxAge, domain, path, sameSite, this.secure, this.httpOnly)
 }
 
-internal fun Int.toMaxAge(): Int? = when (this) {
-    0 -> null
-    else -> this
-}
-
-internal fun String?.toExpires(): Expires {
-    return when (this) {
-        null -> Expires.Session
-        else -> Expires.Date(this)
-    }
-}
-
-internal fun String?.toSameSite(): SameSite = when (this?.lowercase(Locale.getDefault())) {
-    "strict" -> SameSite.STRICT
-    "lax" -> SameSite.LAX
-    "none" -> SameSite.NONE
+private fun String?.toSameSite(): SameSite = when {
+    equals("strict", ignoreCase = true) -> SameSite.STRICT
+    equals("none", ignoreCase = true) -> SameSite.NONE
     else -> SameSite.LAX
 }
 
@@ -105,16 +88,13 @@ internal fun HttpClientConfig<ApacheEngineConfig>.trustSelfSignedClient() {
 }
 
 internal suspend fun HttpResponse.toResult(): Result = Result(
-    responseBody = this.bodyAsText(),
-    responseStatus = this.toStatus(),
-    contentType = this.contentType()?.toString()?.replace(" ", ""),
-    headers = this.headers.flattenEntries()
-        .associateBy({ item -> item.first }, { item -> this.headers[item.first]!! }),
-    cookies = this.setCookie().map { cookie -> cookie.toDomainCookie(this.request.url.toString().urlOrigin) },
-    baseUri = this.request.url.toString()
+    responseBody = bodyAsText(),
+    responseStatus = Result.Status(status.value, status.description),
+    contentType = contentType()?.toString()?.replace(" ", ""),
+    headers = headers.entries().associate { (name, values) -> name to values.first() },
+    cookies = setCookie().map { cookie -> cookie.toDomainCookie(request.url.toString().urlOrigin) },
+    baseUri = request.url.toString()
 )
-
-internal fun HttpResponse.toStatus() = Result.Status(this.status.value, this.status.description)
 
 internal fun Proxy.toHttpHost(): HttpHost? = when (this.type()) {
     Proxy.NO_PROXY -> null

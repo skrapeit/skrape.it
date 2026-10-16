@@ -25,7 +25,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.HttpFetcher
-import it.skrape.fetcher.extract
+import it.skrape.fetcher.response
 import it.skrape.fetcher.skrape
 import it.skrape.selects.html5.h3
 import it.skrape.selects.html5.img
@@ -137,7 +137,7 @@ private suspend fun fetch(): List<User> =
             request {
                 url = "https://github.com/skrapeit/skrape.it/stargazers"
             }
-            extract {
+            response {
                 htmlDocument {
                     ol {
                         withClass = "follow-list"

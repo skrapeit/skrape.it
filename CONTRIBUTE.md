@@ -6,7 +6,12 @@
 ./gradlew clean check
 ```
 
-Gradle runs on JDK 17 or newer. The build uses a JDK 17 toolchain and targets Java 8 bytecode.
+Use JDK 25 to run Gradle. Kotlin 2.4.21 compiles with a JDK 25 toolchain and targets Java 17
+bytecode. Java `--release=17` and Kotlin `-Xjdk-release=17` also prevent accidental use of newer
+JDK APIs. CI runs the tests on both JDK 17 and 25 on Ubuntu and Windows. To select the test JVM
+locally, run `./gradlew check -PtestJavaVersion=17` (the default is 25).
+
+Detekt uses 2.0.0-alpha.6 because the 1.x series does not support the new Kotlin toolchain.
 
 The full Ubuntu CI test run enforces at least 80% line coverage. Windows CI still builds, tests
 and generates documentation, but reports coverage violations as warnings because Docker-backed
@@ -23,6 +28,13 @@ Dokka 2 generates Kotlin HTML documentation. The root documentation at `build/do
 combines all published modules. Maven publications include sources and this HTML documentation
 in their `-sources.jar` and `-javadoc.jar` artifacts, respectively.
 
+Fetcher JARs also include Android consumer rules under `META-INF/proguard/`. These preserve
+the third-party APIs loaded by reflection and identify optional desktop/server integrations.
+Common rules live in `base-fetcher`; `browser-fetcher` adds the HtmlUnit-specific rules.
+
+`AsyncFetcher` owns the HTTP transport, request conversion and response conversion.
+`HttpFetcher` adapts it with `runBlocking`, so both entry points share the same behavior.
+
 ### local static analysis with qodana
 
 ```shell
@@ -30,6 +42,12 @@ docker run --rm -it -v $(pwd)/:/data/project/ -v $(pwd)/qodana/results:/data/res
 ```
 
 ## Maintenance
+### verify Android compatibility
+
+The [Android consumer](examples/android/README.md) resolves locally published Maven artifacts,
+builds a minified release with AGP 9.4 and built-in Kotlin, and tests parsing, HTTP, coroutines
+and JavaScript rendering on an API 36 emulator. These checks run in CI before snapshot publishing.
+
 ### check if all dependencies are up-to-date
 
 ```shell
@@ -48,7 +66,8 @@ docker run --rm -it -v $(pwd)/:/data/project/ -v $(pwd)/qodana/results:/data/res
 Run the **Release** GitHub Actions workflow on `master`. Select `automatic` to derive the version
 from conventional commits, or choose a release type. `stable` removes a pre-release suffix;
 if the latest version is already stable, no release is created. The workflow builds and publishes
-the selected commit, then tags that exact commit. It does not create a version-bump commit.
+the selected commit, then tags that exact commit. It first requires successful CI for that commit,
+including the JVM 17/25 and Android checks. It does not create a version-bump commit.
 
 Local builds default to `0-SNAPSHOT`. Release versions are passed with `-PVERSION_NAME` rather
 than written back into `gradle.properties`.
@@ -93,5 +112,6 @@ To inspect publications without modifying your normal Maven cache:
 ### update gradle wrapper
 
 ```shell
-./gradlew wrapper --gradle-version 9.5.0
+./gradlew wrapper --gradle-version 9.7.1
+./gradlew -p examples/android wrapper --gradle-version 9.7.1
 ```

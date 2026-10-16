@@ -8,9 +8,9 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlin.get()}")
+    implementation(libs.kotlin.gradle.plugin)
     implementation("com.vanniktech:gradle-maven-publish-plugin:${libs.versions.mavenPublishPlugin.get()}")
-    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${libs.versions.detekt.get()}")
+    implementation("dev.detekt:detekt-gradle-plugin:${libs.versions.detekt.get()}")
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:${libs.versions.dokka.get()}")
     implementation("com.adarshr:gradle-test-logger-plugin:${libs.versions.testLogger.get()}")
     implementation("com.github.ben-manes:gradle-versions-plugin:${libs.versions.versionsPlugin.get()}")
@@ -19,5 +19,10 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(25)
+    compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    options.release.set(17)
 }

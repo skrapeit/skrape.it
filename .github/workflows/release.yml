@@ -28,6 +28,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     permissions:
+      actions: read
       contents: write
     timeout-minutes: 90
     steps:
@@ -83,11 +84,23 @@ jobs:
           echo "version=$NEXT_VERSION" >> "$GITHUB_OUTPUT"
           echo "Release $NEXT_VERSION from commit $GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Require successful CI for the selected commit
+        if: steps.release_version.outputs.version != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ci_run_id=$(gh run list --workflow build.yml --branch master --commit "$GITHUB_SHA" --limit 1 --json databaseId --jq '.[0].databaseId // empty')
+          if [[ -z "$ci_run_id" ]]; then
+            echo "No CI run exists for $GITHUB_SHA. Run CI before releasing this commit." >&2
+            exit 1
+          fi
+          gh run watch "$ci_run_id" --exit-status --interval 15
+
       - name: Set up JDK
         if: steps.release_version.outputs.version != ''
         uses: actions/setup-java@v5
         with:
-          java-version: "21"
+          java-version: "25"
           distribution: liberica
 
       - name: Set up Gradle

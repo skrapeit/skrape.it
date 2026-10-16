@@ -1,18 +1,28 @@
 [versions]
-detekt = "1.23.8"
+agp = "9.4.1"
+androidxActivity = "1.13.0"
+androidxAppcompat = "1.7.1"
+androidxLifecycle = "2.11.0"
+androidxTestJunit = "1.3.0"
+androidxTestRunner = "1.7.0"
+coil = "2.7.0"
+composeBom = "2026.09.00"
+material = "1.13.0"
+detekt = "2.0.0-alpha.6"
 dokka = "2.2.0"
 htmlunit = "2.63.0"
 javaxServlet = "4.0.1"
 jetbrainsAnnotations = "23.0.0"
 jsoup = "1.13.1"
 junit = "5.8.2"
-kotlin = "2.2.21"
+kotlin = "2.4.21"
 kotlinxCoroutines = "1.6.1"
 ktor = "3.0.0-beta-1"
 log4jOverSlf4j = "2.0.7"
 logback = "1.3.11"
 mavenPublishPlugin = "0.34.0"
-mockk = "1.12.1"
+mockk = "1.14.11"
+okhttp = "5.5.0"
 restAssured = "4.4.0"
 spring = "5.3.13"
 strikt = "0.33.0"
@@ -24,7 +34,9 @@ versionsPlugin = "0.53.0"
 wireMock = "2.28.0"
 
 [plugins]
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+detekt = { id = "dev.detekt", version.ref = "detekt" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 mavenPublishPlugin = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublishPlugin" }
@@ -34,7 +46,19 @@ versionsFilterPlugin = { id = "se.ascp.gradle.gradle-versions-filter", version.r
 versionsPlugin = { id = "com.github.ben-manes.versions", version.ref = "versionsPlugin" }
 
 [libraries]
-detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppcompat" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
+androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidxTestJunit" }
+androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidxTestRunner" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+compose-material = { module = "androidx.compose.material:material" }
+compose-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+mockwebserver = { module = "com.squareup.okhttp3:mockwebserver3", version.ref = "okhttp" }
+okhttp-bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttp" }
+google-material = { module = "com.google.android.material:material", version.ref = "material" }
 htmlunit-android = { module = "net.sourceforge.htmlunit:htmlunit-android", version.ref = "htmlunit" }
 javax-servlet-api = { module = "javax.servlet:javax.servlet-api", version.ref = "javaxServlet" }
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotations" }
@@ -47,7 +71,6 @@ kotlinx-coroutines-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-j
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 ktor-client-apache = { module = "io.ktor:ktor-client-apache", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
-ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-server-freemarker = { module = "io.ktor:ktor-server-freemarker", version.ref = "ktor" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
 ktor-server-resources = { module = "io.ktor:ktor-server-resources", version.ref = "ktor" }
@@ -55,7 +78,6 @@ ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref 
 log4j-over-slf4j = { module = "org.slf4j:log4j-over-slf4j", version.ref = "log4jOverSlf4j" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
-mockk-dsl-jvm = { module = "io.mockk:mockk-dsl-jvm", version.ref = "mockk" }
 rest-assured-kotlin-extensions = { module = "io.rest-assured:kotlin-extensions", version.ref = "restAssured" }
 spring-test = { module = "org.springframework:spring-test", version.ref = "spring" }
 spring-webmvc = { module = "org.springframework:spring-webmvc", version.ref = "spring" }

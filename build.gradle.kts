@@ -1,37 +1,36 @@
-import io.gitlab.arturbosch.detekt.Detekt
+import dev.detekt.gradle.Detekt
 
 plugins {
     id("version-management-convention")
     id("kotlin-library-convention")
 }
 
-dependencies {
-    api(projects.assertions)
-    api(projects.fetcher.asyncFetcher)
-    api(projects.fetcher.baseFetcher)
-    api(projects.fetcher.browserFetcher)
-    api(projects.fetcher.httpFetcher)
-    api(projects.dsl)
-    api(projects.htmlParser)
+val bundledModules = listOf(
+    projects.assertions,
+    projects.fetcher.asyncFetcher,
+    projects.fetcher.baseFetcher,
+    projects.fetcher.browserFetcher,
+    projects.fetcher.httpFetcher,
+    projects.dsl,
+    projects.htmlParser,
+)
 
-    dokka(projects.assertions)
-    dokka(projects.fetcher.asyncFetcher)
-    dokka(projects.fetcher.baseFetcher)
-    dokka(projects.fetcher.browserFetcher)
-    dokka(projects.fetcher.httpFetcher)
-    dokka(projects.dsl)
-    dokka(projects.htmlParser)
+dependencies {
+    bundledModules.forEach {
+        api(it)
+        dokka(it)
+    }
     dokka(projects.ktorExtension)
     dokka(projects.mockMvcExtension)
 }
 
-tasks {
-    val detektAll by registering {
-        allprojects {
-            this@registering.dependsOn(tasks.withType<Detekt>())
-        }
+val detektAll = tasks.register("detektAll") {
+    allprojects {
+        dependsOn(tasks.withType<Detekt>())
     }
+}
 
+tasks {
     build {
         dependsOn(detektAll)
         finalizedBy(koverXmlReport, koverHtmlReport)
