@@ -63,7 +63,7 @@ public class DocElement internal constructor(
      */
     public infix fun attribute(attributeKey: String): String = attributes[attributeKey].orEmpty()
 
-    public fun hasAttribute(attributeKey: String): Boolean = attribute(attributeKey).isNotBlank()
+    public fun hasAttribute(attributeKey: String): Boolean = element.hasAttr(attributeKey)
 
     /**
      * Get all data-attributes of the element.
