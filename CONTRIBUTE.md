@@ -72,12 +72,22 @@ including the JVM 17/25 and Android checks. It does not create a version-bump co
 Local builds default to `0-SNAPSHOT`. Release versions are passed with `-PVERSION_NAME` rather
 than written back into `gradle.properties`.
 
-Configure these GitHub repository secrets before publishing:
+Publishing keeps using the existing GitHub repository secrets. The workflows map them to the
+property names expected by the Maven Central publishing plugin:
 
-- `MAVEN_CENTRAL_USERNAME` and `MAVEN_CENTRAL_PASSWORD`: a Central Portal user token.
-- `SIGNING_IN_MEMORY_KEY`: the ASCII-armored private signing key.
-- `SIGNING_IN_MEMORY_KEY_PASSWORD`: its password, if set.
-- `SIGNING_IN_MEMORY_KEY_ID`: optional signing subkey ID.
+| Existing repository secret | Gradle environment variable |
+| --- | --- |
+| `ORG_GRADLE_PROJECT_SONATYPEUSERNAME` | `ORG_GRADLE_PROJECT_mavenCentralUsername` |
+| `ORG_GRADLE_PROJECT_SONATYPEPASSWORD` | `ORG_GRADLE_PROJECT_mavenCentralPassword` |
+| `ORG_GRADLE_PROJECT_SIGNINGKEY` | `ORG_GRADLE_PROJECT_signingInMemoryKey` |
+| `ORG_GRADLE_PROJECT_SIGNINGKEYID` | `ORG_GRADLE_PROJECT_signingInMemoryKeyId` |
+| `ORG_GRADLE_PROJECT_SIGNINGPASSWORD` | `ORG_GRADLE_PROJECT_signingInMemoryKeyPassword` |
+
+The Sonatype username/password secrets must contain a **Central Portal user token**. Legacy
+OSSRH tokens do not work with the Central Portal; replace their values in the same existing
+secrets if necessary. The existing ASCII-armored private signing key and its password are reused;
+the signing subkey ID is optional. Local publishing uses the Gradle environment variables in the
+right column (or the corresponding properties in `~/.gradle/gradle.properties`).
 
 The `it.skrape` namespace must be available in the Central Portal, with snapshots enabled.
 Snapshots use `https://central.sonatype.com/repository/maven-snapshots/` and a version such as
